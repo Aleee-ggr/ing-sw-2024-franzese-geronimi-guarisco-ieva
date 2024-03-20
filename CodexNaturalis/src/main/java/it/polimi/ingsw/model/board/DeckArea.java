@@ -1,9 +1,12 @@
 package it.polimi.ingsw.model.board;
 
+import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.cards.goldCard;
 import it.polimi.ingsw.model.cards.stdCard;
+
+import java.util.Arrays;
 
 public class DeckArea {
 
@@ -13,11 +16,11 @@ public class DeckArea {
     }
 
     public goldCard[] getGoldCards() {
-        return goldCards;
+        return Arrays.copyOf(goldCards, GameConsts.visibleGoldCards);
     }
 
     public stdCard[] getStdCards() {
-        return stdCards;
+        return Arrays.copyOf(stdCards, GameConsts.visibleStdCards);
     }
 
     public void substituteCard(int position, boolean isGold) {
@@ -73,6 +76,6 @@ public class DeckArea {
 
     private final Deck<goldCard> goldDeck;
     private final Deck<stdCard> stdDeck;
-    private final goldCard[] goldCards = new goldCard[2];
-    private final stdCard[] stdCards = new stdCard[2];
+    private final goldCard[] goldCards = new goldCard[GameConsts.visibleGoldCards];
+    private final stdCard[] stdCards = new stdCard[GameConsts.visibleStdCards];
 }
