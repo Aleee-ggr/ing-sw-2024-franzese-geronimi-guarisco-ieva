@@ -9,6 +9,10 @@ import it.polimi.ingsw.model.cards.stdCard;
 import java.util.Arrays;
 
 public class DeckArea {
+    private final Deck<goldCard> goldDeck;
+    private final Deck<stdCard> stdDeck;
+    private final goldCard[] goldCards = new goldCard[GameConsts.visibleGoldCards];
+    private final stdCard[] stdCards = new stdCard[GameConsts.visibleStdCards];
 
     public DeckArea(Deck<goldCard> goldDeck, Deck<stdCard> stdDeck) {
         this.goldDeck = goldDeck;
@@ -73,9 +77,4 @@ public class DeckArea {
         //TODO check whether the card exists
         return null;
     }
-
-    private final Deck<goldCard> goldDeck;
-    private final Deck<stdCard> stdDeck;
-    private final goldCard[] goldCards = new goldCard[GameConsts.visibleGoldCards];
-    private final stdCard[] stdCards = new stdCard[GameConsts.visibleStdCards];
 }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Deck<CardType> {
+    private final ArrayList<CardType> cards;
+
     public Deck(ArrayList<CardType> cards) {
         this.cards = cards;
     }
@@ -24,5 +26,4 @@ public class Deck<CardType> {
         return cards.isEmpty();
     }
 
-    private final ArrayList<CardType> cards;
 }

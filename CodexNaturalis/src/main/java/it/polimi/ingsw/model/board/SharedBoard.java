@@ -9,6 +9,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SharedBoard {
+    private final Objective[] objectives = new Objective[GameConsts.globalObjectives];
+    private final ConcurrentHashMap<Player, Integer> scoreMap = new ConcurrentHashMap<>();
+    private final DeckArea deckArea;
     public SharedBoard(DeckArea deckArea) {
         this.deckArea = deckArea;
     }
@@ -25,7 +28,5 @@ public class SharedBoard {
         return this.deckArea;
     }
 
-    private final Objective[] objectives = new Objective[GameConsts.globalObjectives];
-    private final ConcurrentHashMap<Player, Integer> scoreMap = new ConcurrentHashMap<>();
-    private final DeckArea deckArea;
+
 }
