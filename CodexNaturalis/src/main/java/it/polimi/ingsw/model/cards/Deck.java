@@ -3,10 +3,8 @@ package it.polimi.ingsw.model.cards;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Deck {
-
-    private final ArrayList<Card> cards;
-    public Deck(ArrayList<Card> cards) {
+public class Deck<CardType> {
+    public Deck(ArrayList<CardType> cards) {
         this.cards = cards;
     }
 
@@ -16,7 +14,7 @@ public class Deck {
         }
     }
 
-    public Card draw() {
+    public CardType draw() {
         synchronized (cards) {
             return cards.removeFirst();
         }
@@ -25,4 +23,6 @@ public class Deck {
     public boolean isEmpty() {
         return cards.isEmpty();
     }
+
+    private final ArrayList<CardType> cards;
 }
