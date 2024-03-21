@@ -7,10 +7,10 @@ import java.util.Arrays;
 
 public abstract class Card {
     private final int id;
-    private Resource[] frontCorners = new Resource[GameConsts.numCorners];
+    private Corner[] frontCorners = new Corner[GameConsts.numCorners];
     private boolean frontSideUp;
 
-    public Card(int id, Resource[] frontCorners){
+    public Card(int id, Corner[] frontCorners){
         this.id = id;
         this.frontCorners = frontCorners;
     }
@@ -23,7 +23,7 @@ public abstract class Card {
         return frontSideUp;
     }
 
-    public Resource[] getFrontCorners() {
+    public Corner[] getFrontCorners() {
         return Arrays.copyOf(frontCorners, GameConsts.numCorners);
     }
 }
