@@ -11,8 +11,8 @@ import java.util.Arrays;
 public class DeckArea {
     private final Deck<GoldCard> goldDeck;
     private final Deck<StdCard> stdDeck;
-    private final GoldCard[] GoldCards = new GoldCard[GameConsts.visibleGoldCards];
-    private final StdCard[] StdCards = new StdCard[GameConsts.visibleStdCards];
+    private final GoldCard[] goldCards = new GoldCard[GameConsts.visibleGoldCards];
+    private final StdCard[] stdCards = new StdCard[GameConsts.visibleStdCards];
 
     public DeckArea(Deck<GoldCard> goldDeck, Deck<StdCard> stdDeck) {
         this.goldDeck = goldDeck;
@@ -20,20 +20,20 @@ public class DeckArea {
     }
 
     public GoldCard[] getGoldCards() {
-        return Arrays.copyOf(GoldCards, GameConsts.visibleGoldCards);
+        return Arrays.copyOf(goldCards, GameConsts.visibleGoldCards);
     }
 
     public StdCard[] getStdCards() {
-        return Arrays.copyOf(StdCards, GameConsts.visibleStdCards);
+        return Arrays.copyOf(stdCards, GameConsts.visibleStdCards);
     }
 
     public void substituteCard(int position, boolean isGold) {
         if (isGold && !goldDeck.isEmpty()) {
-            GoldCards[position] = goldDeck.draw();
+            goldCards[position] = goldDeck.draw();
             return;
         }
         if (!stdDeck.isEmpty()) {
-            StdCards[position] = stdDeck.draw();
+            stdCards[position] = stdDeck.draw();
         }
     }
 
@@ -42,13 +42,13 @@ public class DeckArea {
             return false;
         }
 
-        for (var card : GoldCards) {
+        for (var card : goldCards) {
             if (card != null) {
                 return false;
             }
         }
 
-        for (var card : StdCards) {
+        for (var card : stdCards) {
             if (card != null) {
                 return false;
             }
@@ -68,11 +68,11 @@ public class DeckArea {
     }
 
     public Card drawVisible(int position, boolean isGold) {
-        if (isGold && GoldCards[position] != null) {
-            return GoldCards[position];
+        if (isGold && goldCards[position] != null) {
+            return goldCards[position];
         }
-        if (StdCards[position] != null) {
-            return StdCards[position];
+        if (stdCards[position] != null) {
+            return stdCards[position];
         }
         //TODO check whether the card exists
         return null;
