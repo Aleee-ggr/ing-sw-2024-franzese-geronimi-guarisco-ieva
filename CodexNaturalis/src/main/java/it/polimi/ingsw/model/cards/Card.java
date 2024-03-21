@@ -1,4 +1,29 @@
 package it.polimi.ingsw.model.cards;
 
-public class Card {
+import it.polimi.ingsw.GameConsts;
+import it.polimi.ingsw.model.enums.Resource;
+
+import java.util.Arrays;
+
+public abstract class Card {
+    private final int id;
+    private Resource[] frontCorners = new Resource[GameConsts.numCorners];
+    private boolean frontSideUp;
+
+    public Card(int id, Resource[] frontCorners){
+        this.id = id;
+        this.frontCorners = frontCorners;
+    }
+
+    public int getId(){
+        return id;
+    }
+
+    public boolean isFrontSideUp(){
+        return frontSideUp;
+    }
+
+    public Resource[] getFrontCorners() {
+        return Arrays.copyOf(frontCorners, GameConsts.numCorners);
+    }
 }
