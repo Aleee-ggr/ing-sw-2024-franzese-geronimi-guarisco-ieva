@@ -17,6 +17,7 @@ public final class Player {
     private Objective hiddenObjective;
     private ConcurrentHashMap<Resource, Integer> playerResources = new ConcurrentHashMap<Resource, Integer>();
     private final Game game;
+
     public Player(String username, Game currentGame) {
         this.username = username;
         this.game = currentGame;
@@ -25,12 +26,15 @@ public final class Player {
     public String getUsername() {
         return username;
     }
+
     public Card[] getHand(){
         return hand;
     }
+
     public Objective getHiddenObjective(){
         return hiddenObjective;
     }
+
     public void drawFirstHand(){
         this.hand = new Card[GameConsts.firstHandDim];
         for (int i = 0; i < GameConsts.fistHandStdNum; i++){
@@ -40,6 +44,18 @@ public final class Player {
             this.hand[i] = game.getGameBoard().drawDeck(true);
         }
     }
+
+    /**TODO: map not copied**/
+    public ConcurrentHashMap<Resource, Integer> getResources(){
+        return playerResources;
+    }
+
+    /**
+     * TODO: methods to implement
+     */
+    public void joinGame(UUID gameId){
+
+    }
     public void drawDecks(int cardId){
 
     }
@@ -47,14 +63,6 @@ public final class Player {
 
     }
     public void playCard(Card playedCard){
-
-    }
-    /**TODO: map not copied**/
-    public ConcurrentHashMap<Resource, Integer> getResources(){
-        return playerResources;
-    }
-    /** TODO: Game class implementation for joinGame **/
-    public void joinGame(UUID gameId){
 
     }
 }
