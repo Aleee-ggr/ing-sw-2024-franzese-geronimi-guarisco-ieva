@@ -19,8 +19,6 @@ public final class Player {
     private Objective hiddenObjective;
     private ConcurrentHashMap<Resource, Integer> playerResources = new ConcurrentHashMap<Resource, Integer>();
     private final Game game;
-
-
     public Player(String username, Game currentGame) {
         this.username = username;
         this.game = currentGame;
