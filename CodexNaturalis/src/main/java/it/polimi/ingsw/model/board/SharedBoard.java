@@ -15,7 +15,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SharedBoard {
     private final Objective[] objectives = new Objective[GameConsts.globalObjectives];
     private final ConcurrentHashMap<Player, Integer> scoreMap = new ConcurrentHashMap<>();
-
     private final Deck<GoldCard> goldDeck;
     private final Deck<StdCard> stdDeck;
     private final Card[] visibleCards = new Card[4];
