@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
 
+import java.util.Collections;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -45,9 +46,8 @@ public final class Player {
         }
     }
 
-    /**TODO: map not copied**/
     public ConcurrentHashMap<Resource, Integer> getResources(){
-        return playerResources;
+        return (ConcurrentHashMap<Resource, Integer>) Collections.unmodifiableMap(playerResources);
     }
 
     /**
