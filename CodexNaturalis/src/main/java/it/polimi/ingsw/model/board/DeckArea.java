@@ -70,12 +70,9 @@ public class DeckArea {
         return null;
     }
 
-    public Card drawVisible(int position, boolean isGold) {
-        if (isGold && goldCards[position] != null) {
-            return goldCards[position];
-        }
-        if (stdCards[position] != null) {
-            return stdCards[position];
+    public Card drawVisible(int position) {
+        if (visibleCards[position] != null) {
+            return visibleCards[position];
         }
         //TODO check whether the card exists
         return null;
