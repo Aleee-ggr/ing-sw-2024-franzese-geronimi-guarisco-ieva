@@ -10,6 +10,10 @@ import java.util.Collections;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Player Class
+ * @author Alessio Guarisco
+ * */
 public final class Player {
     private final String username;
     private int score;
@@ -18,7 +22,10 @@ public final class Player {
     private Objective hiddenObjective;
     private ConcurrentHashMap<Resource, Integer> playerResources = new ConcurrentHashMap<Resource, Integer>();
     private final Game game;
-
+    /**
+     * @param username it is the unique identifier of the player.
+     * @param currentGame pointer to the instance of game the player is playing.
+     * */
     public Player(String username, Game currentGame) {
         this.username = username;
         this.game = currentGame;

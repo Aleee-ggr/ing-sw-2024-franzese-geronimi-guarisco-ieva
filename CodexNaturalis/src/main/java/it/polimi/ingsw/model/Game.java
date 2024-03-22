@@ -9,7 +9,10 @@ import it.polimi.ingsw.model.player.Player;
 import java.sql.ShardingKey;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-
+/**
+ * Game Class
+ * @author Alessio Guarisco
+ * */
 public class Game {
     private final UUID id;
     private int numPlayers;
