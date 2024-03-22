@@ -2,8 +2,6 @@ package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.board.DeckArea;
-import it.polimi.ingsw.model.board.SharedBoard;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
@@ -36,10 +34,10 @@ public final class Player {
     public void drawFirstHand(){
         this.hand = new Card[GameConsts.firstHandDim];
         for (int i = 0; i < GameConsts.fistHandStdNum; i++){
-            this.hand[i] = game.getGameBoard().getDeckArea().drawDeck(false);
+            this.hand[i] = game.getGameBoard().drawDeck(false);
         }
         for (int i = GameConsts.fistHandStdNum; i <= GameConsts.firstHandDim; i++){
-            this.hand[i] = game.getGameBoard().getDeckArea().drawDeck(true);
+            this.hand[i] = game.getGameBoard().drawDeck(true);
         }
     }
     public void drawDecks(int cardId){
