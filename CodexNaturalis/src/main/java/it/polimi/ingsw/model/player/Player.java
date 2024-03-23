@@ -73,22 +73,37 @@ public final class Player {
         }
     }
 
-    public ConcurrentHashMap<Resource, Integer> getResources(){
+    public ConcurrentHashMap<Resource, Integer> getResources() {
         return (ConcurrentHashMap<Resource, Integer>) Collections.unmodifiableMap(playerResources);
     }
 
+    public void drawDecks(boolean isGold){
+        Card drawnCard = game.getGameBoard().drawDeck(isGold);
+        toHand(drawnCard);
+    }
+
+    public void drawVisible(int numVisible){
+        Card drawnCard = game.getGameBoard().drawVisible(numVisible);
+        toHand(drawnCard);
+    }
+
+    private void toHand(Card drawnCard){
+        for(int i = 0; i < GameConsts.firstHandDim; i++){
+            if (hand[i]==null){
+                hand[i]=drawnCard;
+                return;
+            }
+        }
+        System.out.println("too many cards");
+    }
+    
     /**
      * TODO: methods to implement
      */
     public void joinGame(UUID gameId){
 
     }
-    public void drawDecks(int cardId){
 
-    }
-    public void drawVisible(int cardId){
-
-    }
     public void playCard(Card playedCard){
 
     }
