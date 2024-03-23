@@ -38,9 +38,6 @@ public interface JsonParser<Class> {
             }
             pos++;
         }
-        for (var c : front_corners) {
-            System.out.println(c);
-        }
         return front_corners;
     }
 }
