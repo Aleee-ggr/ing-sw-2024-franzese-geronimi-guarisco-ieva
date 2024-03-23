@@ -38,7 +38,7 @@ public class FunctionBuilder {
             default:
                 return (Game game) -> {
                     //TODO implement the actual function
-                    return -1;
+                    return points;
                 };
         }
     }

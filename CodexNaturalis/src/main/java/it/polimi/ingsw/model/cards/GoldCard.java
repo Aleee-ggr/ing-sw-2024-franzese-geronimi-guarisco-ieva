@@ -28,7 +28,10 @@ public class GoldCard extends ColoredCard{
     @Override
     public String toString() {
         StringBuilder out = new StringBuilder();
-        out.append("id: " + getId() + "\nresource: " + getBackResource());
+        out.append("id: ")
+                .append(getId())
+                .append("\nresource: ")
+                .append(getBackResource());
         for (var corner : this.getFrontCorners()) {
             out.append("\ncorner: ")
                     .append(corner.isCoverable())
@@ -38,8 +41,13 @@ public class GoldCard extends ColoredCard{
 
         out.append("\nrequirements:\n");
         for (var key : requirements.keySet()) {
-            out.append(key + " " + requirements.get(key) + "\n");
+            out.append(key)
+                    .append(" ")
+                    .append(requirements.get(key))
+                    .append("\n");
         }
+        out.append("score: ")
+                .append(calculateScore.apply(null));
         return out.toString();
     }
 }
