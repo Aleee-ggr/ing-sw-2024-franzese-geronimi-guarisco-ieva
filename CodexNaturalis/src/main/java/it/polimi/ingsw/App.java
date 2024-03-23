@@ -1,7 +1,6 @@
 package it.polimi.ingsw;
 
-import com.google.gson.Gson;
-import it.polimi.ingsw.helpers.parser.StdCardParser;
+import it.polimi.ingsw.helpers.parsers.StdCardParser;
 import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.cards.StdCard;
 
