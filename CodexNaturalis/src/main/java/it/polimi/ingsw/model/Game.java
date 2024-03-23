@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.model.board.SharedBoard;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.Deck;
@@ -49,15 +50,19 @@ public class Game {
         return GameBoard;
     }
 
-    public boolean addPlayer(String playerUsername){ /**TODO: implement toomanyplayer except and samename except*/
-        Player checkPlayer = new Player(playerUsername, this);
-        try{
-            checkPlayer = players.putIfAbsent(playerUsername, checkPlayer);
-        } catch (Exception e){
-            System.out.println("tempException");
+    public boolean addPlayer(String playerUsername){
+        if(players.size()< GameConsts.maxPlayersNum) {
+            Player toAdd = new Player(playerUsername, this);
+            if (players.putIfAbsent(playerUsername, toAdd) == null) {
+                System.out.println("existingUsername");
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            System.out.println("tooManyPlayers");
             return false;
         }
-        return true;
     }
 
     /**
