@@ -21,6 +21,11 @@ public interface JsonParser<Class> {
         return GameConsts.resourceMap.get(element.getAsString().toUpperCase());
     }
 
+    /**
+     * Parse the corners in the given json and return an array of corners of size 4
+     * @param corners a JsonArray obtained from the element "corner" in the json
+     * @return a corner array of size 4 generated from the given json element
+     */
     default Corner[] getCorners(JsonArray corners) {
         Corner[] front_corners = new Corner[4];
         int pos = 0;

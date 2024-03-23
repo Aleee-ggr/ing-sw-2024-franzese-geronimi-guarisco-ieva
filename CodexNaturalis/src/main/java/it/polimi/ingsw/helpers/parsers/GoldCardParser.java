@@ -22,6 +22,12 @@ import java.util.function.Function;
 public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
     private String json;
 
+    /**
+     * Load a file from the given path in the parser so that it can be later parsed
+     * also see {@link #parse()} method for more details
+     * @param path path of the file from which to load the data for the cards
+     * @throws IOException Throws exception when the given file is missing
+     */
     @Override
     public void readFile(Path path) throws IOException {
         json = Files.readString(path);
@@ -32,6 +38,11 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
         this.json = json;
     }
 
+    /**
+     *
+     * @return a new Deck of goldCard with the data specified in
+     * {@link #readFile(Path) readFile(path)} or {@link #readString(String) readString(json)}
+     */
     @Override
     public Deck<GoldCard> parse() {
         Gson gson = new Gson();
