@@ -63,6 +63,11 @@ public final class Player {
         this.hiddenObjective = hiddenObjective;
     }
 
+    /**
+     * This method is used while the game is starting to draw the first hand.
+     * It takes consts values from:
+     * @see it.polimi.ingsw.GameConsts
+     * */
     public void drawFirstHand(){
         this.hand = new Card[GameConsts.firstHandDim];
         for (int i = 0; i < GameConsts.fistHandStdNum; i++){
@@ -77,16 +82,27 @@ public final class Player {
         return (ConcurrentHashMap<Resource, Integer>) Collections.unmodifiableMap(playerResources);
     }
 
+    /**
+     * Method to draw from one of the two decks in the SharedBoard of the Game
+     * @param isGold is used to identify if the card is drawn to the gold card deck or the std deck
+     * */
     public void drawDecks(boolean isGold){
         Card drawnCard = game.getGameBoard().drawDeck(isGold);
         toHand(drawnCard);
     }
 
+    /**
+     * Method to draw from one of the four visible cards in the SharedBoard of the Game
+     * @param numVisible is used to choose the card from the board
+     * */
     public void drawVisible(int numVisible){
         Card drawnCard = game.getGameBoard().drawVisible(numVisible);
         toHand(drawnCard);
     }
 
+    /**
+     * Private general method to add a drawn card to the hand of the player
+     * */
     private void toHand(Card drawnCard){
         for(int i = 0; i < GameConsts.firstHandDim; i++){
             if (hand[i]==null){
@@ -96,7 +112,7 @@ public final class Player {
         }
         System.out.println("too many cards");
     }
-    
+
     /**
      * TODO: methods to implement
      */
