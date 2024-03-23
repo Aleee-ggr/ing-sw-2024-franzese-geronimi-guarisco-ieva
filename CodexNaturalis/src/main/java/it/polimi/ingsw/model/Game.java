@@ -65,9 +65,6 @@ public class Game {
      */
     public void startGame(){
     }
-    public boolean checkUsername(/*String*/){
-        return true;
-    }
     public boolean resetBoard(/*SharedBoard*/){
         return true;
     }
