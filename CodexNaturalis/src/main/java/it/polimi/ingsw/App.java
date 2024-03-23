@@ -18,7 +18,7 @@ public class App
         System.out.println( "Hello World!" );
         StdCardParser parser = new StdCardParser();
         try {
-            parser.readFile(Path.of("src/main/java/it/polimi/ingsw/data/cards/cards.json"));
+            parser.readFile(Path.of("src/main/resources/cards.json"));
         } catch (Exception e) {
             e.printStackTrace();
         }

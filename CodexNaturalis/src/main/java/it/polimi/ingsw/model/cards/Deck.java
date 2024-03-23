@@ -12,13 +12,17 @@ public class Deck<CardType> {
 
     public void shuffle() {
         synchronized (cards) {
+
             Collections.shuffle(cards);
         }
     }
 
     public CardType draw() {
         synchronized (cards) {
-            return cards.removeFirst();
+            if (!cards.isEmpty()) {
+                return cards.removeFirst();
+            }
+            return null;
         }
     }
 
