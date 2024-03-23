@@ -49,6 +49,17 @@ public class Game {
         return GameBoard;
     }
 
+    public boolean addPlayer(String playerUsername){ /**TODO: implement toomanyplayer except and samename except*/
+        Player checkPlayer = new Player(playerUsername, this);
+        try{
+            checkPlayer = players.putIfAbsent(playerUsername, checkPlayer);
+        } catch (Exception e){
+            System.out.println("tempException");
+            return false;
+        }
+        return true;
+    }
+
     /**
      * TODO: methods to implements:
      */
@@ -61,8 +72,5 @@ public class Game {
         return true;
     }
     public void endGame(){
-    }
-    public boolean addPlayer(){
-        return true;
     }
 }
