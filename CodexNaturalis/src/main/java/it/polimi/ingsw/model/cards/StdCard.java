@@ -15,11 +15,19 @@ public class StdCard extends ColoredCard{
 
     @Override
     public String toString() {
-        return "id: " +
-                getId() +
-                " color: " +
-                getBackResource() +
-                " points: " +
-                isPoint();
+        StringBuilder out = new StringBuilder();
+        out.append("id: ")
+                .append(getId())
+                .append("\nresource: ")
+                .append(getBackResource())
+                .append("\npoints: ")
+                .append(isPoint());
+        for (var corner : this.getFrontCorners()) {
+            out.append("\ncorner: ")
+                    .append(corner.isCoverable())
+                    .append(" ")
+                    .append(corner.getCornerResource());
+        }
+        return out.toString();
     }
 }

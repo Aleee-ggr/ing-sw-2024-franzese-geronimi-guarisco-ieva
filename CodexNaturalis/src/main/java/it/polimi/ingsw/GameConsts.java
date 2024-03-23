@@ -14,6 +14,7 @@ public abstract class GameConsts {
         put("QUILL", Resource.QUILL);
         put("INK", Resource.INK);
         put("SCROLL", Resource.SCROLL);
+        put("NONE", Resource.NONE);
     }};
     public static final int visibleCards = 4;
     public static final int globalObjectives = 2;
