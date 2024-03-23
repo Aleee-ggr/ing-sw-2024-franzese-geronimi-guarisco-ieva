@@ -1,5 +1,6 @@
 package it.polimi.ingsw.helpers.parsers;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.model.cards.Corner;
@@ -7,7 +8,6 @@ import it.polimi.ingsw.model.enums.Resource;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
 
 public interface JsonParser<Class> {
 
@@ -21,14 +21,16 @@ public interface JsonParser<Class> {
         return GameConsts.resourceMap.get(element.getAsString().toUpperCase());
     }
 
-    default Corner[] getCorners(List<JsonElement> corners) {
+    default Corner[] getCorners(JsonArray corners) {
         Corner[] front_corners = new Corner[4];
-        for (int i = 0; i < 4; i++) {
-            if (corners.get(i).getAsString().equals("NONCOVERABLE")) {
-                front_corners[i] = new Corner(Resource.NONE, false);
+        int pos = 0;
+        for (var corner : corners) {
+            if (corners.get(pos).getAsString().equals("NONCOVERABLE")) {
+                front_corners[pos] = new Corner(Resource.NONE, false);
                 continue;
             }
-            front_corners[i] = new Corner(getResource(corners.get(i)), true);
+            front_corners[pos] = new Corner(getResource(corners.get(pos)), true);
+            pos++;
         }
         return front_corners;
     }

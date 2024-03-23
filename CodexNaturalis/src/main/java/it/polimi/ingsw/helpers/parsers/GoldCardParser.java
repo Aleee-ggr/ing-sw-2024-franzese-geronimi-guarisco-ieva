@@ -74,7 +74,7 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
             }
 
             Corner[] corners = getCorners(
-                    card_obj.getAsJsonArray("corners").asList()
+                    card_obj.getAsJsonArray("corners")
             );
             deck.add(
                     new GoldCard(id, corners)

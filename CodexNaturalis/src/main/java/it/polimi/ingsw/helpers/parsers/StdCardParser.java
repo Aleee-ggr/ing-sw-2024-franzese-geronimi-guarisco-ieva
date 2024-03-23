@@ -38,7 +38,7 @@ public class StdCardParser implements JsonParser<Deck<StdCard>> {
             int points = card_obj.get("points").getAsInt();
 
             Corner[] corners = getCorners(
-                    card_obj.getAsJsonArray("corners").asList()
+                    card_obj.getAsJsonArray("corners")
             );
             deck.add(
                     new StdCard(id, corners, resource, points == 1)
