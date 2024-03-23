@@ -12,4 +12,14 @@ public class StdCard extends ColoredCard{
     public boolean isPoint() {
         return point;
     }
+
+    @Override
+    public String toString() {
+        return "id: " +
+                getId() +
+                " color: " +
+                getBackResource() +
+                " points: " +
+                isPoint();
+    }
 }
