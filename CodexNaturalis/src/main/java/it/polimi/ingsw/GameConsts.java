@@ -2,7 +2,9 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.enums.Resource;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public abstract class GameConsts {
 
@@ -15,6 +17,13 @@ public abstract class GameConsts {
         put("INK", Resource.INK);
         put("SCROLL", Resource.SCROLL);
         put("NONE", Resource.NONE);
+    }};
+
+    public static List<String> requirementsList = new ArrayList<>() {{
+        add("MUSHROOM");
+        add("LEAF");
+        add("BUTTERFLY");
+        add("WOLF");
     }};
     public static final int visibleCards = 4;
     public static final int globalObjectives = 2;

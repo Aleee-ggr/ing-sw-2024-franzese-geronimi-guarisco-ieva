@@ -58,7 +58,7 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
             var requirements = card_obj.get("requirements").getAsJsonObject();
             Map<Resource, Integer> card_requirements = new HashMap();
 
-            for (String res : GameConsts.resourceMap.keySet()) {
+            for (String res : GameConsts.requirementsList) {
                 int count = 0;
 
                 if (requirements.get(res) != null) {
