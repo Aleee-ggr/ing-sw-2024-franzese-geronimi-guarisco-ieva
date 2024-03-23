@@ -21,18 +21,14 @@ public final class Player {
     private Card[] hand;
     private Objective hiddenObjective;
     private ConcurrentHashMap<Resource, Integer> playerResources = new ConcurrentHashMap<Resource, Integer>();
-    private final Game game;
+    private Game game;
     /**
      * @param username it is the unique identifier of the player.
      * @param currentGame pointer to the instance of game the player is playing.
      * */
     public Player(String username, Game currentGame) {
         this.username = username;
-        this.game = currentGame;
-        this.score = 0;
-        for (Resource r : Resource.values()){
-            playerResources.put(r, 0);
-        }
+        joinGame(currentGame);
     }
 
     public String getUsername() {
@@ -116,8 +112,12 @@ public final class Player {
     /**
      * TODO: methods to implement
      */
-    public void joinGame(UUID gameId){
-
+    private void joinGame(Game currentGame){
+        this.game = currentGame;
+        this.score = 0;
+        for (Resource r : Resource.values()){
+            playerResources.put(r, 0);
+        }
     }
 
     public void playCard(Card playedCard){
