@@ -27,10 +27,14 @@ public interface JsonParser<Class> {
         for (var corner : corners) {
             if (corners.get(pos).getAsString().equals("NONCOVERABLE")) {
                 front_corners[pos] = new Corner(Resource.NONE, false);
-                continue;
             }
-            front_corners[pos] = new Corner(getResource(corners.get(pos)), true);
+            else {
+                front_corners[pos] = new Corner(getResource(corners.get(pos)), true);
+            }
             pos++;
+        }
+        for (var c : front_corners) {
+            System.out.println(c);
         }
         return front_corners;
     }

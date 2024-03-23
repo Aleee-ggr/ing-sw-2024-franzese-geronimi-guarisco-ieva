@@ -36,7 +36,7 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
     public Deck<GoldCard> parse() {
         Gson gson = new Gson();
         JsonArray cards = gson.fromJson(json, JsonObject.class)
-                .getAsJsonArray("stdcards");
+                .getAsJsonArray("goldcards");
         ArrayList<GoldCard> deck = new ArrayList<>();
 
         for (var card : cards) {
@@ -44,15 +44,19 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
             int id = card_obj.get("id").getAsInt();
             Resource resource = getResource(card_obj.get("resource"));
 
-            var requirements = card_obj.getAsJsonArray("requirements");
+            var requirements = card_obj.get("requirements").getAsJsonObject();
             Map<Resource, Integer> card_requirements = new HashMap();
-            for (var req : requirements) {
-                for (String res : GameConsts.resourceMap.keySet()) {
-                    card_requirements.put(
-                            GameConsts.resourceMap.get(res),
-                            req.getAsJsonObject().get(res).getAsInt()
-                    );
+
+            for (String res : GameConsts.resourceMap.keySet()) {
+                int count = 0;
+
+                if (requirements.get(res) != null) {
+                    count = requirements.get(res).getAsInt();
                 }
+                card_requirements.put(
+                        GameConsts.resourceMap.get(res),
+                        count
+                );
             }
 
             var points = card_obj.getAsJsonObject("points");
@@ -77,7 +81,7 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
                     card_obj.getAsJsonArray("corners")
             );
             deck.add(
-                    new GoldCard(id, corners)
+                    new GoldCard(id, corners, resource, card_requirements, point_calculator)
             );
         }
         return new Deck<>(deck);
