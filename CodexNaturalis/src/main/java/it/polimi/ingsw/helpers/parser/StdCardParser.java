@@ -21,7 +21,7 @@ public class StdCardParser {
         json = Files.readString(path);
     }
 
-    public void parse() {
+    public Deck<StdCard> parse() {
         Gson gson = new Gson();
         JsonArray cards = gson.fromJson(json, JsonObject.class)
                 .getAsJsonArray("stdcards");
@@ -44,9 +44,8 @@ public class StdCardParser {
                     new StdCard(id, front_corners, resource, points == 1)
             );
         }
-        for (var card : deck) {
-            System.out.println(card);
-        }
+
+        return new Deck<>(deck);
     }
 
     private Resource getResource(JsonElement element) {
