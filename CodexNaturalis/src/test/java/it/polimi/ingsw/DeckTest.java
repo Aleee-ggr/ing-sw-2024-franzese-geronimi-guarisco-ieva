@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.cards.GoldCard;
 import it.polimi.ingsw.model.cards.StdCard;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -15,10 +16,26 @@ import java.nio.file.Path;
 public class DeckTest {
     private Deck<GoldCard> goldDeck;
     private Deck<StdCard> stdDeck;
-    StdCardParser stdParser = new StdCardParser();
-    GoldCardParser goldParser = new GoldCardParser();
-    Path cardJsonPath = Path.of(GameConsts.cardJsonPath);
+    StdCardParser stdParser;
+    GoldCardParser goldParser;
+    Deck<StdCard> stdDeckFull;
+    Deck<GoldCard> goldDeckFull;
 
+    @Before
+    public void initializeParsers() {
+        stdParser = new StdCardParser();
+        goldParser = new GoldCardParser();
+
+        Path cardJsonPath = Path.of(GameConsts.cardJsonPath);
+
+        try {
+            stdParser.readFile(cardJsonPath);
+            goldParser.readFile(cardJsonPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
     @Test
     public void isEmpty() {
         goldDeck = DeckFactory.emptyGold();
@@ -30,15 +47,8 @@ public class DeckTest {
 
     @Test
     public void drawFromDeck() {
-        try {
-            stdParser.readFile(cardJsonPath);
-            goldParser.readFile(cardJsonPath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Deck<StdCard> stdDeckFull = stdParser.parse();
-        Deck<GoldCard> goldDeckFull = goldParser.parse();
+        stdDeckFull = stdParser.parse();
+        goldDeckFull = goldParser.parse();
 
         Assert.assertNotNull(stdDeckFull.draw());
         Assert.assertNotNull(goldDeckFull.draw());
@@ -54,15 +64,8 @@ public class DeckTest {
 
     @Test
     public void drawUntilEmpty() {
-        try {
-            stdParser.readFile(cardJsonPath);
-            goldParser.readFile(cardJsonPath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Deck<StdCard> stdDeckFull = stdParser.parse();
-        Deck<GoldCard> goldDeckFull = goldParser.parse();
+        stdDeckFull = stdParser.parse();
+        goldDeckFull = goldParser.parse();
 
         while(!stdDeckFull.isEmpty()){
             Assert.assertNotNull(stdDeckFull.draw());
