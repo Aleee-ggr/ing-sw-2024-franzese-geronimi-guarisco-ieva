@@ -11,10 +11,26 @@ import java.nio.file.Path;
 
 public interface JsonParser<Class> {
 
+    /**
+     * Load a file from the given path in the parser so that it can be later parsed
+     * also see {@link #parse()} method for more details
+     * @param path path of the file from which to load the data for the cards
+     * @throws IOException Throws exception when the given file is missing
+     */
     void readFile(Path path) throws IOException;
 
+    /**
+     * load a json as a string in the parser
+     * @param json a string formatted as a json
+     */
     void readString(String json);
 
+
+    /**
+     * Returns a new object of the type specified by the parser from a json previously loaded in this object
+     * @return a new object of the parser type by reading the json string obtained using
+     * {@link #readFile(Path) readFile(path)} or {@link #readString(String) readString(json)}
+     */
     Class parse();
 
     /**

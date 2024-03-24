@@ -21,13 +21,7 @@ import java.util.function.Function;
 
 public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
     private String json;
-
-    /**
-     * Load a file from the given path in the parser so that it can be later parsed
-     * also see {@link #parse()} method for more details
-     * @param path path of the file from which to load the data for the cards
-     * @throws IOException Throws exception when the given file is missing
-     */
+    
     @Override
     public void readFile(Path path) throws IOException {
         json = Files.readString(path);
@@ -38,11 +32,6 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
         this.json = json;
     }
 
-    /**
-     *
-     * @return a new Deck of goldCard with the data specified in
-     * {@link #readFile(Path) readFile(path)} or {@link #readString(String) readString(json)}
-     */
     @Override
     public Deck<GoldCard> parse() {
         Gson gson = new Gson();
@@ -57,7 +46,7 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
 
             Resource resource = getResource(card_obj.get("resource"));
 
-            var requirements = card_obj.get("requirements").getAsJsonObject();
+            var requirements = card_obj.getAsJsonObject("requirements");
 
             Map<Resource, Integer> card_requirements = getRequirements(requirements);
 
@@ -76,8 +65,16 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
         return new Deck<>(deck);
     }
 
+    /**
+     * Helper function for the parser.<br/>
+     * obtains a map of requirements from a JsonObject obtained by using
+     *  {@link JsonObject#getAsJsonObject(String) card_obj.getAsJsonObject("requirements")}
+     * @param requirements the jsonObject obtained by using
+     *  {@link JsonObject#getAsJsonObject(String) card_obj.getAsJsonObject("requirements")}
+     * @return a map of requirements for the card constructor
+     */
     private Map<Resource, Integer> getRequirements(JsonObject requirements) {
-        Map<Resource, Integer> card_requirements = new HashMap();
+        Map<Resource, Integer> card_requirements = new HashMap<>();
 
         for (String res : GameConsts.requirementsList) {
             int count = 0;
@@ -92,6 +89,15 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
         }
         return card_requirements;
     }
+
+    /**
+     * Helper function for the parser.<br/>
+     * obtains a Function to calculate the points given by the card from a JsonObject obtained by using
+     *  {@link JsonObject#getAsJsonObject(String) card_obj.getAsJsonObject("points")}
+     * @param points the jsonObject obtained by using
+     *  {@link JsonObject#getAsJsonObject(String) card_obj.getAsJsonObject("points")}
+     * @return a map of requirements for the card constructor
+     */
     private Function<Game, Integer> getPointCalculator(JsonObject points) {
         String type = points.get("type").getAsString();
         return switch (type) {
