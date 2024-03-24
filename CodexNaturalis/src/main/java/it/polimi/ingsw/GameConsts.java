@@ -25,6 +25,8 @@ public abstract class GameConsts {
         add("BUTTERFLY");
         add("WOLF");
     }};
+
+    public static final String cardJsonPath = "src/main/resources/cards.json";
     public static final int visibleCards = 4;
     public static final int globalObjectives = 2;
     public static final int numCorners = 4;

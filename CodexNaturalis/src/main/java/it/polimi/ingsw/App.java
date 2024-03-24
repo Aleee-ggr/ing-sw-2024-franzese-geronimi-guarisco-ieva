@@ -17,28 +17,26 @@ public class App
     public static void main( String[] args )
     {
         System.out.println( "Hello World!" );
+        Path cardJsonPath = Path.of(GameConsts.cardJsonPath);
         
         StdCardParser stdParser = new StdCardParser();
+        GoldCardParser goldParser = new GoldCardParser();
+
         try {
-            stdParser.readFile(Path.of("src/main/resources/cards.json"));
+            stdParser.readFile(cardJsonPath);
+            goldParser.readFile(cardJsonPath);
         } catch (Exception e) {
             e.printStackTrace();
         }
         Deck<StdCard> stdDeck = stdParser.parse();
+        Deck<GoldCard> goldDeck = goldParser.parse();
+
         StdCard stdCard = stdDeck.draw();
         while (stdCard != null) {
             System.out.println(stdCard);
             stdCard = stdDeck.draw();
         }
 
-        GoldCardParser goldParser = new GoldCardParser();
-        try {
-            goldParser.readFile(Path.of("src/main/resources/cards.json"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Deck<GoldCard> goldDeck = goldParser.parse();
         GoldCard goldCard = goldDeck.draw();
         while (goldCard != null) {
             System.out.println(goldCard);
