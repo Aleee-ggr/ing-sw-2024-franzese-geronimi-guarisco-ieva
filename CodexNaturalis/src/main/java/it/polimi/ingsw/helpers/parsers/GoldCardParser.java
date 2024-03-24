@@ -52,41 +52,19 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
 
         for (var card : cards) {
             var card_obj = card.getAsJsonObject();
+
             int id = card_obj.get("id").getAsInt();
+
             Resource resource = getResource(card_obj.get("resource"));
 
             var requirements = card_obj.get("requirements").getAsJsonObject();
-            Map<Resource, Integer> card_requirements = new HashMap();
 
-            for (String res : GameConsts.requirementsList) {
-                int count = 0;
-
-                if (requirements.get(res) != null) {
-                    count = requirements.get(res).getAsInt();
-                }
-                card_requirements.put(
-                        GameConsts.resourceMap.get(res),
-                        count
-                );
-            }
+            Map<Resource, Integer> card_requirements = getRequirements(requirements);
 
             var points = card_obj.getAsJsonObject("points");
-            String type = points.get("type").getAsString();
-            Function<Game, Integer> point_calculator;
-            switch (type) {
-                case "none", "cover":
-                    point_calculator = new FunctionBuilder()
-                            .setType(type)
-                            .setPoints(points.get("value").getAsInt())
-                            .build();
-                    break;
-                default:
-                    point_calculator = new FunctionBuilder()
-                            .setType(type)
-                            .setPoints(points.get("value").getAsInt())
-                            .setResource(getResource(points.get("type")))
-                            .build();
-            }
+
+            Function<Game, Integer> point_calculator = getPointCalculator(points);
+
 
             Corner[] corners = getCorners(
                     card_obj.getAsJsonArray("corners")
@@ -96,5 +74,36 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
             );
         }
         return new Deck<>(deck);
+    }
+
+    private Map<Resource, Integer> getRequirements(JsonObject requirements) {
+        Map<Resource, Integer> card_requirements = new HashMap();
+
+        for (String res : GameConsts.requirementsList) {
+            int count = 0;
+
+            if (requirements.get(res) != null) {
+                count = requirements.get(res).getAsInt();
+            }
+            card_requirements.put(
+                    GameConsts.resourceMap.get(res),
+                    count
+            );
+        }
+        return card_requirements;
+    }
+    private Function<Game, Integer> getPointCalculator(JsonObject points) {
+        String type = points.get("type").getAsString();
+        return switch (type) {
+            case "none", "cover" -> new FunctionBuilder()
+                    .setType(type)
+                    .setPoints(points.get("value").getAsInt())
+                    .build();
+            default -> new FunctionBuilder()
+                    .setType(type)
+                    .setPoints(points.get("value").getAsInt())
+                    .setResource(getResource(points.get("type")))
+                    .build();
+        };
     }
 }
