@@ -51,4 +51,27 @@ public class DeckTest {
         Assert.assertNull(goldDeck.draw());
         Assert.assertNull(stdDeck.draw());
     }
+
+    @Test
+    public void drawUntilEmpty() {
+        try {
+            stdParser.readFile(cardJsonPath);
+            goldParser.readFile(cardJsonPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Deck<StdCard> stdDeckFull = stdParser.parse();
+        Deck<GoldCard> goldDeckFull = goldParser.parse();
+
+        while(!stdDeckFull.isEmpty()){
+            Assert.assertNotNull(stdDeckFull.draw());
+        }
+        Assert.assertNull(stdDeckFull.draw());
+
+        while(!goldDeckFull.isEmpty()){
+            Assert.assertNotNull(goldDeckFull.draw());
+        }
+        Assert.assertNull(goldDeckFull.draw());
+    }
 }
