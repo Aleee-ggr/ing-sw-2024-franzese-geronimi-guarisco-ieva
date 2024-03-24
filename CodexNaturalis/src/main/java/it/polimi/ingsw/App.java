@@ -17,8 +17,12 @@ public class App
     public static void main( String[] args )
     {
         System.out.println( "Hello World!" );
+        printCardInfo();
+    }
+
+    private static void printCardInfo() {
         Path cardJsonPath = Path.of(GameConsts.cardJsonPath);
-        
+
         StdCardParser stdParser = new StdCardParser();
         GoldCardParser goldParser = new GoldCardParser();
 

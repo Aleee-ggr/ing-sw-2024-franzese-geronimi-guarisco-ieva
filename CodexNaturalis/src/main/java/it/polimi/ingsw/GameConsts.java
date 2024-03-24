@@ -7,8 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public abstract class GameConsts {
-
-    public static HashMap<String, Resource> resourceMap = new HashMap<>() {{
+    public static final HashMap<String, Resource> resourceMap = new HashMap<>() {{
         put("MUSHROOM", Resource.MUSHROOM);
         put("LEAF", Resource.LEAF);
         put("BUTTERFLY", Resource.BUTTERFLY);
@@ -18,14 +17,12 @@ public abstract class GameConsts {
         put("SCROLL", Resource.SCROLL);
         put("NONE", Resource.NONE);
     }};
-
-    public static List<String> requirementsList = new ArrayList<>() {{
+    public static final List<String> requirementsList = new ArrayList<>() {{
         add("MUSHROOM");
         add("LEAF");
         add("BUTTERFLY");
         add("WOLF");
     }};
-
     public static final String cardJsonPath = "src/main/resources/cards.json";
     public static final int visibleCards = 4;
     public static final int globalObjectives = 2;
