@@ -43,4 +43,12 @@ public class DeckTest {
         Assert.assertNotNull(stdDeckFull.draw());
         Assert.assertNotNull(goldDeckFull.draw());
     }
+    @Test
+    public void drawFromEmptyDeck() {
+        goldDeck = DeckFactory.emptyGold();
+        stdDeck = DeckFactory.emptyStd();
+
+        Assert.assertNull(goldDeck.draw());
+        Assert.assertNull(stdDeck.draw());
+    }
 }
