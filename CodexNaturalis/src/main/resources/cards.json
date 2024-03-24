@@ -798,78 +798,43 @@
     {
       "id":87,
       "points": 2,
-      "requirements": {
-        "MUSHROOM": 3
-
-      }
-
+      "requirements": ["NONE", "NONE", "MUSHROOM", "NONE", "MUSHROOM", "NONE", "MUSHROOM", "NONE", "NONE"]
     },
     {
       "id":88,
       "points": 2,
-      "requirements": {
-        "LEAF": 3
-
-      }
-
+      "requirements": ["LEAF", "NONE", "NONE", "NONE", "LEAF", "NONE", "NONE", "NONE", "LEAF"]
     },
     {
       "id":89,
       "points": 2,
-      "requirements": {
-        "WOLF": 3
-
-      }
+      "requirements": ["NONE", "NONE", "WOLF", "NONE", "WOLF", "NONE", "WOLF", "NONE", "NONE"]
 
     },
     {
       "id":90,
       "points": 2,
-      "requirements": {
-        "BUTTERFKY": 3
-
-      }
-
+      "requirements": ["BUTTERFLY", "NONE", "NONE", "NONE", "BUTTERFLY", "NONE", "NONE", "NONE", "BUTTERFLY"]
     },
     {
       "id":91,
       "points": 3,
-      "requirements": {
-        "MUSHROOM": 2,
-        "LEAF": 1
-
-      }
-
+      "requirements": ["NONE", "MUSHROOM", "NONE", "NONE", "MUSHROOM", "NONE", "NONE", "NONE", "LEAF"]
     },
     {
       "id":92,
       "points": 3,
-      "requirements": {
-        "LEAF": 2,
-        "BUTTERFLY": 1
-
-      }
-
+      "requirements": ["NONE", "LEAF", "NONE", "NONE", "LEAF", "NONE", "BUTTERFLY", "NONE", "NONE"]
     },
     {
       "id":93,
       "points": 3,
-      "requirements": {
-        "MUSHROOM": 1,
-        "WOLF": 2
-
-      }
-
+      "requirements": ["NONE", "NONE", "MUSHROOM", "NONE", "WOLF", "NONE", "NONE", "WOLF", "NONE"]
     },
     {
       "id":94,
       "points": 3,
-      "requirements": {
-        "WOLF": 1,
-        "BUTTERFLY": 2
-
-      }
-
+      "requirements": ["WOLF", "NONE", "NONE", "NONE", "BUTTERFLY", "NONE", "NONE", "BUTTERFLY", "NONE"]
     },
     {
       "id":95,
