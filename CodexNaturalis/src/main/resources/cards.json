@@ -749,5 +749,187 @@
         "BUTTERFLY": 5
       }
     }
+  ],
+
+
+
+  "startingcards":[
+    {
+      "id":81,
+      "resource": ["BUTTERFLY"],
+      "frontcorners": ["NONE", "LEAF", "BUTTERFLY", "NONE"],
+      "backcorners": ["MUSHROOM", "LEAF", "BUTTERFLY", "WOLF"]
+    },
+    {
+      "id":82,
+      "resource": ["MUSHROOM"],
+      "frontcorners": ["WOLF", "NONE", "NONE", "MUSHROOM"],
+      "backcorners": ["LEAF", "WOLF", "MUSHROOM", "BUTTERFLY"]
+    },
+    {
+      "id":83,
+      "resource": ["LEAF", "MUSHROOM"],
+      "frontcorners": ["NONE", "NONE", "NONE", "NONE"],
+      "backcorners": ["BUTTERFLY", "WOLF", "MUSHROOM", "LEAF"]
+    },
+    {
+      "id":84,
+      "resource": ["WOLF", "BUTTERFLY"],
+      "frontcorners": ["NONE", "NONE", "NONE", "NONE"],
+      "backcorners": ["LEAF", "BUTTERFLY", "WOLF", "MUSHROOM"]
+    },
+    {
+      "id":85,
+      "resource": ["WOLF", "BUTTERFLY", "LEAF"],
+      "frontcorners": ["NONE", "NONE", "NONCOVERABLE", "NONCOVERABLE"],
+      "backcorners": ["BUTTERFLY", "MUSHROOM", "LEAF", "WOLF"]
+    },
+    {
+      "id":86,
+      "resource": ["LEAF", "WOLF", "MUSHROOM"],
+      "frontcorners": ["NONE", "NONE", "NONCOVERABLE", "NONCOVERABLE"],
+      "backcorners": ["MUSHROOM", "WOLF", "LEAF", "BUTTERFLY"]
+    }
+  ],
+
+
+
+  "objectives":[
+    {
+      "id":87,
+      "points": 2,
+      "requirements": {
+        "MUSHROOM": 3
+
+      }
+
+    },
+    {
+      "id":88,
+      "points": 2,
+      "requirements": {
+        "LEAF": 3
+
+      }
+
+    },
+    {
+      "id":89,
+      "points": 2,
+      "requirements": {
+        "WOLF": 3
+
+      }
+
+    },
+    {
+      "id":90,
+      "points": 2,
+      "requirements": {
+        "BUTTERFKY": 3
+
+      }
+
+    },
+    {
+      "id":91,
+      "points": 3,
+      "requirements": {
+        "MUSHROOM": 2,
+        "LEAF": 1
+
+      }
+
+    },
+    {
+      "id":92,
+      "points": 3,
+      "requirements": {
+        "LEAF": 2,
+        "BUTTERFLY": 1
+
+      }
+
+    },
+    {
+      "id":93,
+      "points": 3,
+      "requirements": {
+        "MUSHROOM": 1,
+        "WOLF": 2
+
+      }
+
+    },
+    {
+      "id":94,
+      "points": 3,
+      "requirements": {
+        "WOLF": 1,
+        "BUTTERFLY": 2
+
+      }
+
+    },
+    {
+      "id":95,
+      "points": 2,
+      "requirements": {
+        "MUSHROOM": 3
+      }
+
+    },
+    {
+      "id":96,
+      "points": 2,
+      "requirements": {
+        "LEAF": 3
+      }
+
+    },
+    {
+      "id": 97,
+      "points": 2,
+      "requirements": {
+        "WOLF": 3
+      }
+    },
+    {
+      "id":98,
+      "points": 2,
+      "requirements": {
+        "BUTTERFLY": 3
+      }
+    },
+    {
+      "id":99,
+      "points": 3,
+      "requirements": {
+        "QUILL": 1,
+        "INK": 1,
+        "SCROLL": 1
+      }
+    },
+    {
+      "id":100,
+      "points": 2,
+      "requirements": {
+        "SCROLL": 2
+      }
+    },
+    {
+      "id":101,
+      "points": 2,
+      "requirements": {
+        "INK": 2
+      }
+    },
+    {
+      "id":102,
+      "points": 2,
+      "requirements": {
+        "QUILL": 2
+      }
+    }
   ]
 }
