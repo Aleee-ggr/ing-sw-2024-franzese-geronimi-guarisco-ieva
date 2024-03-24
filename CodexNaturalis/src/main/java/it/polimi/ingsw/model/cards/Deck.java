@@ -30,4 +30,7 @@ public class Deck<CardType> {
         return cards.isEmpty();
     }
 
+    public ArrayList<CardType> getCards() {
+        return new ArrayList<>(cards);
+    }
 }
