@@ -16,10 +16,10 @@ import java.nio.file.Path;
 public class DeckTest {
     private Deck<GoldCard> goldDeck;
     private Deck<StdCard> stdDeck;
-    StdCardParser stdParser;
-    GoldCardParser goldParser;
-    Deck<StdCard> stdDeckFull;
-    Deck<GoldCard> goldDeckFull;
+    private StdCardParser stdParser;
+    private GoldCardParser goldParser;
+    private Deck<StdCard> stdDeckFull;
+    private Deck<GoldCard> goldDeckFull;
 
     @Before
     public void initializeParsers() {
