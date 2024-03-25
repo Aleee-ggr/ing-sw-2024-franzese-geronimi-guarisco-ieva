@@ -28,4 +28,11 @@ public class GameTest {
         game.addPlayer("user");
         game.addPlayer("user");
     }
+
+    @Test (expected = TooManyPlayersException.class)
+    public void TooManyPlayers() throws ExistingUsernameException, TooManyPlayersException {
+        for(int i = 0; i < GameConsts.maxPlayersNum+1; i++){
+            game.addPlayer("user"+i);
+        }
+    }
 }
