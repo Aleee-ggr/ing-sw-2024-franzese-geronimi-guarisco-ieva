@@ -5,6 +5,8 @@ import it.polimi.ingsw.model.board.SharedBoard;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.enums.GameState;
+import it.polimi.ingsw.model.exceptions.ExistingUsernameException;
+import it.polimi.ingsw.model.exceptions.TooManyPlayersException;
 import it.polimi.ingsw.model.player.Player;
 
 import java.sql.ShardingKey;
@@ -50,18 +52,13 @@ public class Game {
         return GameBoard;
     }
 
-    public boolean addPlayer(String playerUsername){
-        if(players.size()< GameConsts.maxPlayersNum) {
-            Player toAdd = new Player(playerUsername, this);
-            if (players.putIfAbsent(playerUsername, toAdd) == null) {
-                System.out.println("existingUsername");
-                return false;
-            } else {
-                return true;
-            }
-        } else {
-            System.out.println("tooManyPlayers");
-            return false;
+    public void addPlayer(String playerUsername) throws TooManyPlayersException, ExistingUsernameException{
+        if(players.size() >= GameConsts.maxPlayersNum) {
+            throw new TooManyPlayersException("Too Many Players");
+        }
+        Player toAdd = new Player(playerUsername, this);
+        if (players.putIfAbsent(playerUsername, toAdd) == null) {
+            throw new ExistingUsernameException("Username Already Exists in this game");
         }
     }
 
