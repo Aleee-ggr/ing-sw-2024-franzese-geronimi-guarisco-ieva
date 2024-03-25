@@ -64,7 +64,7 @@ public class Game {
             throw new TooManyPlayersException("Too Many Players");
         }
         Player toAdd = new Player(playerUsername, this);
-        if (players.putIfAbsent(playerUsername, toAdd) == null) {
+        if (players.putIfAbsent(playerUsername, toAdd) != null) {
             throw new ExistingUsernameException("Username Already Exists in this game");
         }
     }
