@@ -52,7 +52,14 @@ public class Game {
         return GameBoard;
     }
 
-    public void addPlayer(String playerUsername) throws TooManyPlayersException, ExistingUsernameException{
+    /**
+     * Method used to add a Player in Game
+     * @param playerUsername is the player username as a String
+     * @throws TooManyPlayersException while trying to add a player when the Game is full
+     * @throws ExistingUsernameException while there is already a player with the same username in game
+     * the exceptions are managed by the caller!
+     * */
+    public void addPlayer(String playerUsername) throws TooManyPlayersException, ExistingUsernameException{ /*TODO: the caller needs to manage these exception*/
         if(players.size() >= GameConsts.maxPlayersNum) {
             throw new TooManyPlayersException("Too Many Players");
         }
