@@ -77,4 +77,19 @@ public class DeckTest {
         }
         Assert.assertNull(goldDeckFull.draw());
     }
+
+    @Test
+    public void shuffle(){
+
+        Deck<StdCard> stdDeckFull = stdParser.parse();
+        Deck<GoldCard> goldDeckFull = goldParser.parse();
+        Deck<StdCard> stdDeckOriginal = stdParser.parse();
+        Deck<GoldCard> goldDeckOriginal = goldParser.parse();
+
+        stdDeckFull.shuffle();
+        goldDeckFull.shuffle();
+
+        Assert.assertNotEquals(stdDeckFull.getCards(), stdDeckOriginal.getCards());
+        Assert.assertNotEquals(goldDeckFull.getCards(), goldDeckOriginal.getCards());
+    }
 }
