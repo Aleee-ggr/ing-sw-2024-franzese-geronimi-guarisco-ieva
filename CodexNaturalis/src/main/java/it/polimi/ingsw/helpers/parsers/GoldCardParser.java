@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.cards.Corner;
 import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.cards.GoldCard;
 import it.polimi.ingsw.model.enums.Resource;
+import it.polimi.ingsw.model.player.Player;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -51,7 +52,7 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
             Map<Resource, Integer> card_requirements = getRequirements(
                     card_obj.getAsJsonObject("requirements")
             );
-            Function<Game, Integer> point_calculator = getPointCalculator(
+            Function<Player, Integer> point_calculator = getPointCalculator(
                     card_obj.getAsJsonObject("points")
             );
             Corner[] corners = getCorners(
@@ -98,7 +99,7 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
      *  {@link JsonObject#getAsJsonObject(String) card_obj.getAsJsonObject("points")}
      * @return a map of requirements for the card constructor
      */
-    private Function<Game, Integer> getPointCalculator(JsonObject points) {
+    private Function<Player, Integer> getPointCalculator(JsonObject points) {
         String type = points.get("type").getAsString();
         return switch (type) {
             case "none", "cover" -> new FunctionBuilder()
