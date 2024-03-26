@@ -2,242 +2,242 @@
   "stdcards":[
     {
       "id":1,
-      "resource": "MUSHROOM",
-      "corners": ["MUSHROOM", "NONE", "MUSHROOM", "NONCOVERABLE"],
+      "resource": "FUNGI",
+      "corners": ["FUNGI", "NONE", "FUNGI", "NONCOVERABLE"],
       "points": 0
     },
     {
       "id":2,
-      "resource": "MUSHROOM",
-      "corners": ["MUSHROOM", "MUSHROOM", "NONCOVERABLE", "NONE"],
+      "resource": "FUNGI",
+      "corners": ["FUNGI", "FUNGI", "NONCOVERABLE", "NONE"],
       "points": 0
     },
     {
       "id":3,
-      "resource": "MUSHROOM",
-      "corners": ["NONE", "NONCOVERABLE", "MUSHROOM", "MUSHROOM"],
+      "resource": "FUNGI",
+      "corners": ["NONE", "NONCOVERABLE", "FUNGI", "FUNGI"],
       "points": 0
     },
     {
       "id":4,
-      "resource": "MUSHROOM",
-      "corners": ["NONCOVERABLE", "MUSHROOM", "NONE", "MUSHROOM"],
+      "resource": "FUNGI",
+      "corners": ["NONCOVERABLE", "FUNGI", "NONE", "FUNGI"],
       "points": 0
     },
     {
       "id":5,
-      "resource": "MUSHROOM",
-      "corners": ["NONCOVERABLE", "QUILL", "LEAF", "MUSHROOM"],
+      "resource": "FUNGI",
+      "corners": ["NONCOVERABLE", "QUILL", "PLANT", "FUNGI"],
       "points": 0
     },
     {
       "id":6,
-      "resource": "MUSHROOM",
-      "corners": ["INK", "MUSHROOM", "NONCOVERABLE", "WOLF"],
+      "resource": "FUNGI",
+      "corners": ["INKWELL", "FUNGI", "NONCOVERABLE", "ANIMAL"],
       "points": 0
     },
     {
       "id":7,
-      "resource": "MUSHROOM",
-      "corners": ["MUSHROOM", "BUTTERFLY", "SCROLL", "NONE"],
+      "resource": "FUNGI",
+      "corners": ["FUNGI", "INSECT", "MANUSCRIPT", "NONE"],
       "points": 0
     },
     {
       "id":8,
-      "resource": "MUSHROOM",
-      "corners": ["NONE", "MUSHROOM", "NONE", "NONCOVERABLE"],
+      "resource": "FUNGI",
+      "corners": ["NONE", "FUNGI", "NONE", "NONCOVERABLE"],
       "points": 1
     },
     {
       "id":9,
-      "resource": "MUSHROOM",
-      "corners": ["MUSHROOM", "NONCOVERABLE", "NONE", "NONE"],
+      "resource": "FUNGI",
+      "corners": ["FUNGI", "NONCOVERABLE", "NONE", "NONE"],
       "points": 1
     },
     {
       "id":10,
-      "resource": "MUSHROOM",
-      "corners": ["NONCOVERABLE", "NONE", "MUSHROOM", "NONE"],
+      "resource": "FUNGI",
+      "corners": ["NONCOVERABLE", "NONE", "FUNGI", "NONE"],
       "points": 1
     },
     {
       "id":11,
-      "resource": "LEAF",
-      "corners": ["LEAF", "NONE", "LEAF", "NONCOVERABLE"],
+      "resource": "PLANT",
+      "corners": ["PLANT", "NONE", "PLANT", "NONCOVERABLE"],
       "points": 0
     },
     {
       "id":12,
-      "resource": "LEAF",
-      "corners": ["LEAF", "LEAF", "NONCOVERABLE", "NONE"],
+      "resource": "PLANT",
+      "corners": ["PLANT", "PLANT", "NONCOVERABLE", "NONE"],
       "points": 0
     },
     {
       "id":13,
-      "resource": "LEAF",
-      "corners": ["NONE", "NONCOVERABLE", "LEAF", "LEAF"],
+      "resource": "PLANT",
+      "corners": ["NONE", "NONCOVERABLE", "PLANT", "PLANT"],
       "points": 0
     },
     {
       "id":14,
-      "resource": "LEAF",
-      "corners": ["NONCOVERABLE", "LEAF", "NONE", "LEAF"],
+      "resource": "PLANT",
+      "corners": ["NONCOVERABLE", "PLANT", "NONE", "PLANT"],
       "points": 0
     },
     {
       "id":15,
-      "resource": "LEAF",
-      "corners": ["NONCOVERABLE", "BUTTERFLY", "QUILL", "LEAF"],
+      "resource": "PLANT",
+      "corners": ["NONCOVERABLE", "INSECT", "QUILL", "PLANT"],
       "points": 0
     },
     {
       "id":16,
-      "resource": "LEAF",
-      "corners": ["MUSHROOM", "LEAF", "NONCOVERABLE", "INK"],
+      "resource": "PLANT",
+      "corners": ["FUNGI", "PLANT", "NONCOVERABLE", "INKWELL"],
       "points": 0
     },
     {
       "id":17,
-      "resource": "LEAF",
-      "corners": ["SCROLL", "NONCOVERABLE", "LEAF", "WOLF"],
+      "resource": "PLANT",
+      "corners": ["MANUSCRIPT", "NONCOVERABLE", "PLANT", "ANIMAL"],
       "points": 0
     },
     {
       "id":18,
-      "resource": "LEAF",
-      "corners": ["NONE", "NONE", "LEAF", "NONCOVERABLE"],
+      "resource": "PLANT",
+      "corners": ["NONE", "NONE", "PLANT", "NONCOVERABLE"],
       "points": 1
     },
     {
       "id":19,
-      "resource": "LEAF",
-      "corners": ["NONE", "NONE", "NONCOVERABLE", "LEAF"],
+      "resource": "PLANT",
+      "corners": ["NONE", "NONE", "NONCOVERABLE", "PLANT"],
       "points": 1
     },
     {
       "id":20,
-      "resource": "LEAF",
-      "corners": ["NONCOVERABLE", "LEAF", "NONE", "NONE"],
+      "resource": "PLANT",
+      "corners": ["NONCOVERABLE", "PLANT", "NONE", "NONE"],
       "points": 1
     },
     {
       "id":21,
-      "resource": "WOLF",
-      "corners": ["WOLF", "WOLF", "NONE", "NONCOVERABLE"],
+      "resource": "ANIMAL",
+      "corners": ["ANIMAL", "ANIMAL", "NONE", "NONCOVERABLE"],
       "points": 0
     },
     {
       "id":22,
-      "resource": "WOLF",
-      "corners": ["NONCOVERABLE", "NONE", "WOLF", "WOLF"],
+      "resource": "ANIMAL",
+      "corners": ["NONCOVERABLE", "NONE", "ANIMAL", "ANIMAL"],
       "points": 0
     },
     {
       "id":23,
-      "resource": "WOLF",
-      "corners": ["WOLF", "NONCOVERABLE", "WOLF", "NONE"],
+      "resource": "ANIMAL",
+      "corners": ["ANIMAL", "NONCOVERABLE", "ANIMAL", "NONE"],
       "points": 0
     },
     {
       "id":24,
-      "resource": "WOLF",
-      "corners": ["NONE", "WOLF", "NONCOVERABLE", "WOLF"],
+      "resource": "ANIMAL",
+      "corners": ["NONE", "ANIMAL", "NONCOVERABLE", "ANIMAL"],
       "points": 0
     },
     {
       "id":25,
-      "resource": "WOLF",
-      "corners": ["NONCOVERABLE", "BUTTERFLY", "INK","WOLF"],
+      "resource": "ANIMAL",
+      "corners": ["NONCOVERABLE", "INSECT", "INKWELL","ANIMAL"],
       "points": 0
     },
     {
       "id":26,
-      "resource": "WOLF",
-      "corners": ["LEAF", "WOLF", "NONCOVERABLE","SCROLL"],
+      "resource": "ANIMAL",
+      "corners": ["PLANT", "ANIMAL", "NONCOVERABLE","MANUSCRIPT"],
       "points": 0
     },
     {
       "id":27,
-      "resource": "WOLF",
-      "corners": ["QUILL", "NONCOVERABLE", "WOLF","MUSHROOM"],
+      "resource": "ANIMAL",
+      "corners": ["QUILL", "NONCOVERABLE", "ANIMAL","FUNGI"],
       "points": 0
     },
     {
       "id":28,
-      "resource": "WOLF",
-      "corners": ["NONCOVERABLE", "NONE", "WOLF","NONE"],
+      "resource": "ANIMAL",
+      "corners": ["NONCOVERABLE", "NONE", "ANIMAL","NONE"],
       "points": 1
     },
     {
       "id":29,
-      "resource": "WOLF",
-      "corners": ["NONE", "NONCOVERABLE", "NONE","WOLF"],
+      "resource": "ANIMAL",
+      "corners": ["NONE", "NONCOVERABLE", "NONE","ANIMAL"],
       "points": 1
     },
     {
       "id":30,
-      "resource": "WOLF",
-      "corners": ["NONE", "WOLF", "NONE","NONCOVERABLE"],
+      "resource": "ANIMAL",
+      "corners": ["NONE", "ANIMAL", "NONE","NONCOVERABLE"],
       "points": 1
     },
     {
       "id":31,
-      "resource": "BUTTERFLY",
-      "corners": ["BUTTERFLY", "BUTTERFLY", "NONE", "NONCOVERABLE"],
+      "resource": "INSECT",
+      "corners": ["INSECT", "INSECT", "NONE", "NONCOVERABLE"],
       "points": 0
     },
     {
       "id":32,
-      "resource": "BUTTERFLY",
-      "corners": ["NONCOVERABLE", "NONE", "BUTTERFLY", "BUTTERFLY"],
+      "resource": "INSECT",
+      "corners": ["NONCOVERABLE", "NONE", "INSECT", "INSECT"],
       "points": 0
     },
     {
       "id":33,
-      "resource": "BUTTERFLY",
-      "corners": ["BUTTERFLY", "NONCOVERABLE", "BUTTERFLY", "NONE"],
+      "resource": "INSECT",
+      "corners": ["INSECT", "NONCOVERABLE", "INSECT", "NONE"],
       "points": 0
     },
     {
       "id":34,
-      "resource": "BUTTERFLY",
-      "corners": ["NONE", "BUTTERFLY", "NONCOVERABLE", "BUTTERFLY"],
+      "resource": "INSECT",
+      "corners": ["NONE", "INSECT", "NONCOVERABLE", "INSECT"],
       "points": 0
     },
     {
       "id":35,
-      "resource": "BUTTERFLY",
-      "corners": ["NONCOVERABLE", "QUILL", "WOLF", "BUTTERFLY"],
+      "resource": "INSECT",
+      "corners": ["NONCOVERABLE", "QUILL", "ANIMAL", "INSECT"],
       "points": 0
     },
     {
       "id":36,
-      "resource": "BUTTERFLY",
-      "corners": ["SCROLL", "BUTTERFLY", "NONCOVERABLE", "MUSHROOM"],
+      "resource": "INSECT",
+      "corners": ["MANUSCRIPT", "INSECT", "NONCOVERABLE", "FUNGI"],
       "points": 0
     },
     {
       "id":37,
-      "resource": "BUTTERFLY",
-      "corners": ["BUTTERFLY", "LEAF", "INK", "NONCOVERABLE"],
+      "resource": "INSECT",
+      "corners": ["INSECT", "PLANT", "INKWELL", "NONCOVERABLE"],
       "points": 0
     },
     {
       "id":38,
-      "resource": "BUTTERFLY",
-      "corners": ["BUTTERFLY", "NONCOVERABLE", "NONE", "NONE"],
+      "resource": "INSECT",
+      "corners": ["INSECT", "NONCOVERABLE", "NONE", "NONE"],
       "points": 1
     },
     {
       "id":39,
-      "resource": "BUTTERFLY",
-      "corners": ["NONE", "NONE", "NONCOVERABLE", "BUTTERFLY"],
+      "resource": "INSECT",
+      "corners": ["NONE", "NONE", "NONCOVERABLE", "INSECT"],
       "points": 1
     },
     {
       "id":40,
-      "resource": "BUTTERFLY",
-      "corners": ["NONCOVERABLE", "BUTTERFLY", "NONE", "NONE"],
+      "resource": "INSECT",
+      "corners": ["NONCOVERABLE", "INSECT", "NONE", "NONE"],
       "points": 1
     }
   ],
@@ -247,506 +247,506 @@
   "goldcards":[
     {
       "id":41,
-      "resource": "MUSHROOM",
+      "resource": "FUNGI",
       "corners": ["NONCOVERABLE", "NONE", "NONE", "QUILL"],
       "points":{
         "value": 1,
         "type": "QUILL"
       },
       "requirements": {
-        "MUSHROOM": 2,
-        "WOLF": 1
+        "FUNGI": 2,
+        "ANIMAL": 1
       }
     },
     {
       "id":42,
-      "resource": "MUSHROOM",
-      "corners": ["NONE", "INK", "NONCOVERABLE", "NONE"],
+      "resource": "FUNGI",
+      "corners": ["NONE", "INKWELL", "NONCOVERABLE", "NONE"],
       "points":{
         "value": 1,
-        "type": "INK"
+        "type": "INKWELL"
       },
       "requirements": {
-        "MUSHROOM": 2,
-        "LEAF": 1
+        "FUNGI": 2,
+        "PLANT": 1
       }
     },
     {
       "id":43,
-      "resource": "MUSHROOM",
-      "corners": ["SCROLL", "NONE", "NONE", "NONCOVERABLE"],
+      "resource": "FUNGI",
+      "corners": ["MANUSCRIPT", "NONE", "NONE", "NONCOVERABLE"],
       "points":{
         "value": 1,
-        "type": "SCROLL"
+        "type": "MANUSCRIPT"
       },
       "requirements": {
-        "MUSHROOM": 2,
-        "BUTTERFLY": 1
+        "FUNGI": 2,
+        "INSECT": 1
       }
     },
     {
       "id":44,
-      "resource": "MUSHROOM",
+      "resource": "FUNGI",
       "corners": ["NONE", "NONE", "NONCOVERABLE", "NONE"],
       "points":{
         "value": 2,
         "type": "cover"
       },
       "requirements": {
-        "MUSHROOM": 3,
-        "WOLF": 1
+        "FUNGI": 3,
+        "ANIMAL": 1
       }
     },
     {
       "id":45,
-      "resource": "MUSHROOM",
+      "resource": "FUNGI",
       "corners": ["NONE", "NONE", "NONE", "NONCOVERABLE"],
       "points":{
         "value": 2,
         "type": "cover"
       },
       "requirements": {
-        "MUSHROOM": 3,
-        "LEAF": 1
+        "FUNGI": 3,
+        "PLANT": 1
       }
     },
     {
       "id":46,
-      "resource": "MUSHROOM",
+      "resource": "FUNGI",
       "corners": ["NONE", "NONCOVERABLE", "NONE", "NONE"],
       "points":{
         "value": 2,
         "type": "cover"
       },
       "requirements": {
-        "MUSHROOM": 3,
-        "BUTTERFLY": 1
+        "FUNGI": 3,
+        "INSECT": 1
       }
     },
     {
       "id":47,
-      "resource": "MUSHROOM",
-      "corners": ["NONE", "NONCOVERABLE", "INK", "NONCOVERABLE"],
+      "resource": "FUNGI",
+      "corners": ["NONE", "NONCOVERABLE", "INKWELL", "NONCOVERABLE"],
       "points":{
         "value": 3,
         "type": "none"
       },
       "requirements": {
-        "MUSHROOM": 3
+        "FUNGI": 3
       }
     },
     {
       "id":48,
-      "resource": "MUSHROOM",
+      "resource": "FUNGI",
       "corners": ["QUILL", "NONE", "NONCOVERABLE", "NONCOVERABLE"],
       "points":{
         "value": 3,
         "type": "none"
       },
       "requirements": {
-        "MUSHROOM": 3
+        "FUNGI": 3
       }
     },
     {
       "id":49,
-      "resource": "MUSHROOM",
-      "corners": ["NONCOVERABLE", "SCROLL", "NONCOVERABLE", "NONE"],
+      "resource": "FUNGI",
+      "corners": ["NONCOVERABLE", "MANUSCRIPT", "NONCOVERABLE", "NONE"],
       "points":{
         "value": 3,
         "type": "none"
       },
       "requirements": {
-        "MUSHROOM": 3
+        "FUNGI": 3
       }
     },
     {
       "id":50,
-      "resource": "MUSHROOM",
+      "resource": "FUNGI",
       "corners": ["NONE", "NONCOVERABLE", "NONE", "NONCOVERABLE"],
       "points":{
         "value": 5,
         "type": "none"
       },
       "requirements": {
-        "MUSHROOM": 5
+        "FUNGI": 5
       }
     },
     {
       "id":51,
-      "resource": "LEAF",
+      "resource": "PLANT",
       "corners": ["QUILL", "NONE", "NONE", "NONCOVERABLE"],
       "points":{
         "value": 1,
         "type": "QUILL"
       },
       "requirements": {
-        "LEAF": 2,
-        "BUTTERFLY": 1
+        "PLANT": 2,
+        "INSECT": 1
       }
     },
     {
       "id":52,
-      "resource": "LEAF",
-      "corners": ["NONE", "SCROLL", "NONCOVERABLE", "NONE"],
+      "resource": "PLANT",
+      "corners": ["NONE", "MANUSCRIPT", "NONCOVERABLE", "NONE"],
       "points":{
         "value": 1,
-        "type": "SCROLL"
+        "type": "MANUSCRIPT"
       },
       "requirements": {
-        "LEAF": 2,
-        "MUSHROOM": 1
+        "PLANT": 2,
+        "FUNGI": 1
       }
     },
     {
       "id":53,
-      "resource": "LEAF",
-      "corners": ["NONE", "NONCOVERABLE", "INK", "NONE"],
+      "resource": "PLANT",
+      "corners": ["NONE", "NONCOVERABLE", "INKWELL", "NONE"],
       "points":{
         "value": 1,
-        "type": "INK"
+        "type": "INKWELL"
       },
       "requirements": {
-        "LEAF": 2,
-        "WOLF": 1
+        "PLANT": 2,
+        "ANIMAL": 1
       }
     },
     {
       "id":54,
-      "resource": "LEAF",
+      "resource": "PLANT",
       "corners": ["NONCOVERABLE", "NONE", "NONE", "NONE"],
       "points":{
         "value": 2,
         "type": "cover"
       },
       "requirements": {
-        "LEAF": 3,
-        "BUTTERFLY": 1
+        "PLANT": 3,
+        "INSECT": 1
       }
     },
     {
       "id":55,
-      "resource": "LEAF",
+      "resource": "PLANT",
       "corners": ["NONE", "NONE", "NONE", "NONCOVERABLE"],
       "points":{
         "value": 2,
         "type": "cover"
       },
       "requirements": {
-        "LEAF": 3,
-        "WOLF": 1
+        "PLANT": 3,
+        "ANIMAL": 1
       }
     },
     {
       "id":56,
-      "resource": "LEAF",
+      "resource": "PLANT",
       "corners": ["NONE", "NONCOVERABLE", "NONE", "NONE"],
       "points":{
         "value": 2,
         "type": "cover"
       },
       "requirements": {
-        "LEAF": 3,
-        "MUSHROOM": 1
+        "PLANT": 3,
+        "FUNGI": 1
       }
     },
     {
       "id":57,
-      "resource": "LEAF",
+      "resource": "PLANT",
       "corners": ["NONE", "NONCOVERABLE", "QUILL", "NONCOVERABLE"],
       "points":{
         "value": 3,
         "type": "none"
       },
       "requirements": {
-        "LEAF": 3
+        "PLANT": 3
       }
     },
     {
       "id":58,
-      "resource": "LEAF",
-      "corners": ["SCROLL", "NONE", "NONCOVERABLE", "NONCOVERABLE"],
+      "resource": "PLANT",
+      "corners": ["MANUSCRIPT", "NONE", "NONCOVERABLE", "NONCOVERABLE"],
       "points":{
         "value": 3,
         "type": "none"
       },
       "requirements": {
-        "LEAF": 3
+        "PLANT": 3
       }
     },
     {
       "id":59,
-      "resource": "LEAF",
-      "corners": ["NONCOVERABLE", "INK", "NONCOVERABLE", "NONE"],
+      "resource": "PLANT",
+      "corners": ["NONCOVERABLE", "INKWELL", "NONCOVERABLE", "NONE"],
       "points":{
         "value": 3,
         "type": "none"
       },
       "requirements": {
-        "LEAF": 3
+        "PLANT": 3
       }
     },
     {
       "id":60,
-      "resource": "LEAF",
+      "resource": "PLANT",
       "corners": ["NONE", "NONE", "NONCOVERABLE", "NONCOVERABLE"],
       "points":{
         "value": 5,
         "type": "none"
       },
       "requirements": {
-        "LEAF": 5
+        "PLANT": 5
       }
     },
     {
       "id":61,
-      "resource": "WOLF",
-      "corners": ["INK", "NONE", "NONE", "NONCOVERABLE"],
+      "resource": "ANIMAL",
+      "corners": ["INKWELL", "NONE", "NONE", "NONCOVERABLE"],
       "points":{
         "value": 1,
-        "type": "INK"
+        "type": "INKWELL"
       },
       "requirements": {
-        "WOLF": 2,
-        "BUTTERFLY": 1
+        "ANIMAL": 2,
+        "INSECT": 1
       }
     },
     {
       "id":62,
-      "resource": "WOLF",
-      "corners": ["NONCOVERABLE", "NONE", "NONE", "SCROLL"],
+      "resource": "ANIMAL",
+      "corners": ["NONCOVERABLE", "NONE", "NONE", "MANUSCRIPT"],
       "points":{
         "value": 1,
-        "type": "SCROLL"
+        "type": "MANUSCRIPT"
       },
       "requirements": {
-        "WOLF": 2,
-        "LEAF": 1
+        "ANIMAL": 2,
+        "PLANT": 1
       }
     },
     {
       "id":63,
-      "resource": "WOLF",
+      "resource": "ANIMAL",
       "corners": ["NONE", "NONCOVERABLE", "QUILL", "NONE"],
       "points":{
         "value": 1,
         "type": "QUILL"
       },
       "requirements": {
-        "WOLF": 2,
-        "MUSHROOM": 1
+        "ANIMAL": 2,
+        "FUNGI": 1
       }
     },
     {
       "id":64,
-      "resource": "WOLF",
+      "resource": "ANIMAL",
       "corners": ["NONE", "NONE", "NONCOVERABLE", "NONE"],
       "points":{
         "value": 2,
         "type": "cover"
       },
       "requirements": {
-        "WOLF": 3,
-        "BUTTERFLY": 1
+        "ANIMAL": 3,
+        "INSECT": 1
       }
     },
     {
       "id":65,
-      "resource": "WOLF",
+      "resource": "ANIMAL",
       "corners": ["NONE", "NONCOVERABLE", "NONE", "NONE"],
       "points":{
         "value": 2,
         "type": "cover"
       },
       "requirements": {
-        "WOLF": 3,
-        "MUSHROOM": 1
+        "ANIMAL": 3,
+        "FUNGI": 1
       }
     },
     {
       "id":66,
-      "resource": "WOLF",
+      "resource": "ANIMAL",
       "corners": ["NONCOVERABLE", "NONE", "NONE", "NONE"],
       "points":{
         "value": 2,
         "type": "cover"
       },
       "requirements": {
-        "WOLF": 3,
-        "LEAF": 1
+        "ANIMAL": 3,
+        "PLANT": 1
       }
     },
     {
       "id":67,
-      "resource": "WOLF",
-      "corners": ["NONE", "NONCOVERABLE", "SCROLL", "NONCOVERABLE"],
+      "resource": "ANIMAL",
+      "corners": ["NONE", "NONCOVERABLE", "MANUSCRIPT", "NONCOVERABLE"],
       "points":{
         "value": 3,
         "type": "none"
       },
       "requirements": {
-        "WOLF": 3
+        "ANIMAL": 3
       }
     },
     {
       "id":68,
-      "resource": "WOLF",
-      "corners": ["NONE", "INK", "NONCOVERABLE", "NONCOVERABLE"],
+      "resource": "ANIMAL",
+      "corners": ["NONE", "INKWELL", "NONCOVERABLE", "NONCOVERABLE"],
       "points":{
         "value": 3,
         "type": "none"
       },
       "requirements": {
-        "WOLF": 3
+        "ANIMAL": 3
       }
     },
     {
       "id":69,
-      "resource": "WOLF",
+      "resource": "ANIMAL",
       "corners": ["NONCOVERABLE", "NONE", "NONCOVERABLE", "QUILL"],
       "points":{
         "value": 3,
         "type": "none"
       },
       "requirements": {
-        "WOLF": 3
+        "ANIMAL": 3
       }
     },
     {
       "id":70,
-      "resource": "WOLF",
+      "resource": "ANIMAL",
       "corners": ["NONCOVERABLE", "NONE", "NONCOVERABLE", "NONE"],
       "points":{
         "value": 5,
         "type": "none"
       },
       "requirements": {
-        "WOLF": 5
+        "ANIMAL": 5
       }
     },
     {
       "id":71,
-      "resource": "BUTTERFLY",
+      "resource": "INSECT",
       "corners": ["NONE", "QUILL", "NONCOVERABLE", "NONE"],
       "points":{
         "value": 1,
         "type": "QUILL"
       },
       "requirements": {
-        "BUTTERFLY": 2,
-        "LEAF": 1
+        "INSECT": 2,
+        "PLANT": 1
       }
     },
     {
       "id":72,
-      "resource": "BUTTERFLY",
-      "corners": ["NONE", "NONCOVERABLE", "SCROLL", "NONE"],
+      "resource": "INSECT",
+      "corners": ["NONE", "NONCOVERABLE", "MANUSCRIPT", "NONE"],
       "points":{
         "value": 1,
-        "type": "SCROLL"
+        "type": "MANUSCRIPT"
       },
       "requirements": {
-        "BUTTERFLY": 2,
-        "WOLF": 1
+        "INSECT": 2,
+        "ANIMAL": 1
       }
     },
     {
       "id":73,
-      "resource": "BUTTERFLY",
-      "corners": ["NONCOVERABLE", "NONE", "NONE", "INK"],
+      "resource": "INSECT",
+      "corners": ["NONCOVERABLE", "NONE", "NONE", "INKWELL"],
       "points":{
         "value": 1,
-        "type": "INK"
+        "type": "INKWELL"
       },
       "requirements": {
-        "BUTTERFLY": 2,
-        "MUSHROOM": 1
+        "INSECT": 2,
+        "FUNGI": 1
       }
     },
     {
       "id":74,
-      "resource": "BUTTERFLY",
+      "resource": "INSECT",
       "corners": ["NONE", "NONE", "NONCOVERABLE", "NONE"],
       "points":{
         "value": 2,
         "type": "cover"
       },
       "requirements": {
-        "BUTTERFLY": 3,
-        "WOLF": 1
+        "INSECT": 3,
+        "ANIMAL": 1
       }
     },
     {
       "id":75,
-      "resource": "BUTTERFLY",
+      "resource": "INSECT",
       "corners": ["NONE", "NONE", "NONE", "NONCOVERABLE"],
       "points":{
         "value": 2,
         "type": "cover"
       },
       "requirements": {
-        "BUTTERFLY": 3,
-        "LEAF": 1
+        "INSECT": 3,
+        "PLANT": 1
       }
     },
     {
       "id":76,
-      "resource": "BUTTERFLY",
+      "resource": "INSECT",
       "corners": ["NONE", "NONCOVERABLE", "NONE", "NONE"],
       "points":{
         "value": 2,
         "type": "cover"
       },
       "requirements": {
-        "BUTTERFLY": 3,
-        "MUSHROOM": 1
+        "INSECT": 3,
+        "FUNGI": 1
       }
     },
     {
       "id":77,
-      "resource": "BUTTERFLY",
-      "corners": ["INK", "NONCOVERABLE", "NONE", "NONCOVERABLE"],
+      "resource": "INSECT",
+      "corners": ["INKWELL", "NONCOVERABLE", "NONE", "NONCOVERABLE"],
       "points":{
         "value": 3,
         "type": "none"
       },
       "requirements": {
-        "BUTTERFLY": 3
+        "INSECT": 3
       }
     },
     {
       "id":78,
-      "resource": "BUTTERFLY",
-      "corners": ["NONE", "SCROLL", "NONCOVERABLE", "NONCOVERABLE"],
+      "resource": "INSECT",
+      "corners": ["NONE", "MANUSCRIPT", "NONCOVERABLE", "NONCOVERABLE"],
       "points":{
         "value": 3,
         "type": "none"
       },
       "requirements": {
-        "BUTTERFLY": 3
+        "INSECT": 3
       }
     },
     {
       "id":79,
-      "resource": "BUTTERFLY",
+      "resource": "INSECT",
       "corners": ["NONCOVERABLE", "NONCOVERABLE", "QUILL", "NONE"],
       "points":{
         "value": 3,
         "type": "none"
       },
       "requirements": {
-        "BUTTERFLY": 3
+        "INSECT": 3
       }
     },
     {
       "id":80,
-      "resource": "BUTTERFLY",
+      "resource": "INSECT",
       "corners": ["NONE", "NONE", "NONCOVERABLE", "NONCOVERABLE"],
       "points":{
         "value": 5,
         "type": "none"
       },
       "requirements": {
-        "BUTTERFLY": 5
+        "INSECT": 5
       }
     }
   ],
@@ -756,39 +756,39 @@
   "startingcards":[
     {
       "id":81,
-      "resource": ["BUTTERFLY"],
-      "frontcorners": ["NONE", "LEAF", "BUTTERFLY", "NONE"],
-      "backcorners": ["MUSHROOM", "LEAF", "BUTTERFLY", "WOLF"]
+      "resource": ["INSECT"],
+      "frontcorners": ["NONE", "PLANT", "INSECT", "NONE"],
+      "backcorners": ["FUNGI", "PLANT", "INSECT", "ANIMAL"]
     },
     {
       "id":82,
-      "resource": ["MUSHROOM"],
-      "frontcorners": ["WOLF", "NONE", "NONE", "MUSHROOM"],
-      "backcorners": ["LEAF", "WOLF", "MUSHROOM", "BUTTERFLY"]
+      "resource": ["FUNGI"],
+      "frontcorners": ["ANIMAL", "NONE", "NONE", "FUNGI"],
+      "backcorners": ["PLANT", "ANIMAL", "FUNGI", "INSECT"]
     },
     {
       "id":83,
-      "resource": ["LEAF", "MUSHROOM"],
+      "resource": ["PLANT", "FUNGI"],
       "frontcorners": ["NONE", "NONE", "NONE", "NONE"],
-      "backcorners": ["BUTTERFLY", "WOLF", "MUSHROOM", "LEAF"]
+      "backcorners": ["INSECT", "ANIMAL", "FUNGI", "PLANT"]
     },
     {
       "id":84,
-      "resource": ["WOLF", "BUTTERFLY"],
+      "resource": ["ANIMAL", "INSECT"],
       "frontcorners": ["NONE", "NONE", "NONE", "NONE"],
-      "backcorners": ["LEAF", "BUTTERFLY", "WOLF", "MUSHROOM"]
+      "backcorners": ["PLANT", "INSECT", "ANIMAL", "FUNGI"]
     },
     {
       "id":85,
-      "resource": ["WOLF", "BUTTERFLY", "LEAF"],
+      "resource": ["ANIMAL", "INSECT", "PLANT"],
       "frontcorners": ["NONE", "NONE", "NONCOVERABLE", "NONCOVERABLE"],
-      "backcorners": ["BUTTERFLY", "MUSHROOM", "LEAF", "WOLF"]
+      "backcorners": ["INSECT", "FUNGI", "PLANT", "ANIMAL"]
     },
     {
       "id":86,
-      "resource": ["LEAF", "WOLF", "MUSHROOM"],
+      "resource": ["PLANT", "ANIMAL", "FUNGI"],
       "frontcorners": ["NONE", "NONE", "NONCOVERABLE", "NONCOVERABLE"],
-      "backcorners": ["MUSHROOM", "WOLF", "LEAF", "BUTTERFLY"]
+      "backcorners": ["FUNGI", "ANIMAL", "PLANT", "INSECT"]
     }
   ],
 
@@ -799,57 +799,57 @@
       "id":87,
       "points": 2,
       "type": "pattern",
-      "requirements": ["NONE", "NONE", "MUSHROOM", "NONE", "MUSHROOM", "NONE", "MUSHROOM", "NONE", "NONE"]
+      "requirements": ["NONE", "NONE", "FUNGI", "NONE", "FUNGI", "NONE", "FUNGI", "NONE", "NONE"]
     },
     {
       "id":88,
       "points": 2,
       "type": "pattern",
-      "requirements": ["LEAF", "NONE", "NONE", "NONE", "LEAF", "NONE", "NONE", "NONE", "LEAF"]
+      "requirements": ["PLANT", "NONE", "NONE", "NONE", "PLANT", "NONE", "NONE", "NONE", "PLANT"]
     },
     {
       "id":89,
       "points": 2,
       "type": "pattern",
-      "requirements": ["NONE", "NONE", "WOLF", "NONE", "WOLF", "NONE", "WOLF", "NONE", "NONE"]
+      "requirements": ["NONE", "NONE", "ANIMAL", "NONE", "ANIMAL", "NONE", "ANIMAL", "NONE", "NONE"]
 
     },
     {
       "id":90,
       "points": 2,
       "type": "pattern",
-      "requirements": ["BUTTERFLY", "NONE", "NONE", "NONE", "BUTTERFLY", "NONE", "NONE", "NONE", "BUTTERFLY"]
+      "requirements": ["INSECT", "NONE", "NONE", "NONE", "INSECT", "NONE", "NONE", "NONE", "INSECT"]
     },
     {
       "id":91,
       "points": 3,
       "type": "pattern",
-      "requirements": ["NONE", "MUSHROOM", "NONE", "NONE", "MUSHROOM", "NONE", "NONE", "NONE", "LEAF"]
+      "requirements": ["NONE", "FUNGI", "NONE", "NONE", "FUNGI", "NONE", "NONE", "NONE", "PLANT"]
     },
     {
       "id":92,
       "points": 3,
       "type": "pattern",
-      "requirements": ["NONE", "LEAF", "NONE", "NONE", "LEAF", "NONE", "BUTTERFLY", "NONE", "NONE"]
+      "requirements": ["NONE", "PLANT", "NONE", "NONE", "PLANT", "NONE", "INSECT", "NONE", "NONE"]
     },
     {
       "id":93,
       "points": 3,
       "type": "pattern",
-      "requirements": ["NONE", "NONE", "MUSHROOM", "NONE", "WOLF", "NONE", "NONE", "WOLF", "NONE"]
+      "requirements": ["NONE", "NONE", "FUNGI", "NONE", "ANIMAL", "NONE", "NONE", "ANIMAL", "NONE"]
     },
     {
       "id":94,
       "points": 3,
       "type": "pattern",
-      "requirements": ["WOLF", "NONE", "NONE", "NONE", "BUTTERFLY", "NONE", "NONE", "BUTTERFLY", "NONE"]
+      "requirements": ["ANIMAL", "NONE", "NONE", "NONE", "INSECT", "NONE", "NONE", "INSECT", "NONE"]
     },
     {
       "id":95,
       "points": 2,
       "type": "resources",
       "requirements": {
-        "MUSHROOM": 3
+        "FUNGI": 3
       }
 
     },
@@ -858,7 +858,7 @@
       "points": 2,
       "type": "resources",
       "requirements": {
-        "LEAF": 3
+        "PLANT": 3
       }
 
     },
@@ -867,7 +867,7 @@
       "points": 2,
       "type": "resources",
       "requirements": {
-        "WOLF": 3
+        "ANIMAL": 3
       }
     },
     {
@@ -875,7 +875,7 @@
       "points": 2,
       "type": "resources",
       "requirements": {
-        "BUTTERFLY": 3
+        "INSECT": 3
       }
     },
     {
@@ -884,8 +884,8 @@
       "type": "resources",
       "requirements": {
         "QUILL": 1,
-        "INK": 1,
-        "SCROLL": 1
+        "INKWELL": 1,
+        "MANUSCRIPT": 1
       }
     },
     {
@@ -893,7 +893,7 @@
       "points": 2,
       "type": "resources",
       "requirements": {
-        "SCROLL": 2
+        "MANUSCRIPT": 2
       }
     },
     {
@@ -901,7 +901,7 @@
       "points": 2,
       "type": "resources",
       "requirements": {
-        "INK": 2
+        "INKWELL": 2
       }
     },
     {

@@ -8,20 +8,20 @@ import java.util.List;
 
 public abstract class GameConsts {
     public static final HashMap<String, Resource> resourceMap = new HashMap<>() {{
-        put("MUSHROOM", Resource.MUSHROOM);
-        put("LEAF", Resource.LEAF);
-        put("BUTTERFLY", Resource.BUTTERFLY);
-        put("WOLF", Resource.WOLF);
+        put("FUNGI", Resource.FUNGI);
+        put("PLANT", Resource.PLANT);
+        put("INSECT", Resource.INSECT);
+        put("ANIMAL", Resource.ANIMAL);
         put("QUILL", Resource.QUILL);
-        put("INK", Resource.INK);
-        put("SCROLL", Resource.SCROLL);
+        put("INKWELL", Resource.INKWELL);
+        put("MANUSCRIPT", Resource.MANUSCRIPT);
         put("NONE", Resource.NONE);
     }};
     public static final List<String> requirementsList = new ArrayList<>() {{
-        add("MUSHROOM");
-        add("LEAF");
-        add("BUTTERFLY");
-        add("WOLF");
+        add("FUNGI");
+        add("PLANT");
+        add("INSECT");
+        add("ANIMAL");
     }};
     public static final String cardJsonPath = "src/main/resources/cards.json";
     public static final int visibleCards = 4;

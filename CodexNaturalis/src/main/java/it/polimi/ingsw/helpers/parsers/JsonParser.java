@@ -37,7 +37,7 @@ public interface JsonParser<Class> {
      * Parse the resource data within the card json to use for both the goldCard and the stdCard constructors.<br/>
      * takes as input the object obtained by using the card {@link com.google.gson.JsonObject#get(String)  JsonObject.get("resource")}
      * @param resource the JsonElement obtained from the element "resource" in cards.json
-     * @return the resource on the back of the card, (MUSHROOM, WOLF, LEAF or BUTTERFLY)
+     * @return the resource on the back of the card, (FUNGI, ANIMAL, PLANT or INSECT)
      */
     default Resource getResource(JsonElement resource) {
         return GameConsts.resourceMap.get(resource.getAsString().toUpperCase());
