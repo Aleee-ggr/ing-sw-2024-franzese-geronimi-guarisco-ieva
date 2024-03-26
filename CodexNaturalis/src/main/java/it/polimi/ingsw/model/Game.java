@@ -2,16 +2,16 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.model.board.SharedBoard;
-import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.enums.GameState;
 import it.polimi.ingsw.model.exceptions.ExistingUsernameException;
 import it.polimi.ingsw.model.exceptions.TooManyPlayersException;
 import it.polimi.ingsw.model.player.Player;
 
-import java.sql.ShardingKey;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * Game Class
  * @author Alessio Guarisco
@@ -20,7 +20,7 @@ public class Game {
     private final UUID id;
     private int numPlayers;
     private String firstPlayer;
-    private ConcurrentHashMap<String, Player> players = new ConcurrentHashMap<>();
+    private List<Player> players = new ArrayList<>();
     private GameState gameState;
     private final SharedBoard GameBoard = new SharedBoard(null, null); //TODO add actual decks
 
@@ -40,7 +40,7 @@ public class Game {
         return firstPlayer;
     }
 
-    public ConcurrentHashMap<String, Player> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 
@@ -64,9 +64,12 @@ public class Game {
             throw new TooManyPlayersException("Too Many Players");
         }
         Player toAdd = new Player(playerUsername, this);
-        if (players.putIfAbsent(playerUsername, toAdd) != null) {
-            throw new ExistingUsernameException("Username Already Exists in this game");
+        for(Player p : players){
+            if(Objects.equals(p.getUsername(), playerUsername)){
+                throw new ExistingUsernameException("Username Already Exists in this game");
+            }
         }
+        players.add(toAdd);
     }
 
     /**
