@@ -1,7 +1,12 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="AllTests" type="CompoundRunConfigurationType">
-    <toRun name="DeckTest" type="JUnit" />
-    <toRun name="GameTest" type="JUnit" />
-    <method v="2" />
+  <configuration default="false" name="AllTests" type="JUnit" factoryName="JUnit">
+    <module name="PSP11" />
+    <option name="PACKAGE_NAME" value="it.polimi.ingsw" />
+    <option name="MAIN_CLASS_NAME" value="" />
+    <option name="METHOD_NAME" value="" />
+    <option name="TEST_OBJECT" value="package" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
   </configuration>
 </component>
