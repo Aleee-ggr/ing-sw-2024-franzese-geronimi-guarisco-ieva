@@ -798,47 +798,56 @@
     {
       "id":87,
       "points": 2,
+      "type": "pattern",
       "requirements": ["NONE", "NONE", "MUSHROOM", "NONE", "MUSHROOM", "NONE", "MUSHROOM", "NONE", "NONE"]
     },
     {
       "id":88,
       "points": 2,
+      "type": "pattern",
       "requirements": ["LEAF", "NONE", "NONE", "NONE", "LEAF", "NONE", "NONE", "NONE", "LEAF"]
     },
     {
       "id":89,
       "points": 2,
+      "type": "pattern",
       "requirements": ["NONE", "NONE", "WOLF", "NONE", "WOLF", "NONE", "WOLF", "NONE", "NONE"]
 
     },
     {
       "id":90,
       "points": 2,
+      "type": "pattern",
       "requirements": ["BUTTERFLY", "NONE", "NONE", "NONE", "BUTTERFLY", "NONE", "NONE", "NONE", "BUTTERFLY"]
     },
     {
       "id":91,
       "points": 3,
+      "type": "pattern",
       "requirements": ["NONE", "MUSHROOM", "NONE", "NONE", "MUSHROOM", "NONE", "NONE", "NONE", "LEAF"]
     },
     {
       "id":92,
       "points": 3,
+      "type": "pattern",
       "requirements": ["NONE", "LEAF", "NONE", "NONE", "LEAF", "NONE", "BUTTERFLY", "NONE", "NONE"]
     },
     {
       "id":93,
       "points": 3,
+      "type": "pattern",
       "requirements": ["NONE", "NONE", "MUSHROOM", "NONE", "WOLF", "NONE", "NONE", "WOLF", "NONE"]
     },
     {
       "id":94,
       "points": 3,
+      "type": "pattern",
       "requirements": ["WOLF", "NONE", "NONE", "NONE", "BUTTERFLY", "NONE", "NONE", "BUTTERFLY", "NONE"]
     },
     {
       "id":95,
       "points": 2,
+      "type": "resources",
       "requirements": {
         "MUSHROOM": 3
       }
@@ -847,6 +856,7 @@
     {
       "id":96,
       "points": 2,
+      "type": "resources",
       "requirements": {
         "LEAF": 3
       }
@@ -855,6 +865,7 @@
     {
       "id": 97,
       "points": 2,
+      "type": "resources",
       "requirements": {
         "WOLF": 3
       }
@@ -862,6 +873,7 @@
     {
       "id":98,
       "points": 2,
+      "type": "resources",
       "requirements": {
         "BUTTERFLY": 3
       }
@@ -869,6 +881,7 @@
     {
       "id":99,
       "points": 3,
+      "type": "resources",
       "requirements": {
         "QUILL": 1,
         "INK": 1,
@@ -878,6 +891,7 @@
     {
       "id":100,
       "points": 2,
+      "type": "resources",
       "requirements": {
         "SCROLL": 2
       }
@@ -885,6 +899,7 @@
     {
       "id":101,
       "points": 2,
+      "type": "resources",
       "requirements": {
         "INK": 2
       }
@@ -892,6 +907,7 @@
     {
       "id":102,
       "points": 2,
+      "type": "resources",
       "requirements": {
         "QUILL": 2
       }
