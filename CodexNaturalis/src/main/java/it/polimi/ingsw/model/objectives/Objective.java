@@ -1,18 +1,18 @@
 package it.polimi.ingsw.model.objectives;
 
-import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.player.Player;
 
 import java.util.function.Function;
 
 public class Objective {
-    private final Function<Game, Integer> pointCalculator;
+    private final Function<Player, Integer> pointCalculator;
 
-    public Objective(Function<Game, Integer> pointCalculator) {
+    public Objective(Function<Player, Integer> pointCalculator) {
         this.pointCalculator = pointCalculator;
     }
 
-    public Integer getPoints(Game game) {
-        return this.pointCalculator.apply(game);
+    public Integer getPoints(Player player) {
+        return this.pointCalculator.apply(player);
     }
 
 }

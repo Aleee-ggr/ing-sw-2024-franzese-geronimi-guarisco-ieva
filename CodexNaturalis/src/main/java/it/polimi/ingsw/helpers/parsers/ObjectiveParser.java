@@ -5,9 +5,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.helpers.builders.FunctionBuilder;
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
+import it.polimi.ingsw.model.player.Player;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -49,7 +49,7 @@ public class ObjectiveParser implements JsonParser<ArrayList<Objective>> {
 
             int points =  jsonObjective.get("points").getAsInt();
 
-            Function<Game, Integer> point_function = switch (type) {
+            Function<Player, Integer> point_function = switch (type) {
                 case "resources" -> new FunctionBuilder()
                         .setType(type)
                         .setPoints(points)

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.helpers.builders;
 
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.enums.Resource;
+import it.polimi.ingsw.model.player.Player;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -38,13 +38,13 @@ public class FunctionBuilder {
         return this;
     }
 
-    public Function<Game, Integer> build() {
+    public Function<Player, Integer> build() {
         switch (type) {
             case "none":
-                return (Game game) -> points;
+                return (Player player) -> points;
 
             default:
-                return (Game game) -> {
+                return (Player player) -> {
                     //TODO implement the actual function
                     return points;
                 };
