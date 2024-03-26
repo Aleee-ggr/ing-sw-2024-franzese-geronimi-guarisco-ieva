@@ -29,30 +29,4 @@ public class GoldCard extends ColoredCard{
     public ConcurrentHashMap<Resource, Integer> getRequirements() {
         return new ConcurrentHashMap<>(requirements);
     }
-
-    @Override
-    public String toString() {
-        StringBuilder out = new StringBuilder();
-        out.append("id: ")
-                .append(getId())
-                .append("\nresource: ")
-                .append(getBackResource());
-        for (var corner : this.getFrontCorners()) {
-            out.append("\ncorner: ")
-                    .append(corner.isCoverable())
-                    .append(" ")
-                    .append(corner.getCornerResource());
-        }
-
-        out.append("\nrequirements:\n");
-        for (var key : requirements.keySet()) {
-            out.append(key)
-                    .append(" ")
-                    .append(requirements.get(key))
-                    .append("\n");
-        }
-        out.append("score: ")
-                .append(calculateScore.apply(null));
-        return out.toString();
-    }
 }

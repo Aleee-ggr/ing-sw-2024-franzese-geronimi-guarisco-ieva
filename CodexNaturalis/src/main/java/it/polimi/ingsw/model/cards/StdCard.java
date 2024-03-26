@@ -17,22 +17,4 @@ public class StdCard extends ColoredCard{
     public boolean isPoint() {
         return point;
     }
-
-    @Override
-    public String toString() {
-        StringBuilder out = new StringBuilder();
-        out.append("id: ")
-                .append(getId())
-                .append("\nresource: ")
-                .append(getBackResource())
-                .append("\npoints: ")
-                .append(isPoint());
-        for (var corner : this.getFrontCorners()) {
-            out.append("\ncorner: ")
-                    .append(corner.isCoverable())
-                    .append(" ")
-                    .append(corner.getCornerResource());
-        }
-        return out.toString();
-    }
 }
