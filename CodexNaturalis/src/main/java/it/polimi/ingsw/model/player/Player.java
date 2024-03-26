@@ -57,12 +57,36 @@ public final class Player {
         return hiddenObjective;
     }
 
+    public ConcurrentHashMap<Resource, Integer> getResources() {
+        return (ConcurrentHashMap<Resource, Integer>) Collections.unmodifiableMap(playerResources);
+    }
+
     public void setScore(int score) {
         this.score = score;
     }
 
     public void setHiddenObjective(Objective hiddenObjective) {
         this.hiddenObjective = hiddenObjective;
+    }
+
+
+    /**
+     * Method to draw from one of the two decks in the SharedBoard of the Game <br/>
+     * implements  {@link  #toHand(Card)}  toHand} private method
+     * @param isGold is a boolean used to identify if the card is drawn to the gold card deck or the std deck
+     * */
+    public void drawDecks(boolean isGold){
+        toHand(game.getGameBoard().drawDeck(isGold));
+    }
+
+    /**
+     * Method to draw from one of the four visible cards in the SharedBoard of the Game <br/>
+     * implements  {@link  #toHand(Card)}  toHand} private method
+     * @param numVisible is used to choose the card from the board
+     * @see it.polimi.ingsw.model.board.SharedBoard
+     * */
+    public void drawVisible(int numVisible){
+        toHand(game.getGameBoard().drawVisible(numVisible));
     }
 
     /**
@@ -78,31 +102,6 @@ public final class Player {
         for (int i = GameConsts.fistHandStdNum; i <= GameConsts.firstHandDim; i++){
             this.hand[i] = game.getGameBoard().drawDeck(true);
         }
-    }
-
-    public ConcurrentHashMap<Resource, Integer> getResources() {
-        return (ConcurrentHashMap<Resource, Integer>) Collections.unmodifiableMap(playerResources);
-    }
-
-    /**
-     * Method to draw from one of the two decks in the SharedBoard of the Game <br/>
-     * implements  {@link  #toHand(Card)}  toHand} private method
-     * @param isGold is a boolean used to identify if the card is drawn to the gold card deck or the std deck
-     * */
-    public void drawDecks(boolean isGold){
-        Card drawnCard = game.getGameBoard().drawDeck(isGold);
-        toHand(drawnCard);
-    }
-
-    /**
-     * Method to draw from one of the four visible cards in the SharedBoard of the Game <br/>
-     * implements  {@link  #toHand(Card)}  toHand} private method
-     * @param numVisible is used to choose the card from the board
-     * @see it.polimi.ingsw.model.board.SharedBoard
-     * */
-    public void drawVisible(int numVisible){
-        Card drawnCard = game.getGameBoard().drawVisible(numVisible);
-        toHand(drawnCard);
     }
 
     /**
