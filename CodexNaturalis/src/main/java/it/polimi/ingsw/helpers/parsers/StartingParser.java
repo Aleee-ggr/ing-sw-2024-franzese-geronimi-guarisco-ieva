@@ -55,6 +55,14 @@ public class StartingParser implements JsonParser<Deck<StartingCard>> {
         return new Deck<>(deck);
     }
 
+
+    /**
+     *  Parse the resource data within the card json to use for the StartingCard constructor..<br/>
+     *  takes as input the object obtained by using the card {@link com.google.gson.JsonObject#get(String)  JsonObject.get("resource")}
+     *  @param resources the JsonElement obtained from the element "resource" in cards.json
+     *  @return an arrayList with the resources on the front of the card, (MUSHROOM, WOLF, LEAF or BUTTERFLY)
+     *  @see StartingCard
+     */
     private ArrayList<Resource> getFrontResources(JsonArray resources) {
         ArrayList<Resource> front_resources = new ArrayList<>();
         for (JsonElement resource : resources) {
