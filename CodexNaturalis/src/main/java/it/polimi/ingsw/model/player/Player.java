@@ -19,8 +19,8 @@ public final class Player {
     private int[][] board;
     private Card[] hand;
     private Objective hiddenObjective;
-    private ConcurrentHashMap<Resource, Integer> playerResources = new ConcurrentHashMap<Resource, Integer>();
-    private Game game;
+    private final ConcurrentHashMap<Resource, Integer> playerResources = new ConcurrentHashMap<Resource, Integer>();
+    private final Game game;
     /**
      * @param username it is the unique identifier of the player.
      * @param currentGame pointer to the instance of game the player is playing.
