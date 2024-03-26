@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.player;
 
+import com.google.gson.JsonObject;
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.Card;
@@ -10,7 +11,8 @@ import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Player Class
+ * Player Class is called by Game Class.
+ * Contains the Player username, score, hiddenObjective, resources, hand and board.
  * @author Alessio Guarisco
  * */
 public final class Player {
@@ -22,6 +24,7 @@ public final class Player {
     private final ConcurrentHashMap<Resource, Integer> playerResources = new ConcurrentHashMap<Resource, Integer>();
     private final Game game;
     /**
+     * Calling the Player
      * @param username it is the unique identifier of the player.
      * @param currentGame pointer to the instance of game the player is playing.
      * */
@@ -64,7 +67,7 @@ public final class Player {
 
     /**
      * This method is used while the game is starting to draw the first hand.
-     * It takes consts values from:
+     * It takes const values from:
      * @see it.polimi.ingsw.GameConsts
      * */
     public void drawFirstHand(){
@@ -82,8 +85,9 @@ public final class Player {
     }
 
     /**
-     * Method to draw from one of the two decks in the SharedBoard of the Game
-     * @param isGold is used to identify if the card is drawn to the gold card deck or the std deck
+     * Method to draw from one of the two decks in the SharedBoard of the Game <br/>
+     * implements  {@link  #toHand(Card)}  toHand} private method
+     * @param isGold is a boolean used to identify if the card is drawn to the gold card deck or the std deck
      * */
     public void drawDecks(boolean isGold){
         Card drawnCard = game.getGameBoard().drawDeck(isGold);
@@ -91,8 +95,10 @@ public final class Player {
     }
 
     /**
-     * Method to draw from one of the four visible cards in the SharedBoard of the Game
+     * Method to draw from one of the four visible cards in the SharedBoard of the Game <br/>
+     * implements  {@link  #toHand(Card)}  toHand} private method
      * @param numVisible is used to choose the card from the board
+     * @see it.polimi.ingsw.model.board.SharedBoard
      * */
     public void drawVisible(int numVisible){
         Card drawnCard = game.getGameBoard().drawVisible(numVisible);
@@ -100,7 +106,11 @@ public final class Player {
     }
 
     /**
-     * Private general method to add a drawn card to the hand of the player
+     * Private general method to add a drawn card to the hand of the player <br/>
+     * used in {@link  #drawVisible(int) drawVisible} and
+     * {@link  #drawDecks(boolean) drawVisible}
+     * @param drawnCard is a Card obj from the Card class
+     * @see Card
      * */
     private void toHand(Card drawnCard){
         for(int i = 0; i < GameConsts.firstHandDim; i++){
