@@ -1,9 +1,11 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.helpers.parsers.GoldCardParser;
+import it.polimi.ingsw.helpers.parsers.StartingParser;
 import it.polimi.ingsw.helpers.parsers.StdCardParser;
 import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.cards.GoldCard;
+import it.polimi.ingsw.model.cards.StartingCard;
 import it.polimi.ingsw.model.cards.StdCard;
 
 import java.nio.file.Path;
@@ -25,15 +27,18 @@ public class App
 
         StdCardParser stdParser = new StdCardParser();
         GoldCardParser goldParser = new GoldCardParser();
+        StartingParser startingParser = new StartingParser();
 
         try {
             stdParser.readFile(cardJsonPath);
             goldParser.readFile(cardJsonPath);
+            startingParser.readFile(cardJsonPath);
         } catch (Exception e) {
             e.printStackTrace();
         }
         Deck<StdCard> stdDeck = stdParser.parse();
         Deck<GoldCard> goldDeck = goldParser.parse();
+        Deck<StartingCard> startingDeck = startingParser.parse();
 
         StdCard stdCard = stdDeck.draw();
         while (stdCard != null) {
@@ -45,6 +50,12 @@ public class App
         while (goldCard != null) {
             System.out.println(goldCard);
             goldCard = goldDeck.draw();
+        }
+
+        StartingCard startingCard = startingDeck.draw();
+        while (startingCard != null) {
+            System.out.println(startingCard);
+            startingCard = startingDeck.draw();
         }
     }
 }

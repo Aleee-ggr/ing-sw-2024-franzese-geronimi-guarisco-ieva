@@ -1,15 +1,15 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.GameConsts;
-import it.polimi.ingsw.model.enums.GameState;
 import it.polimi.ingsw.model.enums.Resource;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class StartingCard extends Card{
     private Corner[] backCorners = new Corner[GameConsts.numCorners];
-    private Resource[] frontResources = new Resource[GameConsts.numCorners];
-    public StartingCard(int id, Corner[] frontCorners, Corner[] backCorners, Resource[] frontResources) {
+    private ArrayList<Resource> frontResources;
+    public StartingCard(int id, Corner[] frontCorners, Corner[] backCorners, ArrayList<Resource> frontResources) {
         super(id, frontCorners);
         this.backCorners = backCorners;
         this.frontResources = frontResources;
@@ -20,6 +20,6 @@ public class StartingCard extends Card{
     }
 
     public Resource[] getFrontResources() {
-        return Arrays.copyOf(frontResources, GameConsts.numCorners);
+        return null;
     }
 }
