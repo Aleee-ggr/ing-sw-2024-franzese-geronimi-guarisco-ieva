@@ -18,9 +18,8 @@ import java.util.UUID;
  * */
 public class Game {
     private final UUID id;
-    private int numPlayers;
-    private String firstPlayer;
-    private List<Player> players = new ArrayList<>();
+    private int numPlayers = 0;
+    private final List<Player> players = new ArrayList<>();
     private GameState gameState;
     private final SharedBoard GameBoard = new SharedBoard(null, null); //TODO add actual decks
 
@@ -34,10 +33,6 @@ public class Game {
 
     public int getNumPlayers() {
         return numPlayers;
-    }
-
-    public String getFirstPlayer() {
-        return firstPlayer;
     }
 
     public List<Player> getPlayers() {
@@ -70,6 +65,7 @@ public class Game {
             }
         }
         players.add(toAdd);
+        this.numPlayers += 1;
     }
 
     /**
