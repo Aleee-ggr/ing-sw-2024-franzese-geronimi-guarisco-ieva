@@ -2,6 +2,7 @@ package it.polimi.ingsw.helpers.parsers;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.helpers.builders.FunctionBuilder;
@@ -39,8 +40,8 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
                 .getAsJsonArray("goldcards");
         ArrayList<GoldCard> deck = new ArrayList<>();
 
-        for (var card : cards) {
-            var card_obj = card.getAsJsonObject();
+        for (JsonElement card : cards) {
+            JsonObject card_obj = card.getAsJsonObject();
 
             int id = card_obj.get("id").getAsInt();
 

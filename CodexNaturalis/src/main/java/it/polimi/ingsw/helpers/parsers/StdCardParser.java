@@ -31,8 +31,8 @@ public class StdCardParser implements JsonParser<Deck<StdCard>> {
                 .getAsJsonArray("stdcards");
         ArrayList<StdCard> deck = new ArrayList<>();
 
-        for (var card : cards) {
-            var card_obj = card.getAsJsonObject();
+        for (JsonElement card : cards) {
+            JsonObject card_obj = card.getAsJsonObject();
             int id = card_obj.get("id").getAsInt();
             Resource resource = getResource(card_obj.get("resource"));
             int points = card_obj.get("points").getAsInt();
