@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
 
 import java.util.Collections;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**

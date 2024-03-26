@@ -44,20 +44,19 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
 
             int id = card_obj.get("id").getAsInt();
 
-            Resource resource = getResource(card_obj.get("resource"));
-
-            var requirements = card_obj.getAsJsonObject("requirements");
-
-            Map<Resource, Integer> card_requirements = getRequirements(requirements);
-
-            var points = card_obj.getAsJsonObject("points");
-
-            Function<Game, Integer> point_calculator = getPointCalculator(points);
-
-
+            Resource resource = getResource(
+                    card_obj.get("resource")
+            );
+            Map<Resource, Integer> card_requirements = getRequirements(
+                    card_obj.getAsJsonObject("requirements")
+            );
+            Function<Game, Integer> point_calculator = getPointCalculator(
+                    card_obj.getAsJsonObject("points")
+            );
             Corner[] corners = getCorners(
                     card_obj.getAsJsonArray("corners")
             );
+
             deck.add(
                     new GoldCard(id, corners, resource, card_requirements, point_calculator)
             );

@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="AllTests" type="CompoundRunConfigurationType">
+    <toRun name="DeckTest" type="JUnit" />
+    <toRun name="GameTest" type="JUnit" />
+    <method v="2" />
+  </configuration>
+</component>

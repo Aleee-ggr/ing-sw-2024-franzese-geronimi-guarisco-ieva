@@ -1,5 +1,6 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.helpers.DeckFactory;
 import it.polimi.ingsw.helpers.parsers.GoldCardParser;
 import it.polimi.ingsw.helpers.parsers.StdCardParser;
