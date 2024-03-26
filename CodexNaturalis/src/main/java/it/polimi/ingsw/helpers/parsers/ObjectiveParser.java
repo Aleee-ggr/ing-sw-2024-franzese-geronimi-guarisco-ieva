@@ -44,9 +44,10 @@ public class ObjectiveParser implements JsonParser<ArrayList<Objective>> {
 
             int id = jsonObjective.get("id").getAsInt();
 
-            String type = jsonObjective.get("type").getAsString();
-            int points =  jsonObjective.get("points").getAsInt();
 
+            String type = jsonObjective.get("type").getAsString();
+
+            int points =  jsonObjective.get("points").getAsInt();
 
             Function<Game, Integer> point_function = switch (type) {
                 case "resources" -> new FunctionBuilder()
@@ -89,7 +90,8 @@ public class ObjectiveParser implements JsonParser<ArrayList<Objective>> {
         JsonArray array = pattern.getAsJsonArray();
         int i = 0;
         for (JsonElement res : array) {
-            out[i % 3][i / 3] = getResource(res);
+            out[i / 3][i % 3] = getResource(res);
+            i++;
         }
         return out;
     }
