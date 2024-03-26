@@ -6,6 +6,12 @@ import it.polimi.ingsw.model.enums.Resource;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Represents a starting card in the game.
+ * Extends the base class Card and contains additional information about back corners and front resources.
+ * @author Samuele Franzese
+ */
+
 public class StartingCard extends Card{
     private Corner[] backCorners = new Corner[GameConsts.numCorners];
     private ArrayList<Resource> frontResources;

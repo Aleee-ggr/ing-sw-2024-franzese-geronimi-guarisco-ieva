@@ -7,6 +7,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
+/**
+ * Represents a gold card in the game.
+ * Extends the ColoredCard class and adds information about requirements and a function to calculate the score.
+ * @author Samuele Franzese
+ */
 public class GoldCard extends ColoredCard{
     private final ConcurrentHashMap<Resource, Integer> requirements;
     private final Function<Game, Integer> calculateScore;
