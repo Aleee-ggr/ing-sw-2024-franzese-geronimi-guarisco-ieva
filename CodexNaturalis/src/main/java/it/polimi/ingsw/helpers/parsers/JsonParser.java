@@ -13,7 +13,7 @@ public interface JsonParser<Class> {
 
     /**
      * Load a file from the given path in the parser so that it can be later parsed
-     * also see {@link #parse()} method for more details
+     * @see #parse()
      * @param path path of the file from which to load the data for the cards
      * @throws IOException Throws exception when the given file is missing
      */

@@ -3,20 +3,28 @@ package it.polimi.ingsw.helpers.builders;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.enums.Resource;
 
+import java.util.Map;
 import java.util.function.Function;
 
 public class FunctionBuilder {
     private int points;
     private String type;
-    private Resource resource;
+    private  Map<Resource, Integer> resources;
     private Resource[][] pattern;
-    public FunctionBuilder setPoints(int points) {
-        this.points = points;
+
+    private Resource resource;
+
+    public Map<Resource, Integer> getResources() {
+        return resources;
+    }
+
+    public FunctionBuilder setResources(Map<Resource, Integer> resources) {
+        this.resources = resources;
         return this;
     }
 
-    public FunctionBuilder setResource(Resource resource) {
-        this.resource = resource;
+    public FunctionBuilder setPoints(int points) {
+        this.points = points;
         return this;
     }
 
@@ -41,5 +49,14 @@ public class FunctionBuilder {
                     return points;
                 };
         }
+    }
+
+    public Resource getResource() {
+        return resource;
+    }
+
+    public FunctionBuilder setResource(Resource resource) {
+        this.resource = resource;
+        return this;
     }
 }
