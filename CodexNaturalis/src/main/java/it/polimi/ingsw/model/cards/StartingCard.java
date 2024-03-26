@@ -13,8 +13,8 @@ import java.util.Arrays;
  */
 
 public class StartingCard extends Card{
-    private Corner[] backCorners = new Corner[GameConsts.numCorners];
-    private ArrayList<Resource> frontResources;
+    private final Corner[] backCorners;
+    private final ArrayList<Resource> frontResources;
     public StartingCard(int id, Corner[] frontCorners, Corner[] backCorners, ArrayList<Resource> frontResources) {
         super(id, frontCorners);
         this.backCorners = backCorners;
@@ -25,7 +25,36 @@ public class StartingCard extends Card{
         return Arrays.copyOf(backCorners, GameConsts.numCorners);
     }
 
-    public Resource[] getFrontResources() {
-        return null;
+    public ArrayList<Resource> getFrontResources() {
+        return frontResources;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder out = new StringBuilder();
+
+        out.append("id: ").append(getId())
+                .append("\nresources:");
+        for (var resource : getFrontResources()) {
+            out.append("\n\t").append(resource);
+        }
+
+        out.append("\nfront corners:");
+        for (var corner : this.getFrontCorners()) {
+            out.append("\n\tcorner: ")
+                    .append(corner.isCoverable())
+                    .append(" ")
+                    .append(corner.getCornerResource());
+        }
+
+        out.append("\nback corners:");
+        for (var corner : this.getBackCorners()) {
+            out.append("\n\tcorner: ")
+                    .append(corner.isCoverable())
+                    .append(" ")
+                    .append(corner.getCornerResource());
+        }
+
+        return out.toString();
     }
 }
