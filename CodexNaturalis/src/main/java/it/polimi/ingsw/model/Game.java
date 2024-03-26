@@ -2,14 +2,11 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.model.board.SharedBoard;
-import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.enums.GameState;
 import it.polimi.ingsw.model.exceptions.ExistingUsernameException;
 import it.polimi.ingsw.model.exceptions.TooManyPlayersException;
 import it.polimi.ingsw.model.player.Player;
 
-import java.sql.ShardingKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
