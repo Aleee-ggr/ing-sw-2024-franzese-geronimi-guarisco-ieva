@@ -27,7 +27,11 @@ public final class Player {
      * */
     public Player(String username, Game currentGame) {
         this.username = username;
-        joinGame(currentGame);
+        this.game = currentGame;
+        this.score = 0;
+        for (Resource r : Resource.values()){
+            playerResources.put(r, 0);
+        }
     }
 
     public String getUsername() {
@@ -111,14 +115,6 @@ public final class Player {
     /**
      * TODO: methods to implement
      */
-    private void joinGame(Game currentGame){
-        this.game = currentGame;
-        this.score = 0;
-        for (Resource r : Resource.values()){
-            playerResources.put(r, 0);
-        }
-    }
-
     public void playCard(Card playedCard){
 
     }
