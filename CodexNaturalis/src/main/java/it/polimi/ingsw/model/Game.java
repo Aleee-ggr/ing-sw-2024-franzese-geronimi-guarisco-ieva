@@ -13,8 +13,11 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Game Class
+ * Game Class for creating a game with id, players, numPlayers, gameState and SharedBoard.
  * @author Alessio Guarisco
+ * @see Player
+ * @see SharedBoard
+ * @see GameState
  * */
 public class Game {
     private final UUID id;

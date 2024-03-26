@@ -14,6 +14,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * Player Class is called by Game Class.
  * Contains the Player username, score, hiddenObjective, resources, hand and board.
  * @author Alessio Guarisco
+ * @see Game
+ * @see it.polimi.ingsw.model.cards.Deck
+ * @see Card
+ * @see Resource
+ * @see Objective
  * */
 public final class Player {
     private final String username;
