@@ -17,19 +17,36 @@ public abstract class Card {
     private Corner[] frontCorners = new Corner[GameConsts.numCorners];
     private boolean frontSideUp;
 
+     /**
+     * Constructor for the Card class.
+     * @param id Unique identifier of the card.
+     * @param frontCorners Array of corners on the front side of the card.
+     */
+
     public Card(int id, Corner[] frontCorners){
         this.id = id;
         this.frontCorners = frontCorners;
     }
-
+    /**
+     * Returns the identifier of the card.
+     * @return id of the card.
+     */
     public int getId(){
         return id;
     }
 
+    /**
+     * Checks if the front side of the card is facing up.
+     * @return True if the front side is facing up, otherwise false.
+     */
     public boolean isFrontSideUp(){
         return frontSideUp;
     }
 
+    /**
+     * Returns an array of corners on the front side of the card.
+     * @return Copy of the array of corners on the front side of the card.
+     */
     public Corner[] getFrontCorners() {
         return Arrays.copyOf(frontCorners, GameConsts.numCorners);
     }
