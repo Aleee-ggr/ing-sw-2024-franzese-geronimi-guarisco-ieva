@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Contains constants used throughout the game.
+ */
 public abstract class GameConsts {
     public static final HashMap<String, Resource> resourceMap = new HashMap<>() {{
         put("FUNGI", Resource.FUNGI);
