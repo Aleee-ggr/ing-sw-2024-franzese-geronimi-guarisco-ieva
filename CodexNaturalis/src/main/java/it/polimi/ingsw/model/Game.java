@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.model.board.SharedBoard;
+import it.polimi.ingsw.model.cards.FullDeck;
 import it.polimi.ingsw.model.enums.GameState;
 import it.polimi.ingsw.model.exceptions.ExistingUsernameException;
 import it.polimi.ingsw.model.exceptions.TooManyPlayersException;
@@ -24,7 +25,7 @@ public class Game {
     private int numPlayers = 0;
     private final List<Player> players = new ArrayList<>();
     private GameState gameState;
-    private final SharedBoard GameBoard = new SharedBoard(null, null); //TODO add actual decks
+    private final SharedBoard GameBoard = new SharedBoard(FullDeck.getFullGoldDeck(), FullDeck.getFullStdDeck());
 
     public Game(UUID id) {
         this.id = id;
