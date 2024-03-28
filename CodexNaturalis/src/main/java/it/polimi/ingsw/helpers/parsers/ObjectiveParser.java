@@ -45,15 +45,25 @@ public class ObjectiveParser implements JsonParser<Deck<Objective>> {
         for (JsonElement objective : jsonObjectives) {
             JsonObject jsonObjective = objective.getAsJsonObject();
 
-            int id = jsonObjective.get("id").getAsInt();
+            JsonElement jid = jsonObjective.get("id");
+            if (jid == null) {
+                throw new JsonFormatException("id: tag not found!");
+            }
+            Integer id = jid.getAsInt();
 
+            JsonElement jtype = jsonObjective.get("type");;
+            if (jtype == null) {
+                throw new JsonFormatException("type: tag not found!");
+            }
+            String type = jtype.getAsString();
 
-            String type = jsonObjective.get("type").getAsString();
-
-            int points =  jsonObjective.get("points").getAsInt();
+            JsonElement jpoints =  jsonObjective.get("points");
+            if (jpoints == null) {
+                throw new JsonFormatException("points: tag not found!");
+            }
+            int points = jpoints.getAsInt();
 
             Function<Player, Integer> point_function =  null;
-
             try {
                 point_function = switch (type) {
                     case "resources" -> new FunctionBuilder()
@@ -71,7 +81,7 @@ public class ObjectiveParser implements JsonParser<Deck<Objective>> {
                                     getPattern(jsonObjective.get("requirements"))
                             )
                             .build();
-                    default -> throw new IllegalStateException("Unexpected value: " + type);
+                    default -> throw new JsonFormatException("Unexpected value: %s for points".formatted(type));
                 };
             } catch (InvalidTypeException e) {
                 throw new JsonFormatException(e);
@@ -83,6 +93,11 @@ public class ObjectiveParser implements JsonParser<Deck<Objective>> {
         return new Deck<>(objectives);
     }
 
+    /**
+     * Get a map of the resources described by an objective
+     * @param resources a jsonElement with tag "resource"
+     * @return a map to associate the resource type to its amount
+     */
     private Map<Resource, Integer> getResources(JsonElement resources) {
         HashMap<Resource, Integer> resMap = new HashMap<>();
         JsonObject res = resources.getAsJsonObject();
@@ -94,6 +109,11 @@ public class ObjectiveParser implements JsonParser<Deck<Objective>> {
         return resMap;
     }
 
+    /**
+     * Parse a pattern from a list in the jsonElement with tag "pattern"
+     * @param pattern a jsonElement with tag "pattern"
+     * @return a 3x3 matrix of resources
+     */
     private Resource[][] getPattern(JsonElement pattern) {
         Resource[][] out = new Resource[3][3];
         JsonArray array = pattern.getAsJsonArray();

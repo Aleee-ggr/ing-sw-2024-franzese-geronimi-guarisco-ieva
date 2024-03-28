@@ -31,6 +31,7 @@ public interface JsonParser<Class> {
      * Returns a new object of the type specified by the parser from a json previously loaded in this object
      * @return a new object of the parser type by reading the json string obtained using
      * {@link #readFile(Path) readFile(path)} or {@link #readString(String) readString(json)}
+     * @throws JsonFormatException when it encounters some json tags it cannot parse
      */
     Class parse() throws JsonFormatException;
 
