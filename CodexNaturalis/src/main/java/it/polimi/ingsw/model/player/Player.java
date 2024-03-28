@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.player;
 
-import com.google.gson.JsonObject;
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.Card;
@@ -8,6 +7,7 @@ import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
 
 import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @see Resource
  * @see Objective
  * */
-public final class Player {
+public class Player {
     private final String username;
     private int score;
     private int[][] board;
@@ -62,8 +62,8 @@ public final class Player {
         return hiddenObjective;
     }
 
-    public ConcurrentHashMap<Resource, Integer> getResources() {
-        return (ConcurrentHashMap<Resource, Integer>) Collections.unmodifiableMap(playerResources);
+    public Map<Resource, Integer> getResources() {
+        return Collections.unmodifiableMap(playerResources);
     }
 
     public void setScore(int score) {
@@ -73,7 +73,6 @@ public final class Player {
     public void setHiddenObjective(Objective hiddenObjective) {
         this.hiddenObjective = hiddenObjective;
     }
-
 
     /**
      * Method to draw from one of the two decks in the SharedBoard of the Game <br/>

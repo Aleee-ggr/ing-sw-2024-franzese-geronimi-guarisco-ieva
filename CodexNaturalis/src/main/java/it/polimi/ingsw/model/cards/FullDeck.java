@@ -2,11 +2,7 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.helpers.parsers.GoldCardParser;
-import it.polimi.ingsw.helpers.parsers.ObjectiveParser;
-import it.polimi.ingsw.helpers.parsers.StartingParser;
 import it.polimi.ingsw.helpers.parsers.StdCardParser;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.objectives.Objective;
 
 import java.nio.file.Path;
 
