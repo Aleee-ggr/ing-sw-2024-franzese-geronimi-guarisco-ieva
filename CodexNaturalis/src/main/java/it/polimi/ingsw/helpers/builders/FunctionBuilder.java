@@ -19,7 +19,6 @@ public class FunctionBuilder {
     private String type;
     private  Map<Resource, Integer> resources;
     private Resource[][] pattern;
-
     private Resource resource;
 
 
