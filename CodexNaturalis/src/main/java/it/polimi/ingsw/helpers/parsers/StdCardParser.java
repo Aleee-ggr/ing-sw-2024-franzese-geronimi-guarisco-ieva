@@ -1,6 +1,7 @@
 package it.polimi.ingsw.helpers.parsers;
 
 import com.google.gson.*;
+import it.polimi.ingsw.helpers.exceptions.JsonFormatException;
 import it.polimi.ingsw.model.cards.Corner;
 import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.cards.StdCard;
@@ -25,7 +26,7 @@ public class StdCardParser implements JsonParser<Deck<StdCard>> {
     }
 
     @Override
-    public Deck<StdCard> parse() {
+    public Deck<StdCard> parse() throws JsonFormatException {
         Gson gson = new Gson();
         JsonArray cards = gson.fromJson(json, JsonObject.class)
                 .getAsJsonArray("stdcards");

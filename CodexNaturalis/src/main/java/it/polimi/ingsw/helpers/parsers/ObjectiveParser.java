@@ -5,6 +5,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.helpers.builders.FunctionBuilder;
+import it.polimi.ingsw.helpers.exceptions.InvalidTypeException;
+import it.polimi.ingsw.helpers.exceptions.JsonFormatException;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.model.player.Player;
@@ -33,7 +35,7 @@ public class ObjectiveParser implements JsonParser<ArrayList<Objective>> {
     }
 
     @Override
-    public ArrayList<Objective> parse() {
+    public ArrayList<Objective> parse() throws JsonFormatException {
         Gson gson = new Gson();
         JsonArray jsonObjectives = gson.fromJson(json, JsonObject.class)
                 .getAsJsonArray("objectives");
@@ -49,24 +51,30 @@ public class ObjectiveParser implements JsonParser<ArrayList<Objective>> {
 
             int points =  jsonObjective.get("points").getAsInt();
 
-            Function<Player, Integer> point_function = switch (type) {
-                case "resources" -> new FunctionBuilder()
-                        .setType(type)
-                        .setPoints(points)
-                        .setResources(
-                                getResources(jsonObjective.get("requirements"))
-                        )
-                        .build();
+            Function<Player, Integer> point_function =  null;
 
-                case "pattern" -> new FunctionBuilder()
-                        .setType(type)
-                        .setPoints(points)
-                        .setPattern(
-                                getPattern(jsonObjective.get("requirements"))
-                        )
-                        .build();
-                default -> throw new IllegalStateException("Unexpected value: " + type);
-            };
+            try {
+                switch (type) {
+                    case "resources" -> new FunctionBuilder()
+                            .setType(type)
+                            .setPoints(points)
+                            .setResources(
+                                    getResources(jsonObjective.get("requirements"))
+                            )
+                            .build();
+
+                    case "pattern" -> new FunctionBuilder()
+                            .setType(type)
+                            .setPoints(points)
+                            .setPattern(
+                                    getPattern(jsonObjective.get("requirements"))
+                            )
+                            .build();
+                    default -> throw new IllegalStateException("Unexpected value: " + type);
+                };
+            } catch (InvalidTypeException e) {
+                throw new JsonFormatException(e);
+            }
 
             objectives.add(new Objective(point_function));
         }

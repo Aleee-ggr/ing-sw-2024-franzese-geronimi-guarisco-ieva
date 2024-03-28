@@ -6,7 +6,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.helpers.builders.FunctionBuilder;
-import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.helpers.exceptions.InvalidTypeException;
+import it.polimi.ingsw.helpers.exceptions.JsonFormatException;
 import it.polimi.ingsw.model.cards.Corner;
 import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.cards.GoldCard;
@@ -35,7 +36,7 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
     }
 
     @Override
-    public Deck<GoldCard> parse() {
+    public Deck<GoldCard> parse() throws JsonFormatException {
         Gson gson = new Gson();
         JsonArray cards = gson.fromJson(json, JsonObject.class)
                 .getAsJsonArray("goldcards");
@@ -55,6 +56,7 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
             Function<Player, Integer> point_calculator = getPointCalculator(
                     card_obj.getAsJsonObject("points")
             );
+
             Corner[] corners = getCorners(
                     card_obj.getAsJsonArray("corners")
             );
@@ -99,18 +101,22 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
      *  {@link JsonObject#getAsJsonObject(String) card_obj.getAsJsonObject("points")}
      * @return a map of requirements for the card constructor
      */
-    private Function<Player, Integer> getPointCalculator(JsonObject points) {
+    private Function<Player, Integer> getPointCalculator(JsonObject points) throws JsonFormatException {
         String type = points.get("type").getAsString();
-        return switch (type) {
-            case "none", "cover" -> new FunctionBuilder()
-                    .setType(type)
-                    .setPoints(points.get("value").getAsInt())
-                    .build();
-            default -> new FunctionBuilder()
-                    .setType(type)
-                    .setPoints(points.get("value").getAsInt())
-                    .setResource(getResource(points.get("type")))
-                    .build();
-        };
+        try {
+            return switch (type) {
+                case "none", "cover" -> new FunctionBuilder()
+                        .setType(type)
+                        .setPoints(points.get("value").getAsInt())
+                        .build();
+                default -> new FunctionBuilder()
+                        .setType(type)
+                        .setPoints(points.get("value").getAsInt())
+                        .setResource(getResource(points.get("type")))
+                        .build();
+            };
+        } catch (InvalidTypeException e) {
+            throw new JsonFormatException(e);
+        }
     }
 }

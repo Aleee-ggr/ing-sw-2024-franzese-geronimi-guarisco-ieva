@@ -1,12 +1,29 @@
 package it.polimi.ingsw.helpers.builders;
 
+import it.polimi.ingsw.helpers.exceptions.InvalidTypeException;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.player.Player;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
 public class FunctionBuilder {
+
+    private static final String[] validTypes = {
+            "none",
+            "pattern",
+            "resources",
+            "FUNGI",
+            "PLANT",
+            "INSECT",
+            "ANIMAL",
+            "QUILL",
+            "INKWELL",
+            "MANUSCRIPT"
+    };
     private int points;
     private String type;
     private  Map<Resource, Integer> resources;
@@ -33,22 +50,42 @@ public class FunctionBuilder {
         return this;
     }
 
-    public FunctionBuilder setType(String type) {
+    public FunctionBuilder setType(String type) throws InvalidTypeException {
+        if (!Arrays.asList(validTypes).contains(type)) {
+            throw new InvalidTypeException(type + " is not a valid type");
+        }
         this.type = type;
         return this;
     }
 
     public Function<Player, Integer> build() {
-        switch (type) {
-            case "none":
-                return (Player player) -> points;
+        return switch (type) {
+            case "none" ->
+                    (Player player) -> points;
 
-            default:
-                return (Player player) -> {
+            case "pattern" ->
+                    (Player player) -> {
                     //TODO implement the actual function
                     return points;
                 };
-        }
+
+            case "resources" ->
+                (Player player) -> {
+                    Map<Resource, Integer> playerResources = player.getResources();
+                    int resourcePoints;
+                    Map<Resource, Integer> result = new HashMap<>();
+                    for (Resource res : resources.keySet()) {
+                        resourcePoints = (playerResources.get(res) / resources.get(res)) * points;
+                        result.put(res, resourcePoints);
+                    }
+                    return Collections.min(result.values());
+                };
+            default ->
+                (Player player) -> {
+                    Map<Resource, Integer> playerResources = player.getResources();
+                    return playerResources.get(resource) * points;
+                };
+        };
     }
 
     public Resource getResource() {

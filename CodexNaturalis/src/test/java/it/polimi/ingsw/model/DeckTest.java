@@ -1,41 +1,23 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.helpers.DeckFactory;
-import it.polimi.ingsw.helpers.parsers.GoldCardParser;
-import it.polimi.ingsw.helpers.parsers.StdCardParser;
 import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.cards.GoldCard;
 import it.polimi.ingsw.model.cards.StdCard;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
-
-import java.io.IOException;
-import java.nio.file.Path;
 
 public class DeckTest {
     private Deck<GoldCard> goldDeck;
     private Deck<StdCard> stdDeck;
-    private StdCardParser stdParser;
-    private GoldCardParser goldParser;
+
     private Deck<StdCard> stdDeckFull;
     private Deck<GoldCard> goldDeckFull;
 
-    @Before
-    public void initializeParsers() {
-        stdParser = new StdCardParser();
-        goldParser = new GoldCardParser();
-
-        Path cardJsonPath = Path.of(GameConsts.cardJsonPath);
-
-        try {
-            stdParser.readFile(cardJsonPath);
-            goldParser.readFile(cardJsonPath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    @BeforeClass
+    public static void initializeParsers() {
+        DeckFactory.setupParser();
     }
     @Test
     public void isEmpty() {
@@ -48,8 +30,8 @@ public class DeckTest {
 
     @Test
     public void drawFromDeck() {
-        stdDeckFull = stdParser.parse();
-        goldDeckFull = goldParser.parse();
+        stdDeckFull = DeckFactory.fullStd();
+        goldDeckFull = DeckFactory.fullGold();
 
         Assert.assertNotNull(stdDeckFull.draw());
         Assert.assertNotNull(goldDeckFull.draw());
@@ -65,8 +47,8 @@ public class DeckTest {
 
     @Test
     public void drawUntilEmpty() {
-        stdDeckFull = stdParser.parse();
-        goldDeckFull = goldParser.parse();
+        stdDeckFull = DeckFactory.fullStd();
+        goldDeckFull = DeckFactory.fullGold();
 
         while(!stdDeckFull.isEmpty()){
             Assert.assertNotNull(stdDeckFull.draw());
@@ -81,11 +63,10 @@ public class DeckTest {
 
     @Test
     public void shuffle(){
-
-        Deck<StdCard> stdDeckFull = stdParser.parse();
-        Deck<GoldCard> goldDeckFull = goldParser.parse();
-        Deck<StdCard> stdDeckOriginal = stdParser.parse();
-        Deck<GoldCard> goldDeckOriginal = goldParser.parse();
+        Deck<StdCard> stdDeckFull = DeckFactory.fullStd();
+        Deck<GoldCard> goldDeckFull = DeckFactory.fullGold();
+        Deck<StdCard> stdDeckOriginal = DeckFactory.fullStd();
+        Deck<GoldCard> goldDeckOriginal = DeckFactory.fullGold();
 
         stdDeckFull.shuffle();
         goldDeckFull.shuffle();

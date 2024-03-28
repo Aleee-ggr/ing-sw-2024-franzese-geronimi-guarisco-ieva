@@ -3,6 +3,7 @@ package it.polimi.ingsw.helpers.parsers;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import it.polimi.ingsw.GameConsts;
+import it.polimi.ingsw.helpers.exceptions.JsonFormatException;
 import it.polimi.ingsw.model.cards.Corner;
 import it.polimi.ingsw.model.enums.Resource;
 
@@ -31,7 +32,7 @@ public interface JsonParser<Class> {
      * @return a new object of the parser type by reading the json string obtained using
      * {@link #readFile(Path) readFile(path)} or {@link #readString(String) readString(json)}
      */
-    Class parse();
+    Class parse() throws JsonFormatException;
 
     /**
      * Parse the resource data within the card json to use for both the goldCard and the stdCard constructors.<br/>
