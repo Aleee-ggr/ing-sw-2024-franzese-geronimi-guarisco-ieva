@@ -16,6 +16,7 @@ public class FunctionBuilder {
             "none",
             "pattern",
             "resources",
+            "cover",
             "FUNGI",
             "PLANT",
             "INSECT",
@@ -61,13 +62,20 @@ public class FunctionBuilder {
     public Function<Player, Integer> build() {
         return switch (type) {
             case "none" ->
-                    (Player player) -> points;
+                (Player player) -> points;
 
             case "pattern" ->
-                    (Player player) -> {
+                (Player player) -> {
                     //TODO implement the actual function
                     return points;
                 };
+
+            case "cover" ->
+                (Player player) -> {
+                    //TODO implement the actual function
+                    return points;
+                };
+
 
             case "resources" ->
                 (Player player) -> {

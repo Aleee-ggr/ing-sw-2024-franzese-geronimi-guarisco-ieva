@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import it.polimi.ingsw.helpers.builders.FunctionBuilder;
 import it.polimi.ingsw.helpers.exceptions.InvalidTypeException;
 import it.polimi.ingsw.helpers.exceptions.JsonFormatException;
+import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.model.player.Player;
@@ -21,7 +22,7 @@ import java.util.function.Function;
 
 import static it.polimi.ingsw.GameConsts.resourceMap;
 
-public class ObjectiveParser implements JsonParser<ArrayList<Objective>> {
+public class ObjectiveParser implements JsonParser<Deck<Objective>> {
     private String json;
 
     @Override
@@ -35,7 +36,7 @@ public class ObjectiveParser implements JsonParser<ArrayList<Objective>> {
     }
 
     @Override
-    public ArrayList<Objective> parse() throws JsonFormatException {
+    public Deck<Objective> parse() throws JsonFormatException {
         Gson gson = new Gson();
         JsonArray jsonObjectives = gson.fromJson(json, JsonObject.class)
                 .getAsJsonArray("objectives");
@@ -79,7 +80,7 @@ public class ObjectiveParser implements JsonParser<ArrayList<Objective>> {
             objectives.add(new Objective(point_function));
         }
 
-        return objectives;
+        return new Deck<>(objectives);
     }
 
     private Map<Resource, Integer> getResources(JsonElement resources) {
