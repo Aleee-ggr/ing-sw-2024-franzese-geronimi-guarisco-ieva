@@ -34,13 +34,30 @@ public class StdCardParser implements JsonParser<Deck<StdCard>> {
 
         for (JsonElement card : cards) {
             JsonObject card_obj = card.getAsJsonObject();
-            int id = card_obj.get("id").getAsInt();
-            Resource resource = getResource(card_obj.get("resource"));
-            int points = card_obj.get("points").getAsInt();
+            JsonElement jid = card_obj.get("id");
+            if (jid == null) {
+                throw new JsonFormatException("id: tag not found");
+            }
+            int id = jid.getAsInt();
 
-            Corner[] corners = getCorners(
-                    card_obj.getAsJsonArray("corners")
-            );
+            JsonElement jres = card_obj.get("resource");
+            if (jres == null) {
+                throw new JsonFormatException("resource: tag not found");
+            }
+            Resource resource = getResource(jres);
+
+            JsonElement jpoints = card_obj.get("points");
+            if (jpoints == null) {
+                throw new JsonFormatException("points: tag not found");
+            }
+            int points = jpoints.getAsInt();
+
+            JsonArray jcorners = card_obj.getAsJsonArray("corners");
+            if (jcorners == null) {
+                throw new JsonFormatException("corners: tag not found!");
+            }
+            Corner[] corners = getCorners(jcorners);
+            
             deck.add(
                     new StdCard(id, corners, resource, points == 1)
             );
