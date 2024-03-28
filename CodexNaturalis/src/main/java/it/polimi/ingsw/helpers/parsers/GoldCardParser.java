@@ -45,21 +45,35 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
         for (JsonElement card : cards) {
             JsonObject card_obj = card.getAsJsonObject();
 
-            int id = card_obj.get("id").getAsInt();
+            JsonElement jid = card_obj.get("id");
+            if (jid == null) {
+                throw new JsonFormatException("id: tag not found!");
+            }
+            int id = jid.getAsInt();
 
-            Resource resource = getResource(
-                    card_obj.get("resource")
-            );
-            Map<Resource, Integer> card_requirements = getRequirements(
-                    card_obj.getAsJsonObject("requirements")
-            );
-            Function<Player, Integer> point_calculator = getPointCalculator(
-                    card_obj.getAsJsonObject("points")
-            );
+            JsonElement jres = card_obj.get("resource");
+            if (jres == null) {
+                throw new JsonFormatException("resource: tag not found!");
+            }
+            Resource resource = getResource(jres);
 
-            Corner[] corners = getCorners(
-                    card_obj.getAsJsonArray("corners")
-            );
+            JsonObject jreq = card_obj.getAsJsonObject("requirements");
+            if (jreq == null) {
+                throw new JsonFormatException("requirements: tag not found!");
+            }
+            Map<Resource, Integer> card_requirements = getRequirements(jreq);
+
+            JsonObject jpoints = card_obj.getAsJsonObject("points");
+            if (jpoints == null) {
+                throw new JsonFormatException("points: tag not found!");
+            }
+            Function<Player, Integer> point_calculator = getPointCalculator(jpoints);
+
+            JsonArray jcorners = card_obj.getAsJsonArray("corners");
+            if (jcorners == null) {
+                throw new JsonFormatException("corners: tag not found!");
+            }
+            Corner[] corners = getCorners(jcorners);
 
             deck.add(
                     new GoldCard(id, corners, resource, card_requirements, point_calculator)
