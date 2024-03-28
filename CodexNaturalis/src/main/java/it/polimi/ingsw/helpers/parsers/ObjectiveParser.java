@@ -55,7 +55,7 @@ public class ObjectiveParser implements JsonParser<Deck<Objective>> {
             Function<Player, Integer> point_function =  null;
 
             try {
-                switch (type) {
+                point_function = switch (type) {
                     case "resources" -> new FunctionBuilder()
                             .setType(type)
                             .setPoints(points)

@@ -110,7 +110,7 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
                         .setPoints(points.get("value").getAsInt())
                         .build();
                 default -> new FunctionBuilder()
-                        .setType(type)
+                        .setType("resource")
                         .setPoints(points.get("value").getAsInt())
                         .setResource(getResource(points.get("type")))
                         .build();
