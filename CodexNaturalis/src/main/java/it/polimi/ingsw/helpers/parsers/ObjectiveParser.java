@@ -63,7 +63,7 @@ public class ObjectiveParser implements JsonParser<Deck<Objective>> {
             }
             int points = jpoints.getAsInt();
 
-            Function<Player, Integer> point_function =  null;
+            Function<Player, Integer> point_function;
             try {
                 point_function = switch (type) {
                     case "resources" -> new FunctionBuilder()
@@ -87,7 +87,7 @@ public class ObjectiveParser implements JsonParser<Deck<Objective>> {
                 throw new JsonFormatException(e);
             }
 
-            objectives.add(new Objective(point_function));
+            objectives.add(new Objective(point_function, id));
         }
 
         return new Deck<>(objectives);

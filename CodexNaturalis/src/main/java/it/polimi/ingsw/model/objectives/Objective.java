@@ -11,13 +11,15 @@ import java.util.function.Function;
  */
 public class Objective {
     private final Function<Player, Integer> pointCalculator;
+    private final int id;
 
     /**
      * Constructs a new Objective with the specified point calculator function.
      * @param pointCalculator The function to calculate points for the objective based on the player.
      */
-    public Objective(Function<Player, Integer> pointCalculator) {
+    public Objective(Function<Player, Integer> pointCalculator, int id) {
         this.pointCalculator = pointCalculator;
+        this.id = id;
     }
 
     /**
