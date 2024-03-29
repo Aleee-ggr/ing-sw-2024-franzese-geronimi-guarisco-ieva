@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import it.polimi.ingsw.helpers.exceptions.JsonFormatException;
 import it.polimi.ingsw.model.cards.Corner;
 import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.cards.StartingCard;
@@ -28,7 +29,7 @@ public class StartingParser implements JsonParser<Deck<StartingCard>> {
     }
 
     @Override
-    public Deck<StartingCard> parse() {
+    public Deck<StartingCard> parse() throws JsonFormatException {
         Gson gson = new Gson();
         JsonArray cards = gson.fromJson(json, JsonObject.class)
                 .getAsJsonArray("startingcards");
@@ -36,19 +37,30 @@ public class StartingParser implements JsonParser<Deck<StartingCard>> {
 
         for (JsonElement card : cards) {
             JsonObject card_obj = card.getAsJsonObject();
-            int id = card_obj.get("id").getAsInt();
+            JsonElement jid = card_obj.get("id");
+            if (jid == null) {
+                throw new JsonFormatException("id: tag not found");
+            }
+            int id = jid.getAsInt();
 
-            ArrayList<Resource> frontResources = getFrontResources(
-                    card_obj.getAsJsonArray("resource")
-            );
+            JsonArray jres = card_obj.getAsJsonArray("resource");
+            if (jres == null) {
+                throw new JsonFormatException("resource: tag not found");
+            }
+            ArrayList<Resource> frontResources = getFrontResources(jres);
 
-            Corner[] frontCorners = getCorners(
-                    card_obj.getAsJsonArray("frontcorners")
-            );
+            JsonArray jfcorners = card_obj.getAsJsonArray("frontcorners");
+            if (jfcorners == null) {
+                throw new JsonFormatException("frontcorners: tag not found!");
+            }
+            Corner[] frontCorners = getCorners(jfcorners);
 
-            Corner[] backCorners = getCorners(
-                    card_obj.getAsJsonArray("backcorners")
-            );
+            JsonArray jbcorners = card_obj.getAsJsonArray("backcorners");
+            if (jbcorners == null) {
+                throw new JsonFormatException("corners: tag not found!");
+            }
+            Corner[] backCorners = getCorners(jbcorners);
+
 
             deck.add(new StartingCard(id, frontCorners, backCorners, frontResources));
         }
