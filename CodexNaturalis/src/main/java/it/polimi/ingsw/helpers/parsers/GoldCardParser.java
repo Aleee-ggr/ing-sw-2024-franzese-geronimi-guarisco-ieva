@@ -67,7 +67,7 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
             if (jpoints == null) {
                 throw new JsonFormatException("points: tag not found!");
             }
-            Function<Player, Integer> point_calculator = getPointCalculator(jpoints);
+            Function<Player, Integer> point_calculator = getPointCalculator(jpoints, id);
 
             JsonArray jcorners = card_obj.getAsJsonArray("corners");
             if (jcorners == null) {
@@ -115,13 +115,18 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
      *  {@link JsonObject#getAsJsonObject(String) card_obj.getAsJsonObject("points")}
      * @return a map of requirements for the card constructor
      */
-    private Function<Player, Integer> getPointCalculator(JsonObject points) throws JsonFormatException {
+    private Function<Player, Integer> getPointCalculator(JsonObject points, int id) throws JsonFormatException {
         String type = points.get("type").getAsString();
         try {
             return switch (type) {
-                case "none", "cover" -> new FunctionBuilder()
+                case "none" -> new FunctionBuilder()
                         .setType(type)
                         .setPoints(points.get("value").getAsInt())
+                        .build();
+                case "cover" -> new FunctionBuilder()
+                        .setType(type)
+                        .setPoints(points.get("value").getAsInt())
+                        .setCardId(id)
                         .build();
                 default -> new FunctionBuilder()
                         .setType("resource")
