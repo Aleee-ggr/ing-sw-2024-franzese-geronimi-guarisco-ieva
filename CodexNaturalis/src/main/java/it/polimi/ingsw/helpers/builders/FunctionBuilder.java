@@ -81,7 +81,7 @@ public class FunctionBuilder {
      * to choose the strategy used to calculate the player score.
      * @param type the type of the function calculation
      * @return this object
-     * @throws InvalidTypeException
+     * @throws InvalidTypeException when the type is not included in {@link #getValidTypes()}
      */
     public FunctionBuilder setType(String type) throws InvalidTypeException {
         if (!Arrays.asList(validTypes).contains(type)) {
@@ -109,7 +109,7 @@ public class FunctionBuilder {
      * @see #setType(String)
      * @see Player
      * @return a function of the given type to calculate a player score
-     * @throws InvalidTypeException
+     * @throws InvalidTypeException when the type is not included in {@link #getValidTypes()}
      */
     public Function<Player, Integer> build() throws InvalidTypeException {
         return switch (type) {
