@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.helpers.DeckFactory;
 import it.polimi.ingsw.model.board.SharedBoard;
-import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.cards.GoldCard;
 import it.polimi.ingsw.model.cards.StdCard;
@@ -13,16 +13,15 @@ import org.junit.Test;
 public class SharedBoardTest {
     private Deck<GoldCard> goldDeck;
     private Deck<StdCard> stdDeck;
-    private Card[] visibleCards;
     private SharedBoard gameBoard;
 
     @Before
     public void initializeParsers() {
         DeckFactory.setupParser();
     }
-    
+
     @Test
-    public void areCardsOverEmptyDecks() {
+    public void areCardsOverEmptyDecksAndVisibleCards() {
         goldDeck = DeckFactory.emptyGold();
         stdDeck = DeckFactory.emptyStd();
         gameBoard = new SharedBoard(goldDeck, stdDeck);
@@ -31,10 +30,23 @@ public class SharedBoardTest {
     }
 
     @Test
-    public void areCardsOverFullDecks() {
+    public void areCardsOverFullDecksAndEmptyVisibleCards() {
         goldDeck = DeckFactory.fullGold();
         stdDeck = DeckFactory.fullStd();
         gameBoard = new SharedBoard(goldDeck, stdDeck);
+
+        Assert.assertFalse(gameBoard.areCardsOver());
+    }
+
+    @Test
+    public void areCardsOverFullDecksAndFullVisibleCards() {
+        goldDeck = DeckFactory.fullGold();
+        stdDeck = DeckFactory.fullStd();
+        gameBoard = new SharedBoard(goldDeck, stdDeck);
+
+        for (int i = 0; i < GameConsts.visibleCards; i++) {
+            gameBoard.substituteCard(i, i % 2 == 0);
+        }
 
         Assert.assertFalse(gameBoard.areCardsOver());
     }
