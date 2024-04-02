@@ -20,6 +20,7 @@ public class SharedBoardTest {
     public void initializeParsers() {
         DeckFactory.setupParser();
     }
+    
     @Test
     public void areCardsOverEmptyDecks() {
         goldDeck = DeckFactory.emptyGold();
@@ -27,5 +28,14 @@ public class SharedBoardTest {
         gameBoard = new SharedBoard(goldDeck, stdDeck);
 
         Assert.assertTrue(gameBoard.areCardsOver());
+    }
+
+    @Test
+    public void areCardsOverFullDecks() {
+        goldDeck = DeckFactory.fullGold();
+        stdDeck = DeckFactory.fullStd();
+        gameBoard = new SharedBoard(goldDeck, stdDeck);
+
+        Assert.assertFalse(gameBoard.areCardsOver());
     }
 }
