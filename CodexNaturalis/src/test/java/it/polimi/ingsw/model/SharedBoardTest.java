@@ -21,7 +21,7 @@ public class SharedBoardTest {
     }
 
     @Test
-    public void areCardsOverEmptyDecksAndVisibleCards() {
+    public void areCardsOverEmptyDecksAndEmptyVisibleCards() {
         goldDeck = DeckFactory.emptyGold();
         stdDeck = DeckFactory.emptyStd();
         gameBoard = new SharedBoard(goldDeck, stdDeck);
@@ -47,6 +47,17 @@ public class SharedBoardTest {
         for (int i = 0; i < GameConsts.visibleCards; i++) {
             gameBoard.substituteCard(i, i % 2 == 0);
         }
+
+        Assert.assertFalse(gameBoard.areCardsOver());
+    }
+
+    @Test
+    public void areCardsOverOneDeckEmptyAndNonEmptyVisibleCards() {
+        goldDeck = DeckFactory.fullGold();
+        stdDeck = DeckFactory.emptyStd();
+        gameBoard = new SharedBoard(goldDeck, stdDeck);
+
+        gameBoard.substituteCard(0, true);
 
         Assert.assertFalse(gameBoard.areCardsOver());
     }
