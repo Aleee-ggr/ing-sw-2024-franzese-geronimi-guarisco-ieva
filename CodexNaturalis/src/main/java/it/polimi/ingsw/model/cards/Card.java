@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.GameConsts;
-import it.polimi.ingsw.model.enums.Resource;
 
 import java.util.Arrays;
 
@@ -14,6 +13,8 @@ import java.util.Arrays;
 
 public abstract class Card {
     private final int id;
+
+    private final boolean isColored;
     private Corner[] frontCorners = new Corner[GameConsts.numCorners];
     private boolean frontSideUp;
 
@@ -23,10 +24,16 @@ public abstract class Card {
      * @param frontCorners Array of corners on the front side of the card.
      */
 
-    public Card(int id, Corner[] frontCorners){
+    public Card(int id, Corner[] frontCorners, boolean isColored){
+        this.isColored = isColored;
         this.id = id;
         this.frontCorners = frontCorners;
     }
+
+    public boolean isColored() {
+        return isColored;
+    }
+
     /**
      * Returns the identifier of the card.
      * @return id of the card.

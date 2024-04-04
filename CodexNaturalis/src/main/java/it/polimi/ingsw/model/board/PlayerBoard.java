@@ -20,6 +20,14 @@ public class PlayerBoard {
         this.lastPlacedPosition = new Coordinates(GameConsts.centralPoint.getX(), GameConsts.centralPoint.getY());
     }
 
+    public Coordinates getCenter() {
+        return new Coordinates(GameConsts.centralPoint.getX(), GameConsts.centralPoint.getY());
+    }
+
+    public Card getCard(Coordinates coordinates) {
+        return board[coordinates.getX()][coordinates.getY()];
+    }
+
     public Card[][] getBoard() {
         return board;
     }
@@ -59,7 +67,7 @@ public class PlayerBoard {
 
     }
 
-    private boolean isWithinBounds(Coordinates c){
+    public boolean isWithinBounds(Coordinates c){
         return c.getX() <= GameConsts.totalPlayableCards && c.getY() <= GameConsts.totalPlayableCards && c.getX() >= 0 && c.getY() >= 0;
     }
 

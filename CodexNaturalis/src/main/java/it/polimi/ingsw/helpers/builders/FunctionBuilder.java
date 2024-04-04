@@ -3,6 +3,8 @@ package it.polimi.ingsw.helpers.builders;
 import it.polimi.ingsw.helpers.exceptions.InvalidTypeException;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.board.PlayerBoard;
+import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.cards.ColoredCard;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.player.Player;
 
@@ -120,8 +122,42 @@ public class FunctionBuilder {
 
             case "pattern" ->
                     (Player player) -> {
-                        //TODO implement the actual function
-                        return points;
+                        Set<Coordinates> visited = new HashSet<>();
+                        Set<Coordinates> matchedSet = new HashSet<>();
+                        Set<Resource> resources = new HashSet<>();
+                        for (var row : pattern) {
+                            Arrays.stream(row)
+                                    .filter((Resource r)-> r!=Resource.NONE)
+                                    .forEach(resources::add);
+                        }
+
+                        Queue<Coordinates> queue = new ArrayDeque<>();
+                        PlayerBoard board = player.getPlayerBoard();
+                        visited.add(board.getCenter());
+
+                        int matched = 0;
+                        queue.add(board.getCenter());
+                        while (!queue.isEmpty()) {
+                            Coordinates current = queue.remove();
+                            if (visited.contains(current)) {
+                                continue;
+                            }
+                            visited.add(current);
+
+                            Card currentCard = board.getCard(current);
+                            if (currentCard.isColored() && resources.contains(
+                                            ((ColoredCard)currentCard).getBackResource())
+                            ) {
+                                //TODO match the pattern
+                            }
+                            for (Coordinates neighbor : current.getNeighbors()) {
+                                if (board.isWithinBounds(neighbor) &&
+                                        board.getCard(neighbor) != null) {
+                                    queue.add(neighbor);
+                                }
+                            }
+                        }
+                        return points * matched;
                     };
 
             case "cover" ->

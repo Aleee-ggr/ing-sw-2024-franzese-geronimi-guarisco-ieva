@@ -18,7 +18,7 @@ public abstract class ColoredCard extends Card{
      * @param backResource Resource on the back side of the card.
      */
     public ColoredCard(int id, Corner[] frontCorners, Resource backResource) {
-        super(id, frontCorners);
+        super(id, frontCorners, true);
         this.backResource = backResource;
     }
 

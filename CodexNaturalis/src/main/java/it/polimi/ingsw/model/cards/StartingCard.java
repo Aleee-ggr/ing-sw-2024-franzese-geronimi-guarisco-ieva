@@ -24,7 +24,7 @@ public class StartingCard extends Card{
      * @param frontResources List of resources in the middle of the card's front side.
      */
     public StartingCard(int id, Corner[] frontCorners, Corner[] backCorners, ArrayList<Resource> frontResources) {
-        super(id, frontCorners);
+        super(id, frontCorners, false);
         this.backCorners = backCorners;
         this.frontResources = frontResources;
     }
