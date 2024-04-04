@@ -1,6 +1,8 @@
 package it.polimi.ingsw.helpers.builders;
 
 import it.polimi.ingsw.helpers.exceptions.InvalidTypeException;
+import it.polimi.ingsw.model.board.Coordinates;
+import it.polimi.ingsw.model.board.PlayerBoard;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.player.Player;
 
@@ -116,10 +118,23 @@ public class FunctionBuilder {
             case "none" ->
                     (Player player) -> points;
 
-            case "pattern", "cover" ->
+            case "pattern" ->
                     (Player player) -> {
                         //TODO implement the actual function
                         return points;
+                    };
+
+            case "cover" ->
+                    (Player player) -> {
+                        PlayerBoard board = player.getPlayerBoard();
+                        Coordinates lastCoordinates = board.getLastPlacedPosition();
+                        int neighbor_count = 0;
+                        for (Coordinates neighbor : lastCoordinates.getNeighbors()) {
+                            if (board.getBoard()[neighbor.getX()][neighbor.getY()] != null) {
+                                neighbor_count++;
+                            }
+                        }
+                        return neighbor_count * points;
                     };
 
             case "resources" ->

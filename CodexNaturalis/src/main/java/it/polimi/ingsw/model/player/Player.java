@@ -4,6 +4,7 @@ import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.PlayerBoard;
 import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.cards.StartingCard;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
 
@@ -131,5 +132,9 @@ public class Player {
      */
     public void playCard(Card playedCard){
 
+    }
+
+    public void setFirstCard(StartingCard card) {
+        this.board = new PlayerBoard(card);
     }
 }

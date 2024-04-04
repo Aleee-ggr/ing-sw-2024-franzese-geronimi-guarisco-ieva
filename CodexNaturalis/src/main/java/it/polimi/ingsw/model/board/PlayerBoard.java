@@ -63,6 +63,15 @@ public class PlayerBoard {
         return c.getX() <= GameConsts.totalPlayableCards && c.getY() <= GameConsts.totalPlayableCards && c.getX() >= 0 && c.getY() >= 0;
     }
 
+    public void placeCard(Card card, Coordinates coordinates) {
+        if (!isWithinBounds(coordinates)) {
+            //TODO handle invalid placements
+            return;
+        }
+        lastPlacedPosition = coordinates;
+        board[coordinates.getX()][coordinates.getY()] = card;
+    }
+
     /**TODO:
      * placeCard
      * checkRequirements
