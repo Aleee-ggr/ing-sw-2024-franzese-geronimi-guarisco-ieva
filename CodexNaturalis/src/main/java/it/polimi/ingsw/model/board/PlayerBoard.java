@@ -33,23 +33,34 @@ public class PlayerBoard {
     }
 
     public List<Coordinates> checkPositions(){
+        boolean[][] visited = new boolean[GameConsts.totalPlayableCards][GameConsts.totalPlayableCards];
         ArrayList<Coordinates> possiblePlacements = new ArrayList<Coordinates>();
-        dfs(GameConsts.centralPoint,possiblePlacements);
+        dfs(GameConsts.centralPoint,possiblePlacements, visited);
         return possiblePlacements;
     }
 
-    private void dfs(Coordinates cellCoordinates, ArrayList<Coordinates> list){
-        if (board[cellCoordinates.getX()][cellCoordinates.getY()] == null) {
-            list.add(cellCoordinates);
+    private void dfs(Coordinates cellCoordinates, ArrayList<Coordinates> list, boolean[][] visited){
+        if(isWithinBounds(cellCoordinates) && !visited[cellCoordinates.getX()][cellCoordinates.getY()]){
+            visited[cellCoordinates.getX()][cellCoordinates.getY()] = true;
+            if (board[cellCoordinates.getX()][cellCoordinates.getY()] == null) {
+                list.add(cellCoordinates);
+                return;
+            }
+            if(board[cellCoordinates.getX()][cellCoordinates.getY()]==notFillable) {
+                return;
+            }
+            dfs(new Coordinates(cellCoordinates.getX(), cellCoordinates.getY()+1), list, visited);
+            dfs(new Coordinates(cellCoordinates.getX()+1, cellCoordinates.getY()), list, visited);
+            dfs(new Coordinates(cellCoordinates.getX(), cellCoordinates.getY()-1), list, visited);
+            dfs(new Coordinates(cellCoordinates.getX()-1, cellCoordinates.getY()), list, visited);
+        } else {
             return;
         }
-        if(board[cellCoordinates.getX()][cellCoordinates.getY()]==notFillable) {
-            return;
-        }
-        dfs(new Coordinates(cellCoordinates.getX(), cellCoordinates.getY()+1), list);
-        dfs(new Coordinates(cellCoordinates.getX()+1, cellCoordinates.getY()), list);
-        dfs(new Coordinates(cellCoordinates.getX(), cellCoordinates.getY()-1), list);
-        dfs(new Coordinates(cellCoordinates.getX()-1, cellCoordinates.getY()), list);
+
+    }
+
+    private boolean isWithinBounds(Coordinates c){
+        return c.getX() <= GameConsts.totalPlayableCards && c.getY() <= GameConsts.totalPlayableCards && c.getX() >= 0 && c.getY() >= 0;
     }
 
     /**TODO:
