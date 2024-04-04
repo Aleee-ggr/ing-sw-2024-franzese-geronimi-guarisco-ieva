@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.board.PlayerBoard;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
@@ -23,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Player {
     private final String username;
     private int score;
-    private int[][] board;
+    private PlayerBoard board;
     private Card[] hand;
     private Objective hiddenObjective;
     private final ConcurrentHashMap<Resource, Integer> playerResources = new ConcurrentHashMap<Resource, Integer>();
@@ -50,7 +51,7 @@ public class Player {
         return score;
     }
 
-    public int[][] getBoard() {
+    public PlayerBoard getPlayerBoard() {
         return board;
     }
 
