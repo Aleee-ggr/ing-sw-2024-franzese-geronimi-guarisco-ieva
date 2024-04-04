@@ -26,13 +26,15 @@ public class ObjectiveParser implements JsonParser<Deck<Objective>> {
     private String json;
 
     @Override
-    public void readFile(Path path) throws IOException {
+    public ObjectiveParser readFile(Path path) throws IOException {
         json = Files.readString(path);
+        return this;
     }
 
     @Override
-    public void readString(String json) {
+    public ObjectiveParser readString(String json) {
         this.json = json;
+        return this;
     }
 
     @Override

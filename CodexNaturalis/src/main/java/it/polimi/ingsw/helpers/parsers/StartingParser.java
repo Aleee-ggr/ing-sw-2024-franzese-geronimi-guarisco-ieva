@@ -19,13 +19,15 @@ public class StartingParser implements JsonParser<Deck<StartingCard>> {
     private String json;
 
     @Override
-    public void readFile(Path path) throws IOException {
+    public StartingParser readFile(Path path) throws IOException {
         json = Files.readString(path);
+        return this;
     }
 
     @Override
-    public void readString(String json) {
+    public StartingParser readString(String json) {
         this.json = json;
+        return this;
     }
 
     @Override

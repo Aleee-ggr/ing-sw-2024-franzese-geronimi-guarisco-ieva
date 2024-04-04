@@ -18,13 +18,13 @@ public interface JsonParser<Class> {
      * @param path path of the file from which to load the data for the cards
      * @throws IOException Throws exception when the given file is missing
      */
-    void readFile(Path path) throws IOException;
+    JsonParser<Class> readFile(Path path) throws IOException;
 
     /**
      * load a json as a string in the parser
      * @param json a string formatted as a json
      */
-    void readString(String json);
+    JsonParser<Class> readString(String json);
 
 
     /**

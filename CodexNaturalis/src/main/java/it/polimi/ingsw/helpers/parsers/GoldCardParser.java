@@ -26,13 +26,15 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
     private String json;
     
     @Override
-    public void readFile(Path path) throws IOException {
+    public GoldCardParser readFile(Path path) throws IOException {
         json = Files.readString(path);
+        return this;
     }
 
     @Override
-    public void readString(String json) {
+    public GoldCardParser readString(String json) {
         this.json = json;
+        return this;
     }
 
     @Override

@@ -16,13 +16,15 @@ public class StdCardParser implements JsonParser<Deck<StdCard>> {
     private String json;
 
     @Override
-    public void readFile(Path path) throws IOException {
+    public StdCardParser readFile(Path path) throws IOException {
         json = Files.readString(path);
+        return this;
     }
 
     @Override
-    public void readString(String json) {
+    public StdCardParser readString(String json) {
         this.json = json;
+        return this;
     }
 
     @Override
