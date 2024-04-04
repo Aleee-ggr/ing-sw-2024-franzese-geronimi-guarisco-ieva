@@ -11,13 +11,13 @@ public class PlayerBoard {
     private final Card[][] board;
     private final Card notFillable = new MockCard(GameConsts.notFillableId, null);
     private Card lastPlacedCard;
-    private int[] lastPlacedPosition;
+    private Coordinates lastPlacedPosition;
 
     public PlayerBoard(Card firstCard) {
         this.board = new Card[GameConsts.totalPlayableCards][GameConsts.totalPlayableCards];
         this.board[GameConsts.centralPoint.getX()][GameConsts.centralPoint.getY()] = firstCard;
         this.lastPlacedCard = firstCard;
-        this.lastPlacedPosition = new int[]{GameConsts.centralPoint.getX(), GameConsts.centralPoint.getY()};
+        this.lastPlacedPosition = new Coordinates(GameConsts.centralPoint.getX(), GameConsts.centralPoint.getY());
     }
 
     public Card[][] getBoard() {
@@ -28,7 +28,7 @@ public class PlayerBoard {
         return lastPlacedCard;
     }
 
-    public int[] getLastPlacedPosition() {
+    public Coordinates getLastPlacedPosition() {
         return lastPlacedPosition;
     }
 
