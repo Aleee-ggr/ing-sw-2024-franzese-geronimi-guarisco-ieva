@@ -12,16 +12,17 @@ import it.polimi.ingsw.model.objectives.Objective;
 import java.nio.file.Path;
 
 public class FullDeck {
-
     private static Deck<GoldCard> FullGoldDeck;
     private static Deck<StdCard> FullStdDeck;
     private static Deck<Objective> FullObjDeck;
     private static Deck<StartingCard> FullStartingDeck;
     private static final Path cardJsonPath = Path.of(GameConsts.cardJsonPath);
 
-    public FullDeck(){
-        BuildGoldDeck();
+    static {
         BuildStdDeck();
+        BuildGoldDeck();
+        BuildObjDeck();
+        BuildStartingDeck();
     }
 
     public static Deck<GoldCard> getFullGoldDeck() {

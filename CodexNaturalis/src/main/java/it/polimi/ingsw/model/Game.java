@@ -2,10 +2,11 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.model.board.SharedBoard;
-import it.polimi.ingsw.model.cards.FullDeck;
+import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.enums.GameState;
 import it.polimi.ingsw.model.exceptions.ExistingUsernameException;
 import it.polimi.ingsw.model.exceptions.TooManyPlayersException;
+import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.model.player.Player;
 
 import java.util.ArrayList;
@@ -21,14 +22,21 @@ import java.util.UUID;
  * @see GameState
  * */
 public class Game {
+    static final Deck<GoldCard> fullGoldDeck = FullDeck.getFullGoldDeck();
+    static final Deck<StdCard> fullStdDeck = FullDeck.getFullStdDeck();
+    static final Deck<StartingCard> fullStartingDeck = FullDeck.getFullStartingDeck();
+    static final Deck<Objective> fullObjDeck = FullDeck.getFullObjDeck();
+
     private final UUID id;
     private int numPlayers = 0;
     private final List<Player> players = new ArrayList<>();
     private GameState gameState;
-    private final SharedBoard GameBoard = new SharedBoard(FullDeck.getFullGoldDeck(), FullDeck.getFullStdDeck());
+    private final SharedBoard GameBoard;
 
     public Game(UUID id) {
         this.id = id;
+        GameBoard = new SharedBoard(fullGoldDeck, fullStdDeck);
+        /**TODO: duplicate and shuffle decks*/
     }
 
     public UUID getId() {
