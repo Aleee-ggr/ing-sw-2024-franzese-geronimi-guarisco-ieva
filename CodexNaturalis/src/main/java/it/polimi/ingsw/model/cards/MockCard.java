@@ -9,6 +9,6 @@ public class MockCard extends Card{
      * @param frontCorners Array of corners on the front side of the card.
      */
     public MockCard(int id, Corner[] frontCorners) {
-        super(id, frontCorners);
+        super(id, frontCorners, false);
     }
 }

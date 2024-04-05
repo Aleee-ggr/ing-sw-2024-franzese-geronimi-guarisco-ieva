@@ -1,11 +1,13 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.GameConsts;
-import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.cards.Corner;
+import it.polimi.ingsw.model.cards.MockCard;
+import it.polimi.ingsw.model.cards.StartingCard;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.exceptions.UnrecognisedCardException;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -23,16 +25,16 @@ public class PlayerBoard {
     private final Card notFillable = new MockCard(GameConsts.notFillableId, null);
     private Card lastPlacedCard;
     private Coordinates lastPlacedPosition;
-    
+
     /**
      * Constructor for the PlayerBoard class.
      * @param firstCard first card played.
      */
     public PlayerBoard(Card firstCard) {
         this.board = new Card[GameConsts.totalPlayableCards][GameConsts.totalPlayableCards];
-        this.board[GameConsts.centralPoint.getX()][GameConsts.centralPoint.getY()] = firstCard;
+        this.board[GameConsts.centralPoint.x()][GameConsts.centralPoint.y()] = firstCard;
         this.lastPlacedCard = firstCard;
-        this.lastPlacedPosition = new Coordinates(GameConsts.centralPoint.getX(), GameConsts.centralPoint.getY());
+        this.lastPlacedPosition = new Coordinates(GameConsts.centralPoint.x(), GameConsts.centralPoint.y());
     }
 
     /**
@@ -64,7 +66,7 @@ public class PlayerBoard {
      * @return Coordinates of the center of the board.
      */
     public Coordinates getCenter() {
-        return new Coordinates(GameConsts.centralPoint.getX(), GameConsts.centralPoint.getY());
+        return new Coordinates(GameConsts.centralPoint.x(), GameConsts.centralPoint.y());
     }
 
     /**
@@ -73,10 +75,10 @@ public class PlayerBoard {
      * @return Card for the specified coordinates.
      */
     public Card getCard(Coordinates coordinates) {
-        return board[coordinates.getX()][coordinates.getY()];
+        return board[coordinates.x()][coordinates.y()];
     }
 
-    
+
     /**
      * Public Method isWithinBounds,
      * called by {@link #dfs(Coordinates, ArrayList, boolean[][]) dfs} and  {@link #placeCard(Card, Coordinates) placeCard},
@@ -86,7 +88,7 @@ public class PlayerBoard {
      * @see GameConsts
      */
     public boolean isWithinBounds(Coordinates c){
-        return c.getX() <= GameConsts.totalPlayableCards && c.getY() <= GameConsts.totalPlayableCards && c.getX() >= 0 && c.getY() >= 0;
+        return c.x() <= GameConsts.totalPlayableCards && c.y() <= GameConsts.totalPlayableCards && c.x() >= 0 && c.y() >= 0;
     }
 
     /**
@@ -115,19 +117,19 @@ public class PlayerBoard {
      * @param visited a 2D array of boolean used to search every cell once without repetitions.
      */
     private void dfs(Coordinates cellCoordinates, ArrayList<Coordinates> list, boolean[][] visited){
-        if(isWithinBounds(cellCoordinates) && !visited[cellCoordinates.getX()][cellCoordinates.getY()]){
-            visited[cellCoordinates.getX()][cellCoordinates.getY()] = true;
-            if (board[cellCoordinates.getX()][cellCoordinates.getY()] == null) {
+        if(isWithinBounds(cellCoordinates) && !visited[cellCoordinates.x()][cellCoordinates.y()]){
+            visited[cellCoordinates.x()][cellCoordinates.y()] = true;
+            if (board[cellCoordinates.x()][cellCoordinates.y()] == null) {
                 list.add(cellCoordinates);
                 return;
             }
-            if(board[cellCoordinates.getX()][cellCoordinates.getY()]==notFillable) {
+            if(board[cellCoordinates.x()][cellCoordinates.y()]==notFillable) {
                 return;
             }
-            dfs(new Coordinates(cellCoordinates.getX(), cellCoordinates.getY()+1), list, visited);
-            dfs(new Coordinates(cellCoordinates.getX()+1, cellCoordinates.getY()), list, visited);
-            dfs(new Coordinates(cellCoordinates.getX(), cellCoordinates.getY()-1), list, visited);
-            dfs(new Coordinates(cellCoordinates.getX()-1, cellCoordinates.getY()), list, visited);
+            dfs(new Coordinates(cellCoordinates.x(), cellCoordinates.y()+1), list, visited);
+            dfs(new Coordinates(cellCoordinates.x()+1, cellCoordinates.y()), list, visited);
+            dfs(new Coordinates(cellCoordinates.x(), cellCoordinates.y()-1), list, visited);
+            dfs(new Coordinates(cellCoordinates.x()-1, cellCoordinates.y()), list, visited);
         }
     }
 
@@ -145,7 +147,7 @@ public class PlayerBoard {
             throw new IndexOutOfBoundsException("error placing card");
         }
 
-        board[coordinates.getX()][coordinates.getY()] = card;
+        board[coordinates.x()][coordinates.y()] = card;
         lastPlacedPosition = coordinates;
         lastPlacedCard = card;
 
@@ -177,16 +179,16 @@ public class PlayerBoard {
                 if (c[i].getCornerResource() == Resource.NONCOVERABLE){
                     switch (i){
                         case 0 -> {
-                            board[coordinates.getX()][coordinates.getY()+1] = notFillable;
+                            board[coordinates.x()][coordinates.y()+1] = notFillable;
                         }
                         case 1 -> {
-                            board[coordinates.getX()+1][coordinates.getY()] = notFillable;
+                            board[coordinates.x()+1][coordinates.y()] = notFillable;
                         }
                         case 2 -> {
-                            board[coordinates.getX()][coordinates.getY()-1] = notFillable;
+                            board[coordinates.x()][coordinates.y()-1] = notFillable;
                         }
                         case 3 -> {
-                            board[coordinates.getX()-1][coordinates.getY()] = notFillable;
+                            board[coordinates.x()-1][coordinates.y()] = notFillable;
                         }
                     }
                 }

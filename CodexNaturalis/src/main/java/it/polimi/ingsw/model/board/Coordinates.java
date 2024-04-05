@@ -3,37 +3,27 @@ package it.polimi.ingsw.model.board;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Coordinates {
-    private int x;
-    private int y;
-
-    public Coordinates(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
+public record Coordinates(int x, int y) {
     public Coordinates side(int offset) {
         return new Coordinates(x + offset, y);
     }
 
     public Coordinates vertical(int offset) {
         return new Coordinates(x, y + offset);
+    }
+
+    public Coordinates subtract(Coordinates c2) {
+        return new Coordinates(
+                x - c2.x(),
+                y - c2.y()
+        );
+    }
+
+    public Coordinates add(Coordinates c2) {
+        return new Coordinates(
+                x + c2.x(),
+                y + c2.y()
+        );
     }
 
     public List<Coordinates> getNeighbors() {
