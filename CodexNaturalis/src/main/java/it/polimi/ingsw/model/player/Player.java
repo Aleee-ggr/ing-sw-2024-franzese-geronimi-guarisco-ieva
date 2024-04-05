@@ -30,8 +30,10 @@ public class Player {
     private Objective hiddenObjective;
     private final ConcurrentHashMap<Resource, Integer> playerResources = new ConcurrentHashMap<Resource, Integer>();
     private final Game game;
+
     /**
-     * Calling the Player
+     * Constructor of Player
+     * set up a new Player and sets all Resources to zero.
      * @param username it is the unique identifier of the player.
      * @param currentGame pointer to the instance of game the player is playing.
      * */
@@ -44,36 +46,83 @@ public class Player {
         }
     }
 
+    /**
+     * Getter for the unique username of the Player.
+     * @return a String username.
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Getter for the score of the Player.
+     * @return a score as an int.
+     */
     public int getScore(){
         return score;
     }
 
+    /**
+     * Getter for the PlayerBoard of the Player.
+     * @return a PlayerBoard.
+     * @see PlayerBoard
+     */
     public PlayerBoard getPlayerBoard() {
         return board;
     }
 
+    /**
+     * Getter for the hand of Cards of the Player.
+     * @return an array of Card.
+     * @see Card
+     */
     public Card[] getHand(){
         return hand;
     }
 
+    /**
+     * Getter for the Hidden Objective of the Player.
+     * @return an Objective.
+     * @see Objective
+     */
     public Objective getHiddenObjective(){
         return hiddenObjective;
     }
 
+    /**
+     * Getter for the Resources of the Player.
+     * @return a Map of Resources and the number of resources.
+     * @see Resource
+     */
     public Map<Resource, Integer> getResources() {
         return Collections.unmodifiableMap(playerResources);
     }
 
+    /**
+     * Setter for the score of the Player.
+     * @param score is an int value of the score
+     */
     public void setScore(int score) {
         this.score = score;
     }
 
+    /**
+     * Setter for the Hidden Object of the Player.
+     * @param hiddenObjective is the Objective to set.
+     * @see Objective
+     */
     public void setHiddenObjective(Objective hiddenObjective) {
         this.hiddenObjective = hiddenObjective;
+    }
+
+
+    /**
+     * Method used to set up the playerBoard, placing the first card in the Board.
+     * It calls the constructor of PlayerBoard.
+     * @see PlayerBoard
+     * */
+    public void setFirstCard(StartingCard card) {
+        this.board = new PlayerBoard(card);
     }
 
     /**
@@ -132,9 +181,5 @@ public class Player {
      */
     public void playCard(Card playedCard){
 
-    }
-
-    public void setFirstCard(StartingCard card) {
-        this.board = new PlayerBoard(card);
     }
 }
