@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.board;
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.enums.Resource;
+import it.polimi.ingsw.model.exceptions.UnrecognisedCardException;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -68,13 +69,10 @@ public class PlayerBoard {
     public boolean isWithinBounds(Coordinates c){
         return c.getX() <= GameConsts.totalPlayableCards && c.getY() <= GameConsts.totalPlayableCards && c.getX() >= 0 && c.getY() >= 0;
     }
-
-    /**
-     * TODO: manage exception for outofbound coordinates and for invalid cards
-     * */
-    public void placeCard(Card card, Coordinates coordinates){
+    
+    public void placeCard(Card card, Coordinates coordinates) throws IndexOutOfBoundsException, RuntimeException{
         if (!isWithinBounds(coordinates)) {
-            //throw new IndexOutOfBoundsException("error placing card");
+            throw new IndexOutOfBoundsException("error placing card");
         }
 
         board[coordinates.getX()][coordinates.getY()] = card;
@@ -87,9 +85,9 @@ public class PlayerBoard {
         } else if(!card.isFrontSideUp() && card.getClass() == StartingCard.class){
             Corner[] c = ((StartingCard) card).getBackCorners();
             markNotCoverable(coordinates, c);
-        } /*else {
-            throw new Exception("not accounted exception");
-        }*/
+        } else {
+            throw new UnrecognisedCardException("unrecognised card");
+        }
 
     }
 
