@@ -1,9 +1,10 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.GameConsts;
-import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.cards.MockCard;
+import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.model.enums.Resource;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,27 +62,64 @@ public class PlayerBoard {
             dfs(new Coordinates(cellCoordinates.getX()+1, cellCoordinates.getY()), list, visited);
             dfs(new Coordinates(cellCoordinates.getX(), cellCoordinates.getY()-1), list, visited);
             dfs(new Coordinates(cellCoordinates.getX()-1, cellCoordinates.getY()), list, visited);
-        } else {
-            return;
         }
-
     }
 
     public boolean isWithinBounds(Coordinates c){
         return c.getX() <= GameConsts.totalPlayableCards && c.getY() <= GameConsts.totalPlayableCards && c.getX() >= 0 && c.getY() >= 0;
     }
 
-    public void placeCard(Card card, Coordinates coordinates) {
+    /**
+     * TODO: manage exception for outofbound coordinates and for invalid cards
+     * */
+    public void placeCard(Card card, Coordinates coordinates){
         if (!isWithinBounds(coordinates)) {
-            //TODO handle invalid placements
-            return;
+            //throw new IndexOutOfBoundsException("error placing card");
         }
-        lastPlacedPosition = coordinates;
+
         board[coordinates.getX()][coordinates.getY()] = card;
+        lastPlacedPosition = coordinates;
+        lastPlacedCard = card;
+
+        if(card.isFrontSideUp()){
+            Corner[] c = card.getFrontCorners();
+            markNotCoverable(coordinates, c);
+        } else if(!card.isFrontSideUp() && card.getClass() == StartingCard.class){
+            Corner[] c = ((StartingCard) card).getBackCorners();
+            markNotCoverable(coordinates, c);
+        } /*else {
+            throw new Exception("not accounted exception");
+        }*/
+
     }
 
-    /**TODO:
-     * placeCard
+    private void markNotCoverable(Coordinates coordinates, Corner[] c){
+        try{
+            for (int i = 0; i<c.length; i++){
+                if (c[i].getCornerResource() == Resource.NONCOVERABLE){
+                    switch (i){
+                        case 0 -> {
+                            board[coordinates.getX()][coordinates.getY()+1] = notFillable;
+                        }
+                        case 1 -> {
+                            board[coordinates.getX()+1][coordinates.getY()] = notFillable;
+                        }
+                        case 2 -> {
+                            board[coordinates.getX()][coordinates.getY()-1] = notFillable;
+                        }
+                        case 3 -> {
+                            board[coordinates.getX()-1][coordinates.getY()] = notFillable;
+                        }
+                    }
+                }
+            }
+        } catch (IndexOutOfBoundsException e){
+            System.out.println("player board out of bound");
+        }
+    }
+
+    /**
+     * TODO:
      * checkRequirements
      * */
 }
