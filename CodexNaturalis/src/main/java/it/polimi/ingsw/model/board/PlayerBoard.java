@@ -36,23 +36,6 @@ public class PlayerBoard {
     }
 
     /**
-     * Returns the Coordinates of the center of the board.
-     * @return Coordinates of the center of the board.
-     */
-    public Coordinates getCenter() {
-        return new Coordinates(GameConsts.centralPoint.getX(), GameConsts.centralPoint.getY());
-    }
-
-    /**
-     * Returns the Card for specified Coordinate.
-     * @param coordinates Coordinates for returning a card.
-     * @return Card for the specified coordinates.
-     */
-    public Card getCard(Coordinates coordinates) {
-        return board[coordinates.getX()][coordinates.getY()];
-    }
-    
-    /**
      * Getter for the entire 2D array of the board.
      * @return a 2D array of cards.
      */
@@ -74,6 +57,36 @@ public class PlayerBoard {
      */
     public Coordinates getLastPlacedPosition() {
         return lastPlacedPosition;
+    }
+
+    /**
+     * Method getCenter, returns the Coordinates of the center of the board.
+     * @return Coordinates of the center of the board.
+     */
+    public Coordinates getCenter() {
+        return new Coordinates(GameConsts.centralPoint.getX(), GameConsts.centralPoint.getY());
+    }
+
+    /**
+     * Method getCard, returns the Card for specified Coordinate.
+     * @param coordinates Coordinates for returning a card.
+     * @return Card for the specified coordinates.
+     */
+    public Card getCard(Coordinates coordinates) {
+        return board[coordinates.getX()][coordinates.getY()];
+    }
+
+    
+    /**
+     * Public Method isWithinBounds,
+     * called by {@link #dfs(Coordinates, ArrayList, boolean[][]) dfs} and  {@link #placeCard(Card, Coordinates) placeCard},
+     * it uses the GameConsts class to check the limits of the board.
+     * @param c Coordinates to check
+     * @see Coordinates
+     * @see GameConsts
+     */
+    public boolean isWithinBounds(Coordinates c){
+        return c.getX() <= GameConsts.totalPlayableCards && c.getY() <= GameConsts.totalPlayableCards && c.getX() >= 0 && c.getY() >= 0;
     }
 
     /**
@@ -116,17 +129,6 @@ public class PlayerBoard {
             dfs(new Coordinates(cellCoordinates.getX(), cellCoordinates.getY()-1), list, visited);
             dfs(new Coordinates(cellCoordinates.getX()-1, cellCoordinates.getY()), list, visited);
         }
-    }
-
-    /**
-     * Private Method isWithinBounds,
-     * called by {@link #dfs(Coordinates, ArrayList, boolean[][]) dfs}, it uses the GameConsts class to check the limits of the board.
-     * @param c Coordinates to check
-     * @see Coordinates
-     * @see GameConsts
-     */
-    public boolean isWithinBounds(Coordinates c){
-        return c.getX() <= GameConsts.totalPlayableCards && c.getY() <= GameConsts.totalPlayableCards && c.getX() >= 0 && c.getY() >= 0;
     }
 
     /**
@@ -196,6 +198,6 @@ public class PlayerBoard {
 
     /**
      * TODO:
-     * checkRequirements
+     * update Resources when a card is placed.
      * */
 }
