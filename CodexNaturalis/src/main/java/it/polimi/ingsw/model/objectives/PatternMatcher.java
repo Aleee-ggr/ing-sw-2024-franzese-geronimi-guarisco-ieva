@@ -10,9 +10,9 @@ import java.util.*;
 public class PatternMatcher {
     private Map<Coordinates, Resource> pattern;
     private PlayerBoard board;
-    private Set<Coordinates> visited = new HashSet<>();
-    private Set<Coordinates> matched = new HashSet<>();
-    private Queue<Coordinates> toVisit = new ArrayDeque<>();
+    private final Set<Coordinates> visited = new HashSet<>();
+    private final Set<Coordinates> matched = new HashSet<>();
+    private final Queue<Coordinates> toVisit = new ArrayDeque<>();
     private Set<Resource> patternResources;
 
     /**

@@ -21,7 +21,6 @@ public class FunctionBuilder {
             "cover",
     };
     private int points;
-    private int cardId;
     private String type;
     private  Map<Resource, Integer> resources;
     private final Map<Coordinates, Resource> pattern = new HashMap<>(3);
@@ -33,16 +32,6 @@ public class FunctionBuilder {
      */
     public static List<String> getValidTypes() {
         return Collections.unmodifiableList(Arrays.asList(validTypes));
-    }
-
-    /**
-     * The id of the card this function is used in, to use with the type "cover"
-     * @param cardId the id of the card that will use this function
-     * @return this object
-     */
-    public FunctionBuilder setCardId(int cardId) {
-        this.cardId = cardId;
-        return this;
     }
 
     /**

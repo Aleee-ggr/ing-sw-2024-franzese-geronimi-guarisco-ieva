@@ -51,9 +51,9 @@ public class ObjectiveParser implements JsonParser<Deck<Objective>> {
             if (jid == null) {
                 throw new JsonFormatException("id: tag not found!");
             }
-            Integer id = jid.getAsInt();
+            int id = jid.getAsInt();
 
-            JsonElement jtype = jsonObjective.get("type");;
+            JsonElement jtype = jsonObjective.get("type");
             if (jtype == null) {
                 throw new JsonFormatException("type: tag not found!");
             }
