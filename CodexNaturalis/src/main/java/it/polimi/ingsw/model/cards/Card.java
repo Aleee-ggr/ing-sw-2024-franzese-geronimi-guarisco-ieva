@@ -30,6 +30,9 @@ public abstract class Card {
         this.frontCorners = frontCorners;
     }
 
+    /**
+     * @return wether the card is an instance of ColoredCard
+     */
     public boolean isColored() {
         return isColored;
     }

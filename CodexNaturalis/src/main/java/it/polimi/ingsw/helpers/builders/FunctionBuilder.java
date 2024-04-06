@@ -175,6 +175,11 @@ public class FunctionBuilder {
         };
     }
 
+    /**
+     * Rotate a set of coordinates with value between -1 and 1 (inclusive)
+     * @param coordinates an offset of coordinates in range (-1, 1) inclusive
+     * @return a new set of coordinates, rotated clockwise 45deg
+     */
     private static Coordinates rotate(Coordinates coordinates) {
         Coordinates result;
         int x = coordinates.x() - coordinates.y();

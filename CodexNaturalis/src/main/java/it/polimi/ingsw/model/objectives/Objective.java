@@ -30,5 +30,4 @@ public class Objective {
     public Integer getPoints(Player player) {
         return this.pointCalculator.apply(player);
     }
-
 }

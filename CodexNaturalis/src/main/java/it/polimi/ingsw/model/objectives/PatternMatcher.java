@@ -14,17 +14,31 @@ public class PatternMatcher {
     private Set<Coordinates> matched = new HashSet<>();
     private Queue<Coordinates> toVisit = new ArrayDeque<>();
     private Set<Resource> patternResources;
+
+    /**
+     * set the pattern to find in the board
+     * @param pattern the pattern the object will attempt to match
+     * @return this
+     */
     public PatternMatcher setPattern(Map<Coordinates, Resource> pattern) {
         this.pattern = pattern;
         patternResources = new HashSet<>(pattern.values());
         return this;
     }
 
+    /**
+     * set the board in which to find in the pattern
+     * @param board the board the object will attempt to match the pattern on
+     * @return this
+     */
     public PatternMatcher setBoard(PlayerBoard board) {
         this.board = board;
         return this;
     }
 
+    /**
+     * @return the number of matches the board contains with the given pattern
+     */
     public int matches_found() {
         toVisit.add(board.getCenter());
         Coordinates current;
@@ -79,10 +93,20 @@ public class PatternMatcher {
         return false;
     }
 
+    /**
+     * Check wether the board contains a card at the given coordinates
+     * @param coordinates the coordinates where to check
+     * @return whether the board contains a card at the given coordinates
+     */
     private boolean isCard(Coordinates coordinates) {
         return board.isWithinBounds(coordinates) && board.getCard(coordinates) != null;
     }
 
+    /**
+     * Check whether a card is an instance of colored card and return its resource type
+     * @param coordinates the coordinates where to check
+     * @return NONE if the card is not an instance of ColoredCard, is resource type otherwise
+     */
     private Resource getColor(Coordinates coordinates) {
         if (isCard(coordinates) && board.getCard(coordinates).isColored()) {
             return ((ColoredCard)board.getCard(coordinates)).getBackResource();
