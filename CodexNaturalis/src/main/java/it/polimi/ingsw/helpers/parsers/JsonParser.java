@@ -13,7 +13,50 @@ import java.nio.file.Path;
 public interface JsonParser<Class> {
 
     /**
-     * Load a file from the given path in the parser so that it can be later parsed
+     * Load a file from the given path in the parser so that it can be later parsed.<br/>
+     * the expected format is:<br>
+     * <pre>{@code
+     *  {
+     *      "stdcards":[
+     *          {
+     *              "id":0,
+     *              "resources": "resource",
+     *              "corners": ["resource","resource","resource","resource"],
+     *              "points": 0
+     *          }, ...
+     *      ],
+     *      "goldcards":[
+     *          {
+     *              "id": 0,
+     *              "resources": "resource",
+     *              "corners": ["resource","resource","resource","resource"],
+     *              "points": {
+     *                  "value":0,
+     *                  "type":"type"
+     *              },
+     *              "requirements":{
+     *                  "RESOURCE":0
+     *              }
+     *          }, ...
+     *      ],
+     *      "startingcards":[
+     *          {
+     *              "id": 0,
+     *              "resource": ["resource"],
+     *              "frontcorners": ["resource","resource","resource","resource"],
+     *              "backcorners": ["resource","resource","resource","resource"]
+     *          }, ...
+     *      ],
+     *      "objectives":[
+     *          {
+     *              "id":0,
+     *              "points":0,
+     *              "type":type,
+     *              "requirements": ["resource"] | {"resource": 0}
+     *          }, ...
+     *      ]
+     *  }
+     * }</pre>
      * @see #parse()
      * @param path path of the file from which to load the data for the cards
      * @throws IOException Throws exception when the given file is missing
