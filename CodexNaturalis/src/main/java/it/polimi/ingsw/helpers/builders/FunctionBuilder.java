@@ -3,13 +3,14 @@ package it.polimi.ingsw.helpers.builders;
 import it.polimi.ingsw.helpers.exceptions.InvalidTypeException;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.board.PlayerBoard;
-import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.cards.ColoredCard;
 import it.polimi.ingsw.model.enums.Resource;
+import it.polimi.ingsw.model.objectives.PatternMatcher;
 import it.polimi.ingsw.model.player.Player;
 
 import java.util.*;
 import java.util.function.Function;
+
+import static java.lang.Math.signum;
 
 public class FunctionBuilder {
     public static final String[] validTypes = {
@@ -23,7 +24,7 @@ public class FunctionBuilder {
     private int cardId;
     private String type;
     private  Map<Resource, Integer> resources;
-    private Resource[][] pattern;
+    private final Map<Coordinates, Resource> pattern = new HashMap<>(3);
     private Resource resource;
 
 
@@ -76,7 +77,16 @@ public class FunctionBuilder {
      * @return this object
      */
     public FunctionBuilder setPattern(Resource[][] pattern) {
-        this.pattern = pattern;
+        for (int x = 0; x < 3; x++) {
+            for (int y = 0; y < 3; y++) {
+                if (pattern[y][x] != Resource.NONE) {
+                    this.pattern.put(
+                            rotate(new Coordinates(x - 1, y - 1)),
+                            pattern[y][x]
+                    );
+                }
+            }
+        }
         return this;
     }
 
@@ -122,42 +132,12 @@ public class FunctionBuilder {
 
             case "pattern" ->
                     (Player player) -> {
-                        Set<Coordinates> visited = new HashSet<>();
-                        Set<Coordinates> matchedSet = new HashSet<>();
-                        Set<Resource> resources = new HashSet<>();
-                        for (var row : pattern) {
-                            Arrays.stream(row)
-                                    .filter((Resource r)-> r!=Resource.NONE)
-                                    .forEach(resources::add);
-                        }
-
-                        Queue<Coordinates> queue = new ArrayDeque<>();
                         PlayerBoard board = player.getPlayerBoard();
-                        visited.add(board.getCenter());
-
-                        int matched = 0;
-                        queue.add(board.getCenter());
-                        while (!queue.isEmpty()) {
-                            Coordinates current = queue.remove();
-                            if (visited.contains(current)) {
-                                continue;
-                            }
-                            visited.add(current);
-
-                            Card currentCard = board.getCard(current);
-                            if (currentCard.isColored() && resources.contains(
-                                            ((ColoredCard)currentCard).getBackResource())
-                            ) {
-                                //TODO match the pattern
-                            }
-                            for (Coordinates neighbor : current.getNeighbors()) {
-                                if (board.isWithinBounds(neighbor) &&
-                                        board.getCard(neighbor) != null) {
-                                    queue.add(neighbor);
-                                }
-                            }
-                        }
-                        return points * matched;
+                        int matches_found = new PatternMatcher()
+                                .setPattern(pattern)
+                                .setBoard(board)
+                                .matches_found();
+                        return matches_found * points;
                     };
 
             case "cover" ->
@@ -166,7 +146,7 @@ public class FunctionBuilder {
                         Coordinates lastCoordinates = board.getLastPlacedPosition();
                         int neighbor_count = 0;
                         for (Coordinates neighbor : lastCoordinates.getNeighbors()) {
-                            if (board.getBoard()[neighbor.getX()][neighbor.getY()] != null) {
+                            if (board.getBoard()[neighbor.x()][neighbor.y()] != null) {
                                 neighbor_count++;
                             }
                         }
@@ -195,4 +175,19 @@ public class FunctionBuilder {
         };
     }
 
+    private static Coordinates rotate(Coordinates coordinates) {
+        Coordinates result;
+        int x = coordinates.x() - coordinates.y();
+        int y = coordinates.y() + coordinates.x();
+        if (x != 0) {
+            x = (int) (signum(x));
+        }
+        if (y != 0) {
+            y = (int) (signum(y));
+        }
+        result = new Coordinates(
+                x, y
+        );
+        return result;
+    }
 }
