@@ -79,7 +79,7 @@ public class SharedBoardTest {
 
         Assert.assertFalse(gameBoard.areCardsOver());
     }
-    
+
     @Test
     public void drawDeckFullGoldCard() {
         goldDeck = DeckFactory.fullGold();
@@ -112,4 +112,49 @@ public class SharedBoardTest {
         Assert.assertNull(gameBoard.drawDeck(true));
         Assert.assertNull(gameBoard.drawDeck(false));
     }
+
+    @Test
+    public void substituteCardFullDecks() {
+        goldDeck = DeckFactory.fullGold();
+        stdDeck = DeckFactory.fullStd();
+        gameBoard = new SharedBoard(goldDeck, stdDeck);
+
+        gameBoard.substituteCard(0, true);
+
+        Assert.assertNotNull(gameBoard.drawVisible(0));
+    }
+
+    @Test
+    public void substituteCardEmptyDecks() {
+        goldDeck = DeckFactory.emptyGold();
+        stdDeck = DeckFactory.emptyStd();
+        gameBoard = new SharedBoard(goldDeck, stdDeck);
+
+        gameBoard.substituteCard(0, true);
+
+        Assert.assertNull(gameBoard.drawVisible(0));
+    }
+
+    @Test
+    public void substituteCardEmptyGoldDeck() {
+        goldDeck = DeckFactory.emptyGold();
+        stdDeck = DeckFactory.fullStd();
+        gameBoard = new SharedBoard(goldDeck, stdDeck);
+
+        gameBoard.substituteCard(0, true);
+
+        Assert.assertNotNull(gameBoard.drawVisible(0));
+    }
+
+    @Test
+    public void substituteCardEmptyStdDeck() {
+        goldDeck = DeckFactory.fullGold();
+        stdDeck = DeckFactory.emptyStd();
+        gameBoard = new SharedBoard(goldDeck, stdDeck);
+
+        gameBoard.substituteCard(0, false);
+
+        Assert.assertNotNull(gameBoard.drawVisible(0));
+    }
+
 }
