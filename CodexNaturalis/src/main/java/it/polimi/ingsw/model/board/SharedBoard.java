@@ -34,11 +34,19 @@ public class SharedBoard {
         this.goldDeck = goldDeck;
         this.stdDeck = stdDeck;
     }
-    
+
+    /**
+     * Retrieves the deck of gold cards from the shared board.
+     * @return The deck of gold cards.
+     */
     public Deck<GoldCard> getGoldDeck() {
         return goldDeck;
     }
 
+    /**
+     * Retrieves the deck of standard cards from the shared board.
+     * @return The deck of standard cards.
+     */
     public Deck<StdCard> getStdDeck() {
         return stdDeck;
     }
