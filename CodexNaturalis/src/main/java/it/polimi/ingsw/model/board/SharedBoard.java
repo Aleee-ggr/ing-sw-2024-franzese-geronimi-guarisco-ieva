@@ -34,6 +34,14 @@ public class SharedBoard {
         this.goldDeck = goldDeck;
         this.stdDeck = stdDeck;
     }
+    
+    public Deck<GoldCard> getGoldDeck() {
+        return goldDeck;
+    }
+
+    public Deck<StdCard> getStdDeck() {
+        return stdDeck;
+    }
 
     /**
      * Retrieves the visible cards on the shared board.
