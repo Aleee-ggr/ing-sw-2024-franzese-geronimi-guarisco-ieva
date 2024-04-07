@@ -33,6 +33,10 @@ public class Game {
     private GameState gameState;
     private final SharedBoard GameBoard;
 
+    /**
+     * Constructor for the Game class.
+     * @param id UUID created by the Server.
+     */
     public Game(UUID id) {
         this.id = id;
         Deck<GoldCard> gameGoldDeck = new Deck<>(fullGoldDeck.getCards());
@@ -42,22 +46,42 @@ public class Game {
         GameBoard = new SharedBoard(gameGoldDeck, gameStdDeck);
     }
 
+    /**
+     * Getter for the Game id.
+     * @return the id of the Game as UUID
+     */
     public UUID getId() {
         return id;
     }
 
+    /**
+     * Getter for numPLayers of Game.
+     * @return the number of players in the Game, as int
+     */
     public int getNumPlayers() {
         return numPlayers;
     }
 
+    /**
+     * Getter for the list of Players in Game.
+     * @return the List of Players in the Game
+     */
     public List<Player> getPlayers() {
         return players;
     }
 
+    /**
+     * Getter for the GameState.
+     * @return the GameState of the Game
+     */
     public GameState getGameState() {
         return gameState;
     }
 
+    /**
+     * Getter for the GameBoard.
+     * @return the SharedBoard of the Game
+     */
     public SharedBoard getGameBoard() {
         return GameBoard;
     }

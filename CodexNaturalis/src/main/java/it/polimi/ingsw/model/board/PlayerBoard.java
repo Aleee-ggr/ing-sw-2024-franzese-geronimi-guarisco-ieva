@@ -80,7 +80,7 @@ public class PlayerBoard {
     }
 
     /**
-     * Method getCard, returns the Card for specified Coordinate. 
+     * Method getCard, returns the Card for specified Coordinate.
      * @param coordinates Coordinates for returning a card.
      * @return Card for the specified coordinates.
      */
