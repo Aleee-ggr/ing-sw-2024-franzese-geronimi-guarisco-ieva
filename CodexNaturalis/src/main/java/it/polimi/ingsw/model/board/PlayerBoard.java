@@ -194,46 +194,29 @@ public class PlayerBoard {
      * @see Resource
      * @see Corner
      */
-    private void markNotCoverable(Coordinates coordinates, Corner[] c){ /**TODO: refactor*/
-        try{
-            for (int i = 0; i<c.length; i++){
-                if (c[i].getCornerResource() == Resource.NONCOVERABLE){
-                    switch (i){
-                        case 0 -> {
-                            board[coordinates.x()][coordinates.y()+1] = notFillable;
-                        }
-                        case 1 -> {
-                            board[coordinates.x()+1][coordinates.y()] = notFillable;
-                        }
-                        case 2 -> {
-                            board[coordinates.x()][coordinates.y()-1] = notFillable;
-                        }
-                        case 3 -> {
-                            board[coordinates.x()-1][coordinates.y()] = notFillable;
-                        }
-                    }
-                } else {
-                    if(c[i].getCornerResource() != Resource.NONE){
-                        boardOwner.updateResourcesValue(c[i].getCornerResource(), GameConsts.numberOfResourcesPerCorner);
-                    }
-                    switch (i){
-                        case 0 -> {
-                            validPlacements.add(new Coordinates(coordinates.x(),coordinates.y() + 1));
-                        }
-                        case 1 -> {
-                            validPlacements.add(new Coordinates(coordinates.x() + 1,coordinates.y()));
-                        }
-                        case 2 -> {
-                            validPlacements.add(new Coordinates(coordinates.x(), coordinates.y() - 1));
-                        }
-                        case 3 -> {
-                            validPlacements.add(new Coordinates(coordinates.x() - 1, coordinates.y()));
-                        }
-                    }
+    private void markNotCoverable(Coordinates coordinates, Corner[] c) {
+        try {
+            for (int i = 0; i < c.length; i++) {
+                switch (i) {
+                    case 0 -> handleCase(coordinates, c[i], 0, 1);
+                    case 1 -> handleCase(coordinates, c[i], 1, 0);
+                    case 2 -> handleCase(coordinates, c[i], 0, -1);
+                    case 3 -> handleCase(coordinates, c[i], -1, 0);
                 }
             }
-        } catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("player board out of bound");
+        }
+    }
+
+    private void handleCase(Coordinates coordinates, Corner corner, int dX, int dY) {
+        if(corner.getCornerResource() == Resource.NONCOVERABLE) {
+            board[coordinates.x() + dX][coordinates.y() + dY] = notFillable;
+        } else {
+            if(corner.getCornerResource() != Resource.NONE) {
+            boardOwner.updateResourcesValue(corner.getCornerResource(), GameConsts.numberOfResourcesPerCorner);
+            }
+            validPlacements.add(new Coordinates(coordinates.x() + dX, coordinates.y() + dY));
         }
     }
 }
