@@ -1,6 +1,9 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.model.enums.Resource;
+
+import java.util.Arrays;
 
 /**
  * Represents an abstract class for cards with a center back resource (stdCards and goldCards) in the game.
@@ -10,6 +13,7 @@ import it.polimi.ingsw.model.enums.Resource;
 
 public abstract class ColoredCard extends Card{
     private final Resource backResource;
+    private final Corner[] backCorners;
 
     /**
      * Constructor for the ColoredCard class.
@@ -17,9 +21,10 @@ public abstract class ColoredCard extends Card{
      * @param frontCorners Array of corners on the front side of the card.
      * @param backResource Resource on the back side of the card.
      */
-    public ColoredCard(int id, Corner[] frontCorners, Resource backResource) {
+    public ColoredCard(int id, Corner[] frontCorners, Corner[] backCorners, Resource backResource) {
         super(id, frontCorners, true);
         this.backResource = backResource;
+        this.backCorners = backCorners;
     }
 
     /**
@@ -28,5 +33,9 @@ public abstract class ColoredCard extends Card{
      */
     public Resource getBackResource() {
         return backResource;
+    }
+    
+    public Corner[] getBackCorners() {
+        return Arrays.copyOf(backCorners, GameConsts.numCorners);
     }
 }
