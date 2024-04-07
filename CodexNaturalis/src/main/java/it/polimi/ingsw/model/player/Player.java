@@ -151,7 +151,7 @@ public class Player {
      * */
     public void drawFirstHand(){
         this.hand = new Card[GameConsts.firstHandDim];
-        for (int i = 0; i < GameConsts.fistHandStdNum; i++){
+        for (int i = 0; i < GameConsts.fistHandStdNum - 1; i++){
             this.hand[i] = game.getGameBoard().drawDeck(false);
         }
         for (int i = GameConsts.fistHandStdNum; i < GameConsts.firstHandDim; i++){
