@@ -28,7 +28,7 @@ public class Player {
     private PlayerBoard board;
     private Card[] hand;
     private Objective hiddenObjective;
-    private final ConcurrentHashMap<Resource, Integer> playerResources = new ConcurrentHashMap<Resource, Integer>();
+    private final ConcurrentHashMap<Resource, Integer> playerResources = new ConcurrentHashMap<>();
     private final Game game;
 
     /**
@@ -137,7 +137,7 @@ public class Player {
 
     /**
      * Method to draw from one of the two decks in the SharedBoard of the Game <br/>
-     * implements  {@link  #toHand(Card)}  toHand} private method
+     * implements  {@link  #toHand(Card)  toHand} private method
      * @param isGold is a boolean used to identify if the card is drawn to the gold card deck or the std deck
      * */
     public void drawDecks(boolean isGold){
@@ -146,7 +146,7 @@ public class Player {
 
     /**
      * Method to draw from one of the four visible cards in the SharedBoard of the Game <br/>
-     * implements  {@link  #toHand(Card)}  toHand} private method
+     * implements  {@link  #toHand(Card)  toHand} private method
      * @param numVisible is used to choose the card from the board
      * @see it.polimi.ingsw.model.board.SharedBoard
      * */
