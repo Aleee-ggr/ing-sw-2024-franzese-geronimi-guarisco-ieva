@@ -58,15 +58,13 @@ public class SharedBoard {
                 visibleCards[position] = stdDeck.draw();
                 return;
             }
-        }
-
-        if (!isGold && !stdDeck.isEmpty()) {
+        } else {
             if (!stdDeck.isEmpty()){
-                visibleCards[position] = goldDeck.draw();
+                visibleCards[position] = stdDeck.draw();
                 return;
             }
             if (!goldDeck.isEmpty()) {
-                visibleCards[position] = stdDeck.draw();
+                visibleCards[position] = goldDeck.draw();
             }
         }
     }
