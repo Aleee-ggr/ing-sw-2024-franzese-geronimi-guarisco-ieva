@@ -13,19 +13,22 @@ import java.util.Arrays;
 
 public abstract class ColoredCard extends Card{
     private final Resource backResource;
-    private final Corner[] backCorners;
+    private static final Corner[] backCorners = {
+            new Corner(Resource.NONE, true),
+            new Corner(Resource.NONE, true),
+            new Corner(Resource.NONE, true),
+            new Corner(Resource.NONE, true)
+    };
 
     /**
      * Constructor for the ColoredCard class.
      * @param id Unique identifier of the card.
      * @param frontCorners Array of corners on the front side of the card.
-     * @param backCorners Array of corners on the back side of the card.
      * @param backResource Resource on the back side of the card.
      */
-    public ColoredCard(int id, Corner[] frontCorners, Corner[] backCorners, Resource backResource) {
+    public ColoredCard(int id, Corner[] frontCorners, Resource backResource) {
         super(id, frontCorners, true);
         this.backResource = backResource;
-        this.backCorners = backCorners;
     }
 
     /**
@@ -40,7 +43,7 @@ public abstract class ColoredCard extends Card{
      * Retrieves the back corners of the card.
      * @return Array of back corners of the card.
      */
-    public Corner[] getBackCorners() {
+    public static Corner[] getBackCorners() {
         return Arrays.copyOf(backCorners, GameConsts.numCorners);
     }
 }
