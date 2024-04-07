@@ -4,7 +4,7 @@ import it.polimi.ingsw.helpers.exceptions.InvalidTypeException;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.board.PlayerBoard;
 import it.polimi.ingsw.model.enums.Resource;
-import it.polimi.ingsw.model.objectives.PatternMatcher;
+import it.polimi.ingsw.helpers.pattern.PatternMatcher;
 import it.polimi.ingsw.model.player.Player;
 
 import java.util.*;

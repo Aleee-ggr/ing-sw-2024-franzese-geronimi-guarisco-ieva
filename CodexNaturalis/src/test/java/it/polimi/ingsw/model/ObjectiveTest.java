@@ -98,7 +98,7 @@ public class ObjectiveTest {
         Resource[][] pattern = {
                 {Resource.NONE, Resource.NONE, Resource.FUNGI},
                 {Resource.NONE, Resource.FUNGI, Resource.NONE},
-                {Resource.PLANT, Resource.NONE,  Resource.NONE}};
+                {Resource.FUNGI, Resource.NONE,  Resource.NONE}};
         Function<Player, Integer> score = new FunctionBuilder()
                 .setPoints(3)
                 .setType("pattern")
@@ -109,22 +109,23 @@ public class ObjectiveTest {
         player.setFirstCard(startingCards.draw());
         PlayerBoard board = player.getPlayerBoard();
         Card fungi = new StdCard(0, null, Resource.FUNGI, false);
-        Card plant = new StdCard(0, null, Resource.PLANT, false);
-        Coordinates fungi1 = board.getCenter().horizontal(-1);
-        Coordinates fungi2 = board.getCenter().horizontal(-2);
-        Coordinates plant1 = board.getCenter().horizontal(-3);
+        Coordinates[] fungi_coord = {
+                board.getCenter().horizontal(-1),
+                board.getCenter().horizontal(-2),
+                board.getCenter().horizontal(-3),
+                board.getCenter().horizontal(-4),
+                board.getCenter().horizontal(-5),
+                board.getCenter().horizontal(-6),
+                board.getCenter().horizontal(-7)
+        };
+        for (Coordinates coord : fungi_coord) {
+            try {
+                board.placeCard(fungi, coord);
+            } catch (Throwable ignored) {}
+        }
 
-        try {
-            board.placeCard(fungi, fungi1);
-        } catch (Throwable ignored) {}
-        try {
-            board.placeCard(fungi, fungi2);
-        } catch (Throwable ignored) {}
-        try {
-            board.placeCard(plant, plant1);
-        } catch (Throwable ignored) {}
         int points = score.apply(player);
-        assertEquals(3, points);
+        assertEquals(6, points);
     }
 
     @Test
@@ -151,13 +152,13 @@ public class ObjectiveTest {
         Coordinates fungi3 = board.getCenter().vertical(3).horizontal(-1);
         try {
             board.placeCard(fungi, fungi1);
-        } catch (Exception ignored) {};
+        } catch (Exception ignored) {}
         try {
             board.placeCard(fungi, fungi2);
-        } catch (Exception ignored) {};
+        } catch (Exception ignored) {}
         try {
             board.placeCard(fungi, fungi3);
-        } catch (Exception ignored) {};
+        } catch (Exception ignored) {}
         int points = score.apply(player);
         assertEquals(3, points);
     }

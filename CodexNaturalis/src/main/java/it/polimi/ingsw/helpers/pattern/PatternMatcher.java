@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.objectives;
+package it.polimi.ingsw.helpers.pattern;
 
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.board.PlayerBoard;
@@ -11,9 +11,9 @@ public class PatternMatcher {
     private Map<Coordinates, Resource> pattern;
     private PlayerBoard board;
     private final Set<Coordinates> visited = new HashSet<>();
-    private final Set<Coordinates> matched = new HashSet<>();
     private final Queue<Coordinates> toVisit = new ArrayDeque<>();
     private Set<Resource> patternResources;
+    private Set<Pattern> matched = new HashSet<>();
 
     /**
      * set the pattern to find in the board
@@ -42,19 +42,16 @@ public class PatternMatcher {
     public int matches_found() {
         toVisit.add(board.getCenter());
         Coordinates current;
-        int matches = 0;
         while (!toVisit.isEmpty()) {
             current = toVisit.remove();
-            if (visited.contains(current) || matched.contains(current)) {
+            if (visited.contains(current)) {
                 continue;
             }
 
             visited.add(current);
 
             if (patternResources.contains(getColor(current))) {
-                if (BFSMatch(current)) {
-                    matches += 1;
-                }
+                BFSMatch(current);
             }
 
             for (Coordinates neighbor : current.getNeighbors()) {
@@ -63,10 +60,12 @@ public class PatternMatcher {
                 }
             }
         }
-        return matches;
+        return new PatternDeduplicator(matched)
+                .removeDuplicates()
+                .countDistinct();
     }
 
-    private boolean BFSMatch(Coordinates coordinates) {
+    private void BFSMatch(Coordinates coordinates) {
         for (Coordinates pattern_coords : pattern.keySet()) {
             if (pattern.get(pattern_coords) == getColor(coordinates)) {
                 boolean found = true;
@@ -81,16 +80,16 @@ public class PatternMatcher {
                     }
                 }
                 if (found) {
+                    Set<Coordinates> found_pattern = new HashSet<>();
                     for (Coordinates key : pattern.keySet()) {
                         Coordinates pattern_offset = key.subtract(pattern_coords);
-                        Coordinates toCheck = coordinates.add(pattern_offset);
-                        matched.add(toCheck);
+                        Coordinates inPattern = coordinates.add(pattern_offset);
+                        found_pattern.add(inPattern);
                     }
-                    return true;
+                    matched.add(new Pattern(found_pattern));
                 }
             }
         }
-        return false;
     }
 
     /**
