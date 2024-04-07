@@ -61,7 +61,6 @@ public class PatternMatcher {
             }
         }
         return new PatternDeduplicator(matched)
-                .removeDuplicates()
                 .countDistinct();
     }
 

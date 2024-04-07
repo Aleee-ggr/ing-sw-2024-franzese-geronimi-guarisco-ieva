@@ -6,7 +6,7 @@ import java.util.*;
 
 public class PatternDeduplicator {
     private final Set<Pattern> patterns;
-    private final Set<Pattern> output = new HashSet<>();
+    private Set<Pattern> output = new HashSet<>();
     private final Set<Pattern> checked = new HashSet<>();
 
     public PatternDeduplicator(Set<Pattern> patterns) {
@@ -18,12 +18,24 @@ public class PatternDeduplicator {
             if (checked.contains(pattern)) {continue;}
             Set<Pattern> conflicts = getConflictGroup(pattern);
             deduplicate(conflicts);
-
+            Set<Pattern> newOutput = new HashSet<>(output);
+            for (Pattern p1: output) {
+                for (Pattern p2 : output) {
+                    if (!newOutput.contains(p1) || !newOutput.contains(p2)) {continue;}
+                    if (!p1.equals(p2) && p1.getOverlap(p2) > 0) {
+                        newOutput.remove(p2);
+                    }
+                }
+            }
+            output = newOutput;
         }
         return this;
     }
 
     public int countDistinct() {
+        if (output.isEmpty() && !patterns.isEmpty()) {
+            removeDuplicates();
+        }
         return output.size();
     }
 
@@ -56,6 +68,11 @@ public class PatternDeduplicator {
         return coordinates;
     }
 
+    /**
+     *
+     * @param patterns a set of conflicting patterns with some overlap
+     * @return a map that associates a set of coordinates to how many patterns contains them
+     */
     private Map<Coordinates, Integer> countPatternPerCoordinates(Set<Pattern> patterns) {
         Set<Coordinates> coordinates = getConflictingCoordinates(patterns);
         Map<Coordinates, Integer> result = new HashMap<>();
@@ -71,11 +88,20 @@ public class PatternDeduplicator {
         return result;
     }
 
+    /**
+     * Recursively store necessary patterns for coverage based on the coordinateCounter
+     * @param patterns a set of conflicting patterns with some overlap
+     */
     private void deduplicate(Set<Pattern> patterns) {
         Map<Coordinates, Integer> coordinateCounter = countPatternPerCoordinates(patterns);
         saveUnique(patterns, coordinateCounter);
     }
 
+    /**
+     * Recursively store necessary patterns for coverage based on the coordinateCounter
+     * @param patterns a set of conflicting patterns with some overlap
+     * @param coordinateCounter a map that associates a set of coordinates to how many patterns contains them
+     */
     private void saveUnique(Set<Pattern> patterns, Map<Coordinates, Integer> coordinateCounter) {
         Set<Pattern> toAdd = new HashSet<>();
         Set<Pattern> toRemove = new HashSet<>();
