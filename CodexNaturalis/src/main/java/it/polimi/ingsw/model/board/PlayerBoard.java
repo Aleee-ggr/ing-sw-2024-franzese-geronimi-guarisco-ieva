@@ -80,7 +80,7 @@ public class PlayerBoard {
     }
 
     /**
-     * Method getCard, returns the Card for specified Coordinate.
+     * Method getCard, returns the Card for specified Coordinate. 
      * @param coordinates Coordinates for returning a card.
      * @return Card for the specified coordinates.
      */
@@ -90,8 +90,8 @@ public class PlayerBoard {
 
 
     /**
-     * Public Method isWithinBounds,
-     * called by {@link #dfs(Coordinates, boolean[][]) dfs} and  {@link #placeCard(Card, Coordinates) placeCard},
+     * Public Method isWithinBounds, <br/>
+     * called by {@link #dfs(Coordinates, boolean[][]) dfs} and  {@link #placeCard(Card, Coordinates) placeCard}, <br/>
      * it uses the GameConsts class to check the limits of the board.
      * @param c Coordinates to check
      * @see Coordinates
@@ -102,9 +102,9 @@ public class PlayerBoard {
     }
 
     /**
-     * Method that returns the possible positions for placing a Card on the board.
-     * it's used if a player is disconnected.
-     * in normal execution of the game the validPlacements hashset is updated while placing a card.
+     * Method that returns the possible positions for placing a Card on the board. <br/>
+     * it's used if a player is disconnected. <br/>
+     * in normal execution of the game the validPlacements hashset is updated while placing a card.<br/>
      * it calls the private method {@link #dfs(Coordinates, boolean[][]) dfs}.
      * @see Coordinates
      */
@@ -114,12 +114,12 @@ public class PlayerBoard {
     }
 
     /**
-     * Private Method dfs, a Recursive Depth First Search algorithm.
-     * after checking if the given coordinates are within the range of the board calling
-     * the private {@link #isWithinBounds(Coordinates) isWithinBounds method},
-     * it visits each cell up, down, right and left from the given coordinates.
-     * if it finds a null pointer it has found a valid position for a card, adding the coordinates to a list and returning.
-     * if it finds a notFillable object it means the position is not valid.
+     * Private Method dfs, a Recursive Depth First Search algorithm. <br/>
+     * after checking if the given coordinates are within the range of the board calling <br/>
+     * the private {@link #isWithinBounds(Coordinates) isWithinBounds method}, <br/>
+     * it visits each cell up, down, right and left from the given coordinates. <br/>
+     * if it finds a null pointer it has found a valid position for a card, adding the coordinates to a list and returning.<br/>
+     * if it finds a notFillable object it means the position is not valid.<br/>
      * @see MockCard
      * @param cellCoordinates the starting cell from which the depth first search starts.
      * @param visited a 2D array of boolean used to search every cell once without repetitions.
@@ -142,7 +142,7 @@ public class PlayerBoard {
     }
 
     /**
-     * Method placeCard, used to place a given card on the board at specified Coordinates.
+     * Method placeCard, used to place a given card on the board at specified Coordinates. <br/>
      * it calls the private method {@link #markNotCoverable(Coordinates, Corner[]) markNotCoverable} for checks and placing notFillable.
      * @param card Card obj to add
      * @param coordinates Coordinates for adding the Card
@@ -184,10 +184,9 @@ public class PlayerBoard {
     }
 
     /**
-     * Private Method markNotCoverable,
-     * called by {@link #placeCard(Card, Coordinates) placeCard}, it checks the corners of the placed Card and if it finds
-     * a {@link Resource#NONCOVERABLE  NONCOVERABLE} Resource marks the cell with a notFIllable MockCard Obj, if it's a valid
-     * resource it adds to the player Resource hashmap and to the Set of validPlacements for cards.
+     * Private Method markNotCoverable, <br/>
+     * called by {@link #placeCard(Card, Coordinates) placeCard}, it calls
+     * {@link #handleCase(Coordinates, Corner, int, int) handleCase} to handle the four corners of a card.
      * @param coordinates Coordinates of the placed Card
      * @param c Array of Corner of Resources of the card
      * @see Coordinates
@@ -209,6 +208,21 @@ public class PlayerBoard {
         }
     }
 
+    /**
+     * Private Method handleCase, <br/>
+     * called by {@link #markNotCoverable(Coordinates, Corner[]), markNotCoverable}.<br/>
+     * Its functions are to:<br/>
+     * mark cells of the board as not Fillable<br/>
+     * add values to the player Resource hashmap <br/>
+     * add Coordinates to the Set of validPlacements for cards.
+     * @param coordinates Coordinates of the placed Card
+     * @param corner specific Corner of the card
+     * @param dX delta x
+     * @param dY delta y
+     * @see Coordinates
+     * @see Resource
+     * @see Corner
+     */
     private void handleCase(Coordinates coordinates, Corner corner, int dX, int dY) {
         if(corner.getCornerResource() == Resource.NONCOVERABLE) {
             board[coordinates.x() + dX][coordinates.y() + dY] = notFillable;
