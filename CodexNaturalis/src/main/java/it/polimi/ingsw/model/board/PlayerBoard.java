@@ -13,7 +13,7 @@ import java.util.Set;
  * PlayerBoard has a 2D array that represent the main play board for a Player.
  * It manages placement of cards and check valid positions for placing cards.
  * it also checks if a card can be played.
- * @see it.polimi.ingsw.model.player.Player
+ * @see Player
  * @see Coordinates
  * @see Card
  * @see MockCard

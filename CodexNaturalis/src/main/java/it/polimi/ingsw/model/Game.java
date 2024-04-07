@@ -35,8 +35,11 @@ public class Game {
 
     public Game(UUID id) {
         this.id = id;
-        GameBoard = new SharedBoard(fullGoldDeck, fullStdDeck);
-        /**TODO: duplicate and shuffle decks*/
+        Deck<GoldCard> gameGoldDeck = new Deck<>(fullGoldDeck.getCards());
+        Deck<StdCard> gameStdDeck = new Deck<>(fullStdDeck.getCards());
+        gameGoldDeck.shuffle();
+        gameStdDeck.shuffle();
+        GameBoard = new SharedBoard(gameGoldDeck, gameStdDeck);
     }
 
     public UUID getId() {
