@@ -7,9 +7,13 @@ import it.polimi.ingsw.model.cards.MockCard;
 import it.polimi.ingsw.model.cards.StartingCard;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.exceptions.UnrecognisedCardException;
+import it.polimi.ingsw.model.player.Player;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 /**
  * PlayerBoard has a 2D array that represent the main play board for a Player.
  * It manages placement of cards and check valid positions for placing cards.
@@ -22,17 +26,20 @@ import java.util.List;
  * */
 public class PlayerBoard {
     private final Card[][] board;
+    private final Player boardOwner;
     private final Card notFillable = new MockCard(GameConsts.notFillableId, null);
     private Card lastPlacedCard;
     private Coordinates lastPlacedPosition;
+    private final Set<Coordinates> validPlacements = new HashSet<>();
 
     /**
      * Constructor for the PlayerBoard class.
      * @param firstCard first card played.
      */
-    public PlayerBoard(Card firstCard) {
+    public PlayerBoard(Card firstCard, Player player) {
         this.board = new Card[GameConsts.totalPlayableCards][GameConsts.totalPlayableCards];
         this.board[GameConsts.centralPoint.x()][GameConsts.centralPoint.y()] = firstCard;
+        this.boardOwner = player;
         this.lastPlacedCard = firstCard;
         this.lastPlacedPosition = new Coordinates(GameConsts.centralPoint.x(), GameConsts.centralPoint.y());
     }
@@ -81,7 +88,7 @@ public class PlayerBoard {
 
     /**
      * Public Method isWithinBounds,
-     * called by {@link #dfs(Coordinates, ArrayList, boolean[][]) dfs} and  {@link #placeCard(Card, Coordinates) placeCard},
+     * called by {@link #dfs(Coordinates, boolean[][]) dfs} and  {@link #placeCard(Card, Coordinates) placeCard},
      * it uses the GameConsts class to check the limits of the board.
      * @param c Coordinates to check
      * @see Coordinates
@@ -93,15 +100,15 @@ public class PlayerBoard {
 
     /**
      * Method that returns the possible positions for placing a Card on the board.
-     * it calls the private method {@link #dfs(Coordinates, ArrayList, boolean[][]) dfs}.
+     * it's used if a player is disconnected.
+     * in normal execution of the game the validPlacements hashset is updated while placing a card.
+     * it calls the private method {@link #dfs(Coordinates, boolean[][]) dfs}.
      * @return a list of coordinates of valid positions to place a Card on the board.
      * @see Coordinates
      */
-    public List<Coordinates> checkPositions(){
+    public void checkPositionsIfDisconnected(){
         boolean[][] visited = new boolean[GameConsts.totalPlayableCards][GameConsts.totalPlayableCards];
-        ArrayList<Coordinates> possiblePlacements = new ArrayList<Coordinates>();
-        dfs(GameConsts.centralPoint,possiblePlacements, visited);
-        return possiblePlacements;
+        dfs(GameConsts.centralPoint, visited);
     }
 
     /**
@@ -113,23 +120,22 @@ public class PlayerBoard {
      * if it finds a notFillable object it means the position is not valid.
      * @see MockCard
      * @param cellCoordinates the starting cell from which the depth first search starts.
-     * @param list an ArrayList of coordinates used to store the valid placement Coordinates.
      * @param visited a 2D array of boolean used to search every cell once without repetitions.
      */
-    private void dfs(Coordinates cellCoordinates, ArrayList<Coordinates> list, boolean[][] visited){
+    private void dfs(Coordinates cellCoordinates, boolean[][] visited){
         if(isWithinBounds(cellCoordinates) && !visited[cellCoordinates.x()][cellCoordinates.y()]){
             visited[cellCoordinates.x()][cellCoordinates.y()] = true;
             if (board[cellCoordinates.x()][cellCoordinates.y()] == null) {
-                list.add(cellCoordinates);
+                validPlacements.add(cellCoordinates);
                 return;
             }
             if(board[cellCoordinates.x()][cellCoordinates.y()]==notFillable) {
                 return;
             }
-            dfs(new Coordinates(cellCoordinates.x(), cellCoordinates.y()+1), list, visited);
-            dfs(new Coordinates(cellCoordinates.x()+1, cellCoordinates.y()), list, visited);
-            dfs(new Coordinates(cellCoordinates.x(), cellCoordinates.y()-1), list, visited);
-            dfs(new Coordinates(cellCoordinates.x()-1, cellCoordinates.y()), list, visited);
+            dfs(new Coordinates(cellCoordinates.x(), cellCoordinates.y()+1), visited);
+            dfs(new Coordinates(cellCoordinates.x()+1, cellCoordinates.y()), visited);
+            dfs(new Coordinates(cellCoordinates.x(), cellCoordinates.y()-1), visited);
+            dfs(new Coordinates(cellCoordinates.x()-1, cellCoordinates.y()), visited);
         }
     }
 
@@ -166,14 +172,15 @@ public class PlayerBoard {
     /**
      * Private Method markNotCoverable,
      * called by {@link #placeCard(Card, Coordinates) placeCard}, it checks the corners of the placed Card and if it finds
-     * a {@link Resource#NONCOVERABLE  NONCOVERABLE} Resource marks the cell with a notFIllable MockCard Obj.
+     * a {@link Resource#NONCOVERABLE  NONCOVERABLE} Resource marks the cell with a notFIllable MockCard Obj, if it's a valid
+     * resource it adds to the player Resource hashmap and to the Set of validPlacements for cards.
      * @param coordinates Coordinates of the placed Card
      * @param c Array of Corner of Resources of the card
      * @see Coordinates
      * @see Resource
      * @see Corner
      */
-    private void markNotCoverable(Coordinates coordinates, Corner[] c){
+    private void markNotCoverable(Coordinates coordinates, Corner[] c){ /**TODO: refactor*/
         try{
             for (int i = 0; i<c.length; i++){
                 if (c[i].getCornerResource() == Resource.NONCOVERABLE){
@@ -191,15 +198,28 @@ public class PlayerBoard {
                             board[coordinates.x()-1][coordinates.y()] = notFillable;
                         }
                     }
+                } else {
+                    if(c[i].getCornerResource() != Resource.NONE){
+                        boardOwner.updateResourcesValue(c[i].getCornerResource(), GameConsts.numberOfResourcesPerCorner);
+                    }
+                    switch (i){
+                        case 0 -> {
+                            validPlacements.add(new Coordinates(coordinates.x(),coordinates.y() + 1));
+                        }
+                        case 1 -> {
+                            validPlacements.add(new Coordinates(coordinates.x() + 1,coordinates.y()));
+                        }
+                        case 2 -> {
+                            validPlacements.add(new Coordinates(coordinates.x(), coordinates.y() - 1));
+                        }
+                        case 3 -> {
+                            validPlacements.add(new Coordinates(coordinates.x() - 1, coordinates.y()));
+                        }
+                    }
                 }
             }
         } catch (IndexOutOfBoundsException e){
             System.out.println("player board out of bound");
         }
     }
-
-    /**
-     * TODO:
-     * update Resources when a card is placed.
-     * */
 }

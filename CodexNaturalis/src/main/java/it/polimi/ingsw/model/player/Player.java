@@ -122,7 +122,17 @@ public class Player {
      * @see PlayerBoard
      * */
     public void setFirstCard(StartingCard card) {
-        this.board = new PlayerBoard(card);
+        this.board = new PlayerBoard(card, this);
+    }
+
+    /**
+     * Method used to update the number of resources of the Player.
+     * @param r is the resource that needs to change value
+     * @param value is the integer that represent the change in number of resources.
+     * @see Resource
+     * */
+    public void updateResourcesValue(Resource r, int value){
+        playerResources.put(r, playerResources.get(r) + value);
     }
 
     /**

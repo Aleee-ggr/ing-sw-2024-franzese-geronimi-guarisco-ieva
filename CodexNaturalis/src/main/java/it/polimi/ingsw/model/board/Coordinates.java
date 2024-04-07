@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public record Coordinates(int x, int y) {
+
     /**
      * @param offset how much to shift the coordinates horizontally (same sign as x)
      * @return a new set of coordinates offset by the given amount
