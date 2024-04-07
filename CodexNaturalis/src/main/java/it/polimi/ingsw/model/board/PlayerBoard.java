@@ -9,9 +9,7 @@ import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.exceptions.UnrecognisedCardException;
 import it.polimi.ingsw.model.player.Player;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -66,6 +64,14 @@ public class PlayerBoard {
      */
     public Coordinates getLastPlacedPosition() {
         return lastPlacedPosition;
+    }
+
+    /**
+     * Getter for the HashSet of the valid Placements of Cards.
+     * @return the HashSet of validPlacements.
+     */
+    public Set<Coordinates> getValidPlacements() {
+        return new HashSet<>(validPlacements);
     }
 
     /**
