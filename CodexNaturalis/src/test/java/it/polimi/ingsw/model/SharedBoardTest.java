@@ -61,4 +61,12 @@ public class SharedBoardTest {
 
         Assert.assertFalse(gameBoard.areCardsOver());
     }
+
+    @Test
+    public void drawDeckFullGoldCard() {
+        goldDeck = DeckFactory.fullGold();
+        gameBoard = new SharedBoard(goldDeck, stdDeck);
+
+        Assert.assertNotNull(gameBoard.drawDeck(true));
+    }
 }
