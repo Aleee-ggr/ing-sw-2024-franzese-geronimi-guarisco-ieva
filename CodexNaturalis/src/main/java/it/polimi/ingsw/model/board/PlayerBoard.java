@@ -103,7 +103,6 @@ public class PlayerBoard {
      * it's used if a player is disconnected.
      * in normal execution of the game the validPlacements hashset is updated while placing a card.
      * it calls the private method {@link #dfs(Coordinates, boolean[][]) dfs}.
-     * @return a list of coordinates of valid positions to place a Card on the board.
      * @see Coordinates
      */
     public void checkPositionsIfDisconnected(){
@@ -164,7 +163,7 @@ public class PlayerBoard {
             Corner[] c = ((StartingCard) card).getBackCorners();
             markNotCoverable(coordinates, c);
         } else {
-            throw new UnrecognisedCardException("unrecognised card");
+            throw new UnrecognisedCardException("unrecognised card"); /**TODO: fix this bug and implement back of colored*/
         }
 
     }
