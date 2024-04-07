@@ -87,6 +87,14 @@ public class Game {
     }
 
     /**
+     * Setter for the GameState.
+     * @param gameState from enum GameState
+     */
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
+
+    /**
      * Method used to add a Player in Game
      * @param playerUsername is the player username as a String
      * @throws TooManyPlayersException while trying to add a player when the Game is full
