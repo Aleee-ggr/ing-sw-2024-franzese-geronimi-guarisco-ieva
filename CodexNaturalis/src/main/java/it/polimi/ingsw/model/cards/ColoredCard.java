@@ -19,6 +19,7 @@ public abstract class ColoredCard extends Card{
      * Constructor for the ColoredCard class.
      * @param id Unique identifier of the card.
      * @param frontCorners Array of corners on the front side of the card.
+     * @param backCorners Array of corners on the back side of the card.
      * @param backResource Resource on the back side of the card.
      */
     public ColoredCard(int id, Corner[] frontCorners, Corner[] backCorners, Resource backResource) {
@@ -34,7 +35,11 @@ public abstract class ColoredCard extends Card{
     public Resource getBackResource() {
         return backResource;
     }
-    
+
+    /**
+     * Retrieves the back corners of the card.
+     * @return Array of back corners of the card.
+     */
     public Corner[] getBackCorners() {
         return Arrays.copyOf(backCorners, GameConsts.numCorners);
     }
