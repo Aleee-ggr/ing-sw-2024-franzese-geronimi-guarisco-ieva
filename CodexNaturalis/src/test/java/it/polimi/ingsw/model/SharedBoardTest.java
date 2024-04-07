@@ -63,6 +63,24 @@ public class SharedBoardTest {
     }
 
     @Test
+    public void areCardsOverEmptyDecksAndFullVisibleCards() {
+        goldDeck = DeckFactory.fullGold();
+        stdDeck = DeckFactory.fullStd();
+        gameBoard = new SharedBoard(goldDeck, stdDeck);
+
+        for (int i = 0; i < GameConsts.visibleCards; i++) {
+            gameBoard.substituteCard(i, i % 2 == 0);
+        }
+
+        while(!gameBoard.getGoldDeck().isEmpty()) {
+            gameBoard.drawDeck(true);
+            gameBoard.drawDeck(false);
+        }
+
+        Assert.assertFalse(gameBoard.areCardsOver());
+    }
+    
+    @Test
     public void drawDeckFullGoldCard() {
         goldDeck = DeckFactory.fullGold();
         gameBoard = new SharedBoard(goldDeck, stdDeck);
