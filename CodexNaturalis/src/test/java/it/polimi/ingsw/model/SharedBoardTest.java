@@ -69,4 +69,11 @@ public class SharedBoardTest {
 
         Assert.assertNotNull(gameBoard.drawDeck(true));
     }
+    @Test
+    public void drawDeckFullStdCard() {
+        stdDeck = DeckFactory.fullStd();
+        gameBoard = new SharedBoard(goldDeck, stdDeck);
+
+        Assert.assertNotNull(gameBoard.drawDeck(false));
+    }
 }
