@@ -1,10 +1,7 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.GameConsts;
-import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.cards.Corner;
-import it.polimi.ingsw.model.cards.MockCard;
-import it.polimi.ingsw.model.cards.StartingCard;
+import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.exceptions.UnrecognisedCardException;
 import it.polimi.ingsw.model.player.Player;
@@ -161,17 +158,29 @@ public class PlayerBoard {
         board[coordinates.x()][coordinates.y()] = card;
         lastPlacedPosition = coordinates;
         lastPlacedCard = card;
+        Corner[] c;
 
         if(card.isFrontSideUp()){
-            Corner[] c = card.getFrontCorners();
-            markNotCoverable(coordinates, c);
-        } else if(!card.isFrontSideUp() && card.getClass() == StartingCard.class){
-            Corner[] c = ((StartingCard) card).getBackCorners();
+            c = card.getFrontCorners();
+            if(card.getClass() == StartingCard.class){
+                for (Resource r : ((StartingCard) card).getFrontResources()){
+                    boardOwner.updateResourcesValue(r, GameConsts.numberOfResourcesPerCorner);
+                }
+            }
             markNotCoverable(coordinates, c);
         } else {
-            throw new UnrecognisedCardException("unrecognised card"); /**TODO: fix this bug and implement back of colored*/
+            if (card.getClass() == StartingCard.class) {
+                c = ((StartingCard) card).getBackCorners();
+                markNotCoverable(coordinates, c);
+            } else {
+                try {
+                    c = ((ColoredCard) card).getBackCorners();
+                    markNotCoverable(coordinates, c);
+                } catch (UnrecognisedCardException e) {
+                    System.out.println("unexpected behaviour");
+                }
+            }
         }
-
     }
 
     /**

@@ -43,7 +43,7 @@ public abstract class ColoredCard extends Card{
      * Retrieves the back corners of the card.
      * @return Array of back corners of the card.
      */
-    public static Corner[] getBackCorners() {
+    public Corner[] getBackCorners() {
         return Arrays.copyOf(backCorners, GameConsts.numCorners);
     }
 }
