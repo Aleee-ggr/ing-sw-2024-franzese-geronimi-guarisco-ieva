@@ -136,7 +136,6 @@ public class SharedBoard {
         if (visibleCards[position] != null) {
             return visibleCards[position];
         }
-        //TODO check whether the card exists
         return null;
     }
 

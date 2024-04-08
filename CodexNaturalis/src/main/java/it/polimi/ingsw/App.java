@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import java.util.List;
+
 /**
  * Hello world!
  *
@@ -7,6 +9,12 @@ package it.polimi.ingsw;
 public class App 
 {
     public static void main( String[] args) {
-        System.out.println( "Hello World!" );
+        List<String> arguments = List.of(args);
+        if (arguments.contains("server")) {
+            System.out.println("server");
+        }
+        if (arguments.contains("client")) {
+            System.out.println("client");
+        }
     }
 }
