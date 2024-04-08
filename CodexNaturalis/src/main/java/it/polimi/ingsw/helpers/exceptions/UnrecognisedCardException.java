@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.exceptions;
+package it.polimi.ingsw.helpers.exceptions;
 
 /**
  * Exception thrown when attempting to read an unrecognised card's corners.

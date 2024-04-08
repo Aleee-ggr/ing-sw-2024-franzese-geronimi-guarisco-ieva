@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.board;
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.enums.Resource;
-import it.polimi.ingsw.model.exceptions.UnrecognisedCardException;
+import it.polimi.ingsw.helpers.exceptions.UnrecognisedCardException;
 import it.polimi.ingsw.model.player.Player;
 
 import java.util.HashSet;

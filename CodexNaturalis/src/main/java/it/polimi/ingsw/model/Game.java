@@ -4,8 +4,8 @@ import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.model.board.SharedBoard;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.enums.GameState;
-import it.polimi.ingsw.model.exceptions.ExistingUsernameException;
-import it.polimi.ingsw.model.exceptions.TooManyPlayersException;
+import it.polimi.ingsw.helpers.exceptions.ExistingUsernameException;
+import it.polimi.ingsw.helpers.exceptions.TooManyPlayersException;
 import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.model.player.Player;
 
