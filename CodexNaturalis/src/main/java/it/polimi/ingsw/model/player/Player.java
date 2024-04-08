@@ -111,7 +111,7 @@ public class Player {
      * Choose the Hidden Object of the Player.
      * @see Objective
      */
-    public void chooseHiddenObjective() {
+    public void chooseHiddenObjective(int index) {
 
         this.hiddenObjective = hiddenObjective;
     }

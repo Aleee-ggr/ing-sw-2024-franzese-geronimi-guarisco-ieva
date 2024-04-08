@@ -9,10 +9,7 @@ import it.polimi.ingsw.helpers.exceptions.TooManyPlayersException;
 import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.model.player.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Game Class for creating a game with id, players, numPlayers, gameState and SharedBoard.
@@ -27,6 +24,7 @@ public class Game {
     static final Deck<StdCard> fullStdDeck = FullDeck.getFullStdDeck();
     static final Deck<StartingCard> fullStartingDeck = FullDeck.getFullStartingDeck();
     static final Deck<Objective> fullObjDeck = FullDeck.getFullObjDeck();
+    static final HashSet<Player> playersConnected  = new HashSet<>(); //TODO: not the same username inter-game
 
     /*Game-Specific Decks: not static decks for the instance of Game*/
     Deck<GoldCard> gameGoldDeck = new Deck<>(fullGoldDeck.getCards());
@@ -133,7 +131,7 @@ public class Game {
         }
     }
 
-    public void manageObjectives(){
+    public void manageObjectives(){ //TODO: try catch if there are obj in sharedboard
         gameObjDeck.shuffle();
         Objective[] objectiveToAdd = new Objective[GameConsts.globalObjectives];
         for(int i = 0; i<GameConsts.globalObjectives; i++){
