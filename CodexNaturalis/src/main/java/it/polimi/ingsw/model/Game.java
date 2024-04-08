@@ -31,7 +31,7 @@ public class Game {
     private int numPlayers = 0;
     private final List<Player> players = new ArrayList<>();
     private GameState gameState;
-    private final SharedBoard GameBoard;
+    private SharedBoard GameBoard;
 
     /**
      * Constructor for the Game class.
@@ -39,11 +39,7 @@ public class Game {
      */
     public Game(UUID id) {
         this.id = id;
-        Deck<GoldCard> gameGoldDeck = new Deck<>(fullGoldDeck.getCards());
-        Deck<StdCard> gameStdDeck = new Deck<>(fullStdDeck.getCards());
-        gameGoldDeck.shuffle();
-        gameStdDeck.shuffle();
-        GameBoard = new SharedBoard(gameGoldDeck, gameStdDeck);
+        resetBoard();
     }
 
     /**
@@ -115,13 +111,23 @@ public class Game {
         this.numPlayers += 1;
     }
 
+    public void resetBoard(){
+        try{
+            Deck<GoldCard> gameGoldDeck = new Deck<>(fullGoldDeck.getCards());
+            Deck<StdCard> gameStdDeck = new Deck<>(fullStdDeck.getCards());
+            gameGoldDeck.shuffle();
+            gameStdDeck.shuffle();
+            GameBoard = new SharedBoard(gameGoldDeck, gameStdDeck);
+        } catch (RuntimeException e){
+            System.out.println("error while resetting the SharedBoard");
+        }
+    }
+
+
     /**
-     * TODO: methods to implements:
+     * TODO: methods to implement:
      */
     public void startGame(){
-    }
-    public boolean resetBoard(/*SharedBoard*/){
-        return true;
     }
     public void endGame(){
     }
