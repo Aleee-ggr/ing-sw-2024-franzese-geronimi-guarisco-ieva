@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.cards.StartingCard;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
 
+import javax.print.attribute.standard.JobKOctets;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -107,11 +108,12 @@ public class Player {
     }
 
     /**
-     * Setter for the Hidden Object of the Player.
+     * Method to set the Hidden Object of the Player.
      * @param hiddenObjective is the Objective to set.
      * @see Objective
      */
-    public void setHiddenObjective(Objective hiddenObjective) {
+    public void chooseHiddenObjective() {
+
         this.hiddenObjective = hiddenObjective;
     }
 
@@ -184,6 +186,13 @@ public class Player {
             }
         }
         System.out.println("too many cards");
+    }
+
+    public void choosePersonalObjective(int index){
+        Objective[] objectivesToChoose = new Objective[GameConsts.objectiesToChooseFrom];
+        for(int i = 0; i < GameConsts.objectiesToChooseFrom; i++){
+            /*TODO: implementation of choose*/
+        }
     }
 
     /**

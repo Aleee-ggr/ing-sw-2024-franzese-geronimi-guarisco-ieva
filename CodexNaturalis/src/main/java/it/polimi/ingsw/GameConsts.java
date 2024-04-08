@@ -30,6 +30,7 @@ public abstract class GameConsts {
     public static final String cardJsonPath = "src/main/resources/cards.json";
     public static final int visibleCards = 4;
     public static final int globalObjectives = 2;
+    public static final int objectiesToChooseFrom = 2;
     public static final int numCorners = 4;
     public static final int maxNumRequirements = 5;
     public static final int firstHandDim = 3;

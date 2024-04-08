@@ -22,11 +22,17 @@ import java.util.UUID;
  * @see GameState
  * */
 public class Game {
+    /*static decks: needed not to parse every time*/
     static final Deck<GoldCard> fullGoldDeck = FullDeck.getFullGoldDeck();
     static final Deck<StdCard> fullStdDeck = FullDeck.getFullStdDeck();
     static final Deck<StartingCard> fullStartingDeck = FullDeck.getFullStartingDeck();
     static final Deck<Objective> fullObjDeck = FullDeck.getFullObjDeck();
 
+    /*Game-Specific Decks: not static decks for the instance of Game*/
+    Deck<GoldCard> gameGoldDeck = new Deck<>(fullGoldDeck.getCards());
+    Deck<StdCard> gameStdDeck = new Deck<>(fullStdDeck.getCards());
+    Deck<Objective> gameObjDeck = new Deck<>(fullObjDeck.getCards());
+    Deck<StartingCard> gameStartingDeck = new Deck<>(fullStartingDeck.getCards());
     private final UUID id;
     private int numPlayers = 0;
     private final List<Player> players = new ArrayList<>();
@@ -117,8 +123,8 @@ public class Game {
      * */
     public void resetBoard(){
         try{
-            Deck<GoldCard> gameGoldDeck = new Deck<>(fullGoldDeck.getCards());
-            Deck<StdCard> gameStdDeck = new Deck<>(fullStdDeck.getCards());
+            gameGoldDeck = new Deck<>(fullGoldDeck.getCards());
+            gameStdDeck = new Deck<>(fullStdDeck.getCards());
             gameGoldDeck.shuffle();
             gameStdDeck.shuffle();
             GameBoard = new SharedBoard(gameGoldDeck, gameStdDeck);
@@ -127,11 +133,21 @@ public class Game {
         }
     }
 
+    public void manageObjectives(){
+        gameObjDeck.shuffle();
+        Objective[] objectiveToAdd = new Objective[GameConsts.globalObjectives];
+        for(int i = 0; i<GameConsts.globalObjectives; i++){
+            objectiveToAdd[i] = gameObjDeck.draw();
+        }
+        GameBoard.setObjectives(objectiveToAdd);
+    }
+
 
     /**
      * TODO: methods to implement:
      */
     public void startGame(){
+
     }
     public void endGame(){
     }

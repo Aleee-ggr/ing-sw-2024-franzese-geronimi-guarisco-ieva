@@ -59,6 +59,14 @@ public class SharedBoard {
         return Arrays.copyOf(visibleCards, GameConsts.visibleCards);
     }
 
+    public void setObjectives(Objective[] obj){
+        try {
+            System.arraycopy(obj, 0, this.objectives, 0, objectives.length);
+        } catch (IndexOutOfBoundsException e){
+            System.out.println("not enough obj");
+        }
+    }
+
     /**
      * Substitutes a card on the shared board at the specified position with a new card from the deck.
      * @param position The position of the card to be substituted.
