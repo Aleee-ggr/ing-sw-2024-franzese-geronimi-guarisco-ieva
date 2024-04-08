@@ -20,6 +20,10 @@ public class Deck<CardType> {
         this.cards = cards;
     }
 
+    public Deck(Deck<CardType> deck) {
+        this.cards = new ArrayList<>(deck.getCards());
+    }
+
     /**
      * Shuffles the cards in the deck.
      */

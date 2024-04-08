@@ -33,6 +33,10 @@ public class SharedBoard {
     public SharedBoard(Deck<GoldCard> goldDeck, Deck<StdCard> stdDeck) {
         this.goldDeck = goldDeck;
         this.stdDeck = stdDeck;
+        visibleCards[0] = goldDeck.draw();
+        visibleCards[1] = goldDeck.draw();
+        visibleCards[2] = stdDeck.draw();
+        visibleCards[3] = stdDeck.draw();
     }
 
     /**

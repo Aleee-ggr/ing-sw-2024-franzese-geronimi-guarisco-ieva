@@ -12,11 +12,12 @@ import it.polimi.ingsw.model.objectives.Objective;
 import java.nio.file.Path;
 
 public class FullDeck {
+    private static final Path cardJsonPath = Path.of(GameConsts.cardJsonPath);
+
     private static Deck<GoldCard> FullGoldDeck;
     private static Deck<StdCard> FullStdDeck;
     private static Deck<Objective> FullObjDeck;
     private static Deck<StartingCard> FullStartingDeck;
-    private static final Path cardJsonPath = Path.of(GameConsts.cardJsonPath);
 
     static {
         BuildStdDeck();
@@ -26,21 +27,20 @@ public class FullDeck {
     }
 
     public static Deck<GoldCard> getFullGoldDeck() {
-        return FullGoldDeck;
+        return new Deck<>(FullGoldDeck);
     }
 
     public static Deck<StdCard> getFullStdDeck() {
-        return FullStdDeck;
+        return new Deck<>(FullStdDeck);
     }
 
     public static Deck<Objective> getFullObjDeck() {
-        return FullObjDeck;
+        return new Deck<>(FullObjDeck);
     }
 
     public static Deck<StartingCard> getFullStartingDeck() {
-        return FullStartingDeck;
+        return new Deck<>(FullStartingDeck);
     }
-
 
     public static void BuildGoldDeck() {
         GoldCardParser goldParser = new GoldCardParser();
