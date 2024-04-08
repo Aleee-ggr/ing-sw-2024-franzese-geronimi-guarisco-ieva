@@ -17,6 +17,7 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
@@ -28,6 +29,7 @@ public class ObjectiveTest {
     public static void setup() {
         DeckFactory.setupParser();
     }
+    public static Game game = new Game(new UUID(1,1));
     @Test
     public void testResources() throws InvalidTypeException {
         Map<Resource, Integer> requirements = new HashMap<>() {{
@@ -67,14 +69,14 @@ public class ObjectiveTest {
     @Test
     public void testCover4Cards() throws InvalidTypeException {
         Deck<StartingCard> startingCards = DeckFactory.fullStarting();
-        Player player = new Player("", null);
+        Player player = new Player("", game);
 
         Function<Player, Integer> score = new FunctionBuilder()
                 .setPoints(2)
                 .setType("cover")
                 .build();
 
-        player.setFirstCard(startingCards.draw());
+        player.setFirstCard(true);
         PlayerBoard board = player.getPlayerBoard();
 
         assertNotNull(board);
@@ -104,9 +106,9 @@ public class ObjectiveTest {
                 .setType("pattern")
                 .setPattern(pattern)
                 .build();
-        Player player = new Player("", null);
+        Player player = new Player("", game);
 
-        player.setFirstCard(startingCards.draw());
+        player.setFirstCard(true);
         PlayerBoard board = player.getPlayerBoard();
         Card fungi = new StdCard(0, null, Resource.FUNGI, false);
         Coordinates[] fungi_coord = {
@@ -141,9 +143,9 @@ public class ObjectiveTest {
                 .setType("pattern")
                 .setPattern(pattern)
                 .build();
-        Player player = new Player("", null);
+        Player player = new Player("", game);
 
-        player.setFirstCard(startingCards.draw());
+        player.setFirstCard(true);
         PlayerBoard board = player.getPlayerBoard();
         Card fungi = new StdCard(0, null, Resource.FUNGI, false);
         Card plant = new StdCard(0, null, Resource.PLANT, false);
@@ -177,9 +179,9 @@ public class ObjectiveTest {
                 .setType("pattern")
                 .setPattern(pattern)
                 .build();
-        Player player = new Player("", null);
+        Player player = new Player("", game);
 
-        player.setFirstCard(startingCards.draw());
+        player.setFirstCard(true);
         PlayerBoard board = player.getPlayerBoard();
         Card fungi = new StdCard(0, null, Resource.FUNGI, false);
         Card plant = new StdCard(0, null, Resource.PLANT, false);

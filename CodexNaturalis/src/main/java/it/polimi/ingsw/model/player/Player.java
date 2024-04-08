@@ -125,10 +125,13 @@ public class Player {
     /**
      * Method used to set up the playerBoard, placing the first card in the Board.<br/>
      * It calls the constructor of PlayerBoard.
+     * @param frontsideup boolean if the user wants the starting card to be front side up
      * @see PlayerBoard
      * */
-    public void setFirstCard(StartingCard card) {
-        this.board = new PlayerBoard(card, this);
+    public void setFirstCard(boolean frontsideup) {
+        StartingCard s = game.getGameStartingDeck().draw();
+        s.setFrontSideUp(frontsideup);
+        this.board = new PlayerBoard(s, this);
     }
 
     /**

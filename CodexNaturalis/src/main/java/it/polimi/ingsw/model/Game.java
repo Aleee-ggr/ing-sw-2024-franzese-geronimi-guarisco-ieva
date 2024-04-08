@@ -95,6 +95,14 @@ public class Game {
     }
 
     /**
+     * Getter for the full starting card deck.
+     * @return the gameStartingDeck, game specific starting card deck
+     */
+    public Deck<StartingCard> getGameStartingDeck() {
+        return gameStartingDeck;
+    }
+
+    /**
      * Setter for the GameState.
      * @param gameState from enum GameState
      */
@@ -133,6 +141,8 @@ public class Game {
             gameStdDeck = new Deck<>(fullStdDeck.getCards());
             gameGoldDeck.shuffle();
             gameStdDeck.shuffle();
+            gameObjDeck.shuffle();
+            gameStartingDeck.shuffle();
             GameBoard = new SharedBoard(gameGoldDeck, gameStdDeck);
         } catch (RuntimeException e){
             System.out.println("error while resetting the SharedBoard");

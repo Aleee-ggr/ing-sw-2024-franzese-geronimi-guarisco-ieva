@@ -60,4 +60,8 @@ public abstract class Card {
     public Corner[] getFrontCorners() {
         return Arrays.copyOf(frontCorners, GameConsts.numCorners);
     }
+
+    public void setFrontSideUp(boolean frontSideUp) {
+        this.frontSideUp = frontSideUp;
+    }
 }
