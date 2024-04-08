@@ -32,7 +32,7 @@ public class Player {
     private final Game game;
 
     /**
-     * Constructor of Player
+     * Constructor of Player <br/>
      * set up a new Player and sets all Resources to zero.
      * @param username it is the unique identifier of the player.
      * @param currentGame pointer to the instance of game the player is playing.
@@ -117,7 +117,7 @@ public class Player {
 
 
     /**
-     * Method used to set up the playerBoard, placing the first card in the Board.
+     * Method used to set up the playerBoard, placing the first card in the Board.<br/>
      * It calls the constructor of PlayerBoard.
      * @see PlayerBoard
      * */
@@ -155,7 +155,7 @@ public class Player {
     }
 
     /**
-     * This method is used while the game is starting to draw the first hand.
+     * This method is used while the game is starting to draw the first hand.<br/>
      * It takes const values from:
      * @see it.polimi.ingsw.GameConsts
      * */

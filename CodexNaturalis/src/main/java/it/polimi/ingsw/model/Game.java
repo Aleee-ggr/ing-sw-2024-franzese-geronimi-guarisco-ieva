@@ -95,7 +95,7 @@ public class Game {
      * @param playerUsername is the player username as a String
      * @throws TooManyPlayersException while trying to add a player when the Game is full
      * @throws ExistingUsernameException while there is already a player with the same username in game
-     * the exceptions are managed by the caller!
+     * the exceptions are managed by the caller.
      * */
     public void addPlayer(String playerUsername) throws TooManyPlayersException, ExistingUsernameException{ /*TODO: the caller needs to manage these exception*/
         if(players.size() >= GameConsts.maxPlayersNum) {
@@ -111,6 +111,10 @@ public class Game {
         this.numPlayers += 1;
     }
 
+    /**
+     * Method used to reset the SharedBoard. <br/>
+     * It creates a new board with new shuffled decks.
+     * */
     public void resetBoard(){
         try{
             Deck<GoldCard> gameGoldDeck = new Deck<>(fullGoldDeck.getCards());

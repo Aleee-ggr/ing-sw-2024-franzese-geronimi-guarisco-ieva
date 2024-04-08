@@ -10,8 +10,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * PlayerBoard has a 2D array that represent the main play board for a Player.
- * It manages placement of cards and check valid positions for placing cards.
+ * PlayerBoard has a 2D array that represent the main play board for a Player. <br/>
+ * It manages placement of cards and check valid positions for placing cards. <br/>
  * it also checks if a card can be played.
  * @see Player
  * @see Coordinates
