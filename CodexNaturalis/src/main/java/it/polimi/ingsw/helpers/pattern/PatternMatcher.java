@@ -97,7 +97,7 @@ public class PatternMatcher {
      * @return whether the board contains a card at the given coordinates
      */
     private boolean isCard(Coordinates coordinates) {
-        return board.isWithinBounds(coordinates) && board.getCard(coordinates) != null;
+        return board.getCard(coordinates) != null;
     }
 
     /**

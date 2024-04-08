@@ -135,7 +135,7 @@ public class FunctionBuilder {
                         Coordinates lastCoordinates = board.getLastPlacedPosition();
                         int neighbor_count = 0;
                         for (Coordinates neighbor : lastCoordinates.getNeighbors()) {
-                            if (board.getBoard()[neighbor.x()][neighbor.y()] != null) {
+                            if (board.getCard(neighbor) != null) {
                                 neighbor_count++;
                             }
                         }
