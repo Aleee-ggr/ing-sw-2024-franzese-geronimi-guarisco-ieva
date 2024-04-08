@@ -108,8 +108,7 @@ public class Player {
     }
 
     /**
-     * Method to set the Hidden Object of the Player.
-     * @param hiddenObjective is the Objective to set.
+     * Choose the Hidden Object of the Player.
      * @see Objective
      */
     public void chooseHiddenObjective() {
