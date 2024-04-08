@@ -119,7 +119,6 @@ public class ObjectiveTest {
                 board.getCenter().horizontal(-7)
         };
         for (Coordinates coord : fungi_coord) {
-            System.out.println(coord);
             try {
                 board.placeCard(fungi, coord);
             } catch (Throwable ignored) {}

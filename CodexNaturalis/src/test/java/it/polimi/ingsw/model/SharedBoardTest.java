@@ -83,12 +83,14 @@ public class SharedBoardTest {
     @Test
     public void drawDeckFullGoldCard() {
         goldDeck = DeckFactory.fullGold();
+        stdDeck = DeckFactory.fullStd();
         gameBoard = new SharedBoard(goldDeck, stdDeck);
 
         Assert.assertNotNull(gameBoard.drawDeck(true));
     }
     @Test
     public void drawDeckFullStdCard() {
+        goldDeck = DeckFactory.fullGold();
         stdDeck = DeckFactory.fullStd();
         gameBoard = new SharedBoard(goldDeck, stdDeck);
 
