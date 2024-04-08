@@ -87,6 +87,14 @@ public class Game {
     }
 
     /**
+     * Getter for the full object deck.
+     * @return the gameObjDeck, game specific object deck
+     */
+    public Deck<Objective> getGameObjDeck() {
+        return gameObjDeck;
+    }
+
+    /**
      * Setter for the GameState.
      * @param gameState from enum GameState
      */

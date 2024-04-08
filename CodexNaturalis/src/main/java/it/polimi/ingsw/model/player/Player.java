@@ -109,11 +109,16 @@ public class Player {
 
     /**
      * Choose the Hidden Object of the Player.
+     * @param index int of the chosen card
      * @see Objective
      */
-    public void chooseHiddenObjective(int index) {
-
-        this.hiddenObjective = hiddenObjective;
+    public void choosePersonalObjective(int index){
+        Objective[] objectivesToChoose = new Objective[GameConsts.objectiesToChooseFrom];
+        //TODO: show possible cards to the client
+        for(int i = 0; i < GameConsts.objectiesToChooseFrom; i++){
+            objectivesToChoose[i] = game.getGameObjDeck().draw();
+        }
+        hiddenObjective = objectivesToChoose[index];
     }
 
 
@@ -187,12 +192,7 @@ public class Player {
         System.out.println("too many cards");
     }
 
-    public void choosePersonalObjective(int index){
-        Objective[] objectivesToChoose = new Objective[GameConsts.objectiesToChooseFrom];
-        for(int i = 0; i < GameConsts.objectiesToChooseFrom; i++){
-            /*TODO: implementation of choose*/
-        }
-    }
+
 
     /**
      * TODO: methods to implement
