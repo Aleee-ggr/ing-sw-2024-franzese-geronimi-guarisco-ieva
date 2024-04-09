@@ -31,6 +31,14 @@ public class GoldCard extends ColoredCard{
         this.calculateScore = calculateScore;
     }
 
+    /**
+     * Checks if the specified player meets the requirements to place this gold card.
+     * Returns true if the player satisfies all resource requirements specified for this card,
+     * otherwise returns false.
+     *
+     * @param player The player whose resources are being checked against the card's requirements.
+     * @return True if the player meets the requirements, false otherwise.
+     */
     public boolean checkRequirements(Player player) {
         for (Map.Entry<Resource, Integer> entry : requirements.entrySet()) {
             Resource requiredResource = entry.getKey();
