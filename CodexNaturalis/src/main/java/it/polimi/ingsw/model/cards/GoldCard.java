@@ -31,6 +31,18 @@ public class GoldCard extends ColoredCard{
         this.calculateScore = calculateScore;
     }
 
+    public boolean checkRequirements(Player player) {
+        for (Map.Entry<Resource, Integer> entry : requirements.entrySet()) {
+            Resource requiredResource = entry.getKey();
+            int requiredAmount = entry.getValue();
+
+            if (player.getResources().get(requiredResource) < requiredAmount) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * Calculates the score for the player based on the card's requirements using the strategy.
      * @param player The player for whom the score is calculated.
