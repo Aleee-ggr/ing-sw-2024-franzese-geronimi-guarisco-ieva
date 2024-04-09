@@ -3,7 +3,6 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.model.board.SharedBoard;
 import it.polimi.ingsw.model.cards.*;
-import it.polimi.ingsw.model.enums.GameState;
 import it.polimi.ingsw.helpers.exceptions.ExistingUsernameException;
 import it.polimi.ingsw.helpers.exceptions.TooManyPlayersException;
 import it.polimi.ingsw.model.objectives.Objective;
@@ -12,11 +11,10 @@ import it.polimi.ingsw.model.player.Player;
 import java.util.*;
 
 /**
- * Game Class for creating a game with id, players, numPlayers, gameState and SharedBoard.
+ * Game Class for creating a game with id, players, numPlayers and SharedBoard.
  * @author Alessio Guarisco
  * @see Player
  * @see SharedBoard
- * @see GameState
  * */
 public class Game {
     /*static decks: needed not to parse every time*/
@@ -34,7 +32,6 @@ public class Game {
     private final UUID id;
     private int numPlayers = 0;
     private final List<Player> players = new ArrayList<>();
-    private GameState gameState;
     private SharedBoard GameBoard;
 
     /**
@@ -71,14 +68,6 @@ public class Game {
     }
 
     /**
-     * Getter for the GameState.
-     * @return the GameState of the Game
-     */
-    public GameState getGameState() {
-        return gameState;
-    }
-
-    /**
      * Getter for the GameBoard.
      * @return the SharedBoard of the Game
      */
@@ -100,14 +89,6 @@ public class Game {
      */
     public Deck<StartingCard> getGameStartingDeck() {
         return gameStartingDeck;
-    }
-
-    /**
-     * Setter for the GameState.
-     * @param gameState from enum GameState
-     */
-    public void setGameState(GameState gameState) {
-        this.gameState = gameState;
     }
 
     /**
@@ -157,8 +138,7 @@ public class Game {
         }
         GameBoard.setObjectives(objectiveToAdd);
     }
-
-
+    
     /**
      * TODO: methods to implement:
      */
