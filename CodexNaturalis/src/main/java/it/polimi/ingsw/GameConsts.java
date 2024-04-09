@@ -40,4 +40,5 @@ public abstract class GameConsts {
     public static final int totalPlayableCards = 80;
     public static final int notFillableId = 0;
     public static final int numberOfResourcesPerCorner = 1;
+    public static final int endingScore = 20;
 }

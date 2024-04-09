@@ -144,6 +144,19 @@ public class SharedBoard {
     }
 
     /**
+     * Checks if the game is over by verifying if any player has reached the ending score.
+     * @return True if the game is over, otherwise false.
+     */
+    public boolean isOver() {
+        for (int score : scoreMap.values()) {
+            if (score >= GameConsts.endingScore) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Retrieves a copy of the score map.
      * @return A copy of the score map.
      */
