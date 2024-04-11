@@ -194,6 +194,17 @@ public class Player {
         System.out.println("too many cards");
     }
 
+    /**
+     * Plays a card on the game board at the specified coordinates.
+     * If the played card is a GoldCard and it meets the player's requirements,
+     * it is placed on the board and the player's score is updated.
+     * If the played card is a StdCard, it is placed on the board and if it is a point card,
+     * the player's score is updated.
+     * Finally, the played card is removed from the player's hand.
+     *
+     * @param playedCard   The card to be played.
+     * @param coordinates  The coordinates where the card should be placed on the board.
+     */
     public void playCard(ColoredCard playedCard, Coordinates coordinates){
         if (playedCard instanceof GoldCard goldCard) {
             if (goldCard.checkRequirements(this)) {
