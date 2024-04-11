@@ -2,13 +2,12 @@ package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.board.PlayerBoard;
-import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.cards.StartingCard;
+import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
 
-import javax.print.attribute.standard.JobKOctets;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -195,12 +194,23 @@ public class Player {
         System.out.println("too many cards");
     }
 
-
-
-    /**
-     * TODO: methods to implement
-     */
-    public void playCard(Card playedCard){
-
+    public void playCard(ColoredCard playedCard, Coordinates coordinates){
+        if (playedCard instanceof GoldCard goldCard) {
+            if (goldCard.checkRequirements(this)) {
+                board.placeCard(goldCard, coordinates);
+                game.getGameBoard().updateScore(this, goldCard.getCalculateScore(this));
+            }
+        } else {
+            StdCard stdCard = (StdCard) playedCard;
+            board.placeCard(stdCard, coordinates);
+            if (stdCard.isPoint()) {
+                game.getGameBoard().updateScore(this, 1);
+            }
+        }
+        for (int i = 0; i < GameConsts.firstHandDim; i++) {
+            if (hand[i].equals(playedCard)) {
+                hand[i] = null;
+            }
+        }
     }
 }
