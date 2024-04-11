@@ -164,6 +164,10 @@ public class SharedBoard {
         return new ConcurrentHashMap<>(scoreMap); // Copy the map instead of returning the object itself
     }
 
+    public void updateScore(Player player, int value) {
+        scoreMap.put(player, scoreMap.get(player) + value);
+    }
+
     /**
      * Retrieves the global objectives on the shared board.
      * @return An array containing the global objectives.
