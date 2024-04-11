@@ -164,6 +164,12 @@ public class SharedBoard {
         return new ConcurrentHashMap<>(scoreMap); // Copy the map instead of returning the object itself
     }
 
+    /**
+     * Updates the score of the specified player by the given value.
+     *
+     * @param player the player whose score needs to be updated
+     * @param value the value by which the score should be updated
+     */
     public void updateScore(Player player, int value) {
         scoreMap.put(player, scoreMap.get(player) + value);
     }
