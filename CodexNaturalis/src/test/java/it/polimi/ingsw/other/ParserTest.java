@@ -1,5 +1,6 @@
 package it.polimi.ingsw.other;
 
+import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.helpers.PlayerBuilder;
 import it.polimi.ingsw.helpers.exceptions.JsonFormatException;
 import it.polimi.ingsw.helpers.parsers.GoldCardParser;
@@ -14,6 +15,9 @@ import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.model.player.Player;
 import org.junit.Test;
+
+import java.io.IOException;
+import java.nio.file.Path;
 
 import static org.junit.Assert.*;
 
@@ -55,7 +59,7 @@ public class ParserTest {
                         {
                             "id": -1,
                             "points": 1,
-                            "type": resources,
+                            "type": "resources",
                             "requirements": {
                                 "PLANT": 3
                             }
@@ -107,5 +111,80 @@ public class ParserTest {
         int score = goldCard.getScore(dummy);
 
         assertEquals(score, 10);
+    }
+
+    @Test
+    public void workingParserTest() throws JsonFormatException, IOException {
+        Deck<GoldCard> goldCardDeck = new GoldCardParser().readFile(Path.of(GameConsts.cardJsonPath)).parse();
+        Deck<StdCard> stdCardDeck = new StdCardParser().readFile(Path.of(GameConsts.cardJsonPath)).parse();
+        Deck<StartingCard> startingCardDeck = new StartingParser().readFile(Path.of(GameConsts.cardJsonPath)).parse();
+        Deck<Objective> objectiveDeck = new ObjectiveParser().readFile(Path.of(GameConsts.cardJsonPath)).parse();
+
+        assertFalse(goldCardDeck.isEmpty());
+        assertFalse(stdCardDeck.isEmpty());
+        assertFalse(startingCardDeck.isEmpty());
+        assertFalse(objectiveDeck.isEmpty());
+    }
+
+    @Test
+    public void testStdCardFormatExceptions(){
+        String json = """
+                {
+                    "stdcards": [
+                        {}
+                    ],
+                    "goldcards": [
+                        {}
+                    ],
+                    "startingcards": [
+                        {}
+                    ],
+                    "objectives": [
+                        {}
+                    ]
+                }
+                """;
+
+        int exceptionCounter = 0;
+
+        try {
+            Deck<StdCard> deck = new StdCardParser().readString(json).parse();
+        } catch (JsonFormatException e) {
+            exceptionCounter++;
+        }
+        try {
+            Deck<GoldCard> deck = new GoldCardParser().readString(json).parse();
+        } catch (JsonFormatException e) {
+            exceptionCounter++;
+        }
+        try {
+            Deck<StartingCard> deck = new StartingParser().readString(json).parse();
+        } catch (JsonFormatException e) {
+            exceptionCounter++;
+        }
+        try {
+            Deck<Objective> deck = new ObjectiveParser().readString(json).parse();
+        } catch (JsonFormatException e) {
+            exceptionCounter++;
+        }
+
+        assertEquals(4, exceptionCounter);
+    }
+
+    @Test(expected = JsonFormatException.class)
+    public void testInvalidType() throws JsonFormatException {
+        String json = """
+                {
+                    "objectives": [
+                        {
+                          "id":93,
+                          "points": 3,
+                          "type": "wrong",
+                          "requirements": ["NONE", "NONE", "FUNGI", "NONE", "ANIMAL", "NONE", "NONE", "ANIMAL", "NONE"]
+                        }
+                    ]
+                }
+                """;
+        new ObjectiveParser().readString(json).parse();
     }
 }
