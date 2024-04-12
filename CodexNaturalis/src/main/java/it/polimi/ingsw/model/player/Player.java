@@ -209,7 +209,7 @@ public class Player {
         if (playedCard instanceof GoldCard goldCard) {
             if (goldCard.checkRequirements(this)) {
                 board.placeCard(goldCard, coordinates);
-                game.getGameBoard().updateScore(this, goldCard.getCalculateScore(this));
+                game.getGameBoard().updateScore(this, goldCard.getScore(this));
             }
         } else {
             StdCard stdCard = (StdCard) playedCard;

@@ -56,7 +56,7 @@ public class GoldCard extends ColoredCard{
      * @param player The player for whom the score is calculated.
      * @return The calculated score.
      */
-    public Integer getCalculateScore(Player player) {
+    public Integer getScore(Player player) {
         return this.calculateScore.apply(player);
     }
 

@@ -104,7 +104,7 @@ public class ParserTest {
                 .setResource(Resource.QUILL, 10)
                 .build();
 
-        int score = goldCard.getCalculateScore(dummy);
+        int score = goldCard.getScore(dummy);
 
         assertEquals(score, 10);
     }
