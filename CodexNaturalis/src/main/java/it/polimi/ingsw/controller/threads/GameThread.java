@@ -1,9 +1,9 @@
 package it.polimi.ingsw.controller.threads;
 
 public class GameThread extends Thread {
-    private final ThreadMessage message;
+    private final Shared<ThreadMessage> message;
 
-    public GameThread(ThreadMessage message) {
+    public GameThread(Shared<ThreadMessage> message) {
         this.message = message;
     }
 
