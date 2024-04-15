@@ -24,6 +24,7 @@ public class RmiServer implements Server, RmiServerInterface {
         registry = LocateRegistry.createRegistry(1099);
         registry.rebind(name, stub);
         System.out.println("Started!");
+        Runtime.getRuntime().addShutdownHook(new Thread(this::stop));
     }
 
     public void stop() {
