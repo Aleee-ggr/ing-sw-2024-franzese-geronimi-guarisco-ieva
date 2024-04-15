@@ -3,7 +3,7 @@ package it.polimi.ingsw.helpers.parsers;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import it.polimi.ingsw.GameConsts;
-import it.polimi.ingsw.helpers.exceptions.JsonFormatException;
+import it.polimi.ingsw.helpers.exceptions.model.JsonFormatException;
 import it.polimi.ingsw.model.cards.Corner;
 import it.polimi.ingsw.model.enums.Resource;
 

@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.GameConsts;
-import it.polimi.ingsw.helpers.exceptions.ExistingUsernameException;
-import it.polimi.ingsw.helpers.exceptions.TooManyPlayersException;
+import it.polimi.ingsw.helpers.exceptions.model.ExistingUsernameException;
+import it.polimi.ingsw.helpers.exceptions.model.TooManyPlayersException;
 import it.polimi.ingsw.model.player.Player;
 import org.junit.Test;
 

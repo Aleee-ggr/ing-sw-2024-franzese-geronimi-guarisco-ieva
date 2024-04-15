@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.helpers.exceptions.JsonFormatException;
+import it.polimi.ingsw.helpers.exceptions.model.JsonFormatException;
 import it.polimi.ingsw.model.cards.Corner;
 import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.cards.StartingCard;

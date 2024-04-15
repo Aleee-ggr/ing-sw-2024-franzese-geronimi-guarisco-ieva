@@ -1,7 +1,7 @@
 package it.polimi.ingsw.helpers.parsers;
 
 import com.google.gson.*;
-import it.polimi.ingsw.helpers.exceptions.JsonFormatException;
+import it.polimi.ingsw.helpers.exceptions.model.JsonFormatException;
 import it.polimi.ingsw.model.cards.Corner;
 import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.cards.StdCard;

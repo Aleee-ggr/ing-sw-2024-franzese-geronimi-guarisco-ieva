@@ -12,11 +12,11 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class RmiServer implements Server, RmiServerInterface {
+public class RmiServer extends Server implements RmiServerInterface {
     private static final String name="rmiServer";
     private final Registry registry;
-    private final Map<UUID, Shared<ThreadMessage>> threadMessages = new HashMap<>();
 
     public RmiServer(int port) throws RemoteException {
         System.out.println("Starting server...");

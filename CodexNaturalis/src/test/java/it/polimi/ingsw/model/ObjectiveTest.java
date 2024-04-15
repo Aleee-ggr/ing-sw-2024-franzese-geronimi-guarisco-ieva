@@ -3,7 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.helpers.DeckFactory;
 import it.polimi.ingsw.helpers.PlayerBuilder;
 import it.polimi.ingsw.helpers.builders.FunctionBuilder;
-import it.polimi.ingsw.helpers.exceptions.InvalidTypeException;
+import it.polimi.ingsw.helpers.exceptions.model.InvalidTypeException;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.board.PlayerBoard;
 import it.polimi.ingsw.model.cards.Card;

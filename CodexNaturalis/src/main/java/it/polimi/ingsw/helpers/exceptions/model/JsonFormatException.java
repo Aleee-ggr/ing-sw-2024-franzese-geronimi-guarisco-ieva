@@ -1,4 +1,4 @@
-package it.polimi.ingsw.helpers.exceptions;
+package it.polimi.ingsw.helpers.exceptions.model;
 
 public class JsonFormatException extends Exception {
     /**

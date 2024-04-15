@@ -1,6 +1,6 @@
 package it.polimi.ingsw.helpers.builders;
 
-import it.polimi.ingsw.helpers.exceptions.InvalidTypeException;
+import it.polimi.ingsw.helpers.exceptions.model.InvalidTypeException;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.board.PlayerBoard;
 import it.polimi.ingsw.model.enums.Resource;

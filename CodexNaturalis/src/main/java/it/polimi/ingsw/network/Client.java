@@ -1,4 +1,7 @@
 package it.polimi.ingsw.network;
 
-public interface Client {
+import it.polimi.ingsw.model.cards.Card;
+
+public abstract class Client {
+
 }

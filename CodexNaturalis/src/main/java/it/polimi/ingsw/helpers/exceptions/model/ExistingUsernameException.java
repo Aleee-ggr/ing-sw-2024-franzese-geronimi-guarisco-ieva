@@ -1,4 +1,4 @@
-package it.polimi.ingsw.helpers.exceptions;
+package it.polimi.ingsw.helpers.exceptions.model;
 
 /**
  * Exception thrown when attempting to create a new player with an existing username.

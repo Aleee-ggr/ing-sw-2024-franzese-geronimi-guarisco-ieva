@@ -2,7 +2,7 @@ package it.polimi.ingsw.other;
 
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.helpers.PlayerBuilder;
-import it.polimi.ingsw.helpers.exceptions.JsonFormatException;
+import it.polimi.ingsw.helpers.exceptions.model.JsonFormatException;
 import it.polimi.ingsw.helpers.parsers.GoldCardParser;
 import it.polimi.ingsw.helpers.parsers.ObjectiveParser;
 import it.polimi.ingsw.helpers.parsers.StartingParser;
