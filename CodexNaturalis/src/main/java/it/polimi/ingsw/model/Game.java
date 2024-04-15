@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.model.player.Player;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Game Class for creating a game with id, players, numPlayers and SharedBoard.
@@ -23,7 +24,17 @@ public class Game {
     static final Deck<StartingCard> fullStartingDeck = FullDeck.getFullStartingDeck();
     static final Deck<Objective> fullObjDeck = FullDeck.getFullObjDeck();
     static final HashSet<Player> playersConnected  = new HashSet<>(); //TODO: not the same username inter-game
-
+    static final ConcurrentHashMap<Integer, Card> cardid = new ConcurrentHashMap<>() {{
+        for (Card gold : fullGoldDeck.getCards()) {
+            cardid.put(gold.getId(), gold);
+        }
+        for (Card std : fullStdDeck.getCards()) {
+            cardid.put(std.getId(), std);
+        }
+        for (Card start : fullStartingDeck.getCards()) {
+            cardid.put(start.getId(), start);
+        }
+    }};
     /*Game-Specific Decks: not static decks for the instance of Game*/
     Deck<GoldCard> gameGoldDeck = new Deck<>(fullGoldDeck.getCards());
     Deck<StdCard> gameStdDeck = new Deck<>(fullStdDeck.getCards());
