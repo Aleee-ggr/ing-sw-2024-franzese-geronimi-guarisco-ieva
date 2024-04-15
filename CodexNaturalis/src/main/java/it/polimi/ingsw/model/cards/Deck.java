@@ -27,10 +27,11 @@ public class Deck<CardType> {
     /**
      * Shuffles the cards in the deck.
      */
-    public void shuffle() {
+    public Deck<CardType> shuffle() {
         synchronized (cards) {
             Collections.shuffle(cards);
         }
+        return this;
     }
 
     /**

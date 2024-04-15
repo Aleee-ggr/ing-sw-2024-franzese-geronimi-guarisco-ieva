@@ -18,20 +18,15 @@ import java.util.concurrent.ConcurrentHashMap;
  * @see SharedBoard
  * */
 public class Game {
-    /*static decks: needed not to parse every time*/
-    static final Deck<GoldCard> fullGoldDeck = FullDeck.getFullGoldDeck();
-    static final Deck<StdCard> fullStdDeck = FullDeck.getFullStdDeck();
-    static final Deck<StartingCard> fullStartingDeck = FullDeck.getFullStartingDeck();
-    static final Deck<Objective> fullObjDeck = FullDeck.getFullObjDeck();
     static final HashSet<Player> playersConnected  = new HashSet<>(); //TODO: not the same username inter-game
     static final ConcurrentHashMap<Integer, Card> cardID = new ConcurrentHashMap<Integer, Card>() {{
-        for (Card gold : fullGoldDeck.getCards()) {
+        for (Card gold : FullDeck.getFullGoldDeck().getCards()) {
             put(gold.getId(), gold);
         }
-        for (Card std : fullStdDeck.getCards()) {
+        for (Card std : FullDeck.getFullStdDeck().getCards()) {
             put(std.getId(), std);
         }
-        for (Card start : fullStartingDeck.getCards()) {
+        for (Card start : FullDeck.getFullStartingDeck().getCards()) {
             put(start.getId(), start);
         }
     }};
@@ -138,14 +133,11 @@ public class Game {
      * */
     public void resetBoard(){
         try{
-            gameGoldDeck = new Deck<>(fullGoldDeck);
-            gameStdDeck = new Deck<>(fullStdDeck);
-            gameObjDeck = new Deck<>(fullObjDeck);
-            gameStartingDeck = new Deck<>(fullStartingDeck);
-            gameGoldDeck.shuffle();
-            gameStdDeck.shuffle();
-            gameObjDeck.shuffle();
-            gameStartingDeck.shuffle();
+            gameGoldDeck = FullDeck.getFullGoldDeck().shuffle();
+            gameStdDeck = FullDeck.getFullStdDeck().shuffle();
+            gameObjDeck = FullDeck.getFullObjDeck().shuffle();
+            gameStartingDeck = FullDeck.getFullStartingDeck().shuffle();
+
             GameBoard = new SharedBoard(gameGoldDeck, gameStdDeck);
         } catch (RuntimeException e){
             System.out.println("error while resetting the SharedBoard");

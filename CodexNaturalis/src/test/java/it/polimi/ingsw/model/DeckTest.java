@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.helpers.DeckFactory;
 import it.polimi.ingsw.model.cards.Deck;
+import it.polimi.ingsw.model.cards.FullDeck;
 import it.polimi.ingsw.model.cards.GoldCard;
 import it.polimi.ingsw.model.cards.StdCard;
 import org.junit.Assert;
@@ -30,8 +31,8 @@ public class DeckTest {
 
     @Test
     public void drawFromDeck() {
-        stdDeckFull = DeckFactory.fullStd();
-        goldDeckFull = DeckFactory.fullGold();
+        stdDeckFull = FullDeck.getFullStdDeck();
+        goldDeckFull = FullDeck.getFullGoldDeck();
 
         Assert.assertNotNull(stdDeckFull.draw());
         Assert.assertNotNull(goldDeckFull.draw());
@@ -47,8 +48,8 @@ public class DeckTest {
 
     @Test
     public void drawUntilEmpty() {
-        stdDeckFull = DeckFactory.fullStd();
-        goldDeckFull = DeckFactory.fullGold();
+        stdDeckFull = FullDeck.getFullStdDeck();
+        goldDeckFull = FullDeck.getFullGoldDeck();
 
         while(!stdDeckFull.isEmpty()){
             Assert.assertNotNull(stdDeckFull.draw());
@@ -63,15 +64,21 @@ public class DeckTest {
 
     @Test
     public void shuffle(){
-        Deck<StdCard> stdDeckFull = DeckFactory.fullStd();
-        Deck<GoldCard> goldDeckFull = DeckFactory.fullGold();
-        Deck<StdCard> stdDeckOriginal = DeckFactory.fullStd();
-        Deck<GoldCard> goldDeckOriginal = DeckFactory.fullGold();
+        Deck<StdCard> stdDeckFull = FullDeck.getFullStdDeck();
+        Deck<GoldCard> goldDeckFull = FullDeck.getFullGoldDeck();
+        Deck<StdCard> stdDeckOriginal = FullDeck.getFullStdDeck();
+        Deck<GoldCard> goldDeckOriginal = FullDeck.getFullGoldDeck();
 
         stdDeckFull.shuffle();
         goldDeckFull.shuffle();
 
         Assert.assertNotEquals(stdDeckFull.getCards(), stdDeckOriginal.getCards());
         Assert.assertNotEquals(goldDeckFull.getCards(), goldDeckOriginal.getCards());
+    }
+
+    @Test
+    public void nonIdentityTest() {
+        Deck<StdCard> fullDeck1 = FullDeck.getFullStdDeck();
+        Deck<StdCard> fullDeck2 = FullDeck.getFullStdDeck();
     }
 }

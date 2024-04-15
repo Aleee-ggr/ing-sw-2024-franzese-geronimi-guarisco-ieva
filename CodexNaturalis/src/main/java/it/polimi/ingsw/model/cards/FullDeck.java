@@ -1,84 +1,50 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.GameConsts;
+import it.polimi.ingsw.helpers.exceptions.model.JsonFormatException;
 import it.polimi.ingsw.helpers.parsers.GoldCardParser;
 import it.polimi.ingsw.helpers.parsers.ObjectiveParser;
 import it.polimi.ingsw.helpers.parsers.StartingParser;
 import it.polimi.ingsw.helpers.parsers.StdCardParser;
-
 import it.polimi.ingsw.model.objectives.Objective;
 
-
+import java.io.IOException;
 import java.nio.file.Path;
 
 public class FullDeck {
     private static final Path cardJsonPath = Path.of(GameConsts.cardJsonPath);
 
-    private static Deck<GoldCard> FullGoldDeck;
-    private static Deck<StdCard> FullStdDeck;
-    private static Deck<Objective> FullObjDeck;
-    private static Deck<StartingCard> FullStartingDeck;
+    private static final Deck<GoldCard> FullGoldDeck;
+    private static final Deck<StdCard> FullStdDeck;
+    private static final Deck<Objective> FullObjDeck;
+    private static final Deck<StartingCard> FullStartingDeck;
 
     static {
-        BuildStdDeck();
-        BuildGoldDeck();
-        BuildObjDeck();
-        BuildStartingDeck();
+        try {
+            FullGoldDeck = new GoldCardParser().readFile(cardJsonPath).parse();
+            FullStdDeck = new StdCardParser().readFile(cardJsonPath).parse();
+            FullObjDeck = new ObjectiveParser().readFile(cardJsonPath).parse();
+            FullStartingDeck = new StartingParser().readFile(cardJsonPath).parse();
+        } catch (JsonFormatException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
+
+
     public static Deck<GoldCard> getFullGoldDeck() {
-        return FullGoldDeck;
+        return new Deck<>(FullGoldDeck);
     }
 
     public static Deck<StdCard> getFullStdDeck() {
-        return FullStdDeck;
+        return new Deck<>(FullStdDeck);
     }
 
     public static Deck<Objective> getFullObjDeck() {
-        return FullObjDeck;
+        return new Deck<>(FullObjDeck);
     }
 
     public static Deck<StartingCard> getFullStartingDeck() {
-        return FullStartingDeck;
-    }
-
-    public static void BuildGoldDeck() {
-        GoldCardParser goldParser = new GoldCardParser();
-        try {
-            goldParser.readFile(cardJsonPath);
-            FullGoldDeck = goldParser.parse();
-        } catch (Exception e) {
-            System.out.println("Exception");
-        }
-    }
-
-    public static void BuildStdDeck() {
-        StdCardParser stdParser = new StdCardParser();
-        try {
-            stdParser.readFile(cardJsonPath);
-            FullStdDeck = stdParser.parse();
-        } catch (Exception e) {
-            System.out.println("Exception");
-        }
-    }
-
-    public static void BuildObjDeck() {
-        ObjectiveParser objParser = new ObjectiveParser();
-        try {
-            objParser.readFile(cardJsonPath);
-            FullObjDeck = objParser.parse();
-        } catch (Exception e) {
-            System.out.println("Exception");
-        }
-    }
-
-    public static void BuildStartingDeck() {
-        StartingParser startingParser = new StartingParser();
-        try {
-            startingParser.readFile(cardJsonPath);
-            FullStartingDeck = startingParser.parse();
-        } catch (Exception e) {
-            System.out.println("Exception");
-        }
+        return new Deck<>(FullStartingDeck);
     }
 }
