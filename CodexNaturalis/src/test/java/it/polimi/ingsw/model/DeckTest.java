@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.cards.FullDeck;
 import it.polimi.ingsw.model.cards.GoldCard;
 import it.polimi.ingsw.model.cards.StdCard;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class DeckTest {
@@ -15,11 +14,7 @@ public class DeckTest {
 
     private Deck<StdCard> stdDeckFull;
     private Deck<GoldCard> goldDeckFull;
-
-    @BeforeClass
-    public static void initializeParsers() {
-        DeckFactory.setupParser();
-    }
+    
     @Test
     public void isEmpty() {
         goldDeck = DeckFactory.emptyGold();

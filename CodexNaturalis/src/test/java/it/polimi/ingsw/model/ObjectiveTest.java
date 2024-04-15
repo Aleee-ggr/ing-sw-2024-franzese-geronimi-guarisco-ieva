@@ -6,10 +6,7 @@ import it.polimi.ingsw.helpers.builders.FunctionBuilder;
 import it.polimi.ingsw.helpers.exceptions.model.InvalidTypeException;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.board.PlayerBoard;
-import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.cards.Deck;
-import it.polimi.ingsw.model.cards.StartingCard;
-import it.polimi.ingsw.model.cards.StdCard;
+import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.player.Player;
 import org.junit.BeforeClass;
@@ -25,10 +22,6 @@ import static org.junit.Assert.assertNotNull;
 
 public class ObjectiveTest {
 
-    @BeforeClass
-    public static void setup() {
-        DeckFactory.setupParser();
-    }
     public static Game game = new Game(new UUID(1,1));
     @Test
     public void testResources() throws InvalidTypeException {
@@ -68,7 +61,7 @@ public class ObjectiveTest {
 
     @Test
     public void testCover4Cards() throws InvalidTypeException {
-        Deck<StartingCard> startingCards = DeckFactory.fullStarting();
+        Deck<StartingCard> startingCards = FullDeck.getFullStartingDeck();
         Player player = new Player("", game);
 
         Function<Player, Integer> score = new FunctionBuilder()
@@ -95,7 +88,7 @@ public class ObjectiveTest {
 
     @Test
     public void testForDiagonalDownPattern() throws InvalidTypeException {
-        Deck<StartingCard> startingCards = DeckFactory.fullStarting();
+        Deck<StartingCard> startingCards = FullDeck.getFullStartingDeck();
 
         Resource[][] pattern = {
                 {Resource.NONE, Resource.NONE, Resource.FUNGI},
@@ -132,7 +125,7 @@ public class ObjectiveTest {
 
     @Test
     public void testForLShapeDownPattern() throws InvalidTypeException {
-        Deck<StartingCard> startingCards = DeckFactory.fullStarting();
+        Deck<StartingCard> startingCards = FullDeck.getFullStartingDeck();
 
         Resource[][] pattern = {
                 {Resource.FUNGI, Resource.NONE, Resource.NONE},
@@ -167,7 +160,7 @@ public class ObjectiveTest {
 
     @Test
     public void testForMissingPattern() throws InvalidTypeException {
-        Deck<StartingCard> startingCards = DeckFactory.fullStarting();
+        Deck<StartingCard> startingCards = FullDeck.getFullStartingDeck();
 
         Resource[][] pattern = {
                 {Resource.FUNGI, Resource.NONE, Resource.NONE},
