@@ -2,6 +2,8 @@ package it.polimi.ingsw.network.rmi;
 
 import it.polimi.ingsw.controller.threads.Shared;
 import it.polimi.ingsw.controller.threads.ThreadMessage;
+import it.polimi.ingsw.helpers.exceptions.network.ServerConnectionException;
+import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.network.Server;
 
 import java.rmi.NotBoundException;
@@ -33,5 +35,15 @@ public class RmiServer extends Server implements RmiServerInterface {
         } catch (NotBoundException | RemoteException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Card drawCard() throws ServerConnectionException {
+        return null;
+    }
+
+    @Override
+    public void placeCard() throws ServerConnectionException {
+
     }
 }
