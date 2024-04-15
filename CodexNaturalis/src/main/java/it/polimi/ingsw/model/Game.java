@@ -24,26 +24,35 @@ public class Game {
     static final Deck<StartingCard> fullStartingDeck = FullDeck.getFullStartingDeck();
     static final Deck<Objective> fullObjDeck = FullDeck.getFullObjDeck();
     static final HashSet<Player> playersConnected  = new HashSet<>(); //TODO: not the same username inter-game
-    static final ConcurrentHashMap<Integer, Card> cardid = new ConcurrentHashMap<>() {{
+    static final ConcurrentHashMap<Integer, Card> cardID = new ConcurrentHashMap<Integer, Card>() {{
         for (Card gold : fullGoldDeck.getCards()) {
-            cardid.put(gold.getId(), gold);
+            put(gold.getId(), gold);
         }
         for (Card std : fullStdDeck.getCards()) {
-            cardid.put(std.getId(), std);
+            put(std.getId(), std);
         }
         for (Card start : fullStartingDeck.getCards()) {
-            cardid.put(start.getId(), start);
+            put(start.getId(), start);
         }
     }};
     /*Game-Specific Decks: not static decks for the instance of Game*/
-    Deck<GoldCard> gameGoldDeck = new Deck<>(fullGoldDeck);
-    Deck<StdCard> gameStdDeck = new Deck<>(fullStdDeck);
-    Deck<Objective> gameObjDeck = new Deck<>(fullObjDeck);
-    Deck<StartingCard> gameStartingDeck = new Deck<>(fullStartingDeck);
+    Deck<GoldCard> gameGoldDeck;
+    Deck<StdCard> gameStdDeck;
+    Deck<Objective> gameObjDeck;
+    Deck<StartingCard> gameStartingDeck;
     private final UUID id;
     private int numPlayers = 0;
     private final List<Player> players = new ArrayList<>();
     private SharedBoard GameBoard;
+
+    /**
+     * Get the card from the corresponding id
+     * @param id the id of the card
+     * @return the card corresponding to the id
+     */
+    public static Card getCardByID(Integer id) {
+        return cardID.get(id);
+    }
 
     /**
      * Constructor for the Game class.
@@ -129,8 +138,10 @@ public class Game {
      * */
     public void resetBoard(){
         try{
-            gameGoldDeck = new Deck<>(fullGoldDeck.getCards());
-            gameStdDeck = new Deck<>(fullStdDeck.getCards());
+            gameGoldDeck = new Deck<>(fullGoldDeck);
+            gameStdDeck = new Deck<>(fullStdDeck);
+            gameObjDeck = new Deck<>(fullObjDeck);
+            gameStartingDeck = new Deck<>(fullStartingDeck);
             gameGoldDeck.shuffle();
             gameStdDeck.shuffle();
             gameObjDeck.shuffle();

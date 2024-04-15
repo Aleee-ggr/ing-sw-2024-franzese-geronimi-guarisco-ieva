@@ -27,19 +27,19 @@ public class FullDeck {
     }
 
     public static Deck<GoldCard> getFullGoldDeck() {
-        return new Deck<>(FullGoldDeck);
+        return FullGoldDeck;
     }
 
     public static Deck<StdCard> getFullStdDeck() {
-        return new Deck<>(FullStdDeck);
+        return FullStdDeck;
     }
 
     public static Deck<Objective> getFullObjDeck() {
-        return new Deck<>(FullObjDeck);
+        return FullObjDeck;
     }
 
     public static Deck<StartingCard> getFullStartingDeck() {
-        return new Deck<>(FullStartingDeck);
+        return FullStartingDeck;
     }
 
     public static void BuildGoldDeck() {
