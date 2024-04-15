@@ -36,10 +36,10 @@ public class Game {
         }
     }};
     /*Game-Specific Decks: not static decks for the instance of Game*/
-    Deck<GoldCard> gameGoldDeck = new Deck<>(fullGoldDeck.getCards());
-    Deck<StdCard> gameStdDeck = new Deck<>(fullStdDeck.getCards());
-    Deck<Objective> gameObjDeck = new Deck<>(fullObjDeck.getCards());
-    Deck<StartingCard> gameStartingDeck = new Deck<>(fullStartingDeck.getCards());
+    Deck<GoldCard> gameGoldDeck = new Deck<>(fullGoldDeck);
+    Deck<StdCard> gameStdDeck = new Deck<>(fullStdDeck);
+    Deck<Objective> gameObjDeck = new Deck<>(fullObjDeck);
+    Deck<StartingCard> gameStartingDeck = new Deck<>(fullStartingDeck);
     private final UUID id;
     private int numPlayers = 0;
     private final List<Player> players = new ArrayList<>();
