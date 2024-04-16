@@ -64,6 +64,10 @@ public class PatternMatcher {
                 .countDistinct();
     }
 
+    /**
+     * Find matches on the board against the given pattern using BFS
+     * @param coordinates the coordinates from where to find the pattern
+     */
     private void BFSMatch(Coordinates coordinates) {
         for (Coordinates pattern_coords : pattern.keySet()) {
             if (pattern.get(pattern_coords) == getColor(coordinates)) {
@@ -92,7 +96,7 @@ public class PatternMatcher {
     }
 
     /**
-     * Check wether the board contains a card at the given coordinates
+     * Check whether the board contains a card at the given coordinates
      * @param coordinates the coordinates where to check
      * @return whether the board contains a card at the given coordinates
      */
