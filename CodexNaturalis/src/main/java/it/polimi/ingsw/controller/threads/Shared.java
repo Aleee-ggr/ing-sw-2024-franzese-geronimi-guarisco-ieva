@@ -2,11 +2,11 @@ package it.polimi.ingsw.controller.threads;
 
 public class Shared<T>{
     volatile T value;
-    synchronized T getValue() {
+    public synchronized T getValue() {
         return value;
     }
 
-    synchronized void setValue(T value) {
+    public synchronized void setValue(T value) {
         this.value = value;
     }
 }

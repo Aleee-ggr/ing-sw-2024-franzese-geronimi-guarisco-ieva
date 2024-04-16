@@ -14,7 +14,7 @@ public class DeckTest {
 
     private Deck<StdCard> stdDeckFull;
     private Deck<GoldCard> goldDeckFull;
-    
+
     @Test
     public void isEmpty_EmptyDecks_True() {
         goldDeck = DeckFactory.emptyGold();

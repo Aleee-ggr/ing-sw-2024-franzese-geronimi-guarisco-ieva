@@ -181,4 +181,14 @@ public class SharedBoard {
     public Objective[] getGlobalObjectives() {
         return Arrays.copyOf(objectives, GameConsts.globalObjectives);
     }
+
+    public Card draw(Integer position) {
+        if (position == 4) {
+            return drawDeck(false);
+        }
+        if (position == 5) {
+            return drawDeck(true);
+        }
+        return drawVisible(position);
+    }
 }

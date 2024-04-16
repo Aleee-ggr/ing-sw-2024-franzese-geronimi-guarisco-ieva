@@ -2,7 +2,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.controller.threads.GameThread;
 import it.polimi.ingsw.controller.threads.Shared;
-import it.polimi.ingsw.controller.threads.ThreadMessage;
+import it.polimi.ingsw.controller.threads.message.ThreadMessage;
 
 import java.util.HashSet;
 import java.util.Map;
