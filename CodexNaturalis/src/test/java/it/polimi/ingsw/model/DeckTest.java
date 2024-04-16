@@ -25,7 +25,16 @@ public class DeckTest {
     }
 
     @Test
-    public void drawFromDeck_FullDecks_NotNull() {
+    public void isEmpty_FullDecks_False() {
+        goldDeck = FullDeck.getFullGoldDeck();
+        stdDeck = FullDeck.getFullStdDeck();
+
+        Assert.assertFalse(goldDeck.isEmpty());
+        Assert.assertFalse(stdDeck.isEmpty());
+    }
+
+    @Test
+    public void drawFromDeck_FullDecks_NotNullCardObject() {
         stdDeckFull = FullDeck.getFullStdDeck();
         goldDeckFull = FullDeck.getFullGoldDeck();
 
@@ -33,7 +42,7 @@ public class DeckTest {
         Assert.assertNotNull(goldDeckFull.draw());
     }
     @Test
-    public void drawFromDeck_EmptyDecks_Null() {
+    public void drawFromDeck_EmptyDecks_NullCardObject() {
         goldDeck = DeckFactory.emptyGold();
         stdDeck = DeckFactory.emptyStd();
 
@@ -42,7 +51,7 @@ public class DeckTest {
     }
 
     @Test
-    public void drawFromDeck_FullDecksUntilEmpty_Null() {
+    public void drawFromDeck_FullDecksUntilEmpty_NullCardObjectWhenFullAndNotNullCardObjectWhenEmpty() {
         stdDeckFull = FullDeck.getFullStdDeck();
         goldDeckFull = FullDeck.getFullGoldDeck();
 
@@ -58,7 +67,7 @@ public class DeckTest {
     }
 
     @Test
-    public void shuffle_FullDecks_NotEquals(){
+    public void shuffle_FullDecks_NotEqualsDecks(){
         Deck<StdCard> stdDeckFull = FullDeck.getFullStdDeck();
         Deck<GoldCard> goldDeckFull = FullDeck.getFullGoldDeck();
         Deck<StdCard> stdDeckOriginal = FullDeck.getFullStdDeck();
