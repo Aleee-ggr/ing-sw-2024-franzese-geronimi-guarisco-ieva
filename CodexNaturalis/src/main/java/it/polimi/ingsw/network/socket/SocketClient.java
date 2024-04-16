@@ -14,10 +14,23 @@ public class SocketClient extends Client {
     private Socket client;
     private ObjectInputStream input;
     private ObjectOutputStream output;
+
+    /**
+     * Constructor for SocketClient.
+     * @param gameId         The UUID of the game.
+     * @param playerUsername The username of the player.
+     * @param serverAddress  The address of the server.
+     * @param serverPort     The port of the server.
+     */
     public SocketClient(UUID gameId, String playerUsername, String serverAddress, int serverPort) {
         super(gameId, playerUsername, serverAddress, serverPort);
     }
 
+    /**
+     * Establishes a connection with the server.
+     * @param serverAddress The address of the server.
+     * @param serverPort    The port of the server.
+     */
     private void startConnection(String serverAddress, int serverPort) {
         try {
             client = new Socket(serverAddress, serverPort);
@@ -31,16 +44,32 @@ public class SocketClient extends Client {
     public void run() {
         //TODO method to read network and do the request
     }
+
+    /**
+     * Stops the connection with the server.
+     * @throws IOException If an I/O error occurs.
+     */
     public void stopConnection() throws IOException{
         client.close();
         input.close();
         output.close();
     }
 
+    /**
+     * Send server the message to create a game.
+     */
     public void createGame() {}
 
+    /**
+     * Send server the message to join a game.
+     * @param id The UUID of the game to join.
+     */
     public void joinGame(UUID id) {}
 
+    /**
+     * Send server the message to reconnect to a game.
+     * @param id The UUID of the game to reconnect to.
+     */
     public void reconnect(UUID id) {}
 
 }
