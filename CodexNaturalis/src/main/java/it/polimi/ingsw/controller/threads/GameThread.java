@@ -13,6 +13,10 @@ public class GameThread extends Thread {
 
     @Override
     public void run() {
-        super.run();
+        if (message.getValue().status() == Status.OK) {
+            message.setValue(
+                    new ThreadMessage(Status.RESPONSE, "TODO")
+            );
+        }
     }
 }

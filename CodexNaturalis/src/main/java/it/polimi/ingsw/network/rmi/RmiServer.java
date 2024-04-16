@@ -72,4 +72,9 @@ public class RmiServer extends Server implements RmiServerInterface {
             return shared.getValue().status();
         }
     }
+
+    @Override
+    public boolean newGame(Integer player_count) throws RemoteException {
+        return createGame(player_count);
+    }
 }

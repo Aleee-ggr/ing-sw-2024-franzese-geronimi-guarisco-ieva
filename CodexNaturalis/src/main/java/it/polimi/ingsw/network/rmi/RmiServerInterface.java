@@ -9,6 +9,6 @@ import java.util.UUID;
 
 public interface RmiServerInterface extends Remote {
     public Integer drawCard(UUID game, String player, Integer position) throws RemoteException;
-
     public Status placeCard(UUID game, String player, Coordinates coordinates, Integer cardID) throws RemoteException;
+    public boolean newGame(Integer player_count) throws RemoteException;
 }
