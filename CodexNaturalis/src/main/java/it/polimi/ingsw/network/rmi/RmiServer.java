@@ -4,9 +4,7 @@ import it.polimi.ingsw.controller.threads.Shared;
 import it.polimi.ingsw.controller.threads.Status;
 import it.polimi.ingsw.controller.threads.message.IdParser;
 import it.polimi.ingsw.controller.threads.message.ThreadMessage;
-import it.polimi.ingsw.helpers.exceptions.network.ServerConnectionException;
-import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.network.Server;
 
 import java.rmi.NotBoundException;
@@ -38,9 +36,11 @@ public class RmiServer extends Server implements RmiServerInterface {
         }
     }
 
-    public Integer drawCard(UUID game, Player player, Integer position) throws ServerConnectionException {
-        String message = ThreadMessage.draw_message.formatted(position);
+    @Override
+    public Integer drawCard(UUID game, String player, Integer position) throws RemoteException {
+        String message = ThreadMessage.draw.formatted(player, position);
         Shared<ThreadMessage> shared = threadMessages.get(game);
+        //TODO check if player or game exists
         if (position < 0 || position > 5) {
             //TODO error handling
             return null;
@@ -58,12 +58,18 @@ public class RmiServer extends Server implements RmiServerInterface {
     }
 
     @Override
-    public Card drawCard() throws ServerConnectionException {
-        return null;
-    }
+    public Status placeCard(UUID game, String player, Coordinates coordinates, Integer cardID) throws RemoteException {
+        String message = ThreadMessage.place_card.formatted(player, coordinates.x(), coordinates.y(), cardID);
+        synchronized (threadMessages) {
+            Shared<ThreadMessage> shared = threadMessages.get(game);
+            //TODO check if player or game exists
+            shared.setValue(
+                    new ThreadMessage(Status.OK, message)
+            );
 
-    @Override
-    public void placeCard() throws ServerConnectionException {
+            while (shared.getValue().status() == Status.OK);
 
+            return shared.getValue().status();
+        }
     }
 }

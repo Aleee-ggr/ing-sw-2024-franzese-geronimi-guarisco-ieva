@@ -1,12 +1,14 @@
 package it.polimi.ingsw.network.rmi;
 
-import it.polimi.ingsw.helpers.exceptions.network.ServerConnectionException;
-import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.controller.threads.Status;
+import it.polimi.ingsw.model.board.Coordinates;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.util.UUID;
 
 public interface RmiServerInterface extends Remote {
-    public Card drawCard() throws ServerConnectionException;
+    public Integer drawCard(UUID game, String player, Integer position) throws RemoteException;
 
-    public void placeCard() throws ServerConnectionException;
+    public Status placeCard(UUID game, String player, Coordinates coordinates, Integer cardID) throws RemoteException;
 }
