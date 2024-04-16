@@ -182,6 +182,11 @@ public class SharedBoard {
         return Arrays.copyOf(objectives, GameConsts.globalObjectives);
     }
 
+    /**
+     * Draw a card in the given position, if available, else null
+     * @param position the position of the card (0-3: visible, 4: stdDeck, 5: goldDeck)
+     * @return the drawn card
+     */
     public Card draw(Integer position) {
         if (position == 4) {
             return drawDeck(false);

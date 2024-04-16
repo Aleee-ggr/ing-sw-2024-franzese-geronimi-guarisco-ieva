@@ -14,7 +14,7 @@ public abstract class Server {
     protected final Map<UUID, Shared<ThreadMessage>> threadMessages = new ConcurrentHashMap<>();
     protected final Set<String> playerList = new HashSet<>();
 
-    public boolean createGame(int numberOfPlayers){
+    public UUID createGame(int numberOfPlayers){
         if(numberOfPlayers < 2 || numberOfPlayers > 4){
             UUID id = UUID.randomUUID();
             while(threadMessages.containsKey(id)){
@@ -23,9 +23,9 @@ public abstract class Server {
             Shared<ThreadMessage> thisGameShared = new Shared<>();
             threadMessages.put(id, thisGameShared);
             new GameThread(thisGameShared, numberOfPlayers).start();
-            return true;
+            return id;
         } else {
-            return false;
+            return null;
         }
     }
 }

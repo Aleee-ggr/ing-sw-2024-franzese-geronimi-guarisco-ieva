@@ -51,14 +51,14 @@ public class RmiServer extends Server implements RmiServerInterface {
 
         while (shared.getValue().status() == Status.OK);
 
-        return switch (shared.getValue().status()) {
-            case RESPONSE -> new IdParser().parse(shared.getValue().message());
-            default -> null;
-        };
+        if (shared.getValue().status() == Status.RESPONSE) {
+            return new IdParser().parse(shared.getValue().message());
+        }
+        return null;
     }
 
     @Override
-    public Status placeCard(UUID game, String player, Coordinates coordinates, Integer cardID) throws RemoteException {
+    public boolean placeCard(UUID game, String player, Coordinates coordinates, Integer cardID) throws RemoteException {
         String message = ThreadMessage.place_card.formatted(player, coordinates.x(), coordinates.y(), cardID);
         synchronized (threadMessages) {
             Shared<ThreadMessage> shared = threadMessages.get(game);
@@ -69,12 +69,12 @@ public class RmiServer extends Server implements RmiServerInterface {
 
             while (shared.getValue().status() == Status.OK);
 
-            return shared.getValue().status();
+            return shared.getValue().status() != Status.ERROR;
         }
     }
 
     @Override
-    public boolean newGame(Integer player_count) throws RemoteException {
+    public UUID newGame(Integer player_count) throws RemoteException {
         return createGame(player_count);
     }
 }
