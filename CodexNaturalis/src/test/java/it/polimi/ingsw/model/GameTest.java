@@ -16,7 +16,7 @@ public class GameTest {
     private final Game game = new Game(null);
     private final List <Player> players = new ArrayList<>();
     @Test
-    public void NormalAdd() throws ExistingUsernameException, TooManyPlayersException {
+    public void addPlayer_NewUsernames_FullGame() throws ExistingUsernameException, TooManyPlayersException {
         for(int i = 0; i < GameConsts.maxPlayersNum; i++){
             game.addPlayer("user"+i);
         }
@@ -25,13 +25,13 @@ public class GameTest {
     }
 
     @Test (expected = ExistingUsernameException.class)
-    public void DuplicatePlayer() throws ExistingUsernameException, TooManyPlayersException {
+    public void addPlayer_ExistingUsername_ThrowException() throws ExistingUsernameException, TooManyPlayersException {
         game.addPlayer("user");
         game.addPlayer("user");
     }
 
     @Test (expected = TooManyPlayersException.class)
-    public void TooManyPlayers() throws ExistingUsernameException, TooManyPlayersException {
+    public void addPlayer_FullGame_ThrowException() throws ExistingUsernameException, TooManyPlayersException {
         for(int i = 0; i < GameConsts.maxPlayersNum+1; i++){
             game.addPlayer("user"+i);
         }

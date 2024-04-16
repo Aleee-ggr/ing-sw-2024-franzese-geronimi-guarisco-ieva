@@ -15,14 +15,14 @@ public class GoldCardTest {
     private Player player;
 
     @Before
-    public void initialize() {
+    public void setUp() {
         player = new Player("test", new Game(UUID.randomUUID()));
         player.updateResourcesValue(Resource.FUNGI, 4);
         player.updateResourcesValue(Resource.ANIMAL, 9);
     }
     
     @Test
-    public void checkRequirementsPlayerHasRequirements() {
+    public void checkRequirements_ValidRequirements_True() {
         Map<Resource, Integer> requirements = new HashMap<>();
         requirements.put(Resource.FUNGI, 2);
         requirements.put(Resource.ANIMAL, 1);
@@ -33,7 +33,7 @@ public class GoldCardTest {
     }
 
     @Test
-    public void checkRequirementsPlayerNoRequirements() {
+    public void checkRequirements_InvalidRequirements_False() {
         Map<Resource, Integer> requirements = new HashMap<>();
         requirements.put(Resource.FUNGI, 2);
         requirements.put(Resource.PLANT, 1);

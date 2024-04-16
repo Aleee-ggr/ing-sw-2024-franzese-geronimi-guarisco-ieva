@@ -16,7 +16,7 @@ public class SharedBoardTest {
     private SharedBoard gameBoard;
 
     @Test
-    public void areCardsOverEmptyDecksAndEmptyVisibleCards() {
+    public void areCardsOver_EmptyDecksAndEmptyVisibleCards_True() {
         goldDeck = DeckFactory.emptyGold();
         stdDeck = DeckFactory.emptyStd();
         gameBoard = new SharedBoard(goldDeck, stdDeck);
@@ -25,7 +25,7 @@ public class SharedBoardTest {
     }
 
     @Test
-    public void areCardsOverFullDecksAndEmptyVisibleCards() {
+    public void areCardsOver_FullDecksAndEmptyVisibleCards_False() {
         goldDeck = FullDeck.getFullGoldDeck();
         stdDeck = FullDeck.getFullStdDeck();
         gameBoard = new SharedBoard(goldDeck, stdDeck);
@@ -34,7 +34,7 @@ public class SharedBoardTest {
     }
 
     @Test
-    public void areCardsOverFullDecksAndFullVisibleCards() {
+    public void areCardsOver_FullDecksAndFullVisibleCards_False() {
         goldDeck = FullDeck.getFullGoldDeck();
         stdDeck = FullDeck.getFullStdDeck();
         gameBoard = new SharedBoard(goldDeck, stdDeck);
@@ -47,7 +47,7 @@ public class SharedBoardTest {
     }
 
     @Test
-    public void areCardsOverOneDeckEmptyAndNonEmptyVisibleCards() {
+    public void areCardsOver_GoldDeckFullAndNonEmptyVisibleCards_False() {
         goldDeck = FullDeck.getFullGoldDeck();
         stdDeck = DeckFactory.emptyStd();
         gameBoard = new SharedBoard(goldDeck, stdDeck);
@@ -58,7 +58,7 @@ public class SharedBoardTest {
     }
 
     @Test
-    public void areCardsOverEmptyDecksAndFullVisibleCards() {
+    public void areCardsOver_EmptyDecksAndFullVisibleCards_False() {
         goldDeck = FullDeck.getFullGoldDeck();
         stdDeck = FullDeck.getFullStdDeck();
         gameBoard = new SharedBoard(goldDeck, stdDeck);
@@ -76,7 +76,7 @@ public class SharedBoardTest {
     }
 
     @Test
-    public void drawDeckFullGoldCard() {
+    public void drawDeck_FullGoldCard() {
         goldDeck = FullDeck.getFullGoldDeck();
         stdDeck = FullDeck.getFullStdDeck();
         gameBoard = new SharedBoard(goldDeck, stdDeck);
@@ -84,7 +84,7 @@ public class SharedBoardTest {
         Assert.assertNotNull(gameBoard.drawDeck(true));
     }
     @Test
-    public void drawDeckFullStdCard() {
+    public void drawDeck_FullStdCard() {
         goldDeck = FullDeck.getFullGoldDeck();
         stdDeck = FullDeck.getFullStdDeck();
         gameBoard = new SharedBoard(goldDeck, stdDeck);
@@ -92,7 +92,7 @@ public class SharedBoardTest {
         Assert.assertNotNull(gameBoard.drawDeck(false));
     }
     @Test
-    public void drawDeckEmptyGoldCardFullStdCard() {
+    public void drawDeck_EmptyGoldCardAndFullStdCard() {
         goldDeck = DeckFactory.emptyGold();
         stdDeck = FullDeck.getFullStdDeck();
         gameBoard = new SharedBoard(goldDeck, stdDeck);
@@ -101,7 +101,7 @@ public class SharedBoardTest {
     }
 
     @Test
-    public void drawDeckEmptyDecks() {
+    public void drawDeck_EmptyDecks() {
         goldDeck = DeckFactory.emptyGold();
         stdDeck = DeckFactory.emptyStd();
         gameBoard = new SharedBoard(goldDeck, stdDeck);
@@ -111,7 +111,7 @@ public class SharedBoardTest {
     }
 
     @Test
-    public void substituteCardFullDecks() {
+    public void substituteCard_FullDecks() {
         goldDeck = FullDeck.getFullGoldDeck();
         stdDeck = FullDeck.getFullStdDeck();
         gameBoard = new SharedBoard(goldDeck, stdDeck);
@@ -122,7 +122,7 @@ public class SharedBoardTest {
     }
 
     @Test
-    public void substituteCardEmptyDecks() {
+    public void substituteCard_EmptyDecks_Null() {
         goldDeck = DeckFactory.emptyGold();
         stdDeck = DeckFactory.emptyStd();
         gameBoard = new SharedBoard(goldDeck, stdDeck);
@@ -133,7 +133,7 @@ public class SharedBoardTest {
     }
 
     @Test
-    public void substituteCardEmptyGoldDeck() {
+    public void substituteCard_EmptyGoldDeckFullStdDeck_NotNull() {
         goldDeck = DeckFactory.emptyGold();
         stdDeck = FullDeck.getFullStdDeck();
         gameBoard = new SharedBoard(goldDeck, stdDeck);
@@ -144,7 +144,7 @@ public class SharedBoardTest {
     }
 
     @Test
-    public void substituteCardEmptyStdDeck() {
+    public void substituteCard_FullGoldDeckEmptyStdDeck_NotNull() {
         goldDeck = FullDeck.getFullGoldDeck();
         stdDeck = DeckFactory.emptyStd();
         gameBoard = new SharedBoard(goldDeck, stdDeck);
