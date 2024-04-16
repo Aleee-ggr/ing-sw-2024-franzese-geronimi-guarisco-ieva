@@ -60,21 +60,29 @@ public class RmiServer extends Server implements RmiServerInterface {
     @Override
     public boolean placeCard(UUID game, String player, Coordinates coordinates, Integer cardID) throws RemoteException {
         String message = ThreadMessage.place_card.formatted(player, coordinates.x(), coordinates.y(), cardID);
-        synchronized (threadMessages) {
-            Shared<ThreadMessage> shared = threadMessages.get(game);
-            //TODO check if player or game exists
-            shared.setValue(
-                    new ThreadMessage(Status.OK, message)
-            );
-
-            while (shared.getValue().status() == Status.OK);
-
-            return shared.getValue().status() != Status.ERROR;
-        }
+        return sendMessage(game, message);
     }
 
     @Override
     public UUID newGame(Integer player_count) throws RemoteException {
         return createGame(player_count);
+    }
+
+    @Override
+    public boolean join(UUID game, String name) throws RemoteException {
+        String message = ThreadMessage.join.formatted(name);
+        return sendMessage(game, message);
+    }
+
+    private boolean sendMessage(UUID game, String message) {
+        synchronized (threadMessages) {
+            Shared<ThreadMessage> shared = threadMessages.get(game);
+            shared.setValue(
+                    new ThreadMessage(Status.OK, message)
+            );
+
+            while (shared.getValue().status() == Status.OK);
+            return shared.getValue().status() != Status.ERROR;
+        }
     }
 }

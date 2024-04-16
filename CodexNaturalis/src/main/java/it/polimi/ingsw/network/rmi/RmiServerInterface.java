@@ -39,4 +39,6 @@ public interface RmiServerInterface extends Remote {
      * @throws RemoteException rmi exception
      */
     public UUID newGame(Integer player_count) throws RemoteException;
+
+    public boolean join(UUID game, String name) throws RemoteException;
 }
