@@ -13,6 +13,7 @@ public class GameThread extends Thread {
 
     @Override
     public void run() {
+        //TODO game loop and lobby
         if (message.getValue().status() == Status.OK) {
             message.setValue(
                     new ThreadMessage(Status.RESPONSE, "TODO")
