@@ -37,4 +37,10 @@ public class SocketClient extends Client {
         output.close();
     }
 
+    public void createGame() {}
+
+    public void joinGame(UUID id) {}
+
+    public void reconnect(UUID id) {}
+
 }
