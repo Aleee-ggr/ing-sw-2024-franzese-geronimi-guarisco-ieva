@@ -1,6 +1,5 @@
 package it.polimi.ingsw.network.rmi;
 
-import it.polimi.ingsw.controller.threads.Shared;
 import it.polimi.ingsw.controller.threads.Status;
 import it.polimi.ingsw.controller.threads.message.IdParser;
 import it.polimi.ingsw.controller.threads.message.ThreadMessage;
@@ -43,28 +42,19 @@ public class RmiServer extends Server implements RmiServerInterface {
     @Override
     public Integer drawCard(UUID game, String player, Integer position) throws RemoteException {
         String message = ThreadMessage.draw.formatted(player, position);
-        Shared<ThreadMessage> shared = threadMessages.get(game);
-        //TODO check if player or game exists
-        if (position < 0 || position > 5) {
-            //TODO error handling
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).getValue();
+        if (response.status() != Status.OK) {
             return null;
         }
-        shared.setValue(
-                new ThreadMessage(Status.OK, message)
-        );
-
-        while (shared.getValue().status() == Status.OK);
-
-        if (shared.getValue().status() == Status.RESPONSE) {
-            return new IdParser().parse(shared.getValue().message());
-        }
-        return null;
+        return new IdParser().parse(response.message());
     }
 
     @Override
     public boolean placeCard(UUID game, String player, Coordinates coordinates, Integer cardID) throws RemoteException {
         String message = ThreadMessage.place_card.formatted(player, coordinates.x(), coordinates.y(), cardID);
-        return sendMessage(game, message);
+        sendMessage(game, message);
+        return threadMessages.get(game).getValue().status() != Status.ERROR;
     }
 
     @Override
@@ -75,18 +65,8 @@ public class RmiServer extends Server implements RmiServerInterface {
     @Override
     public boolean join(UUID game, String name) throws RemoteException {
         String message = ThreadMessage.join.formatted(name);
-        return sendMessage(game, message);
+        sendMessage(game, message);
+        return threadMessages.get(game).getValue().status() != Status.ERROR;
     }
 
-    private boolean sendMessage(UUID game, String message) {
-        synchronized (threadMessages) {
-            Shared<ThreadMessage> shared = threadMessages.get(game);
-            shared.setValue(
-                    new ThreadMessage(Status.OK, message)
-            );
-
-            while (shared.getValue().status() == Status.OK);
-            return shared.getValue().status() != Status.ERROR;
-        }
-    }
 }

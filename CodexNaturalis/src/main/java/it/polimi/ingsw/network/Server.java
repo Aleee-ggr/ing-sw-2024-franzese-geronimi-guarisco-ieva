@@ -2,6 +2,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.controller.threads.GameThread;
 import it.polimi.ingsw.controller.threads.Shared;
+import it.polimi.ingsw.controller.threads.Status;
 import it.polimi.ingsw.controller.threads.message.ThreadMessage;
 
 import java.util.*;
@@ -35,4 +36,16 @@ public abstract class Server {
     private void addGame(UUID id, Integer playerNum){
         games.put(id,playerNum);
     }
+
+    protected void sendMessage(UUID game, String message) {
+        synchronized (threadMessages) {
+            Shared<ThreadMessage> shared = threadMessages.get(game);
+            shared.setValue(
+                    new ThreadMessage(Status.REQUEST, message)
+            );
+
+            while (shared.getValue().status() == Status.REQUEST);
+        }
+    }
+
 }

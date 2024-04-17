@@ -16,7 +16,7 @@ public class GameThread extends Thread {
         //TODO game loop and lobby
         if (message.getValue().status() == Status.OK) {
             message.setValue(
-                    new ThreadMessage(Status.RESPONSE, "TODO")
+                    new ThreadMessage(Status.OK, "TODO")
             );
         }
     }
