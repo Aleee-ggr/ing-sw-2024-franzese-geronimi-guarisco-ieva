@@ -38,7 +38,7 @@ public class Game {
     private final UUID id;
     private int numPlayers = 0;
     private final List<Player> players = new ArrayList<>();
-    private SharedBoard GameBoard;
+    private SharedBoard gameBoard;
 
     /**
      * Get the card from the corresponding id
@@ -87,7 +87,7 @@ public class Game {
      * @return the SharedBoard of the Game
      */
     public SharedBoard getGameBoard() {
-        return GameBoard;
+        return gameBoard;
     }
 
     /**
@@ -138,7 +138,7 @@ public class Game {
             gameObjDeck = FullDeck.getFullObjDeck().shuffle();
             gameStartingDeck = FullDeck.getFullStartingDeck().shuffle();
 
-            GameBoard = new SharedBoard(gameGoldDeck, gameStdDeck);
+            gameBoard = new SharedBoard(gameGoldDeck, gameStdDeck);
         } catch (RuntimeException e){
             System.out.println("error while resetting the SharedBoard");
         }
@@ -150,7 +150,7 @@ public class Game {
         for(int i = 0; i<GameConsts.globalObjectives; i++){
             objectiveToAdd[i] = gameObjDeck.draw();
         }
-        GameBoard.setObjectives(objectiveToAdd);
+        gameBoard.setObjectives(objectiveToAdd);
     }
     
     /**
