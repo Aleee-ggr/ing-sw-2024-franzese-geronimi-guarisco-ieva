@@ -2,7 +2,6 @@ package it.polimi.ingsw.network.rmi;
 
 
 import it.polimi.ingsw.helpers.exceptions.network.ServerConnectionException;
-import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.network.Client;
 
 import java.rmi.NotBoundException;
@@ -15,8 +14,8 @@ public class RmiClient extends Client{
 
     private RmiServerInterface server;
 
-    public RmiClient(UUID gameId, String playerUsername, String serverAddress, int serverPort) {
-        super(gameId, playerUsername, serverAddress, serverPort);
+    public RmiClient(String playerUsername, String serverAddress, int serverPort) {
+        super(playerUsername, serverAddress, serverPort);
         try {
             Registry registry = LocateRegistry.getRegistry();
             server = (RmiServerInterface) registry.lookup(RmiServer.getName());
@@ -27,10 +26,11 @@ public class RmiClient extends Client{
         }
     }
 
-    @Override
-    public void joinGame() throws ServerConnectionException {
-        super.joinGame();
+    public void joinGame(UUID game) throws ServerConnectionException, RemoteException {
+        server.join(game, this.playerUsername);
     }
 
-
+    public UUID newGame(int players) throws ServerConnectionException, RemoteException {
+        return server.newGame(players);
+    }
 }

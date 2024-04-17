@@ -14,19 +14,19 @@ public abstract class Server {
     protected final Map<UUID, Integer> games = new ConcurrentHashMap<>(); //TODO: remove game while closed
 
     public UUID createGame(int numberOfPlayers){
-        if(numberOfPlayers < 2 || numberOfPlayers > 4){
+        if(numberOfPlayers < 2 || numberOfPlayers > 4) {
+            return null;
+        }
             UUID id = UUID.randomUUID();
             while(threadMessages.containsKey(id)){
                 id = UUID.randomUUID();
             }
             Shared<ThreadMessage> thisGameShared = new Shared<>();
+            thisGameShared.setValue(new ThreadMessage(Status.INIT, ""));
             threadMessages.put(id, thisGameShared);
             new GameThread(thisGameShared, numberOfPlayers).start();
             addGame(id, numberOfPlayers);
             return id;
-        } else {
-            return null;
-        }
     }
 
     public Map<UUID, Integer> getGames() {
@@ -44,7 +44,13 @@ public abstract class Server {
                     new ThreadMessage(Status.REQUEST, message)
             );
 
-            while (shared.getValue().status() == Status.REQUEST);
+            while (shared.getValue().status() == Status.REQUEST) {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            };
         }
     }
 

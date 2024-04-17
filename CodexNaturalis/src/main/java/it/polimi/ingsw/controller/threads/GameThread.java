@@ -14,10 +14,19 @@ public class GameThread extends Thread {
     @Override
     public void run() {
         //TODO game loop and lobby
-        if (message.getValue().status() == Status.OK) {
-            message.setValue(
-                    new ThreadMessage(Status.OK, "TODO")
-            );
+        while (true) {
+            while (message.getValue().status() != Status.REQUEST) {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            };
+            if (message.getValue().status() == Status.OK) {
+                message.setValue(
+                        new ThreadMessage(Status.OK, "TODO")
+                );
+            }
         }
     }
 }

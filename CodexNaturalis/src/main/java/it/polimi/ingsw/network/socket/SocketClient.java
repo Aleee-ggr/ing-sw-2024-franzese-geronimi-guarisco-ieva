@@ -17,13 +17,12 @@ public class SocketClient extends Client {
 
     /**
      * Constructor for SocketClient.
-     * @param gameId         The UUID of the game.
      * @param playerUsername The username of the player.
      * @param serverAddress  The address of the server.
      * @param serverPort     The port of the server.
      */
-    public SocketClient(UUID gameId, String playerUsername, String serverAddress, int serverPort) {
-        super(gameId, playerUsername, serverAddress, serverPort);
+    public SocketClient(String playerUsername, String serverAddress, int serverPort) {
+        super(playerUsername, serverAddress, serverPort);
     }
 
     /**

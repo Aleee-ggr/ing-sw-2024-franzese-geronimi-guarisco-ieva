@@ -66,7 +66,8 @@ public class RmiServer extends Server implements RmiServerInterface {
     public boolean join(UUID game, String name) throws RemoteException {
         String message = ThreadMessage.join.formatted(name);
         sendMessage(game, message);
-        return threadMessages.get(game).getValue().status() != Status.ERROR;
+        ThreadMessage response = threadMessages.get(game).getValue();
+        System.out.println(response);
+        return response.status() != Status.ERROR;
     }
-
 }
