@@ -15,7 +15,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.UUID;
 
 public class RmiServer extends Server implements RmiServerInterface {
-    private static final String name="rmiServer";
+    private static final String name = "rmiServer";
     private final Registry registry;
 
 
@@ -26,6 +26,10 @@ public class RmiServer extends Server implements RmiServerInterface {
         registry.rebind(name, stub);
         System.out.println("Started!");
         Runtime.getRuntime().addShutdownHook(new Thread(this::stop));
+    }
+
+    public static String getName() {
+        return name;
     }
 
     public void stop() {

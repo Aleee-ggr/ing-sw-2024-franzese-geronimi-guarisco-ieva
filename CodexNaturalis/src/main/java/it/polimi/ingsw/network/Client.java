@@ -31,10 +31,11 @@ public abstract class Client {
     public String getSharedBoard() throws ServerConnectionException{
         return null;
     }
-    public Card drawCard() throws ServerConnectionException {
+    public Card drawCard() throws ServerConnectionException{
         return null;
     }
-    public void placeCard() throws ServerConnectionException {
+    public void placeCard() throws ServerConnectionException{
     }
-
+    public void joinGame() throws ServerConnectionException{
+    }
 }
