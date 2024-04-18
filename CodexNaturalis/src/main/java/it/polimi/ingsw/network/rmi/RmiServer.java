@@ -1,7 +1,7 @@
 package it.polimi.ingsw.network.rmi;
 
 import it.polimi.ingsw.controller.threads.Status;
-import it.polimi.ingsw.controller.threads.message.IdParser;
+import it.polimi.ingsw.controller.threads.message.parsers.IdParser;
 import it.polimi.ingsw.controller.threads.message.ThreadMessage;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.network.Server;
@@ -42,8 +42,10 @@ public class RmiServer extends Server implements RmiServerInterface {
     @Override
     public Integer drawCard(UUID game, String player, Integer position) throws RemoteException {
         String message = ThreadMessage.draw.formatted(player, position);
-        sendMessage(game, message);
-        ThreadMessage response = threadMessages.get(game).getValue();
+
+        sendMessage(game, message, player);
+        ThreadMessage response = threadMessages.get(game).remove();
+
         if (response.status() != Status.OK) {
             return null;
         }
@@ -53,8 +55,10 @@ public class RmiServer extends Server implements RmiServerInterface {
     @Override
     public boolean placeCard(UUID game, String player, Coordinates coordinates, Integer cardID) throws RemoteException {
         String message = ThreadMessage.place_card.formatted(player, coordinates.x(), coordinates.y(), cardID);
-        sendMessage(game, message);
-        return threadMessages.get(game).getValue().status() != Status.ERROR;
+
+        sendMessage(game, message, player);
+
+        return threadMessages.get(game).remove().status() != Status.ERROR;
     }
 
     @Override
@@ -63,10 +67,12 @@ public class RmiServer extends Server implements RmiServerInterface {
     }
 
     @Override
-    public boolean join(UUID game, String name) throws RemoteException {
+    public boolean join(UUID game, String player) throws RemoteException {
         String message = ThreadMessage.join.formatted(name);
-        sendMessage(game, message);
-        ThreadMessage response = threadMessages.get(game).getValue();
+
+        sendMessage(game, message, player);
+        ThreadMessage response = threadMessages.get(game).remove();
+
         return response.status() != Status.ERROR;
     }
 }

@@ -1,15 +1,16 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.controller.threads.GameThread;
-import it.polimi.ingsw.controller.threads.Shared;
 import it.polimi.ingsw.controller.threads.Status;
 import it.polimi.ingsw.controller.threads.message.ThreadMessage;
 
 import java.util.*;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingDeque;
 
 public abstract class Server {
-    protected final Map<UUID, Shared<ThreadMessage>> threadMessages = new ConcurrentHashMap<>();
+    protected final Map<UUID, BlockingQueue<ThreadMessage>> threadMessages = new ConcurrentHashMap<>();
     protected final Set<String> playerList = new HashSet<>();
     protected final Map<UUID, Integer> games = new ConcurrentHashMap<>(); // TODO: remove game while closed
 
@@ -21,10 +22,9 @@ public abstract class Server {
         while (threadMessages.containsKey(id)) {
             id = UUID.randomUUID();
         }
-        Shared<ThreadMessage> thisGameShared = new Shared<>();
-        thisGameShared.setValue(new ThreadMessage(Status.INIT, ""));
-        threadMessages.put(id, thisGameShared);
-        new GameThread(thisGameShared, numberOfPlayers).start();
+        BlockingQueue<ThreadMessage> messageQueue = new LinkedBlockingDeque<>();
+        threadMessages.put(id, messageQueue);
+        new GameThread(messageQueue, numberOfPlayers).start();
         addGame(id, numberOfPlayers);
         return id;
     }
@@ -37,21 +37,23 @@ public abstract class Server {
         games.put(id, playerNum);
     }
 
-    protected void sendMessage(UUID game, String message) {
+    protected void sendMessage(UUID game, String message, String player) {
         synchronized (threadMessages) {
-            Shared<ThreadMessage> shared = threadMessages.get(game);
-            shared.setValue(
-                    new ThreadMessage(Status.REQUEST, message)
+            BlockingQueue<ThreadMessage> queue = threadMessages.get(game);
+            queue.add(
+                    new ThreadMessage(Status.REQUEST, message, player)
             );
 
-            ThreadMessage msg;
+            ThreadMessage response;
+            boolean responded = false;
             do {
-                try {
-                    Thread.sleep(100);
-                } catch (Exception ignored) {
+                response = queue.peek();
+                if (response != null && response.status() != Status.REQUEST) {
+                    String sender = response.player();
+                    responded = sender.equals(player);
                 }
-                msg = shared.getValue();
-            } while (msg.status() == Status.REQUEST);
+            } while (!responded);
+            System.out.println(response);
         }
     }
 

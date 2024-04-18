@@ -2,12 +2,14 @@ package it.polimi.ingsw.controller.threads;
 
 import it.polimi.ingsw.controller.threads.message.ThreadMessage;
 
+import java.util.concurrent.BlockingQueue;
+
 public class GameThread extends Thread {
-    private final Shared<ThreadMessage> message;
+    private final BlockingQueue<ThreadMessage> messageQueue;
     private final Integer playerNum;
 
-    public GameThread(Shared<ThreadMessage> message, Integer playerNum) {
-        this.message = message;
+    public GameThread(BlockingQueue<ThreadMessage> messageQueue, Integer playerNum) {
+        this.messageQueue = messageQueue;
         this.playerNum = playerNum;
     }
 
@@ -18,16 +20,14 @@ public class GameThread extends Thread {
 
             ThreadMessage msg;
             do {
-                try {
-                    Thread.sleep(150);
-                } catch (Exception ignored) {
-                }
-                msg = message.getValue();
-            } while (msg.status() != Status.REQUEST);
+                msg = messageQueue.peek();
+            } while (msg == null || msg.status() != Status.REQUEST);
 
-            if (message.getValue().status() == Status.REQUEST) {
-                message.setValue(
-                        new ThreadMessage(Status.OK, "TODO"));
+            msg = messageQueue.remove();
+
+            if (msg.status() == Status.REQUEST) {
+                messageQueue.add(
+                        new ThreadMessage(Status.OK, "TODO", msg.player()));
             }
         }
     }

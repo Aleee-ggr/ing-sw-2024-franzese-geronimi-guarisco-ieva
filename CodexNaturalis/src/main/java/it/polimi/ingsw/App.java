@@ -28,7 +28,7 @@ public class App
                 case 1:
                     break;
                 case 2:
-                    RmiClient client = new RmiClient("player", "localhost", 1234);
+                    RmiClient client = new RmiClient("username", "localhost", 1234);
                     UUID game = client.newGame(3);
                     client.setGameId(game);
                     client.joinGame(game);
