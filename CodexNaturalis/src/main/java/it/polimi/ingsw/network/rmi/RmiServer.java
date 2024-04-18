@@ -67,7 +67,6 @@ public class RmiServer extends Server implements RmiServerInterface {
         String message = ThreadMessage.join.formatted(name);
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).getValue();
-        System.out.println(response);
         return response.status() != Status.ERROR;
     }
 }
