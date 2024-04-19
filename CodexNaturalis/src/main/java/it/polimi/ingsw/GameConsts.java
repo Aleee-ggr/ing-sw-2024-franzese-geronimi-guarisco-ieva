@@ -35,7 +35,7 @@ public abstract class GameConsts {
     public static final int firstHandDim = 3;
     public static final int fistHandStdNum = 2;
     public static final int maxPlayersNum = 4;
-    public static final Coordinates centralPoint = new Coordinates(40, 40);
+    public static final Coordinates centralPoint = new Coordinates(0, 0);
     public static final int totalPlayableCards = 80;
     public static final int notFillableId = 0;
     public static final int numberOfResourcesPerCorner = 1;

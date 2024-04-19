@@ -36,7 +36,7 @@ public class PlayerBoard {
         this.board.put(new Coordinates(0, 0), firstCard);
         this.boardOwner = player;
         this.lastPlacedCard = firstCard;
-        this.lastPlacedPosition = new Coordinates(GameConsts.centralPoint.x(), GameConsts.centralPoint.y());
+        this.lastPlacedPosition = GameConsts.centralPoint;
     }
     
     /**
