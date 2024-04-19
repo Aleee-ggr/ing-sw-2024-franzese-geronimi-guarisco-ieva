@@ -85,12 +85,12 @@ public class PlayerBoard {
      * Method that returns the possible positions for placing a Card on the board. <br/>
      * it's used if a player is disconnected. <br/>
      * in normal execution of the game the validPlacements hashset is updated while placing a card.<br/>
-     * it calls the private method {@link #dfs(Coordinates, boolean[][]) dfs}.
+     * it calls the private method {@link #dfs(Coordinates, Set) dfs}.
      * @see Coordinates
      */
     public void checkPositionsIfDisconnected(){
-        boolean[][] visited = new boolean[GameConsts.totalPlayableCards][GameConsts.totalPlayableCards];
-        dfs(GameConsts.centralPoint, visited);
+        Set<Coordinates> visited = new HashSet<>();
+        dfs(new Coordinates(0,0), visited);
     }
 
     /**
@@ -103,9 +103,9 @@ public class PlayerBoard {
      * @param cellCoordinates the starting cell from which the depth first search starts.
      * @param visited a 2D array of boolean used to search every cell once without repetitions.
      */
-    private void dfs(Coordinates cellCoordinates, boolean[][] visited){
-        if(!visited[cellCoordinates.x()][cellCoordinates.y()]){
-            visited[cellCoordinates.x()][cellCoordinates.y()] = true;
+    private void dfs(Coordinates cellCoordinates, Set<Coordinates> visited){
+        if(!visited.contains(cellCoordinates)){
+            visited.add(cellCoordinates);
             if (board.get(cellCoordinates) == null) {
                 validPlacements.add(cellCoordinates);
                 return;
