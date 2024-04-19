@@ -40,11 +40,9 @@ public class GoldCard extends ColoredCard{
      * @return True if the player meets the requirements, false otherwise.
      */
     public boolean checkRequirements(Player player) {
-        for (Map.Entry<Resource, Integer> entry : requirements.entrySet()) {
-            Resource requiredResource = entry.getKey();
-            int requiredAmount = entry.getValue();
 
-            if (player.getResources().get(requiredResource) < requiredAmount) {
+        for (Resource key : requirements.keySet()) {
+            if (player.getResources().get(key) < requirements.get(key)) {
                 return false;
             }
         }

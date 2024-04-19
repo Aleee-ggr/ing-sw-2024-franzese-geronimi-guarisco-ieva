@@ -24,7 +24,9 @@ public class PlayerBuilder {
 
     public Player build() {
         MockPlayer p = new MockPlayer(username, new Game(new UUID(1,1))); //to check
-        p.setResources(resources);
+        for (Resource res : resources.keySet()) {
+                p.setResource(res, resources.get(res));
+        }
         return p;
     }
 }

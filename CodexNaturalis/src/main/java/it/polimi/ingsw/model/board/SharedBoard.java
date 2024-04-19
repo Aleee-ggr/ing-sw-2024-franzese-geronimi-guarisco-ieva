@@ -1,10 +1,7 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.GameConsts;
-import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.cards.Deck;
-import it.polimi.ingsw.model.cards.GoldCard;
-import it.polimi.ingsw.model.cards.StdCard;
+import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.model.player.Player;
 
@@ -23,7 +20,7 @@ public class SharedBoard {
     private final ConcurrentHashMap<Player, Integer> scoreMap = new ConcurrentHashMap<>();
     private final Deck<GoldCard> goldDeck;
     private final Deck<StdCard> stdDeck;
-    private final Card[] visibleCards = new Card[4];
+    private final ColoredCard[] visibleCards = new ColoredCard[4];
 
     /**
      * Constructor for the SharedBoard class.
@@ -120,7 +117,7 @@ public class SharedBoard {
      * @param isGold Indicates whether the card should be drawn from the gold card deck.
      * @return The drawn card, or null if the deck is empty.
      */
-    public Card drawDeck(boolean isGold) {
+    public ColoredCard drawDeck(boolean isGold) {
         if (isGold && !goldDeck.isEmpty()) {
             return goldDeck.draw();
         }
@@ -136,7 +133,7 @@ public class SharedBoard {
      * @param position The position of the card to retrieve.
      * @return The card at the specified position, or null if no card is present.
      */
-    public Card drawVisible(int position) {
+    public ColoredCard drawVisible(int position) {
         if (visibleCards[position] != null) {
             return visibleCards[position];
         }
@@ -171,6 +168,10 @@ public class SharedBoard {
      * @param value the value by which the score should be updated
      */
     public void updateScore(Player player, int value) {
+        if (!scoreMap.containsKey(player)) {
+            scoreMap.put(player, value);
+            return;
+        }
         scoreMap.put(player, scoreMap.get(player) + value);
     }
 

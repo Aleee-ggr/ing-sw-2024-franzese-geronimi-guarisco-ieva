@@ -4,9 +4,6 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.player.Player;
 
-import java.util.Collections;
-import java.util.Map;
-
 public class MockPlayer extends Player {
     /**
      * Calling the Player
@@ -15,17 +12,12 @@ public class MockPlayer extends Player {
      * @param currentGame pointer to the instance of game the player is playing.
      */
 
-    Map<Resource, Integer> mockResources;
     public MockPlayer(String username, Game currentGame) {
         super(username, currentGame);
+
     }
 
-    public void setResources(Map<Resource, Integer> resources) {
-        this.mockResources = resources;
-    }
-
-    @Override
-    public Map<Resource, Integer> getResources() {
-        return Collections.unmodifiableMap(mockResources);
+    public void setResource(Resource res, Integer amount) {
+        playerResources.put(res, amount);
     }
 }

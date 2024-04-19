@@ -53,7 +53,6 @@ public class StdCardParser implements JsonParser<Deck<StdCard>> {
                 throw new JsonFormatException("points: tag not found");
             }
             int points = jpoints.getAsInt();
-
             JsonArray jcorners = card_obj.getAsJsonArray("corners");
             if (jcorners == null) {
                 throw new JsonFormatException("corners: tag not found!");
@@ -61,7 +60,7 @@ public class StdCardParser implements JsonParser<Deck<StdCard>> {
             Corner[] corners = getCorners(jcorners);
             
             deck.add(
-                    new StdCard(id, corners, resource, points == 1)
+                    new StdCard(id, corners, resource, points != 0)
             );
         }
 

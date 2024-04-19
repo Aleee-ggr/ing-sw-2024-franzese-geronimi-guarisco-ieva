@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.GameConsts;
+import it.polimi.ingsw.helpers.exceptions.RequirementsError;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.board.PlayerBoard;
@@ -26,9 +27,9 @@ public class Player {
     private final String username;
     private int score;
     private PlayerBoard board;
-    private Card[] hand;
+    private final ColoredCard[] hand = new ColoredCard[GameConsts.firstHandDim];
     private Objective hiddenObjective;
-    private final ConcurrentHashMap<Resource, Integer> playerResources = new ConcurrentHashMap<>();
+    protected final ConcurrentHashMap<Resource, Integer> playerResources = new ConcurrentHashMap<>();
     private final Game game;
 
     /**
@@ -59,7 +60,7 @@ public class Player {
      * @return a score as an int.
      */
     public int getScore(){
-        return score;
+        return this.score;
     }
 
     /**
@@ -76,7 +77,7 @@ public class Player {
      * @return an array of Card.
      * @see Card
      */
-    public Card[] getHand(){
+    public ColoredCard[] getHand(){
         return hand;
     }
 
@@ -145,7 +146,7 @@ public class Player {
 
     /**
      * Method to draw from one of the two decks in the SharedBoard of the Game <br/>
-     * implements  {@link  #toHand(Card)  toHand} private method
+     * implements  {@link  #toHand(ColoredCard)  toHand} private method
      * @param isGold is a boolean used to identify if the card is drawn to the gold card deck or the std deck
      * */
     public void drawDecks(boolean isGold){
@@ -154,7 +155,7 @@ public class Player {
 
     /**
      * Method to draw from one of the four visible cards in the SharedBoard of the Game <br/>
-     * implements  {@link  #toHand(Card)  toHand} private method
+     * implements  {@link  #toHand(ColoredCard)  toHand} private method
      * @param numVisible is used to choose the card from the board
      * @see it.polimi.ingsw.model.board.SharedBoard
      * */
@@ -168,7 +169,6 @@ public class Player {
      * @see it.polimi.ingsw.GameConsts
      * */
     public void drawFirstHand(){
-        this.hand = new Card[GameConsts.firstHandDim];
         for (int i = 0; i < GameConsts.fistHandStdNum; i++){
             this.hand[i] = game.getGameBoard().drawDeck(false);
         }
@@ -184,7 +184,7 @@ public class Player {
      * @param drawnCard is a Card obj from the Card class
      * @see Card
      * */
-    private void toHand(Card drawnCard){
+    private void toHand(ColoredCard drawnCard){
         for(int i = 0; i < GameConsts.firstHandDim; i++){
             if (hand[i]==null){
                 hand[i]=drawnCard;
@@ -196,7 +196,7 @@ public class Player {
 
     /**
      * Plays a card on the game board at the specified coordinates.
-     * If the played card is a GoldCard and it meets the player's requirements,
+     * If the played card is a GoldCard, and it meets the player's requirements,
      * it is placed on the board and the player's score is updated.
      * If the played card is a StdCard, it is placed on the board and if it is a point card,
      * the player's score is updated.
@@ -205,17 +205,22 @@ public class Player {
      * @param playedCard   The card to be played.
      * @param coordinates  The coordinates where the card should be placed on the board.
      */
-    public void playCard(ColoredCard playedCard, Coordinates coordinates){
+    public void playCard(ColoredCard playedCard, Coordinates coordinates) throws RequirementsError {
         if (playedCard instanceof GoldCard goldCard) {
             if (goldCard.checkRequirements(this)) {
                 board.placeCard(goldCard, coordinates);
                 game.getGameBoard().updateScore(this, goldCard.getScore(this));
+                this.score = game.getGameBoard().getScore().get(this);
+            }
+            else {
+                throw new RequirementsError();
             }
         } else {
             StdCard stdCard = (StdCard) playedCard;
             board.placeCard(stdCard, coordinates);
             if (stdCard.isPoint()) {
                 game.getGameBoard().updateScore(this, 1);
+                this.score = game.getGameBoard().getScore().get(this);
             }
         }
         for (int i = 0; i < GameConsts.firstHandDim; i++) {
