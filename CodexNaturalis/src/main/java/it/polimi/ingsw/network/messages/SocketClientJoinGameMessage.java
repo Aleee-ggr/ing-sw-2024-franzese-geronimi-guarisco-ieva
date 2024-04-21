@@ -22,4 +22,8 @@ public class SocketClientJoinGameMessage extends Message{
         this.username = username;
         this.gameUUID = gameUUID;
     }
+
+    public UUID getGameUUID() {
+        return gameUUID;
+    }
 }
