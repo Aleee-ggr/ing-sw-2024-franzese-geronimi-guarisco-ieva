@@ -1,6 +1,11 @@
 package it.polimi.ingsw.network.socket;
 
 import it.polimi.ingsw.controller.threads.message.ThreadMessage;
+import it.polimi.ingsw.network.Server;
+import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.SocketClientCreateGameMessage;
+import it.polimi.ingsw.network.messages.SocketClientJoinGameMessage;
+import it.polimi.ingsw.network.messages.SocketClientLeaveGameMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -15,7 +20,7 @@ import java.util.concurrent.BlockingQueue;
  * It provides methods to send and receive objects over the network.
  * @author Samuele Franzese
  */
-public class ClientHandler extends Thread {
+public class ClientHandler extends Server implements Runnable {
     private Socket socket;
     private ObjectInputStream input;
     private ObjectOutputStream output;
@@ -32,5 +37,24 @@ public class ClientHandler extends Thread {
         this.input = new ObjectInputStream(socket.getInputStream());
         this.output = new ObjectOutputStream(socket.getOutputStream());
         this.threadMessages = threadMessages;
+    }
+
+    public void run() {
+        while (!this.socket.isClosed()){
+            try {
+                Message message = (Message) input.readObject();
+                if (message instanceof SocketClientCreateGameMessage) {
+                    createGame(((SocketClientCreateGameMessage) message).getNumPlayers());
+                } else if (message instanceof SocketClientJoinGameMessage) {
+                    String threadMessage = ThreadMessage.join.formatted(message.getUsername());
+                    sendMessage(((SocketClientJoinGameMessage) message).getGameUUID(), threadMessage, message.getUsername());
+                } else if (message instanceof SocketClientLeaveGameMessage) {
+                } else {
+                }
+
+            } catch (IOException | ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }
