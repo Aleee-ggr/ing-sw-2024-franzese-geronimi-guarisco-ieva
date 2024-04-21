@@ -35,7 +35,8 @@ public class SocketServer extends Server {
     public void acceptConnection() {
         while(true) {
             try {
-                ClientHandler clientHandler = new ClientHandler(server.accept());
+                ClientHandler clientHandler = new ClientHandler(server.accept(), threadMessages);
+                new Thread(clientHandler).start();
             } catch (IOException e) {
                 System.out.println("Connection error: " + e.getMessage());
             }
