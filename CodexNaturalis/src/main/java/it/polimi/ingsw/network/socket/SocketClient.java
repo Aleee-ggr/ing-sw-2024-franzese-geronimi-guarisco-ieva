@@ -9,6 +9,11 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.UUID;
 
+/**
+ * The SocketClient class represents a client that uses sockets for network communication.
+ * It extends the Client class and manages a socket connection with a server,
+ * allowing the client to create games, join games, and reconnect to games.
+ */
 public class SocketClient extends Client {
 
     private Socket client;
