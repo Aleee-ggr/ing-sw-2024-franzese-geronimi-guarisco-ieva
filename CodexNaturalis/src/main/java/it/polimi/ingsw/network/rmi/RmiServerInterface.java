@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.board.Coordinates;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.Set;
 import java.util.UUID;
 
 public interface RmiServerInterface extends Remote {
@@ -49,4 +50,6 @@ public interface RmiServerInterface extends Remote {
     String postChat(UUID game, String name, String message) throws RemoteException;
 
     void waitUpdate(UUID game, String name) throws RemoteException;
+
+    Set<Coordinates> getPlacementCoordinates(UUID game, String name) throws RemoteException;
 }

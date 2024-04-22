@@ -3,13 +3,11 @@ package it.polimi.ingsw.model.player;
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.helpers.exceptions.model.ElementNotInHand;
 import it.polimi.ingsw.helpers.exceptions.model.HandFullException;
+import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.board.PlayerBoard;
 import it.polimi.ingsw.model.cards.Card;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -22,6 +20,7 @@ public class ClientData {
     private int playerNum;
     private final Map<String, PlayerBoard> playerBoardMap;
     private final ConcurrentHashMap<String, Integer> scoreMap;
+    private Set<Coordinates> validPlacements = new HashSet<>();
 
     /**
      * Constructs a new ClientData object with the specified username.
@@ -87,6 +86,14 @@ public class ClientData {
      */
     public void setNewHand(ArrayList<Integer> newHand) {
         this.hand = newHand;
+    }
+
+    /**
+     * Setter for the possible placement of Cards.
+     * @param validPlacements The new set of Coordinates.
+     */
+    public void setValidPlacements(Set<Coordinates> validPlacements) {
+        this.validPlacements = validPlacements;
     }
 
     /**

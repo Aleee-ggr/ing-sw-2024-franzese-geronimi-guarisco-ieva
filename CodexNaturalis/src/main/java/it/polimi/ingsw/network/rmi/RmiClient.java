@@ -94,6 +94,10 @@ public class RmiClient extends Client{
         this.setGameId(game);
     }
 
+    public void getPlacementCoordinates() throws ServerConnectionException, RemoteException{
+        data.setValidPlacements(server.getPlacementCoordinates(this.gameId, this.data.getUsername()));
+    }
+
     public void postChat(String message) throws  ServerConnectionException, RemoteException{
         server.postChat(this.gameId, this.data.getUsername(), message);
     }
@@ -102,8 +106,8 @@ public class RmiClient extends Client{
         server.waitUpdate(this.gameId, this.data.getUsername());
     }
 
-
     //TODO: methods to implement
+
     public void getStartingObjectives() throws  ServerConnectionException, RemoteException{
         server.getStartingObjectives(this.gameId, this.data.getUsername());
     }
