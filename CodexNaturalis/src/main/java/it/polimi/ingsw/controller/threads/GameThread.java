@@ -27,7 +27,8 @@ public class GameThread extends Thread {
 
             if (msg.status() == Status.REQUEST) {
                 messageQueue.add(
-                        new ThreadMessage(Status.OK, "TODO", msg.player()));
+                        new ThreadMessage(Status.OK, msg.player(), "ok", null)
+                );
             }
         }
     }

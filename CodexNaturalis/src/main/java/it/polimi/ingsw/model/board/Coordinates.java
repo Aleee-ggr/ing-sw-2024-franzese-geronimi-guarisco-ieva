@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.board;
 import java.util.List;
 import java.util.ArrayList;
 
-public record Coordinates(int x, int y) {
+public record Coordinates(Integer x, Integer y) {
 
     /**
      * @param offset how much to shift the coordinates horizontally (same sign as x)

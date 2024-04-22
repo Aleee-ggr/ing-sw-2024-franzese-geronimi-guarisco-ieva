@@ -1,7 +1,6 @@
 package it.polimi.ingsw.network.rmi;
 
 import it.polimi.ingsw.controller.threads.Status;
-import it.polimi.ingsw.controller.threads.message.parsers.IdParser;
 import it.polimi.ingsw.controller.threads.message.ThreadMessage;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.network.Server;
@@ -41,22 +40,29 @@ public class RmiServer extends Server implements RmiServerInterface {
 
     @Override
     public Integer drawCard(UUID game, String player, Integer position) throws RemoteException {
-        String message = ThreadMessage.draw.formatted(player, position);
+        ThreadMessage message = ThreadMessage.draw(
+                player,
+                position
+        );
 
-        sendMessage(game, message, player);
+        sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
         if (response.status() != Status.OK) {
             return null;
         }
-        return new IdParser().parse(response.message());
+        return Integer.parseInt(response.args()[0]);
     }
 
     @Override
-    public boolean placeCard(UUID game, String player, Coordinates coordinates, Integer cardID) throws RemoteException {
-        String message = ThreadMessage.place_card.formatted(player, coordinates.x(), coordinates.y(), cardID);
+    public boolean placeCard(UUID game, String player, Coordinates coordinates, Integer cardId) throws RemoteException {
+        ThreadMessage message = ThreadMessage.placeCard(
+                player,
+                coordinates,
+                cardId
+        );
 
-        sendMessage(game, message, player);
+        sendMessage(game, message);
 
         return threadMessages.get(game).remove().status() != Status.ERROR;
     }
@@ -68,11 +74,33 @@ public class RmiServer extends Server implements RmiServerInterface {
 
     @Override
     public boolean join(UUID game, String player) throws RemoteException {
-        String message = ThreadMessage.join.formatted(name);
+        ThreadMessage message = ThreadMessage.join(
+                player
+        );
 
-        sendMessage(game, message, player);
+        sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
         return response.status() != Status.ERROR;
+    }
+
+    @Override
+    public Integer[] getStartingObjectives(UUID game, String name) throws RemoteException {
+        return new Integer[0];
+    }
+
+    @Override
+    public boolean chooseStartingObjective(UUID game, String name, Integer objectiveId) throws RemoteException {
+        return false;
+    }
+
+    @Override
+    public String postChat(UUID game, String name, String message) throws RemoteException {
+        return "";
+    }
+
+    @Override
+    public void waitUpdate(UUID game, String name) throws RemoteException {
+
     }
 }
