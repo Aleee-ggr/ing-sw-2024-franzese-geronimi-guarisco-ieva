@@ -19,7 +19,7 @@ public interface RmiServerInterface extends Remote {
      * @return the id of the drawn card
      * @throws RemoteException rmi exception
      */
-    public Integer drawCard(UUID game, String player, Integer position) throws RemoteException;
+    Integer drawCard(UUID game, String player, Integer position) throws RemoteException;
 
     /**
      * Place a card from the players hand at the given coordinates
@@ -30,7 +30,7 @@ public interface RmiServerInterface extends Remote {
      * @return true if the operation was successful, false otherwise
      * @throws RemoteException rmi exception
      */
-    public boolean placeCard(UUID game, String player, Coordinates coordinates, Integer cardID) throws RemoteException;
+    boolean placeCard(UUID game, String player, Coordinates coordinates, Integer cardID) throws RemoteException;
 
     /**
      * Create a new game with the given capacity, returning the game uuid
@@ -38,7 +38,15 @@ public interface RmiServerInterface extends Remote {
      * @return the uuid of the game if the operation was successful, null otherwise
      * @throws RemoteException rmi exception
      */
-    public UUID newGame(Integer player_count) throws RemoteException;
+    UUID newGame(Integer player_count) throws RemoteException;
 
-    public boolean join(UUID game, String name) throws RemoteException;
+    boolean join(UUID game, String name) throws RemoteException;
+
+    Integer[] getStartingObjectives(UUID game, String name) throws RemoteException;
+
+    boolean chooseStartingObjective(UUID game, String name, Integer objectiveId) throws RemoteException;
+
+    String postChat(UUID game, String name, String message) throws RemoteException;
+
+    void waitUpdate(UUID game, String name) throws RemoteException;
 }
