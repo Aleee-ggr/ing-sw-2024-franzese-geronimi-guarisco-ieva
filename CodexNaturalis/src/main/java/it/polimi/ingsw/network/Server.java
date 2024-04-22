@@ -37,12 +37,10 @@ public abstract class Server {
         games.put(id, playerNum);
     }
 
-    protected void sendMessage(UUID game, String message, String player) {
+    protected void sendMessage(UUID game, ThreadMessage message ) {
         synchronized (threadMessages) {
             BlockingQueue<ThreadMessage> queue = threadMessages.get(game);
-            queue.add(
-                    new ThreadMessage(Status.REQUEST, message, player)
-            );
+            queue.add(message);
 
             ThreadMessage response;
             boolean responded = false;
@@ -50,7 +48,7 @@ public abstract class Server {
                 response = queue.peek();
                 if (response != null && response.status() != Status.REQUEST) {
                     String sender = response.player();
-                    responded = sender.equals(player);
+                    responded = sender.equals(message.player());
                 }
             } while (!responded);
             System.out.println(response);

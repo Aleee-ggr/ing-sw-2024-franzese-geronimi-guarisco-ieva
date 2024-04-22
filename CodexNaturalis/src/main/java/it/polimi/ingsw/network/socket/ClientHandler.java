@@ -46,8 +46,8 @@ public class ClientHandler extends Server implements Runnable {
                 if (message instanceof SocketClientCreateGameMessage) {
                     createGame(((SocketClientCreateGameMessage) message).getNumPlayers());
                 } else if (message instanceof SocketClientJoinGameMessage) {
-                    String threadMessage = ThreadMessage.join.formatted(message.getUsername());
-                    sendMessage(((SocketClientJoinGameMessage) message).getGameUUID(), threadMessage, message.getUsername());
+                    ThreadMessage threadMessage = ThreadMessage.join(message.getUsername());
+                    sendMessage(((SocketClientJoinGameMessage) message).getGameUUID(), threadMessage);
                 } else if (message instanceof SocketClientLeaveGameMessage) {
                 } else {
                 }
