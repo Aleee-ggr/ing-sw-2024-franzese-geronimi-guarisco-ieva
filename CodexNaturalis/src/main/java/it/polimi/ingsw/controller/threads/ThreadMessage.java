@@ -1,6 +1,5 @@
-package it.polimi.ingsw.controller.threads.message;
+package it.polimi.ingsw.controller.threads;
 
-import it.polimi.ingsw.controller.threads.Status;
 import it.polimi.ingsw.model.board.Coordinates;
 
 public record ThreadMessage(Status status, String player, String type, String[] args) {

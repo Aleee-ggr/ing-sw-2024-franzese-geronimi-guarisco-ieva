@@ -1,7 +1,7 @@
 package it.polimi.ingsw.network.rmi;
 
 import it.polimi.ingsw.controller.threads.Status;
-import it.polimi.ingsw.controller.threads.message.ThreadMessage;
+import it.polimi.ingsw.controller.threads.ThreadMessage;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.network.Server;
 

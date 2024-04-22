@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.socket;
 
-import it.polimi.ingsw.controller.threads.message.ThreadMessage;
+import it.polimi.ingsw.controller.threads.ThreadMessage;
 import it.polimi.ingsw.network.Server;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.SocketClientCreateGameMessage;

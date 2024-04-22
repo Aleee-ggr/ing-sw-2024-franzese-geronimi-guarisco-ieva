@@ -2,7 +2,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.controller.threads.GameThread;
 import it.polimi.ingsw.controller.threads.Status;
-import it.polimi.ingsw.controller.threads.message.ThreadMessage;
+import it.polimi.ingsw.controller.threads.ThreadMessage;
 
 import java.util.*;
 import java.util.concurrent.BlockingQueue;

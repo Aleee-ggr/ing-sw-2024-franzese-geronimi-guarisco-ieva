@@ -1,7 +1,5 @@
 package it.polimi.ingsw.controller.threads;
 
-import it.polimi.ingsw.controller.threads.message.ThreadMessage;
-
 import java.util.concurrent.BlockingQueue;
 
 public class GameThread extends Thread {
