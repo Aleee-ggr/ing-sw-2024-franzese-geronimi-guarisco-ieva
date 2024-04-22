@@ -33,10 +33,18 @@ public class RmiServer extends Server implements RmiServerInterface {
 
     public void stop() {
         try {
+            for (UUID key : threadMessages.keySet()) {
+                threadMessages.get(key).add(
+                    new ThreadMessage(
+                        Status.REQUEST,
+                        "",
+                        "kill",
+                        null
+                    )
+                );
+            }
             registry.unbind(name);
-        } catch (NotBoundException | RemoteException e) {
-            throw new RuntimeException(e);
-        }
+        } catch (NotBoundException | RemoteException ignored) {}
     }
 
     @Override
