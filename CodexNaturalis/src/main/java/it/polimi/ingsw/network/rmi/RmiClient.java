@@ -27,7 +27,7 @@ public class RmiClient extends Client{
     }
 
     public void joinGame(UUID game) throws ServerConnectionException, RemoteException {
-        server.join(game, this.playerUsername);
+        server.join(game, this.data.getUsername());
     }
 
     public UUID newGame(int players) throws ServerConnectionException, RemoteException {
