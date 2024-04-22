@@ -1,11 +1,7 @@
 package it.polimi.ingsw.network.socket;
 
 import it.polimi.ingsw.controller.threads.ThreadMessage;
-import it.polimi.ingsw.network.Server;
-import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.network.messages.SocketClientCreateGameMessage;
-import it.polimi.ingsw.network.messages.SocketClientJoinGameMessage;
-import it.polimi.ingsw.network.messages.SocketClientLeaveGameMessage;
+import it.polimi.ingsw.network.messages.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -20,11 +16,12 @@ import java.util.concurrent.BlockingQueue;
  * It provides methods to send and receive objects over the network.
  * @author Samuele Franzese
  */
-public class ClientHandler extends Server implements Runnable {
+public class ClientHandler implements Runnable {
     private Socket socket;
     private ObjectInputStream input;
     private ObjectOutputStream output;
     private Map<UUID, BlockingQueue<ThreadMessage>> threadMessages;
+    private SocketServer socketServer;
 
     /**
      * Constructs a new ClientHandler object with the specified socket connection.
@@ -32,29 +29,51 @@ public class ClientHandler extends Server implements Runnable {
      * @param socket the socket connection to the client
      * @throws IOException if an I/O error occurs while initializing the input and output streams
      */
-    public ClientHandler(Socket socket, Map<UUID, BlockingQueue<ThreadMessage>> threadMessages) throws IOException {
+    public ClientHandler(Socket socket, Map<UUID, BlockingQueue<ThreadMessage>> threadMessages, SocketServer socketServer) throws IOException {
         this.socket = socket;
         this.input = new ObjectInputStream(socket.getInputStream());
         this.output = new ObjectOutputStream(socket.getOutputStream());
         this.threadMessages = threadMessages;
+        this.socketServer = socketServer;
     }
 
     public void run() {
-        while (!this.socket.isClosed()){
-            try {
-                Message message = (Message) input.readObject();
-                if (message instanceof SocketClientCreateGameMessage) {
-                    createGame(((SocketClientCreateGameMessage) message).getNumPlayers());
-                } else if (message instanceof SocketClientJoinGameMessage) {
-                    ThreadMessage threadMessage = ThreadMessage.join(message.getUsername());
-                    sendMessage(((SocketClientJoinGameMessage) message).getGameUUID(), threadMessage);
-                } else if (message instanceof SocketClientLeaveGameMessage) {
-                } else {
-                }
 
+            try {
+                while (!this.socket.isClosed()) {
+                    Message message = (Message) input.readObject();
+                    handleMessage(message);
+                }
             } catch (IOException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
+                System.out.println("Error: " + e.getMessage());
+            } finally {
+                try {
+                    input.close();
+                    output.close();
+                    socket.close();
+                } catch (IOException e) {
+                    System.out.println("Error closing connection" + e.getMessage());
+                }
             }
+
+    }
+
+    private void handleMessage(Message message) {
+        if (message instanceof SocketClientCreateGameMessage) {
+            socketServer.createGame(((SocketClientCreateGameMessage) message).getNumPlayers());
+        } else if (message instanceof SocketClientJoinGameMessage) {
+            ThreadMessage threadMessage = ThreadMessage.join(message.getUsername());
+        } else if (message instanceof SocketClientPlaceCardMessage) {
+            ThreadMessage threadMessage = ThreadMessage.placeCard(
+                    message.getUsername(),
+                    ((SocketClientPlaceCardMessage) message).getCoordinates(),
+                    ((SocketClientPlaceCardMessage) message).getCardId()
+            );
+        } else if (message instanceof SocketClientDrawCardMessage) {
+            ThreadMessage threadMessage = ThreadMessage.draw(
+                    message.getUsername(),
+                    ((SocketClientDrawCardMessage) message).getPosition()
+            );
         }
     }
 }
