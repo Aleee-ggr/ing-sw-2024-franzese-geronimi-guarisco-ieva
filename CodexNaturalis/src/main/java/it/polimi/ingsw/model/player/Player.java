@@ -184,7 +184,7 @@ public class Player {
      * @param drawnCard is a Card obj from the Card class
      * @see Card
      * */
-    private void toHand(ColoredCard drawnCard){
+    private void toHand(ColoredCard drawnCard){ //TODO: error handling for overflowing hand
         for(int i = 0; i < GameConsts.firstHandDim; i++){
             if (hand[i]==null){
                 hand[i]=drawnCard;

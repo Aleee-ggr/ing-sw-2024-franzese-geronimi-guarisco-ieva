@@ -1,8 +1,12 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.GameConsts;
+import it.polimi.ingsw.helpers.exceptions.model.ElementNotInHand;
+import it.polimi.ingsw.helpers.exceptions.model.HandFullException;
 import it.polimi.ingsw.model.board.PlayerBoard;
+import it.polimi.ingsw.model.cards.Card;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ClientData {
     private final String username;
-    private int[] hand = new int[GameConsts.firstHandDim];
+    private ArrayList<Integer> hand = new ArrayList<>(GameConsts.firstHandDim);
     private int playerNum;
     private final Map<String, PlayerBoard> playerBoardMap;
     private final ConcurrentHashMap<String, Integer> scoreMap;
@@ -33,7 +37,7 @@ public class ClientData {
      * Getter for the hand of the client.
      * @return An array representing the hand of the client.
      */
-    public int[] getHand() {
+    public ArrayList<Integer> getHand() {
         return hand;
     }
 
@@ -81,7 +85,7 @@ public class ClientData {
      * Setter for a new hand of id of cards for the client.
      * @param newHand The new hand to set.
      */
-    public void setNewHand(int[] newHand) {
+    public void setNewHand(ArrayList<Integer> newHand) {
         this.hand = newHand;
     }
 
@@ -101,6 +105,22 @@ public class ClientData {
      */
     public void updateScoreMap(String username, Integer newScore) {
         scoreMap.put(username, newScore);
+    }
+
+    public void addToHand(int CardId) throws HandFullException {
+        if(hand.size() > GameConsts.firstHandDim){
+            throw new HandFullException("client hand full");
+        } else {
+            hand.add(CardId);
+        }
+    }
+
+    public void removeFromHand(Integer CardId) throws ElementNotInHand { //TODO: test
+        if(!hand.contains(CardId)){
+            throw new ElementNotInHand("the client does not have this card!");
+        } else {
+            hand.remove(CardId);
+        }
     }
 
 }
