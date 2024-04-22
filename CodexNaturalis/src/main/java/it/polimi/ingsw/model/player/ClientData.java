@@ -5,13 +5,13 @@ import it.polimi.ingsw.helpers.exceptions.model.ElementNotInHand;
 import it.polimi.ingsw.helpers.exceptions.model.HandFullException;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.board.PlayerBoard;
-import it.polimi.ingsw.model.cards.Card;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Represents the data associated with a client in the game, including username, hand, player number, player boards, and scores.
+ * The hand of the Client is a list of Integer value representing IDs of cards.
  * @author Alessio Guarisco
  */
 public class ClientData {
@@ -34,7 +34,7 @@ public class ClientData {
 
     /**
      * Getter for the hand of the client.
-     * @return An array representing the hand of the client.
+     * @return An array of CardID representing the hand of the client.
      */
     public ArrayList<Integer> getHand() {
         return hand;
