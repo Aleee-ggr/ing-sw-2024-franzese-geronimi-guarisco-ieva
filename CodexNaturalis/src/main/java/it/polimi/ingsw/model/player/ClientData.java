@@ -107,19 +107,29 @@ public class ClientData {
         scoreMap.put(username, newScore);
     }
 
-    public void addToHand(int CardId) throws HandFullException {
+    /**
+     * Adds a card to the client's hand if the hand is not already full.
+     * @param cardId The ID of the card to be added to the hand.
+     * @throws HandFullException If the client's hand is already full.
+     */
+    public void addToHand(int cardId) throws HandFullException {
         if(hand.size() > GameConsts.firstHandDim){
             throw new HandFullException("client hand full");
         } else {
-            hand.add(CardId);
+            hand.add(cardId);
         }
     }
 
-    public void removeFromHand(Integer CardId) throws ElementNotInHand { //TODO: test
-        if(!hand.contains(CardId)){
+    /**
+     * Removes a card from the client's hand if it exists in the hand.
+     * @param cardId The ID of the card to be removed from the hand.
+     * @throws ElementNotInHand If the specified card is not in the client's hand.
+     */
+    public void removeFromHand(Integer cardId) throws ElementNotInHand { //TODO: test
+        if(!hand.contains(cardId)){
             throw new ElementNotInHand("the client does not have this card!");
         } else {
-            hand.remove(CardId);
+            hand.remove(cardId);
         }
     }
 
