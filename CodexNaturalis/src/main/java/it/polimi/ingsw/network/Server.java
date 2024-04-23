@@ -77,7 +77,6 @@ public abstract class Server {
                     responded = sender.equals(message.player());
                 }
             } while (!responded);
-            System.out.println(response);
         }
     }
 

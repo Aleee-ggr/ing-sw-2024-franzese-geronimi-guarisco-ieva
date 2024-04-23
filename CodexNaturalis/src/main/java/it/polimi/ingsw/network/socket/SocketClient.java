@@ -81,7 +81,7 @@ public class SocketClient extends Client {
      * Send server the message to reconnect to a game.
      * @param gameUUID The UUID of the game to reconnect to.
      */
-    public void reconnect(String username,UUID gameUUID) {
+    public void reconnect(String username,UUID gameUUID) throws IOException {
         output.writeObject(new SocketClientReconnectMessage(username, gameUUID));
     }
 
