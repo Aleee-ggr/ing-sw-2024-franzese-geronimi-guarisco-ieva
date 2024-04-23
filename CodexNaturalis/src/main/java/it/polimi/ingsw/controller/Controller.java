@@ -10,6 +10,11 @@ import it.polimi.ingsw.model.player.Player;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 
+/**
+ * Main Controller class.
+ * It gets messages from the GameThread and calls and changes the model.
+ * @author Alessio Guarisco
+ * */
 public class Controller {
     private final GameThread thread;
     private final BlockingQueue<ThreadMessage> messageQueue;

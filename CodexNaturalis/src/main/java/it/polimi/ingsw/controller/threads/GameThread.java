@@ -8,6 +8,11 @@ import java.util.Arrays;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 
+/**
+ * GameThread Class, used to manage the thread-side logic for the controller.
+ * Instantiate a new thread for each game to work simultaneously with the same server.
+ * @author Daniele Ieva
+ * */
 public class GameThread extends Thread {
     private final BlockingQueue<ThreadMessage> messageQueue;
     private final Integer playerNum;
@@ -19,10 +24,6 @@ public class GameThread extends Thread {
         this.messageQueue = messageQueue;
         this.playerNum = playerNum;
         this.controller = new Controller(this, messageQueue);
-    }
-
-    public void setup(){
-
     }
 
     @Override

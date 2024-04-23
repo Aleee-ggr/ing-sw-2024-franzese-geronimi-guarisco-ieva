@@ -4,6 +4,12 @@ import it.polimi.ingsw.model.board.Coordinates;
 
 import java.util.UUID;
 
+/**
+ * ThreadMessage Record is used as type of messages to communicate from and to the server and the games.
+ * It has different ThreadMessages for each message needed.
+ * @author Daniele Ieva
+ * @author Alessio Guarisco
+ * */
 public record ThreadMessage(Status status, String player, String type, String[] args) {
     public static ThreadMessage create(String username, Integer playerNum, UUID gameId){
         return new ThreadMessage(
