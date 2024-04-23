@@ -15,16 +15,16 @@ import java.util.concurrent.LinkedBlockingDeque;
  * @author Daniele Ieva
  */
 public abstract class Server {
-    protected final Map<UUID, BlockingQueue<ThreadMessage>> threadMessages = new ConcurrentHashMap<>();
-    protected final Set<String> playerList = new HashSet<>();
-    protected final Map<UUID, Integer> games = new ConcurrentHashMap<>(); // TODO: remove game while closed
+    protected static final Map<UUID, BlockingQueue<ThreadMessage>> threadMessages = new ConcurrentHashMap<>();
+    protected static final Set<String> playerList = new HashSet<>();
+    protected static final Map<UUID, Integer> games = new ConcurrentHashMap<>(); // TODO: remove game while closed
 
     /**
      * Creates a new game with the specified number of players and starts its thread.
      * @param numberOfPlayers the number of players in the game (between 2 and 4 inclusive)
      * @return the unique ID of the created game, or null if the number of players is out of range
      */
-    public UUID createGame(int numberOfPlayers) {
+    public static UUID createGame(int numberOfPlayers) {
         if (numberOfPlayers < 2 || numberOfPlayers > 4) {
             return null;
         }
@@ -43,7 +43,7 @@ public abstract class Server {
      * Gets an unmodifiable view of the games managed by the server.
      * @return a map of game IDs to the number of players in each game
      */
-    public Map<UUID, Integer> getGames() {
+    public static Map<UUID, Integer> getGames() {
         return Collections.unmodifiableMap(games);
     }
 
@@ -52,7 +52,7 @@ public abstract class Server {
      * @param id the unique ID of the game
      * @param playerNum the number of players in the game
      */
-    private void addGame(UUID id, Integer playerNum) {
+    private static void addGame(UUID id, Integer playerNum) {
         games.put(id, playerNum);
     }
 
@@ -63,7 +63,7 @@ public abstract class Server {
      * @param message the message to be sent to the game
      */
 
-    protected void sendMessage(UUID game, ThreadMessage message ) {
+    public static void sendMessage(UUID game, ThreadMessage message ) {
         synchronized (threadMessages) {
             BlockingQueue<ThreadMessage> queue = threadMessages.get(game);
             queue.add(message);
