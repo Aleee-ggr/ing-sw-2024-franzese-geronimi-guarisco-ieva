@@ -148,9 +148,12 @@ public class Player {
      * Method to draw from one of the two decks in the SharedBoard of the Game <br/>
      * implements  {@link  #toHand(ColoredCard)  toHand} private method
      * @param isGold is a boolean used to identify if the card is drawn to the gold card deck or the std deck
+     * @return the ColoredCard drawn
      * */
-    public void drawDecks(boolean isGold){
-        toHand(game.getGameBoard().drawDeck(isGold));
+    public ColoredCard drawDecks(boolean isGold){
+        ColoredCard card = game.getGameBoard().drawDeck(isGold);
+        toHand(card);
+        return card;
     }
 
     /**
@@ -158,9 +161,12 @@ public class Player {
      * implements  {@link  #toHand(ColoredCard)  toHand} private method
      * @param numVisible is used to choose the card from the board
      * @see it.polimi.ingsw.model.board.SharedBoard
+     * @return the ColoredCard drawn
      * */
-    public void drawVisible(int numVisible){
-        toHand(game.getGameBoard().drawVisible(numVisible));
+    public ColoredCard drawVisible(int numVisible){
+        ColoredCard card = game.getGameBoard().drawVisible(numVisible);
+        toHand(card);
+        return card;
     }
 
     /**
