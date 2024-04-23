@@ -2,6 +2,9 @@ package it.polimi.ingsw.network.socket;
 
 
 import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.network.messages.SocketClientCreateGameMessage;
+import it.polimi.ingsw.network.messages.SocketClientJoinGameMessage;
+import it.polimi.ingsw.network.messages.SocketClientReconnectMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -62,18 +65,24 @@ public class SocketClient extends Client {
     /**
      * Send server the message to create a game.
      */
-    public void createGame() {}
+    public void createGame(String username, int numPlayers) throws IOException {
+        output.writeObject(new SocketClientCreateGameMessage(username, numPlayers));
+    }
 
     /**
      * Send server the message to join a game.
-     * @param id The UUID of the game to join.
+     * @param gameUUID The UUID of the game to join.
      */
-    public void joinGame(UUID id) {}
+    public void joinGame(String username, UUID gameUUID) throws IOException {
+        output.writeObject(new SocketClientJoinGameMessage(username, gameUUID));
+    }
 
     /**
      * Send server the message to reconnect to a game.
-     * @param id The UUID of the game to reconnect to.
+     * @param gameUUID The UUID of the game to reconnect to.
      */
-    public void reconnect(UUID id) {}
+    public void reconnect(String username,UUID gameUUID) {
+        output.writeObject(new SocketClientReconnectMessage(username, gameUUID));
+    }
 
 }
