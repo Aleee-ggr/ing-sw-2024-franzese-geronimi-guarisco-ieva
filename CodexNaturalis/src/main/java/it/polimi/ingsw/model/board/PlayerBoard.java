@@ -1,14 +1,12 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.GameConsts;
+import it.polimi.ingsw.helpers.exceptions.model.UnrecognisedCardException;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.enums.Resource;
-import it.polimi.ingsw.helpers.exceptions.model.UnrecognisedCardException;
 import it.polimi.ingsw.model.player.Player;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * PlayerBoard has a 2D array that represent the main play board for a Player. <br/>
@@ -24,7 +22,7 @@ public class PlayerBoard {
     private final HashMap<Coordinates, Card> board = new HashMap<>();
     private final Player boardOwner;
     private final Card notFillable = new MockCard(GameConsts.notFillableId, null);
-    private Card lastPlacedCard;
+    private final Deque<Card> lastPlacedCards = new ArrayDeque<>();
     private Coordinates lastPlacedPosition;
     private final Set<Coordinates> validPlacements = new HashSet<>();
 
@@ -35,16 +33,16 @@ public class PlayerBoard {
     public PlayerBoard(Card firstCard, Player player) {
         this.board.put(new Coordinates(0, 0), firstCard);
         this.boardOwner = player;
-        this.lastPlacedCard = firstCard;
+        this.lastPlacedCards.add(firstCard);
         this.lastPlacedPosition = GameConsts.centralPoint;
     }
-    
+
     /**
      * Getter for the last placed card on the board.
      * @return the last placed Card obj.
      */
     public Card getLastPlacedCard() {
-        return lastPlacedCard;
+        return lastPlacedCards.peekLast();
     }
 
     /**
@@ -133,7 +131,7 @@ public class PlayerBoard {
 
         board.put(coordinates, card);
         lastPlacedPosition = coordinates;
-        lastPlacedCard = card;
+        lastPlacedCards.add(card);
         Corner[] c;
 
         if(card.isFrontSideUp()){
@@ -204,7 +202,7 @@ public class PlayerBoard {
             board.put(coordinates.horizontal(dX).vertical(dY), notFillable);
         } else {
             if(corner.getCornerResource() != Resource.NONE) {
-            boardOwner.updateResourcesValue(corner.getCornerResource(), GameConsts.numberOfResourcesPerCorner);
+                boardOwner.updateResourcesValue(corner.getCornerResource(), GameConsts.numberOfResourcesPerCorner);
             }
             validPlacements.add(new Coordinates(coordinates.x() + dX, coordinates.y() + dY));
         }
