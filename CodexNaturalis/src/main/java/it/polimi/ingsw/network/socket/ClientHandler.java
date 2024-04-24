@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.socket;
 
 import it.polimi.ingsw.controller.threads.ThreadMessage;
+import it.polimi.ingsw.network.Server;
 import it.polimi.ingsw.network.messages.*;
 
 import java.io.IOException;
@@ -21,7 +22,6 @@ public class ClientHandler implements Runnable {
     private ObjectInputStream input;
     private ObjectOutputStream output;
     private Map<UUID, BlockingQueue<ThreadMessage>> threadMessages;
-    private SocketServer socketServer;
 
     /**
      * Constructs a new ClientHandler object with the specified socket connection.
@@ -29,16 +29,14 @@ public class ClientHandler implements Runnable {
      * @param socket the socket connection to the client
      * @throws IOException if an I/O error occurs while initializing the input and output streams
      */
-    public ClientHandler(Socket socket, Map<UUID, BlockingQueue<ThreadMessage>> threadMessages, SocketServer socketServer) throws IOException {
+    public ClientHandler(Socket socket, Map<UUID, BlockingQueue<ThreadMessage>> threadMessages) throws IOException {
         this.socket = socket;
         this.input = new ObjectInputStream(socket.getInputStream());
         this.output = new ObjectOutputStream(socket.getOutputStream());
         this.threadMessages = threadMessages;
-        this.socketServer = socketServer;
     }
 
     public void run() {
-
             try {
                 while (!this.socket.isClosed()) {
                     Message message = (Message) input.readObject();
@@ -60,7 +58,7 @@ public class ClientHandler implements Runnable {
 
     private void handleMessage(Message message) {
         if (message instanceof SocketClientCreateGameMessage) {
-            socketServer.createGame(((SocketClientCreateGameMessage) message).getNumPlayers());
+            Server.createGame(((SocketClientCreateGameMessage) message).getNumPlayers());
         } else if (message instanceof SocketClientJoinGameMessage) {
             ThreadMessage threadMessage = ThreadMessage.join(message.getUsername());
         } else if (message instanceof SocketClientPlaceCardMessage) {
