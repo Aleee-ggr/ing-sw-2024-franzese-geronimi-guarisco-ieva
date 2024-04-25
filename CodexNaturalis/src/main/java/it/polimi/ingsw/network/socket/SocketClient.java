@@ -5,6 +5,7 @@ import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.messages.SocketClientCreateGameMessage;
 import it.polimi.ingsw.network.messages.SocketClientJoinGameMessage;
 import it.polimi.ingsw.network.messages.SocketClientReconnectMessage;
+import it.polimi.ingsw.network.messages.SocketValidateCredentialsMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -85,4 +86,12 @@ public class SocketClient extends Client {
         output.writeObject(new SocketClientReconnectMessage(username, gameUUID));
     }
 
-}
+    /**
+     * Check credentials validity
+     * @param username the username of the player
+     * @param password the password of the player
+     */
+    public void checkCredentials(String username, String password) throws IOException {
+        output.writeObject(new SocketValidateCredentialsMessage(username, password));
+    }
+ }

@@ -57,20 +57,34 @@ public class ClientHandler implements Runnable {
     }
 
     private void handleMessage(Message message) {
+
         if (message instanceof SocketClientCreateGameMessage) {
             Server.createGame(((SocketClientCreateGameMessage) message).getNumPlayers());
-        } else if (message instanceof SocketClientJoinGameMessage) {
+            return;
+        }
+        if (message instanceof SocketClientJoinGameMessage) {
             ThreadMessage threadMessage = ThreadMessage.join(message.getUsername());
-        } else if (message instanceof SocketClientPlaceCardMessage) {
+            return;
+        }
+        if (message instanceof SocketClientPlaceCardMessage) {
             ThreadMessage threadMessage = ThreadMessage.placeCard(
                     message.getUsername(),
                     ((SocketClientPlaceCardMessage) message).getCoordinates(),
                     ((SocketClientPlaceCardMessage) message).getCardId()
             );
-        } else if (message instanceof SocketClientDrawCardMessage) {
+            return;
+        }
+        if (message instanceof SocketClientDrawCardMessage) {
             ThreadMessage threadMessage = ThreadMessage.draw(
                     message.getUsername(),
                     ((SocketClientDrawCardMessage) message).getPosition()
+            );
+            return;
+        }
+        if (message instanceof SocketValidateCredentialsMessage) {
+            boolean isValid = Server.isValidPlayer(
+                    message.getUsername(),
+                    ((SocketValidateCredentialsMessage) message).getPassword()
             );
         }
     }
