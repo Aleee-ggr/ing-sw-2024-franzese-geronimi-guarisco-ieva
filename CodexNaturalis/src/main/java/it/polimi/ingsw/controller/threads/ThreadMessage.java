@@ -56,6 +56,105 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         );
     }
 
+    public static ThreadMessage getUsername(String username) {
+        return new ThreadMessage(
+                Status.REQUEST,
+                username,
+                "getUsername",
+                null
+        );
+    }
+
+    public static ThreadMessage getScoreMap(String username) {
+        return new ThreadMessage(
+                Status.REQUEST,
+                username,
+                "getScoreMap",
+                null
+        );
+    }
+
+    public static ThreadMessage getHand(String username) {
+        return new ThreadMessage(
+                Status.REQUEST,
+                username,
+                "getHand",
+                null
+        );
+    }
+
+    public static ThreadMessage getPlayerBoards(String username) {
+        return new ThreadMessage(
+                Status.REQUEST,
+                username,
+                "getPlayerBoard",
+                null
+        );
+    }
+
+    public static ThreadMessage getCommonObjectives(String username) {
+        return new ThreadMessage(
+                Status.REQUEST,
+                username,
+                "getStartingObjectives",
+                null
+        );
+    }
+
+    public static ThreadMessage getPlayerResources(String username) {
+        return new ThreadMessage(
+                Status.REQUEST,
+                username,
+                "getPlayerResources",
+                null
+        );
+    }
+
+    public static ThreadMessage getVisibleCards(String username) {
+        return new ThreadMessage(
+                Status.REQUEST,
+                username,
+                "getVisibleCard",
+                null
+        );
+    }
+
+    public static ThreadMessage getBackSideDecks(String username) {
+        return new ThreadMessage(
+                Status.REQUEST,
+                username,
+                "getBackSideDecks",
+                null
+        );
+    }
+
+    public static ThreadMessage getValidPlacements(String username) {
+        return new ThreadMessage(
+                Status.REQUEST,
+                username,
+                "getValidPlacements",
+                null
+        );
+    }
+
+    public static ThreadMessage getPlayersBoards(String username) {
+        return new ThreadMessage(
+                Status.REQUEST,
+                username,
+                "getPlayersBoards",
+                null
+        );
+    }
+
+    public static ThreadMessage choosePersonalObjective(String username) {
+        return new ThreadMessage(
+                Status.REQUEST,
+                username,
+                "choosePersonalObjective",
+                null
+        );
+    }
+
     public static ThreadMessage genericError(String username) {
         return new ThreadMessage(
             Status.ERROR,
