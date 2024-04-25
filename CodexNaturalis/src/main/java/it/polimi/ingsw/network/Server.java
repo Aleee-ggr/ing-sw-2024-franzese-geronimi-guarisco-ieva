@@ -3,6 +3,8 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.controller.threads.GameThread;
 import it.polimi.ingsw.controller.threads.Status;
 import it.polimi.ingsw.controller.threads.ThreadMessage;
+import it.polimi.ingsw.model.board.Coordinates;
+import it.polimi.ingsw.model.enums.Resource;
 
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
@@ -80,4 +82,142 @@ public abstract class Server {
         }
     }
 
+    public static String getUsername(UUID game, String username) {
+        ThreadMessage message = ThreadMessage.getUsername(
+                username
+        );
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+
+        return response.args()[0];
+    }
+
+    public static HashMap<String, Integer> getScoreMap(UUID game, String username) {
+        ThreadMessage message = ThreadMessage.getScoreMap(
+                username
+        );
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+
+        HashMap<String, Integer> scoreMap = new HashMap<>();
+
+        if (response.args() != null) {
+            for (String arg : response.args()) {
+                String[] parts = arg.split(":");
+                if (parts.length == 2) {
+                    String key = parts[0];
+                    Integer value = Integer.parseInt(parts[1]);
+                    scoreMap.put(key, value);
+                }
+            }
+        }
+
+        return scoreMap;
+    }
+
+    public static ArrayList<Integer> getHand(UUID game, String username) {
+        ThreadMessage message = ThreadMessage.getHand(
+                username
+        );
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+
+        ArrayList<Integer> hand = new ArrayList<>();
+
+        for (String arg : response.args()) {
+            hand.add(Integer.parseInt(arg));
+        }
+
+        return hand;
+    }
+
+    public static void getPlayersBoards(UUID game, String username) {
+        ThreadMessage message = ThreadMessage.getPlayerBoards(
+                username
+        );
+        sendMessage(game, message);
+    }
+
+    public static Integer[] getCommonObjectives(UUID game, String username){
+        ThreadMessage message = ThreadMessage.getCommonObjectives(
+                username
+        );
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+
+        Integer[] commonObjectives = new Integer[response.args().length];
+        for (int i = 0; i < response.args().length; i++) {
+            commonObjectives[i] = Integer.parseInt(response.args()[i]);
+        }
+
+        return commonObjectives;
+    }
+
+    public static HashMap<Resource, Integer> getPlayerResources(UUID game, String username) {
+        ThreadMessage message = ThreadMessage.getPlayerResources(
+                username
+        );
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+
+        HashMap<Resource, Integer> playerResources = new HashMap<>();
+
+        for (String arg : response.args()) {
+            String[] parts = arg.split(":");
+            if (parts.length == 2) {
+                Resource resource = Resource.valueOf(parts[0]);
+                Integer value = Integer.parseInt(parts[1]);
+                playerResources.put(resource, value);
+            }
+        }
+
+        return playerResources;
+    }
+
+    public static Integer[] getVisibleCards(UUID game, String username) {
+        ThreadMessage message = ThreadMessage.getVisibleCards(
+                username
+        );
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+
+        Integer[] visibleCards = new Integer[response.args().length];
+        for (int i = 0; i < response.args().length; i++) {
+            visibleCards[i] = Integer.parseInt(response.args()[i]);
+        }
+
+        return visibleCards;
+    }
+
+    public static Integer[] getBackSideDecks(UUID game, String username) {
+        ThreadMessage message = ThreadMessage.getBackSideDecks(
+                username
+        );
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+
+        Integer[] backSideDecks = new Integer[response.args().length];
+        for (int i = 0; i < response.args().length; i++) {
+            backSideDecks[i] = Integer.parseInt(response.args()[i]);
+        }
+
+        return backSideDecks;
+    }
+
+    public static Set<Coordinates> getValidPlacements(UUID game, String username) {
+        ThreadMessage message = ThreadMessage.getValidPlacements(
+                username
+        );
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+
+        Set<Coordinates> validPlacements = new HashSet<>();
+
+        for (String arg : response.args()) {
+            String[] parts = arg.split(",");
+            validPlacements.add(new Coordinates(Integer.parseInt(parts[0]), Integer.parseInt(parts[1])));
+        }
+
+        return validPlacements;
+    }
 }
