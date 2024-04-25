@@ -29,8 +29,8 @@ public class SocketClient extends Client {
      * @param serverAddress  The address of the server.
      * @param serverPort     The port of the server.
      */
-    public SocketClient(String playerUsername, String serverAddress, int serverPort) {
-        super(playerUsername, serverAddress, serverPort);
+    public SocketClient(String playerUsername, String password, String serverAddress, int serverPort) {
+        super(playerUsername, password, serverAddress, serverPort);
     }
 
     /**

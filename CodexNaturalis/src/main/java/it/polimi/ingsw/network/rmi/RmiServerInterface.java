@@ -48,4 +48,11 @@ public interface RmiServerInterface extends Remote {
 
     void waitUpdate(UUID game, String name) throws RemoteException;
 
+    /**
+     * Check whether the given credentials are valid (size < 16 and username is not reused)
+     * @param username the username of the player
+     * @param password the password of the player
+     * @return true if the given credentials are valid, false otherwise
+     */
+    boolean checkCredentials(String username, String password);
 }

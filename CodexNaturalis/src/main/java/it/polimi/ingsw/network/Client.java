@@ -23,12 +23,19 @@ public abstract class Client {
      * @param serverAddress  The address of the server.
      * @param serverPort     The port of the server.
      */
-    public Client(String playerUsername, String serverAddress, int serverPort) {
+    public Client(String playerUsername, String password, String serverAddress, int serverPort) {
         this.data = new ClientData(playerUsername);
         this.serverAddress = serverAddress;
         this.serverPort = serverPort;
     }
 
+    public void setUsername(String username) {
+        this.data.setUsername(username);
+    }
+
+    public void setPassword(String password) {
+        this.data.setPassword(password);
+    }
     /**
      * Sets the game ID associated with the client.
      * @param gameId The game ID to set.

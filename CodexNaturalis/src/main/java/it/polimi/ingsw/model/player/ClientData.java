@@ -17,7 +17,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Alessio Guarisco
  */
 public class ClientData {
-    private final String username;
+    private String username;
+    private String password;
     private Set<Coordinates> validPlacements;
     private ArrayList<Integer> hand = new ArrayList<>(GameConsts.firstHandDim);
 
@@ -55,6 +56,17 @@ public class ClientData {
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
     /**
      * Getter for the player number of the client.
      * @return The player number of the client.

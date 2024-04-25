@@ -21,7 +21,7 @@ public class RmiTest {
         try {
             server = new RmiServer(9090);
             Thread.sleep(2000);
-            client = new RmiClient("user", "localhost", 9090);
+            client = new RmiClient("user", "password","localhost", 9090);
         } catch (RemoteException | InterruptedException ignored) {}
     }
     @AfterClass
@@ -38,7 +38,7 @@ public class RmiTest {
     @Test
     public void testJoin() throws ServerConnectionException, RemoteException {
         UUID game = client.newGame(3);
-        RmiClient client2 = new RmiClient("user2", "localhost", 9090);
+        RmiClient client2 = new RmiClient("user2", "password","localhost", 9090);
         client2.joinGame(game);
     }
 }

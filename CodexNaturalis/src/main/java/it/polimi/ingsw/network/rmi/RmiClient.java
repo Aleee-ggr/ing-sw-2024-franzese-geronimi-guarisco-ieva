@@ -29,8 +29,8 @@ public class RmiClient extends Client{
      * @param serverAddress  The address of the server.
      * @param serverPort     The port of the server.
      */
-    public RmiClient(String playerUsername, String serverAddress, int serverPort) {
-        super(playerUsername, serverAddress, serverPort);
+    public RmiClient(String playerUsername, String password, String serverAddress, int serverPort) {
+        super(playerUsername, password, serverAddress, serverPort);
         try {
             Registry registry = LocateRegistry.getRegistry();
             server = (RmiServerInterface) registry.lookup(RmiServer.getName());
