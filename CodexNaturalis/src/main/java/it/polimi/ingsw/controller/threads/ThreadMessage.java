@@ -1,8 +1,13 @@
 package it.polimi.ingsw.controller.threads;
 
 import it.polimi.ingsw.model.board.Coordinates;
+import it.polimi.ingsw.model.enums.Resource;
 
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * ThreadMessage Record is used as type of messages to communicate from and to the server and the games.
@@ -181,6 +186,127 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 new String[] {
                         cardId.toString()
                 }
+        );
+    }
+
+    public static ThreadMessage getUsernameResponse(String username, String usernameResponse) {
+        return new ThreadMessage(
+                Status.OK,
+                username,
+                "getUsernameResponse",
+                new String[]{
+                        usernameResponse
+                }
+        );
+    }
+
+    public static ThreadMessage getScoreMapResponse(String username, ConcurrentHashMap<String, Integer> scoreMap) {
+        String[] args = new String[scoreMap.size()];
+        int index = 0;
+
+        for (Map.Entry<String, Integer> entry : scoreMap.entrySet()) {
+            args[index] = entry.getKey() + ":" + entry.getValue().toString();
+            index++;
+        }
+
+        return new ThreadMessage(
+                Status.OK,
+                username,
+                "getScoreMapResponse",
+                args
+        );
+    }
+
+    public static ThreadMessage getValidPlacementsResponse(String username, Set<Coordinates> validPlacements) {
+        String[] args = new String[validPlacements.size()];
+
+        int index = 0;
+        for (Coordinates coordinates : validPlacements) {
+            args[index] = coordinates.x() + "," + coordinates.y();
+        }
+
+        return new ThreadMessage(
+                Status.OK,
+                username,
+                "getValidPlacementsResponse",
+                args
+        );
+    }
+
+    public static ThreadMessage getHandResponse(String username, ArrayList<Integer> handIds) {
+        String[] args = new String[handIds.size()];
+
+        for (int i = 0; i < handIds.size(); i++) {
+            args[i] = handIds.get(i).toString();
+        }
+
+        return new ThreadMessage(
+                Status.OK,
+                username,
+                "getHandResponse",
+                args
+        );
+    }
+
+    public static ThreadMessage getVisibleCardResponse(String username, Integer[] cardId) {
+        String[] args = new String[cardId.length];
+
+        for (int i = 0; i < cardId.length; i++) {
+            args[i] = cardId[i].toString();
+        }
+
+        return new ThreadMessage(
+                Status.OK,
+                username,
+                "getVisibleCardResponse",
+                args
+        );
+    }
+
+    public static ThreadMessage getCommonObjectivesResponse(String username, Integer[] startingObjectivesIds) {
+        String[] args = new String[startingObjectivesIds.length];
+
+        for (int i = 0; i < startingObjectivesIds.length; i++) {
+            args[i] = startingObjectivesIds[i].toString();
+        }
+
+        return new ThreadMessage(
+                Status.OK,
+                username,
+                "getCommonObjectivesResponse",
+                args
+        );
+    }
+
+    public static ThreadMessage getPlayerResourcesResponse(String username, ConcurrentHashMap<Resource, Integer> playerResources) {
+        String[] args = new String[playerResources.size()];
+        int index = 0;
+
+        for (Map.Entry<Resource, Integer> entry : playerResources.entrySet()) {
+            args[index] = entry.getKey().toString() + ":" + entry.getValue().toString();
+            index++;
+        }
+
+        return new ThreadMessage(
+                Status.OK,
+                username,
+                "getPlayerResourcesResponse",
+                args
+        );
+    }
+
+    public static ThreadMessage getBackSideDecksResponse(String username, Integer[] backSideCardsIds) {
+        String[] args = new String[backSideCardsIds.length];
+
+        for (int i = 0; i < backSideCardsIds.length; i++) {
+            args[i] = backSideCardsIds[i].toString();
+        }
+
+        return new ThreadMessage(
+                Status.OK,
+                username,
+                "getBackSideDecksResponse",
+                args
         );
     }
 }
