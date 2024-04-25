@@ -24,7 +24,7 @@ public abstract class Client {
      * @param serverPort     The port of the server.
      */
     public Client(String playerUsername, String password, String serverAddress, int serverPort) {
-        this.data = new ClientData(playerUsername);
+        this.data = new ClientData(playerUsername, password);
         this.serverAddress = serverAddress;
         this.serverPort = serverPort;
     }

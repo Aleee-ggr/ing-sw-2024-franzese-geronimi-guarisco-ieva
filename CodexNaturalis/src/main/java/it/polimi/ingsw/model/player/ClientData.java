@@ -29,8 +29,9 @@ public class ClientData {
      * Constructs a new ClientData object with the specified username.
      * @param username The username of the client.
      */
-    public ClientData(String username) {
+    public ClientData(String username, String password) {
         this.username = username;
+        this.password = password;
         playersData = new ConcurrentHashMap<>();
         playersData.put(username, new PlayersDataLight());
         validPlacements = new HashSet<>();
