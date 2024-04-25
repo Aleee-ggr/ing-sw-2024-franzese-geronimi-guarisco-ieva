@@ -10,7 +10,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Set;
 import java.util.UUID;
 
 public class RmiServer extends Server implements RmiServerInterface {
@@ -94,10 +93,6 @@ public class RmiServer extends Server implements RmiServerInterface {
     }
 
     //TODO: methods to implement
-    @Override
-    public Integer[] getStartingObjectives(UUID game, String name) throws RemoteException {
-        return new Integer[0];
-    }
 
     @Override
     public boolean chooseStartingObjective(UUID game, String name, Integer objectiveId) throws RemoteException {
@@ -112,10 +107,5 @@ public class RmiServer extends Server implements RmiServerInterface {
     @Override
     public void waitUpdate(UUID game, String name) throws RemoteException {
 
-    }
-
-    @Override
-    public Set<Coordinates> getPlacementCoordinates(UUID game, String name) throws RemoteException{
-        return null;
     }
 }
