@@ -4,10 +4,12 @@ import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.helpers.exceptions.model.ElementNotInHand;
 import it.polimi.ingsw.helpers.exceptions.model.HandFullException;
 import it.polimi.ingsw.model.board.Coordinates;
-import it.polimi.ingsw.model.board.PlayerBoard;
+import it.polimi.ingsw.model.enums.Resource;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+
+//TODO: DOCUMENTATION
 
 /**
  * Represents the data associated with a client in the game, including username, hand, player number, player boards, and scores.
@@ -16,11 +18,11 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ClientData {
     private final String username;
+    private Set<Coordinates> validPlacements;
     private ArrayList<Integer> hand = new ArrayList<>(GameConsts.firstHandDim);
+
+    private final Map<String, PlayersDataLight> playersData;
     private int playerNum;
-    private final Map<String, PlayerBoard> playerBoardMap;
-    private final ConcurrentHashMap<String, Integer> scoreMap;
-    private Set<Coordinates> validPlacements = new HashSet<>();
 
     /**
      * Constructs a new ClientData object with the specified username.
@@ -28,8 +30,9 @@ public class ClientData {
      */
     public ClientData(String username) {
         this.username = username;
-        playerBoardMap = new HashMap<>();
-        scoreMap = new ConcurrentHashMap<>();
+        playersData = new ConcurrentHashMap<>();
+        playersData.put(username, new PlayersDataLight());
+        validPlacements = new HashSet<>();
     }
 
     /**
@@ -38,6 +41,10 @@ public class ClientData {
      */
     public ArrayList<Integer> getHand() {
         return hand;
+    }
+
+    public List<Resource> getPlayerHandColor(String username) {
+        return playersData.get(username).getHandColor();
     }
 
     /**
@@ -56,20 +63,29 @@ public class ClientData {
         return playerNum;
     }
 
-    /**
-     * Getter for an unmodifiable map of the players boards.
-     * @return An unmodifiable map of the players boards.
-     */
-    public Map<String, PlayerBoard> getPlayerBoard() {
-        return Collections.unmodifiableMap(playerBoardMap);
+    public Map<Coordinates, Integer> getClientBoard() {
+        return Collections.unmodifiableMap(playersData.get(this.username).getBoard());
     }
 
-    /**
-     * Getter for a copy of the players score map.
-     * @return A copy of the players score map.
-     */
-    public ConcurrentHashMap<String, Integer> getScoreMap() {
-        return new ConcurrentHashMap<>(scoreMap);
+    public ArrayList<Integer> getClientPlacingOrder(){
+        return new ArrayList<>(playersData.get(this.username).getOrder());
+    }
+
+    public Map<Coordinates, Integer> getPlayerBoard(String username) {
+        return Collections.unmodifiableMap(playersData.get(username).getBoard());
+    }
+
+    public ArrayList<Integer> getPlayerPlacingOrder(String username){
+        return new ArrayList<>(playersData.get(username).getOrder());
+    }
+
+
+    public ConcurrentHashMap<String, Integer> getScoreBoard() {
+        ConcurrentHashMap<String, Integer> scoreboard = new ConcurrentHashMap<>();
+        for(String player : playersData.keySet()){
+            scoreboard.put(player, playersData.get(player).getScore());
+        }
+        return scoreboard;
     }
 
     /**
@@ -84,8 +100,16 @@ public class ClientData {
      * Setter for a new hand of id of cards for the client.
      * @param newHand The new hand to set.
      */
-    public void setNewHand(ArrayList<Integer> newHand) {
+    public void setClientHand(ArrayList<Integer> newHand) {
         this.hand = newHand;
+    }
+
+    public void setPlayerHandColor(String username, ArrayList<Resource> newHand){
+        this.playersData.get(username).updateHand(newHand);
+    }
+
+    public void updatePlayerResources(String username, Map<Resource, Integer> newMap){
+        this.playersData.get(username).updateResources(newMap);
     }
 
     /**
@@ -96,22 +120,35 @@ public class ClientData {
         this.validPlacements = validPlacements;
     }
 
-    /**
-     * Updates the player board associated with the specified username.
-     * @param username    The username of the player.
-     * @param playerBoard The player board to update.
-     */
-    public void updatePlayerBoard(String username, PlayerBoard playerBoard) {
-        playerBoardMap.put(username, playerBoard);
+    public void addPlayerCard(String username, Coordinates coordinates, Integer CardId){
+        this.playersData.get(username).addCard(coordinates, CardId);
     }
+
+    public void addValidPlacements(Coordinates coordinate){
+        this.validPlacements.add(coordinate);
+    }
+
+    public void removeValidPlacements(Coordinates coordinate){
+        this.validPlacements.remove(coordinate);
+    }
+
+
+    public void setClientBoard(HashMap<Coordinates, Integer> playerBoard) {
+        playersData.get(this.username).setBoard(playerBoard);
+    }
+
+    public void setPlayerBoard(String username, HashMap<Coordinates, Integer> playerBoard) {
+        playersData.get(username).setBoard(playerBoard);
+    }
+
 
     /**
      * Updates the score of the client associated with the specified username.
      * @param username The username of the client.
      * @param newScore The new score to set.
      */
-    public void updateScoreMap(String username, Integer newScore) {
-        scoreMap.put(username, newScore);
+    public void updateScore(String username, Integer newScore) {
+        playersData.get(username).setScore(newScore);
     }
 
     /**
