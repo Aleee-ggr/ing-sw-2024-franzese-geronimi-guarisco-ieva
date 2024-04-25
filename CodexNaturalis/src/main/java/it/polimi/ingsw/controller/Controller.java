@@ -26,20 +26,20 @@ public class Controller {
     }
 
     //TODO: differentiate error responses
-    public void createGame(String username, Integer playerNum, UUID gameId){
+    public void createGame(String username, Integer playerNum, UUID gameId, UUID messageId){
         game = new Game(gameId);
-        messageQueue.add(ThreadMessage.okResponse(username));
+        messageQueue.add(ThreadMessage.okResponse(username, messageId));
     }
 
-    public void join(String username){
+    public void join(String username, UUID messageId){
         try{
             game.addPlayer(username);
         }catch (Exception e){
-            messageQueue.add(ThreadMessage.genericError(username));
+            messageQueue.add(ThreadMessage.genericError(username, messageId));
         }
     }
 
-    public void draw(String username, Integer index){
+    public void draw(String username, Integer index, UUID messageId){
         try{
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
             ColoredCard card;
@@ -51,20 +51,20 @@ public class Controller {
                 card = user.drawVisible(index);
             }
             Integer cardId = card.getId();
-            messageQueue.add(ThreadMessage.drawResponse(username, cardId));
+            messageQueue.add(ThreadMessage.drawResponse(username, cardId, messageId));
         } catch (Exception e){
-            messageQueue.add(ThreadMessage.genericError(username));
+            messageQueue.add(ThreadMessage.genericError(username, messageId));
         }
     }
 
-    public void placeCard(String username, Coordinates coordinates, Integer cardId){
+    public void placeCard(String username, Coordinates coordinates, Integer cardId, UUID messageId){
         try{
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
             user.getPlayerBoard().placeCard(Game.getCardByID(cardId), coordinates);
         }catch (Exception e){
-            messageQueue.add(ThreadMessage.genericError(username));
+            messageQueue.add(ThreadMessage.genericError(username, messageId));
         }
-        messageQueue.add(ThreadMessage.okResponse(username));
+        messageQueue.add(ThreadMessage.okResponse(username, messageId));
     }
 
 }

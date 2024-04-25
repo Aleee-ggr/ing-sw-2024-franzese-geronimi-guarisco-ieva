@@ -35,10 +35,11 @@ public class RmiServer extends Server implements RmiServerInterface {
             for (UUID key : threadMessages.keySet()) {
                 threadMessages.get(key).add(
                     new ThreadMessage(
-                        Status.REQUEST,
-                        "",
-                        "kill",
-                        null
+                            Status.REQUEST,
+                            "",
+                            "kill",
+                            null,
+                            UUID.randomUUID()
                     )
                 );
             }

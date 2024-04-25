@@ -22,7 +22,6 @@ public class RmiTest {
             server = new RmiServer(9090);
             Thread.sleep(2000);
             client = new RmiClient("user", "password","localhost", 9090);
-            System.out.println(client);
         } catch (RemoteException | InterruptedException e) {
             throw new RuntimeException(e);
         }

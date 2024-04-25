@@ -15,16 +15,17 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Daniele Ieva
  * @author Alessio Guarisco
  * */
-public record ThreadMessage(Status status, String player, String type, String[] args) {
+public record ThreadMessage(Status status, String player, String type, String[] args, UUID messageUUID) {
     public static ThreadMessage create(String username, Integer playerNum, UUID gameId){
         return new ThreadMessage(
-            Status.REQUEST,
-            username,
-            "create",
-            new String[] {
-                    playerNum.toString(),
-                    gameId.toString()
-            }
+                Status.REQUEST,
+                username,
+                "create",
+                new String[] {
+                        playerNum.toString(),
+                        gameId.toString()
+                },
+                UUID.randomUUID()
         );
     }
 
@@ -33,7 +34,8 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 Status.REQUEST,
                 username,
                 "join",
-                null
+                null,
+                UUID.randomUUID()
         );
     }
 
@@ -44,7 +46,8 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 "draw",
                 new String[] {
                         position.toString()
-                }
+                },
+                UUID.randomUUID()
         );
     }
 
@@ -57,7 +60,8 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                         coordinates.x().toString(),
                         coordinates.y().toString(),
                         cardId.toString()
-                }
+                },
+                UUID.randomUUID()
         );
     }
 
@@ -66,7 +70,8 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 Status.REQUEST,
                 username,
                 "getUsername",
-                null
+                null,
+                UUID.randomUUID()
         );
     }
 
@@ -75,7 +80,8 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 Status.REQUEST,
                 username,
                 "getScoreMap",
-                null
+                null,
+                UUID.randomUUID()
         );
     }
 
@@ -84,7 +90,8 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 Status.REQUEST,
                 username,
                 "getHand",
-                null
+                null,
+                UUID.randomUUID()
         );
     }
 
@@ -93,7 +100,8 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 Status.REQUEST,
                 username,
                 "getPlayerBoard",
-                null
+                null,
+                UUID.randomUUID()
         );
     }
 
@@ -102,7 +110,8 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 Status.REQUEST,
                 username,
                 "getStartingObjectives",
-                null
+                null,
+                UUID.randomUUID()
         );
     }
 
@@ -111,7 +120,8 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 Status.REQUEST,
                 username,
                 "getPlayerResources",
-                null
+                null,
+                UUID.randomUUID()
         );
     }
 
@@ -120,7 +130,8 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 Status.REQUEST,
                 username,
                 "getVisibleCard",
-                null
+                null,
+                UUID.randomUUID()
         );
     }
 
@@ -129,7 +140,8 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 Status.REQUEST,
                 username,
                 "getBackSideDecks",
-                null
+                null,
+                UUID.randomUUID()
         );
     }
 
@@ -138,7 +150,8 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 Status.REQUEST,
                 username,
                 "getValidPlacements",
-                null
+                null,
+                UUID.randomUUID()
         );
     }
 
@@ -147,7 +160,8 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 Status.REQUEST,
                 username,
                 "getPlayersBoards",
-                null
+                null,
+                UUID.randomUUID()
         );
     }
 
@@ -156,51 +170,56 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 Status.REQUEST,
                 username,
                 "choosePersonalObjective",
-                null
+                null,
+                UUID.randomUUID()
         );
     }
 
-    public static ThreadMessage genericError(String username) {
+    public static ThreadMessage genericError(String username, UUID messageUUID) {
         return new ThreadMessage(
-            Status.ERROR,
-            username,
-            "genericError",
-            null
+                Status.ERROR,
+                username,
+                "genericError",
+                null,
+                messageUUID
             );
     }
 
-    public static ThreadMessage okResponse(String username) {
+    public static ThreadMessage okResponse(String username, UUID messageUUID) {
         return new ThreadMessage(
                 Status.OK,
                 username,
                 "ok",
-                null
+                null,
+                messageUUID
             );
     }
 
-    public static ThreadMessage drawResponse(String username, Integer cardId) {
+    public static ThreadMessage drawResponse(String username, Integer cardId, UUID messageUUID) {
         return new ThreadMessage(
                 Status.OK,
                 username,
                 "drawResponse",
                 new String[] {
                         cardId.toString()
-                }
+                },
+                messageUUID
         );
     }
 
-    public static ThreadMessage getUsernameResponse(String username, String usernameResponse) {
+    public static ThreadMessage getUsernameResponse(String username, String usernameResponse, UUID messageUUID) {
         return new ThreadMessage(
                 Status.OK,
                 username,
                 "getUsernameResponse",
                 new String[]{
                         usernameResponse
-                }
+                },
+                messageUUID
         );
     }
 
-    public static ThreadMessage getScoreMapResponse(String username, ConcurrentHashMap<String, Integer> scoreMap) {
+    public static ThreadMessage getScoreMapResponse(String username, ConcurrentHashMap<String, Integer> scoreMap, UUID messageUUID) {
         String[] args = new String[scoreMap.size()];
         int index = 0;
 
@@ -213,11 +232,12 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 Status.OK,
                 username,
                 "getScoreMapResponse",
-                args
+                args,
+                messageUUID
         );
     }
 
-    public static ThreadMessage getValidPlacementsResponse(String username, Set<Coordinates> validPlacements) {
+    public static ThreadMessage getValidPlacementsResponse(String username, Set<Coordinates> validPlacements, UUID messageUUID) {
         String[] args = new String[validPlacements.size()];
 
         int index = 0;
@@ -229,11 +249,12 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 Status.OK,
                 username,
                 "getValidPlacementsResponse",
-                args
+                args,
+                messageUUID
         );
     }
 
-    public static ThreadMessage getHandResponse(String username, ArrayList<Integer> handIds) {
+    public static ThreadMessage getHandResponse(String username, ArrayList<Integer> handIds, UUID messageUUID) {
         String[] args = new String[handIds.size()];
 
         for (int i = 0; i < handIds.size(); i++) {
@@ -244,11 +265,12 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 Status.OK,
                 username,
                 "getHandResponse",
-                args
+                args,
+                messageUUID
         );
     }
 
-    public static ThreadMessage getVisibleCardResponse(String username, Integer[] cardId) {
+    public static ThreadMessage getVisibleCardResponse(String username, Integer[] cardId, UUID messageUUID) {
         String[] args = new String[cardId.length];
 
         for (int i = 0; i < cardId.length; i++) {
@@ -259,11 +281,12 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 Status.OK,
                 username,
                 "getVisibleCardResponse",
-                args
+                args,
+                messageUUID
         );
     }
 
-    public static ThreadMessage getCommonObjectivesResponse(String username, Integer[] startingObjectivesIds) {
+    public static ThreadMessage getCommonObjectivesResponse(String username, Integer[] startingObjectivesIds, UUID messageUUID) {
         String[] args = new String[startingObjectivesIds.length];
 
         for (int i = 0; i < startingObjectivesIds.length; i++) {
@@ -274,11 +297,12 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 Status.OK,
                 username,
                 "getCommonObjectivesResponse",
-                args
+                args,
+                messageUUID
         );
     }
 
-    public static ThreadMessage getPlayerResourcesResponse(String username, ConcurrentHashMap<Resource, Integer> playerResources) {
+    public static ThreadMessage getPlayerResourcesResponse(String username, ConcurrentHashMap<Resource, Integer> playerResources, UUID messageUUID) {
         String[] args = new String[playerResources.size()];
         int index = 0;
 
@@ -291,11 +315,12 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 Status.OK,
                 username,
                 "getPlayerResourcesResponse",
-                args
+                args,
+                messageUUID
         );
     }
 
-    public static ThreadMessage getBackSideDecksResponse(String username, Integer[] backSideCardsIds) {
+    public static ThreadMessage getBackSideDecksResponse(String username, Integer[] backSideCardsIds, UUID messageUUID) {
         String[] args = new String[backSideCardsIds.length];
 
         for (int i = 0; i < backSideCardsIds.length; i++) {
@@ -306,7 +331,8 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 Status.OK,
                 username,
                 "getBackSideDecksResponse",
-                args
+                args,
+                messageUUID
         );
     }
 }

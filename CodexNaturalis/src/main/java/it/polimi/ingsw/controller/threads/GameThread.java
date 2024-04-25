@@ -49,20 +49,34 @@ public class GameThread extends Thread {
     private void respond(ThreadMessage msg) {
         switch (msg.type()) {
             case "join":
-                controller.join(msg.player());
+                controller.join(msg.player(), msg.messageUUID());
                 break;
             case "draw":
-                controller.draw(msg.player(), Arrays.stream(msg.args()).mapToInt(Integer::parseInt).findFirst().orElse(-1));
+                controller.draw(
+                        msg.player(),
+                        Arrays.stream(msg.args()).mapToInt(Integer::parseInt).findFirst().orElse(-1),
+                        msg.messageUUID()
+                );
             case "place":
-                controller.placeCard(msg.player(), new Coordinates(Integer.valueOf(msg.args()[0]),Integer.valueOf(msg.args()[1])), Integer.valueOf(msg.args()[2]));
+                controller.placeCard(
+                        msg.player(),
+                        new Coordinates(Integer.valueOf(msg.args()[0]),Integer.valueOf(msg.args()[1])),
+                        Integer.valueOf(msg.args()[2]),
+                        msg.messageUUID()
+                );
             case "create":
-                controller.createGame(msg.player(), Integer.valueOf(msg.args()[0]), UUID.fromString(msg.args()[1]));
+                controller.createGame(
+                        msg.player(),
+                        Integer.valueOf(msg.args()[0]),
+                        UUID.fromString(msg.args()[1]),
+                        msg.messageUUID()
+                );
             case "kill":
                 running = false;
                 break;
             default:
                 messageQueue.add(
-                    new ThreadMessage(Status.OK, msg.player(), "ok", null)
+                    new ThreadMessage(Status.ERROR, msg.player(), "unknown", null, msg.messageUUID())
                 );
         }
     }

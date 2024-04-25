@@ -86,6 +86,7 @@ public abstract class Server {
     public static void sendMessage(UUID game, ThreadMessage message ) {
         synchronized (threadMessages) {
             BlockingQueue<ThreadMessage> queue = threadMessages.get(game);
+            UUID messageUUID = message.messageUUID();
             queue.add(message);
 
             ThreadMessage response;
@@ -93,8 +94,8 @@ public abstract class Server {
             do {
                 response = queue.peek();
                 if (response != null && response.status() != Status.REQUEST) {
-                    String sender = response.player();
-                    responded = sender.equals(message.player());
+
+                    responded = response.messageUUID().equals(messageUUID);
                 }
             } while (!responded);
         }
