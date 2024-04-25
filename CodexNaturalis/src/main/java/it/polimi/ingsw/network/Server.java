@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.controller.threads.GameThread;
 import it.polimi.ingsw.controller.threads.Status;
 import it.polimi.ingsw.controller.threads.ThreadMessage;
@@ -18,8 +19,9 @@ import java.util.concurrent.LinkedBlockingDeque;
  */
 public abstract class Server {
     protected static final Map<UUID, BlockingQueue<ThreadMessage>> threadMessages = new ConcurrentHashMap<>();
-    protected static final Set<String> playerList = new HashSet<>();
     protected static final Map<UUID, Integer> games = new ConcurrentHashMap<>(); // TODO: remove game while closed
+    protected static final Map<String, String> players = new ConcurrentHashMap<>();
+    protected static final Map<String, UUID> playerGame = new ConcurrentHashMap<>();
 
     /**
      * Creates a new game with the specified number of players and starts its thread.
@@ -39,6 +41,23 @@ public abstract class Server {
         new GameThread(messageQueue, numberOfPlayers).start();
         addGame(id, numberOfPlayers);
         return id;
+    }
+
+    /**
+     * Check whether the given credentials are valid (size < 16 and username is not reused)
+     * @param username the username of the player
+     * @param password the password of the player
+     * @return true if the given credentials are valid, false otherwise
+     */
+    public static boolean isValidPlayer(String username, String password) {
+        if (username.length() > GameConsts.maxUsernameLength || password.length() > GameConsts.maxUsernameLength) {
+            return false;
+        }
+        if (!players.containsKey(username)) {
+            players.put(username, password);
+            return true;
+        }
+        return players.get(username).equals(password);
     }
 
     /**
@@ -64,7 +83,6 @@ public abstract class Server {
      * @param game the unique ID of the game to send the message to
      * @param message the message to be sent to the game
      */
-
     public static void sendMessage(UUID game, ThreadMessage message ) {
         synchronized (threadMessages) {
             BlockingQueue<ThreadMessage> queue = threadMessages.get(game);
@@ -80,16 +98,6 @@ public abstract class Server {
                 }
             } while (!responded);
         }
-    }
-
-    public static String getUsername(UUID game, String username) {
-        ThreadMessage message = ThreadMessage.getUsername(
-                username
-        );
-        sendMessage(game, message);
-        ThreadMessage response = threadMessages.get(game).remove();
-
-        return response.args()[0];
     }
 
     public static HashMap<String, Integer> getScoreMap(UUID game, String username) {
