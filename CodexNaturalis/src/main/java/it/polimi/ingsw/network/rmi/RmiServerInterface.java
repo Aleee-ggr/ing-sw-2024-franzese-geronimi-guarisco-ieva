@@ -54,5 +54,5 @@ public interface RmiServerInterface extends Remote {
      * @param password the password of the player
      * @return true if the given credentials are valid, false otherwise
      */
-    boolean checkCredentials(String username, String password);
+    boolean checkCredentials(String username, String password) throws RemoteException;
 }

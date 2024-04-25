@@ -34,13 +34,14 @@ public class RmiClient extends Client{
         try {
             Registry registry = LocateRegistry.getRegistry();
             server = (RmiServerInterface) registry.lookup(RmiServer.getName());
-        } catch (RemoteException e) {
-            System.err.println("Client exception: " + e.toString());
-        } catch (NotBoundException e) {
+        } catch (RemoteException | NotBoundException e) {
             throw new RuntimeException(e);
         }
     }
 
+    public boolean checkCredentials() throws RemoteException {
+        return server.checkCredentials(data.getUsername(), data.getPassword());
+    }
     /**
      * Draws a card from the server and adds it to the client's hand at the specified position.
      * @param position The index of the deck to draw from.
@@ -52,7 +53,7 @@ public class RmiClient extends Client{
         try{
             data.addToHand(id);
         } catch (HandFullException e ){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
