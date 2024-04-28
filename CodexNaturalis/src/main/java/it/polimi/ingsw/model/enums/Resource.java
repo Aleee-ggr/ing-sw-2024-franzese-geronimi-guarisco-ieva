@@ -8,5 +8,18 @@ package it.polimi.ingsw.model.enums;
  * @author Gloria Geronimi
  */
 public enum Resource {
-    FUNGI, PLANT, ANIMAL, INSECT, INKWELL, QUILL, MANUSCRIPT, NONE, NONCOVERABLE
+    FUNGI, PLANT, ANIMAL, INSECT, INKWELL, QUILL, MANUSCRIPT, NONE, NONCOVERABLE;
+
+    public char toChar() {
+        return switch (this) {
+            case FUNGI -> 'F';
+            case PLANT -> 'P';
+            case ANIMAL -> 'A';
+            case INSECT -> 'I';
+            case INKWELL -> 'K';
+            case QUILL -> 'Q';
+            case MANUSCRIPT -> 'M';
+            default -> ' ';
+        };
+    }
 }

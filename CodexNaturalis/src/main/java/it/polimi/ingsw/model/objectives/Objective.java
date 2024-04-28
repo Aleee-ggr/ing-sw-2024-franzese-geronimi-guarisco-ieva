@@ -19,7 +19,7 @@ public class Objective {
     private final int id;
     private final String type;
     private Resource[][] pattern = null;
-    private Map<Resource, Integer> resource = null;
+    private Map<Resource, Integer> resources = null;
 
 
     /**
@@ -37,14 +37,28 @@ public class Objective {
         return id;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public Resource[][] getPattern() {
+        return pattern;
+    }
+
+    public Map<Resource, Integer> getResource() {
+        return resources;
+    }
+
     public void setPatternAndResources(String type, JsonElement requirements) {
         switch (type) {
             case "pattern":
                 this.pattern = ObjectiveParser.getPattern(requirements);
                 break;
-            case "resource":
-                this.resource = ObjectiveParser.getResources(requirements);
+            case "resources":
+                this.resources = ObjectiveParser.getResources(requirements);
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + type);
         }
     }
 
