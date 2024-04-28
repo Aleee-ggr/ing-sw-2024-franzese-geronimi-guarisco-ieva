@@ -11,6 +11,8 @@ import org.junit.Test;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import static org.junit.Assert.assertEquals;
+
 public class ObjectiveCardTest {
     @Test
     public void testPattern() throws IOException, JsonFormatException {
@@ -22,10 +24,10 @@ public class ObjectiveCardTest {
     }
 
     @Test
-    public void testResource() throws IOException, JsonFormatException {
+    public void testResources() throws IOException, JsonFormatException {
         Deck<Objective> deck = new ObjectiveParser().readFile(Path.of(GameConsts.cardJsonPath)).parse();
         Objective obj = deck.draw();
-        while (obj.getType().equals("pattern")) {
+        while (obj.getId() != 99) {
             obj = deck.draw();
         }
 
