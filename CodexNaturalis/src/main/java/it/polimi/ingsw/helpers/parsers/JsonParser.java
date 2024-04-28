@@ -84,7 +84,7 @@ public interface JsonParser<Class> {
      * @param resource the JsonElement obtained from the element "resource" in cards.json
      * @return the resource on the back of the card, (FUNGI, ANIMAL, PLANT or INSECT)
      */
-    default Resource getResource(JsonElement resource) {
+    static Resource getResource(JsonElement resource) {
         return GameConsts.resourceMap.get(resource.getAsString().toUpperCase());
     }
 

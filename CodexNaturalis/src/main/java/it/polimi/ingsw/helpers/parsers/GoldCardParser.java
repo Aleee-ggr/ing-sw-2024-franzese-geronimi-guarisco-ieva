@@ -57,7 +57,7 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
             if (jres == null) {
                 throw new JsonFormatException("resource: tag not found!");
             }
-            Resource resource = getResource(jres);
+            Resource resource = JsonParser.getResource(jres);
 
             JsonObject jreq = card_obj.getAsJsonObject("requirements");
             if (jreq == null) {
@@ -128,7 +128,7 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
                 default -> new FunctionBuilder()
                         .setType("resource")
                         .setPoints(points.get("value").getAsInt())
-                        .setResource(getResource(points.get("type")))
+                        .setResource(JsonParser.getResource(points.get("type")))
                         .build();
             };
         } catch (InvalidTypeException e) {

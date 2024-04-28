@@ -46,7 +46,7 @@ public class StdCardParser implements JsonParser<Deck<StdCard>> {
             if (jres == null) {
                 throw new JsonFormatException("resource: tag not found");
             }
-            Resource resource = getResource(jres);
+            Resource resource = JsonParser.getResource(jres);
 
             JsonElement jpoints = card_obj.get("points");
             if (jpoints == null) {

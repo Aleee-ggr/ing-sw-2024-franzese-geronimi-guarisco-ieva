@@ -81,7 +81,7 @@ public class StartingParser implements JsonParser<Deck<StartingCard>> {
         ArrayList<Resource> front_resources = new ArrayList<>();
         for (JsonElement resource : resources) {
             front_resources.add(
-                    getResource(resource)
+                    JsonParser.getResource(resource)
             );
         }
         return front_resources;

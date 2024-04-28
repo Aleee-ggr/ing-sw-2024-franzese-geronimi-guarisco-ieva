@@ -66,13 +66,14 @@ public class ObjectiveParser implements JsonParser<Deck<Objective>> {
             int points = jpoints.getAsInt();
 
             Function<Player, Integer> point_function;
+            JsonElement requirements = jsonObjective.get("requirements");
             try {
                 point_function = switch (type) {
                     case "resources" -> new FunctionBuilder()
                             .setType(type)
                             .setPoints(points)
                             .setResources(
-                                    getResources(jsonObjective.get("requirements"))
+                                    getResources(requirements)
                             )
                             .build();
 
@@ -80,7 +81,7 @@ public class ObjectiveParser implements JsonParser<Deck<Objective>> {
                             .setType(type)
                             .setPoints(points)
                             .setPattern(
-                                    getPattern(jsonObjective.get("requirements"))
+                                    getPattern(requirements)
                             )
                             .build();
                     default -> throw new JsonFormatException("Unexpected value: %s for points".formatted(type));
@@ -89,7 +90,7 @@ public class ObjectiveParser implements JsonParser<Deck<Objective>> {
                 throw new JsonFormatException(e);
             }
 
-            objectives.add(new Objective(point_function, id));
+            objectives.add(new Objective(point_function, id, type, requirements));
         }
 
         return new Deck<>(objectives);
@@ -100,7 +101,7 @@ public class ObjectiveParser implements JsonParser<Deck<Objective>> {
      * @param resources a jsonElement with tag "resource"
      * @return a map to associate the resource type to its amount
      */
-    private Map<Resource, Integer> getResources(JsonElement resources) {
+    public static Map<Resource, Integer> getResources(JsonElement resources) {
         HashMap<Resource, Integer> resMap = new HashMap<>();
         JsonObject res = resources.getAsJsonObject();
         for (String resource : resourceMap.keySet()) {
@@ -116,12 +117,12 @@ public class ObjectiveParser implements JsonParser<Deck<Objective>> {
      * @param pattern a jsonElement with tag "pattern"
      * @return a 3x3 matrix of resources
      */
-    private Resource[][] getPattern(JsonElement pattern) {
+    public static Resource[][] getPattern(JsonElement pattern) {
         Resource[][] out = new Resource[3][3];
         JsonArray array = pattern.getAsJsonArray();
         int i = 0;
         for (JsonElement res : array) {
-            out[i / 3][i % 3] = getResource(res);
+            out[i / 3][i % 3] = JsonParser.getResource(res);
             i++;
         }
         return out;
