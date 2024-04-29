@@ -19,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ClientData {
     private String username;
     private String password;
+    private UUID gameId;
     private Set<Coordinates> validPlacements;
     private ArrayList<Integer> hand = new ArrayList<>(GameConsts.firstHandDim);
 
