@@ -31,6 +31,10 @@ public class ObjectiveCard {
         card = setCard(objective);
     }
 
+    public String[] toStringArray() {
+        return this.toString().split("\n");
+    }
+
     @Override
     public String toString()  {
         return card;

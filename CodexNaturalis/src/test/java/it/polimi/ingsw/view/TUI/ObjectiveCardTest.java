@@ -6,6 +6,7 @@ import it.polimi.ingsw.helpers.parsers.ObjectiveParser;
 import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.view.TUI.components.ObjectiveCard;
+import it.polimi.ingsw.view.TUI.components.ObjectiveView;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -33,5 +34,20 @@ public class ObjectiveCardTest {
 
         ObjectiveCard card = new ObjectiveCard(obj);
         System.out.println(card);
+    }
+
+    @Test
+    public void testObjectiveView()throws IOException, JsonFormatException {
+        Deck<Objective> deck = new ObjectiveParser().readFile(Path.of(GameConsts.cardJsonPath)).parse();
+        ObjectiveCard personal = new ObjectiveCard(deck.draw());
+        ObjectiveCard[] shared = new ObjectiveCard[GameConsts.globalObjectives];
+
+        for (int i = 0; i < GameConsts.globalObjectives; i++) {
+            shared[i] = new ObjectiveCard(deck.draw());
+        }
+
+        ObjectiveView view = new ObjectiveView(personal, shared);
+
+        System.out.println(view);
     }
 }
