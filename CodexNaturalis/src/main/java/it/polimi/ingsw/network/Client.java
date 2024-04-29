@@ -15,7 +15,7 @@ public abstract class Client {
     protected UUID gameId;
     protected final String serverAddress;
     protected final int serverPort;
-    protected final ClientData data;
+    protected static ClientData data = null;
 
     /**
      * Constructs a new Client object with the specified player username, server address, and server port.
@@ -24,17 +24,21 @@ public abstract class Client {
      * @param serverPort     The port of the server.
      */
     public Client(String playerUsername, String password, String serverAddress, int serverPort) {
-        this.data = new ClientData(playerUsername, password);
+        data = new ClientData(playerUsername, password);
         this.serverAddress = serverAddress;
         this.serverPort = serverPort;
     }
 
+    public static ClientData getData() {
+        return data;
+    }
+
     public void setUsername(String username) {
-        this.data.setUsername(username);
+        data.setUsername(username);
     }
 
     public void setPassword(String password) {
-        this.data.setPassword(password);
+        data.setPassword(password);
     }
     /**
      * Sets the game ID associated with the client.
