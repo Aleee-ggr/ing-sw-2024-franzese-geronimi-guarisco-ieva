@@ -43,11 +43,16 @@ public class ObjectiveView {
     public String toString() {
         StringBuilder out =  new StringBuilder();
         out.append("\n".repeat(marginTop));
+        int sharedSpace = (cardSpacing / 2 + cardSpacing + 2 * cardWidth) + 1;
+        int playerSpace = (cardWidth + cardSpacing / 2) + 1;
+        int playerPadding = ((cardWidth - "player".length()+4) / 2);
+        int sharedPadding = (cardWidth * GameConsts.globalObjectives + cardSpacing - "shared".length()) / 2+1;
+        
         out.append(" ".repeat(marginSide))
                 .append("╭")
-                .append("─".repeat((cardWidth + cardSpacing/2) +1))
+                .append("─".repeat(playerSpace))
                 .append("┬")
-                .append("─".repeat((cardSpacing/2 + cardSpacing + 2 * cardWidth)+1))
+                .append("─".repeat(sharedSpace))
                 .append("╮")
                 .append("\n");
 
@@ -87,21 +92,18 @@ public class ObjectiveView {
                     .append(" │\n");
         }
 
-        int playerPadding = ((cardWidth - "player".length()+4) / 2);
-        int sharedPadding = (cardWidth * GameConsts.globalObjectives + cardSpacing - "shared".length()) / 2+1;
-
         out.append(" ".repeat(marginSide))
                 .append("│")
-                .append(" ".repeat((cardWidth + cardSpacing/2) +1))
+                .append(" ".repeat(playerSpace))
                 .append("│")
-                .append(" ".repeat((cardSpacing/2 + cardSpacing + 2 * cardWidth)+1))
+                .append(" ".repeat(sharedSpace))
                 .append("│\n");
 
         out.append(" ".repeat(marginSide))
                 .append("╰")
-                .append("─".repeat((cardWidth + cardSpacing/2) +1))
+                .append("─".repeat(playerSpace))
                 .append("┴")
-                .append("─".repeat((cardSpacing/2 + cardSpacing + 2 * cardWidth)+1))
+                .append("─".repeat(sharedSpace))
                 .append("╯")
                 .append("\n");
 
