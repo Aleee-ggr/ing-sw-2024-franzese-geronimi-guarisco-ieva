@@ -44,65 +44,65 @@ public class ObjectiveView {
         StringBuilder out =  new StringBuilder();
         out.append("\n".repeat(marginTop));
         out.append(" ".repeat(marginSide))
-                .append("┏")
-                .append("━".repeat((cardWidth + cardSpacing/2) +1))
-                .append("┳")
-                .append("━".repeat((cardSpacing/2 + cardSpacing + 2 * cardWidth)+1))
-                .append("┓")
+                .append("╭")
+                .append("─".repeat((cardWidth + cardSpacing/2) +1))
+                .append("┬")
+                .append("─".repeat((cardSpacing/2 + cardSpacing + 2 * cardWidth)+1))
+                .append("╮")
                 .append("\n");
 
         out.append(" ".repeat(marginSide))
-                .append("┃")
+                .append("│")
                 .append("%s%s%s")
-                .append("┃")
+                .append("│")
                 .append(" ".repeat(cardSpacing/2))
-                .append("%s%s%s┃\n")
+                .append("%s%s%s│\n")
 
                 .append(" ".repeat(marginSide))
-                .append("┣")
-                .append("━".repeat(cardWidth+1))
-                .append("━".repeat(cardSpacing/2))
-                .append("╋")
-                .append("━".repeat(cardSpacing/2));
+                .append("├")
+                .append("─".repeat(cardWidth+1))
+                .append("─".repeat(cardSpacing/2))
+                .append("┼")
+                .append("─".repeat(cardSpacing/2));
         for (int i = 0; i < GameConsts.globalObjectives - 1; i++) {
-            out.append("━".repeat(cardWidth))
-                    .append("━".repeat(cardSpacing));
+            out.append("─".repeat(cardWidth))
+                    .append("─".repeat(cardSpacing));
         }
-        out.append("━".repeat(cardWidth+1))
-                .append("┫")
+        out.append("─".repeat(cardWidth+1))
+                .append("┤")
                 .append("\n");
 
         for (int i = 0; i < cardHeight; i++) {
             out.append(" ".repeat(marginSide))
-                    .append("┃ ")
+                    .append("│ ")
                     .append(personal.toStringArray()[i])
                     .append(" ".repeat(cardSpacing/2))
-                    .append("┃")
+                    .append("│")
                     .append(" ".repeat(cardSpacing/2));
             for (int j = 0; j < GameConsts.globalObjectives - 1; j++) {
                 out.append(shared[j].toStringArray()[i])
                         .append(" ".repeat(cardSpacing));
             }
             out.append(shared[GameConsts.globalObjectives - 1].toStringArray()[i])
-                    .append(" ┃\n");
+                    .append(" │\n");
         }
 
         int playerPadding = ((cardWidth - "player".length()+4) / 2);
         int sharedPadding = (cardWidth * GameConsts.globalObjectives + cardSpacing - "shared".length()) / 2+1;
 
         out.append(" ".repeat(marginSide))
-                .append("┃")
+                .append("│")
                 .append(" ".repeat((cardWidth + cardSpacing/2) +1))
-                .append("┃")
+                .append("│")
                 .append(" ".repeat((cardSpacing/2 + cardSpacing + 2 * cardWidth)+1))
-                .append("┃\n");
+                .append("│\n");
 
         out.append(" ".repeat(marginSide))
-                .append("┗")
-                .append("━".repeat((cardWidth + cardSpacing/2) +1))
-                .append("┻")
-                .append("━".repeat((cardSpacing/2 + cardSpacing + 2 * cardWidth)+1))
-                .append("┛")
+                .append("╰")
+                .append("─".repeat((cardWidth + cardSpacing/2) +1))
+                .append("┴")
+                .append("─".repeat((cardSpacing/2 + cardSpacing + 2 * cardWidth)+1))
+                .append("╯")
                 .append("\n");
 
         out.append("\n".repeat(marginTop));
