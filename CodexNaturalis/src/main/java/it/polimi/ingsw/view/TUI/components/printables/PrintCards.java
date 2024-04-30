@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view.TUI.components.printables;
 
 
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.ColoredCard;
 import it.polimi.ingsw.model.cards.Corner;
 import it.polimi.ingsw.model.cards.GoldCard;
@@ -131,14 +133,14 @@ public class PrintCards {
         return out.toString();
     }
 
-    /*
+
     public static void main(String[] args) {
         Card ncard = Game.getCardByID(15);
         ncard.setFrontSideUp(true);
         PrintCards print = new PrintCards((ColoredCard) ncard);
         System.out.print(print.toString());
     }
-    */
+
 }
 
 

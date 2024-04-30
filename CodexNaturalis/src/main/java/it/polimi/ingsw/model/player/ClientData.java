@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.player;
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.helpers.exceptions.model.ElementNotInHand;
 import it.polimi.ingsw.helpers.exceptions.model.HandFullException;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.enums.Resource;
 
@@ -25,6 +26,9 @@ public class ClientData {
 
     private final Map<String, PlayersDataLight> playersData;
     private int playerNum;
+
+    private final Integer[] globalObjectives = new Integer[GameConsts.globalObjectives];
+    private Integer personalObjective;
 
     /**
      * Constructs a new ClientData object with the specified username.
@@ -75,6 +79,23 @@ public class ClientData {
      */
     public int getPlayerNum() {
         return playerNum;
+    }
+
+    public Integer[] getGlobalObjectives() {
+        return globalObjectives;
+    }
+
+    public Integer getPersonalObjective() {
+        return personalObjective;
+    }
+
+    public void setPersonalObjective(Integer personalObjective) {
+        this.personalObjective = personalObjective;
+    }
+
+    public void setGlobalObjectives(Integer obj1, Integer obj2) {
+        this.globalObjectives[0] = obj1;
+        this.globalObjectives[1] = obj2;
     }
 
     public Map<Coordinates, Integer> getClientBoard() {

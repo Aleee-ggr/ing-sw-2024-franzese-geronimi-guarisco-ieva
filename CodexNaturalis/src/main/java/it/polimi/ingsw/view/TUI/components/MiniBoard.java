@@ -10,14 +10,19 @@ import java.util.Map;
 
 
 public class MiniBoard {
-    private final int boardHeight = 7;
-    private final int boardWidth = 9;
-    private final Character[][] boardToPrint = new Character[boardWidth][boardHeight];
+    public static final int boardHeight = 7;
+    public static final int boardWidth = 29;
+    private int singleBoardWidth = 9; //TODO: refactor to have variable width
+    private final Character[][] boardToPrint = new Character[singleBoardWidth][boardHeight];
 
-    public Character[][] get(Map<Coordinates, Integer> board) {
+    public String[] toStringArray() {
+        return toString().split("\n");
+    }
+
+    public void setBoard(Map<Coordinates, Integer> board) {
         Map<Coordinates, Integer> rotatedBoard = RotateBoard.rotateBoard(board);
         for (int y = 0; y < boardHeight; y++){
-            for(int x = 0; x < boardWidth; x++){
+            for(int x = 0; x < singleBoardWidth; x++){
                 Integer cardId = rotatedBoard.get(getBoardCoords(x, y));
                 if(cardId == null){
                     boardToPrint[x][y] = ' ';
@@ -32,11 +37,22 @@ public class MiniBoard {
                 }
             }
         }
-        return boardToPrint;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder out = new StringBuilder();
+        for(int y = 0; y < boardHeight; y++) {
+            for (int x = 0; x < boardHeight; x++) {
+                out.append(boardToPrint[x][y]);
+            }
+            out.append('\n');
+        }
+        return out.toString();
     }
 
     private Coordinates getBoardCoords(int x, int y){
-        int newX = x - (boardWidth - 1) / 2;
+        int newX = x - (singleBoardWidth - 1) / 2;
         int newY = (boardHeight - 1) / 2 - y;
         return new Coordinates(newX, newY);
     }

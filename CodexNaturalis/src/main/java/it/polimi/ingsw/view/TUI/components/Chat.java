@@ -7,7 +7,7 @@ public class Chat {
     public static final int chatWidth = 63;
     private final FixedSizeList<String> chat = new FixedSizeList<>(chatHeight);
 
-    public String[] get() {
+    public String[] toStringArray() {
         ArrayList<String> out = new ArrayList<>(chatHeight);
 
         int row;

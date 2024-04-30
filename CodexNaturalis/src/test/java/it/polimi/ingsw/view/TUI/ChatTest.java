@@ -16,8 +16,8 @@ public class ChatTest {
 
     @Test
     public void testEmptyChat() {
-        assertEquals(Chat.chatHeight, test.get().length);
-        assertEquals(Chat.chatWidth, test.get()[0].length());
+        assertEquals(Chat.chatHeight, test.toStringArray().length);
+        assertEquals(Chat.chatWidth, test.toStringArray()[0].length());
     }
 
     @Test
@@ -29,8 +29,8 @@ public class ChatTest {
         }
 
 
-        assertEquals(Chat.chatHeight, test.get().length);
-        assertEquals(Chat.chatWidth, test.get()[0].length());
+        assertEquals(Chat.chatHeight, test.toStringArray().length);
+        assertEquals(Chat.chatWidth, test.toStringArray()[0].length());
     }
 
     @Test
@@ -42,7 +42,7 @@ public class ChatTest {
         }
 
 
-        assertEquals(Chat.chatHeight, test.get().length);
-        assertEquals(Chat.chatWidth, test.get()[0].length());
+        assertEquals(Chat.chatHeight, test.toStringArray().length);
+        assertEquals(Chat.chatWidth, test.toStringArray()[0].length());
     }
 }

@@ -27,7 +27,7 @@ public class ScoreBoard {
             int spacesCount = scoreWidth - (player.length() + score.length() + 2);
             String spaces = " ".repeat(spacesCount);
 
-            scoreBoard.add(String.format("%s:%s%s", player, spaces, score));
+            scoreBoard.add(String.format("%s: %s%s", player, spaces, score));
         }
 
 

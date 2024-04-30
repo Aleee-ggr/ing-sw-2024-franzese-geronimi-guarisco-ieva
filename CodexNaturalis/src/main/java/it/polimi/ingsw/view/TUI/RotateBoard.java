@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.board.Coordinates;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RotateBoard {
+public abstract class RotateBoard {
     private static final Integer rotationAngle = 45;
     public static Map<Coordinates, Integer> rotateBoard(Map<Coordinates, Integer> board) {
         Map<Coordinates, Integer> rotatedBoard= new HashMap<>();

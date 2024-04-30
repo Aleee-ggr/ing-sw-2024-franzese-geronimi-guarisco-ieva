@@ -10,8 +10,8 @@ public class ObjectiveView {
     private final ObjectiveCard personal;
     private final ObjectiveCard[] shared;
 
-    private final int width = 146;
-    private final int height = 27;
+    private static final int width = 146;
+    private static final int height = 27;
 
     private final int cardSpacing = 5;
     private final int cardHeight;
@@ -40,6 +40,14 @@ public class ObjectiveView {
 
     public String[] toStringArray() {
         return toString().split("\n");
+    }
+
+    public static int getWidth() {
+        return width;
+    }
+
+    public static int getHeight() {
+        return height;
     }
 
     @Override
