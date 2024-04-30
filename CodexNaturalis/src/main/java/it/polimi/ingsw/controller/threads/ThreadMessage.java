@@ -106,16 +106,6 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         );
     }
 
-    public static ThreadMessage getPlayerBoards(String username) {
-        return new ThreadMessage(
-                Status.REQUEST,
-                username,
-                "getPlayerBoard",
-                null,
-                UUID.randomUUID()
-        );
-    }
-
     public static ThreadMessage getCommonObjectives(String username) {
         return new ThreadMessage(
                 Status.REQUEST,
@@ -136,12 +126,14 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         );
     }
 
-    public static ThreadMessage getPlayerResources(String username) {
+    public static ThreadMessage getPlayerResources(String username, String usernameRequiredData) {
         return new ThreadMessage(
                 Status.REQUEST,
                 username,
                 "getPlayerResources",
-                null,
+                new String[] {
+                        usernameRequiredData
+                },
                 UUID.randomUUID()
         );
     }
@@ -176,22 +168,26 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         );
     }
 
-    public static ThreadMessage getBoard(String username) {
+    public static ThreadMessage getBoard(String username, String usernameRequiredData) {
         return new ThreadMessage(
                 Status.REQUEST,
                 username,
                 "getBoard",
-                null,
+                new String[] {
+                        usernameRequiredData
+                },
                 UUID.randomUUID()
         );
     }
 
-    public static ThreadMessage getHandColor(String username) {
+    public static ThreadMessage getHandColor(String username, String usernameRequiredData) {
         return new ThreadMessage(
                 Status.REQUEST,
                 username,
                 "getHandColor",
-                null,
+                new String[] {
+                    usernameRequiredData
+                },
                 UUID.randomUUID()
         );
     }
