@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class RotateBoard {
-    private static final Integer rotationAngle = 45;
+    private static final Integer rotationAngle = -45;
     public static Map<Coordinates, Integer> rotateBoard(Map<Coordinates, Integer> board) {
         Map<Coordinates, Integer> rotatedBoard= new HashMap<>();
 

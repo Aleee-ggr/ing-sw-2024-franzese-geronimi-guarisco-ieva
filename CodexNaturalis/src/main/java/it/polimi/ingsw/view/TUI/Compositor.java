@@ -14,9 +14,9 @@ public class Compositor {
     private static final int screenHeight = 39;
     private static final ClientData clientData = Client.getData();
 
-    private final MiniBoard[] miniBoard = new MiniBoard[clientData.getPlayerNum()];
+    private final MiniBoard[] miniBoard = new MiniBoard[clientData.getPlayerNum()-1];
     private final Chat chat = new Chat();
-    //private ResourceView resources = new ResourceView();
+    private ResourceView resources = new ResourceView();
     private HandView hand = new HandView();
     //private DeckView deck = new DeckView();
     //private final BoardView board = new BoardView();
@@ -25,12 +25,18 @@ public class Compositor {
 
     private final ObjectiveView objectiveView = createObjectiveView();
 
-    public Compositor() {
+    public Compositor(String[] players) {
+        for(int i = 0; i < miniBoard.length; i++){
+            miniBoard[i] = new MiniBoard(players[i]);
+        }
     }
 
     public void updateView(){
         StringBuilder out = new StringBuilder();
 
+        for (MiniBoard miniBoard : miniBoard) {
+            miniBoard.setBoard(clientData.getPlayerBoard(miniBoard.getUsername()));
+        }
 
         for(int y = 0; y < MiniBoard.boardHeight; y++){
             for (MiniBoard miniBoard : miniBoard) {
@@ -39,7 +45,7 @@ public class Compositor {
             }
             out.append(chat.toStringArray()[y])
                     .append('┃');
-            //out.append(resources.toStringArray()[y]);
+            out.append(resources.toStringArray()[y]);
             out.append('\n');
         }
 
@@ -72,13 +78,14 @@ public class Compositor {
         int y;
         for(y = 0; y < HandView.panelHeight; y++){
             out.append(" ".repeat(HandView.panelWidth)) //TODO: to create
-                    .append('┃');
+                    .append("┃\n");
         }
+
 
         //TODO: finish when board is completed
 
 
-
+        System.out.print(out);
         System.out.print(prompt);
     }
 

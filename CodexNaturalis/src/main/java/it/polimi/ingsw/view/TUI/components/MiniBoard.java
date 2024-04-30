@@ -10,13 +10,22 @@ import java.util.Map;
 
 
 public class MiniBoard {
-    public static final int boardHeight = 7;
+    public static final int boardHeight = 8;
     public static final int boardWidth = 29;
     private int singleBoardWidth = 9; //TODO: refactor to have variable width
     private final Character[][] boardToPrint = new Character[singleBoardWidth][boardHeight];
+    private final String username;
 
     public String[] toStringArray() {
         return toString().split("\n");
+    }
+
+    public MiniBoard(String username) {
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public void setBoard(Map<Coordinates, Integer> board) {
@@ -43,8 +52,8 @@ public class MiniBoard {
     public String toString() {
         StringBuilder out = new StringBuilder();
         for(int y = 0; y < boardHeight; y++) {
-            for (int x = 0; x < boardHeight; x++) {
-                out.append(boardToPrint[x][y]);
+            for (int x = 0; x < singleBoardWidth; x++) {
+                out.append(boardToPrint[x][y] != null ? boardToPrint[x][y].toString() : " ");
             }
             out.append('\n');
         }

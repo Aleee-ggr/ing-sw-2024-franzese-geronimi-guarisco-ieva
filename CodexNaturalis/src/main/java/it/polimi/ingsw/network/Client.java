@@ -11,7 +11,7 @@ import java.util.UUID;
  * @author Alessio Guarisco
  * @author Daniele Ieva
  */
-public abstract class Client {
+public class Client {
     protected UUID gameId;
     protected final String serverAddress;
     protected final int serverPort;

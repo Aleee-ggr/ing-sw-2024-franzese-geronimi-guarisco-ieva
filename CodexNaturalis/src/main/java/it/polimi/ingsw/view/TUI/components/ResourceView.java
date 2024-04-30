@@ -48,6 +48,7 @@ public class ResourceView {
                     .append(resourceCount.get(res))
                     .append("\n");
         }
+        out.append(" \n");
         return out.toString();
     }
 }

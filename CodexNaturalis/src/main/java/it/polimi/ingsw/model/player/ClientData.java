@@ -98,6 +98,10 @@ public class ClientData {
         this.globalObjectives[1] = obj2;
     }
 
+    public void addPlayer(String username){
+        playersData.put(username, new PlayersDataLight());
+    }
+
     public Map<Coordinates, Integer> getClientBoard() {
         return Collections.unmodifiableMap(playersData.get(this.username).getBoard());
     }
