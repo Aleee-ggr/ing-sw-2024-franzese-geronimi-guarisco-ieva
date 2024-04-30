@@ -8,9 +8,12 @@ import java.util.Map;
 import static java.lang.Math.min;
 
 public class ResourceView {
-    Map<Resource, Integer> resourceCount;
+    public static final int width = 73;
+    private Map<Resource, Integer> resourceCount;
+    private final String username;
 
-    public ResourceView() {
+    public ResourceView(String username) {
+        this.username = username;
         resourceCount = new HashMap<>();
         for (Resource res : Resource.values()) {
             if (res == Resource.NONE || res == Resource.NONCOVERABLE) {
@@ -35,6 +38,9 @@ public class ResourceView {
     @Override
     public String toString() {
         StringBuilder out = new StringBuilder();
+
+        out.append(" %s:\tresources\n".formatted(username));
+
         for (Resource res : Resource.values()) {
             if (res == Resource.NONE || res == Resource.NONCOVERABLE ) {
                 continue;
@@ -48,7 +54,6 @@ public class ResourceView {
                     .append(resourceCount.get(res))
                     .append("\n");
         }
-        out.append(" \n");
         return out.toString();
     }
 }

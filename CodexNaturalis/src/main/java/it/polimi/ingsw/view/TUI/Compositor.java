@@ -16,7 +16,7 @@ public class Compositor {
 
     private final MiniBoard[] miniBoard = new MiniBoard[clientData.getPlayerNum()-1];
     private final Chat chat = new Chat();
-    private ResourceView resources = new ResourceView();
+    private ResourceView resources = new ResourceView(clientData.getUsername());
     private HandView hand = new HandView();
     //private DeckView deck = new DeckView();
     //private final BoardView board = new BoardView();
@@ -72,7 +72,7 @@ public class Compositor {
         out.append('┻')
                 .append("━".repeat(Chat.chatWidth))
                 .append('┻');
-        //TODO: add resources append
+        out.append("━".repeat(ResourceView.width));
         out.append('\n');
 
         int y;
