@@ -25,8 +25,8 @@ public class SocketClient extends Client {
     /**
      * Constructor for SocketClient.
      * @param playerUsername The username of the player.
-     * @param serverAddress  The address of the server.
-     * @param serverPort     The port of the server.
+     * @param serverAddress The address of the server.
+     * @param serverPort The port of the server.
      */
     public SocketClient(String playerUsername, String password, String serverAddress, int serverPort) {
         super(playerUsername, password, serverAddress, serverPort);
@@ -35,7 +35,7 @@ public class SocketClient extends Client {
     /**
      * Establishes a connection with the server.
      * @param serverAddress The address of the server.
-     * @param serverPort    The port of the server.
+     * @param serverPort The port of the server.
      */
     private void startConnection(String serverAddress, int serverPort) {
         try {
@@ -47,6 +47,10 @@ public class SocketClient extends Client {
         }
     }
 
+    /**
+     * This method is the main run loop for the client, which listens for responses from the server.
+     * It continuously waits for a response message from the server, handling each response with the handleResponse method.
+     */
     public void run() {
         while (true) {
             try {
@@ -60,7 +64,7 @@ public class SocketClient extends Client {
 
     /**
      * Stops the connection with the server.
-     * @throws IOException If an I/O error occurs.
+     * @throws IOException If an I/O error occurs while closing the connection.
      */
     public void stopConnection() throws IOException{
         client.close();
@@ -68,6 +72,10 @@ public class SocketClient extends Client {
         output.close();
     }
 
+    /**
+     * Handles the server's response message.
+     * @param response The response message from the server.
+     */
     public void handleResponse(GenericResponseMessage response) {
         if (response instanceof GetHandColorResponseMessage) {
             data.setPlayerHandColor(((GetHandColorResponseMessage) response).getUsernameRequiredData(), ((GetHandColorResponseMessage) response).getHandColor());
@@ -95,15 +103,20 @@ public class SocketClient extends Client {
     }
 
     /**
-     * Send server the message to create a game.
+     * Sends the server the message to create a game.
+     * @param username The username of the player.
+     * @param numPlayers The number of players in the game.
+     * @throws IOException If an I/O error occurs while sending the message.
      */
     public void createGame(String username, int numPlayers) throws IOException {
         output.writeObject(new SocketClientCreateGameMessage(username, numPlayers));
     }
 
     /**
-     * Send server the message to join a game.
+     * Sends the server the message to join a game.
+     * @param username The username of the player.
      * @param gameUUID The UUID of the game to join.
+     * @throws IOException If an I/O error occurs while sending the message.
      */
     public void joinGame(String username, UUID gameUUID) throws IOException {
         output.writeObject(new SocketClientJoinGameMessage(username, gameUUID));
@@ -111,58 +124,106 @@ public class SocketClient extends Client {
     }
 
     /**
-     * Send server the message to reconnect to a game.
+     * Sends the server the message to reconnect to a game.
+     * @param username The username of the player.
      * @param gameUUID The UUID of the game to reconnect to.
+     * @throws IOException If an I/O error occurs while sending the message.
      */
     public void reconnect(String username,UUID gameUUID) throws IOException {
         output.writeObject(new SocketClientReconnectMessage(username, gameUUID));
     }
 
     /**
-     * Check credentials validity
-     * @param username the username of the player
-     * @param password the password of the player
+     * Checks the validity of player credentials.
+     * @param username The username of the player.
+     * @param password The password of the player.
+     * @throws IOException If an I/O error occurs while sending the message.
      */
     public void checkCredentials(String username, String password) throws IOException {
         output.writeObject(new SocketValidateCredentialsMessage(username, password));
     }
 
+    /**
+     * Sends a message to draw a card from a specified position.
+     * @param position The position of the card to draw.
+     * @param gameUUID The UUID of the game in which to draw the card.
+     * @throws IOException If an I/O error occurs while sending the message.
+     */
     public void drawCard(int position, UUID gameUUID) throws IOException {
         output.writeObject(new SocketClientDrawCardMessage(data.getUsername(), position, gameUUID));
     }
 
+    /**
+     * Sends a message to get the score map.
+     * @throws IOException If an I/O error occurs while sending the message.
+     */
     public void getScoreMap() throws IOException {
         output.writeObject(new SocketClientGetScoreMapMessage(data.getUsername()));
     }
 
+    /**
+     * Sends a message to get the hand.
+     * @throws IOException If an I/O error occurs while sending the message.
+     */
     public void getHand() throws IOException {
         output.writeObject(new SocketClientGetHandMessage(data.getUsername(), this.gameId));
     }
 
+    /**
+     * Sends a message to get the common objectives.
+     * @throws IOException If an I/O error occurs while sending the message.
+     */
     public void getCommonObjectives() throws IOException {
         output.writeObject(new SocketClientGetCommonObjectivesMessage(data.getUsername(), this.gameId));
     }
 
+    /**
+     * Sends a message to get player resources.
+     * @param username The username of the player whose resources to get.
+     * @throws IOException If an I/O error occurs while sending the message.
+     */
     public void getPlayerResources(String username) throws IOException {
         output.writeObject(new SocketClientGetPlayerResourcesMessage(data.getUsername(), this.gameId, username));
     }
 
+    /**
+     * Sends a message to get the visible cards.
+     * @throws IOException If an I/O error occurs while sending the message.
+     */
     public void getVisibleCards() throws IOException {
         output.writeObject(new SocketClientGetVisibleCardsMessage(data.getUsername(), this.gameId));
     }
 
+    /**
+     * Sends a message to get the back side decks.
+     * @throws IOException If an I/O error occurs while sending the message.
+     */
     public void getBackSideDecks() throws IOException {
         output.writeObject(new SocketClientGetBackSideDecksMessage(data.getUsername(), this.gameId));
     }
 
+    /**
+     * Sends a message to get the valid placements.
+     * @throws IOException If an I/O error occurs while sending the message.
+     */
     public void getValidPlacements() throws IOException {
         output.writeObject(new SocketClientGetValidPlacementsMessage(data.getUsername(), this.gameId));
     }
 
+    /**
+     * Sends a message to get the player's board.
+     * @param username The username of the player whose board to get.
+     * @throws IOException If an I/O error occurs while sending the message.
+     */
     public void getPlayerBoard(String username) throws IOException {
         output.writeObject(new SocketClientGetPlayerBoard(data.getUsername(), this.gameId, username));
     }
 
+    /**
+     * Sends a message to get the player's hand color.
+     * @param username The username of the player whose hand color to get.
+     * @throws IOException If an I/O error occurs while sending the message.
+     */
     public void getHandColor(String username) throws IOException {
         output.writeObject(new SocketClientGetHandColorMessage(data.getUsername(), this.gameId, username));
     }
