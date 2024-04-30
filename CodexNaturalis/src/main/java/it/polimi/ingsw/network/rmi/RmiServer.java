@@ -12,11 +12,25 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.UUID;
 
+/**
+ * The RmiServer class is an implementation of the RmiServerInterface, which defines methods for interacting with a remote game server using RMI.
+ * This class manages game server operations such as drawing and placing cards, creating and joining games, and other game-related tasks.
+ *
+ * The class extends the Server class and utilizes RMI to provide remote access to the game server.
+ * It sets up an RMI registry and binds the server to allow remote clients to invoke methods defined in the RmiServerInterface.
+ *
+ * Proper error handling and shutdown procedures are implemented to ensure smooth communication and resource management.
+ * Runtime shutdown hooks are used to cleanly stop the server when the application exits.
+ */
 public class RmiServer extends Server implements RmiServerInterface {
     private static final String name = "rmiServer";
     private final Registry registry;
 
-
+    /**
+     * Constructs a new RmiServer and sets up an RMI registry to allow remote clients to connect.
+     * @param port The port on which the RMI server will listen.
+     * @throws RemoteException If an RMI error occurs during server initialization.
+     */
     public RmiServer(int port) throws RemoteException {
         System.out.println("Starting server...");
         RmiServerInterface stub = (RmiServerInterface) UnicastRemoteObject.exportObject(this, port);
@@ -26,10 +40,18 @@ public class RmiServer extends Server implements RmiServerInterface {
         Runtime.getRuntime().addShutdownHook(new Thread(this::stop));
     }
 
+    /**
+     * Returns the name of the RMI server.
+     * @return The name of the RMI server.
+     */
     public static String getName() {
         return name;
     }
 
+    /**
+     * Stops the RMI server and unbinds the server from the registry.
+     * It also sends a shutdown message to all game threads to clean up resources.
+     */
     public void stop() {
         try {
             for (UUID key : threadMessages.keySet()) {
