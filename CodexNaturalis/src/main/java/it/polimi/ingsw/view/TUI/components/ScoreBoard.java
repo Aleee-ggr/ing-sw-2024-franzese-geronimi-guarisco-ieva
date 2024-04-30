@@ -13,7 +13,7 @@ public class ScoreBoard {
     private final ClientData clientData = Client.getData();
 
     public String[] get() {
-        
+
         scoreBoard.add("ScoreBoard:         ");
 
         for(String player: clientData.getScoreBoard().keySet()){
