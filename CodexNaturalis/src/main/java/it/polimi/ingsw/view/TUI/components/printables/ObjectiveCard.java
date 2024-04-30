@@ -1,10 +1,8 @@
-package it.polimi.ingsw.view.TUI.components;
+package it.polimi.ingsw.view.TUI.components.printables;
 
-import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
 
-import java.awt.geom.RectangularShape;
 import java.util.Map;
 
 public class ObjectiveCard {

@@ -1,13 +1,9 @@
-package it.polimi.ingsw.view.TUI.components;
+package it.polimi.ingsw.view.TUI.components.printables;
 
 
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.ColoredCard;
 import it.polimi.ingsw.model.cards.Corner;
 import it.polimi.ingsw.model.cards.GoldCard;
-
-import java.util.ArrayList;
 
 public class PrintCards {
     private final ColoredCard card;

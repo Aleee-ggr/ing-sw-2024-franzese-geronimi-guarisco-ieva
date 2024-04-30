@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.TUI.components;
 
 
 import it.polimi.ingsw.GameConsts;
+import it.polimi.ingsw.view.TUI.components.printables.ObjectiveCard;
 
 public class ObjectiveView {
     private final ObjectiveCard personal;

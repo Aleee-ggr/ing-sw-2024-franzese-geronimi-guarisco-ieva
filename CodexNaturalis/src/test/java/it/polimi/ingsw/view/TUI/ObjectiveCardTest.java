@@ -5,7 +5,7 @@ import it.polimi.ingsw.helpers.exceptions.model.JsonFormatException;
 import it.polimi.ingsw.helpers.parsers.ObjectiveParser;
 import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.objectives.Objective;
-import it.polimi.ingsw.view.TUI.components.ObjectiveCard;
+import it.polimi.ingsw.view.TUI.components.printables.ObjectiveCard;
 import it.polimi.ingsw.view.TUI.components.ObjectiveView;
 import org.junit.Test;
 
