@@ -2,10 +2,10 @@ package it.polimi.ingsw.network.socket;
 
 
 import it.polimi.ingsw.network.Client;
-import it.polimi.ingsw.network.messages.SocketClientCreateGameMessage;
-import it.polimi.ingsw.network.messages.SocketClientJoinGameMessage;
-import it.polimi.ingsw.network.messages.SocketClientReconnectMessage;
-import it.polimi.ingsw.network.messages.SocketValidateCredentialsMessage;
+import it.polimi.ingsw.network.messages.requests.SocketClientCreateGameMessage;
+import it.polimi.ingsw.network.messages.requests.SocketClientJoinGameMessage;
+import it.polimi.ingsw.network.messages.requests.SocketClientReconnectMessage;
+import it.polimi.ingsw.network.messages.requests.SocketValidateCredentialsMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
