@@ -21,7 +21,6 @@ public class Objective {
     private Resource[][] pattern = null;
     private Map<Resource, Integer> resources = null;
 
-
     /**
      * Constructs a new Objective with the specified point calculator function.
      * @param pointCalculator The function to calculate points for the objective based on the player.

@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * */
 public class Game {
     static final HashSet<Player> playersConnected  = new HashSet<>(); //TODO: not the same username inter-game
-    static final ConcurrentHashMap<Integer, Card> cardID = new ConcurrentHashMap<Integer, Card>() {{
+    static final ConcurrentHashMap<Integer, Card> cardID = new ConcurrentHashMap<>() {{
         for (Card gold : FullDeck.getFullGoldDeck().getCards()) {
             put(gold.getId(), gold);
         }
@@ -28,6 +28,11 @@ public class Game {
         }
         for (Card start : FullDeck.getFullStartingDeck().getCards()) {
             put(start.getId(), start);
+        }
+    }};
+    static final ConcurrentHashMap<Integer, Objective> objectiveID = new ConcurrentHashMap<>() {{
+        for (Objective objective : FullDeck.getFullObjDeck().getCards()) {
+            put(objective.getId(), objective);
         }
     }};
     /*Game-Specific Decks: not static decks for the instance of Game*/
@@ -49,6 +54,9 @@ public class Game {
         return cardID.get(id);
     }
 
+    public static Objective getObjectiveByID(Integer id) {
+        return objectiveID.get(id);
+    }
     /**
      * Constructor for the Game class.
      * @param id UUID created by the Server.
