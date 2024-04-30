@@ -94,7 +94,6 @@ public abstract class Server {
             do {
                 response = queue.peek();
                 if (response != null && response.status() != Status.REQUEST) {
-
                     responded = response.messageUUID().equals(messageUUID);
                 }
             } while (!responded);
@@ -140,31 +139,103 @@ public abstract class Server {
         return hand;
     }
 
-    public static void getPlayersBoards(UUID game, String username) {
-        ThreadMessage message = ThreadMessage.getPlayerBoards(
+    public static boolean choosePersonalObjective(UUID game, String username, Integer objectiveId) {
+        ThreadMessage message = ThreadMessage.choosePersonalObjective(
+                username,
+                objectiveId
+        );
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+
+        return Boolean.parseBoolean(response.args()[0]);
+    }
+
+    public static ArrayList<Resource> getHandColor(UUID game, String username, String usernameRequiredData) {
+        ThreadMessage message = ThreadMessage.getHandColor(
+                username,
+                usernameRequiredData
+        );
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+
+        ArrayList<Resource> handColor = new ArrayList<>();
+
+        for (String arg : response.args()) {
+            handColor.add(Resource.valueOf(arg));
+        }
+
+        return handColor;
+    }
+
+    public static HashMap<Coordinates, Integer> getBoard(UUID game, String username, String usernameRequiredData) {
+        ThreadMessage message = ThreadMessage.getBoard(
+                username,
+                usernameRequiredData
+        );
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+
+        HashMap<Coordinates, Integer> board = new HashMap<>();
+
+        for (String arg : response.args()) {
+            String[] parts = arg.split(",");
+            Coordinates coordinates = new Coordinates(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
+            board.put(coordinates, Integer.parseInt(parts[2]));
+        }
+
+        return board;
+    }
+
+    public static Deque<Integer> getLastPlacedCards(UUID game, String username) {
+        ThreadMessage message = ThreadMessage.getLastPlacedCards(
                 username
         );
         sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+
+        Deque<Integer> cards = new ArrayDeque<>();
+
+        for (String arg : response.args()) {
+            cards.add(Integer.parseInt(arg));
+        }
+
+        return cards;
     }
 
-    public static Integer[] getCommonObjectives(UUID game, String username){
+    public static ArrayList<Integer> getCommonObjectives(UUID game, String username){
         ThreadMessage message = ThreadMessage.getCommonObjectives(
                 username
         );
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
-        Integer[] commonObjectives = new Integer[response.args().length];
-        for (int i = 0; i < response.args().length; i++) {
-            commonObjectives[i] = Integer.parseInt(response.args()[i]);
+        ArrayList<Integer> commonObjectives = new ArrayList<>();
+        for (String arg : response.args()) {
+            commonObjectives.add(Integer.parseInt(arg));
         }
 
         return commonObjectives;
     }
 
-    public static HashMap<Resource, Integer> getPlayerResources(UUID game, String username) {
-        ThreadMessage message = ThreadMessage.getPlayerResources(
+    public static ArrayList<Integer> getStartingObjectives(UUID game, String username){
+        ThreadMessage message = ThreadMessage.getStartingObjectives(
                 username
+        );
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+
+        ArrayList<Integer> startingObjectives = new ArrayList<>();
+        for (String arg : response.args()) {
+            startingObjectives.add(Integer.parseInt(arg));
+        }
+
+        return startingObjectives;
+    }
+
+    public static HashMap<Resource, Integer> getPlayerResources(UUID game, String username, String usernameRequiredData) {
+        ThreadMessage message = ThreadMessage.getPlayerResources(
+                username,
+                usernameRequiredData
         );
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
@@ -183,31 +254,31 @@ public abstract class Server {
         return playerResources;
     }
 
-    public static Integer[] getVisibleCards(UUID game, String username) {
+    public static ArrayList<Integer> getVisibleCards(UUID game, String username) {
         ThreadMessage message = ThreadMessage.getVisibleCards(
                 username
         );
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
-        Integer[] visibleCards = new Integer[response.args().length];
-        for (int i = 0; i < response.args().length; i++) {
-            visibleCards[i] = Integer.parseInt(response.args()[i]);
+        ArrayList<Integer> visibleCards = new ArrayList<>();
+        for (String arg : response.args()) {
+            visibleCards.add(Integer.parseInt(arg));
         }
 
         return visibleCards;
     }
 
-    public static Integer[] getBackSideDecks(UUID game, String username) {
+    public static ArrayList<Integer> getBackSideDecks(UUID game, String username) {
         ThreadMessage message = ThreadMessage.getBackSideDecks(
                 username
         );
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
-        Integer[] backSideDecks = new Integer[response.args().length];
-        for (int i = 0; i < response.args().length; i++) {
-            backSideDecks[i] = Integer.parseInt(response.args()[i]);
+        ArrayList<Integer> backSideDecks = new ArrayList<>();
+        for (String arg : response.args()) {
+            backSideDecks.add(Integer.parseInt(arg));
         }
 
         return backSideDecks;
@@ -230,3 +301,4 @@ public abstract class Server {
         return validPlacements;
     }
 }
+
