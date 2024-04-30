@@ -2,7 +2,8 @@ package it.polimi.ingsw.network.socket;
 
 import it.polimi.ingsw.controller.threads.ThreadMessage;
 import it.polimi.ingsw.network.Server;
-import it.polimi.ingsw.network.messages.*;
+import it.polimi.ingsw.network.messages.requests.*;
+import it.polimi.ingsw.network.messages.responses.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -39,7 +40,7 @@ public class ClientHandler implements Runnable {
     public void run() {
             try {
                 while (!this.socket.isClosed()) {
-                    Message message = (Message) input.readObject();
+                    GenericRequestMessage message = (GenericRequestMessage) input.readObject();
                     handleMessage(message);
                 }
             } catch (IOException | ClassNotFoundException e) {
@@ -56,16 +57,18 @@ public class ClientHandler implements Runnable {
 
     }
 
-    private void handleMessage(Message message) {
+    private void handleMessage(GenericRequestMessage message) throws IOException {
 
         if (message instanceof SocketClientCreateGameMessage) {
             Server.createGame(((SocketClientCreateGameMessage) message).getNumPlayers());
             return;
         }
+
         if (message instanceof SocketClientJoinGameMessage) {
             ThreadMessage threadMessage = ThreadMessage.join(message.getUsername());
             return;
         }
+
         if (message instanceof SocketClientPlaceCardMessage) {
             ThreadMessage threadMessage = ThreadMessage.placeCard(
                     message.getUsername(),
@@ -74,18 +77,79 @@ public class ClientHandler implements Runnable {
             );
             return;
         }
+
         if (message instanceof SocketClientDrawCardMessage) {
             ThreadMessage threadMessage = ThreadMessage.draw(
                     message.getUsername(),
                     ((SocketClientDrawCardMessage) message).getPosition()
             );
+            Server.sendMessage(((SocketClientDrawCardMessage) message).getGameUUID(), threadMessage);
             return;
         }
+
         if (message instanceof SocketValidateCredentialsMessage) {
             boolean isValid = Server.isValidPlayer(
                     message.getUsername(),
                     ((SocketValidateCredentialsMessage) message).getPassword()
             );
+        }
+
+        if (message instanceof SocketClientGetHandColorMessage) {
+            GetHandColorResponseMessage response = new GetHandColorResponseMessage(Server.getHandColor(((SocketClientGetHandColorMessage) message).getGameUUID(), message.getUsername(), ((SocketClientGetHandColorMessage) message).getUsernameRequiredData()), ((SocketClientGetHandColorMessage) message).getUsernameRequiredData());
+            sendResponse(response);
+        }
+
+        if (message instanceof SocketClientGetBackSideDecksMessage) {
+            GetBackSideDecksResponseMessage response = new GetBackSideDecksResponseMessage(Server.getBackSideDecks(((SocketClientGetBackSideDecksMessage) message).getGameUUID(), message.getUsername()));
+            sendResponse(response);
+        }
+
+        if (message instanceof SocketClientGetCommonObjectivesMessage) {
+            GetCommonObjectivesResponseMessage response = new GetCommonObjectivesResponseMessage(Server.getCommonObjectives(((SocketClientGetCommonObjectivesMessage) message).getGameUUID(), message.getUsername()));
+            sendResponse(response);
+        }
+
+        if (message instanceof SocketClientGetHandMessage) {
+            GetHandResponseMessage response = new GetHandResponseMessage(Server.getHand(((SocketClientGetHandMessage) message).getGameUUID(), message.getUsername()));
+            sendResponse(response);
+        }
+
+        if (message instanceof SocketClientGetPlayerBoard) {
+            GetPlayerBoardResponseMessage response = new GetPlayerBoardResponseMessage(Server.getBoard(((SocketClientGetPlayerBoard) message).getGameUUID(), message.getUsername(), ((SocketClientGetPlayerBoard) message).getUsernameRequiredData()), ((SocketClientGetPlayerBoard) message).getUsernameRequiredData());
+            sendResponse(response);
+        }
+
+        if (message instanceof SocketClientGetPlayerResourcesMessage) {
+            GetPlayerResourcesResponseMessage response = new GetPlayerResourcesResponseMessage(Server.getPlayerResources(((SocketClientGetPlayerResourcesMessage) message).getGameUUID(), message.getUsername(), ((SocketClientGetPlayerResourcesMessage) message).getUsernameRequiredData()), ((SocketClientGetPlayerResourcesMessage) message).getUsernameRequiredData());
+            sendResponse(response);
+        }
+
+        if (message instanceof SocketClientGetValidPlacementsMessage) {
+            GetValidPlacementsResponseMessage response = new GetValidPlacementsResponseMessage(Server.getValidPlacements(((SocketClientGetValidPlacementsMessage) message).getGameUUID(), message.getUsername()));
+            sendResponse(response);
+        }
+
+        if (message instanceof SocketClientGetVisibleCardsMessage) {
+            GetVisibleCardsResponseMessage response = new GetVisibleCardsResponseMessage(Server.getVisibleCards(((SocketClientGetVisibleCardsMessage) message).getGameUUID(), message.getUsername()));
+            sendResponse(response);
+        }
+
+        if (message instanceof SocketClientGetStartingObjectivesMessage) {
+            GetStartingObjectivesResponseMessage response = new GetStartingObjectivesResponseMessage(Server.getStartingObjectives(((SocketClientGetStartingObjectivesMessage) message).getGameUUID(), message.getUsername()));
+            sendResponse(response);
+        }
+
+        if (message instanceof SocketClientChooseStartingObjective) {
+            ChooseStartingObjectiveResponseMessage response = new ChooseStartingObjectiveResponseMessage(Server.choosePersonalObjective(((SocketClientChooseStartingObjective) message).getGameUUID(), message.getUsername(), ((SocketClientChooseStartingObjective) message).getObjectiveID()));
+            sendResponse(response);
+        }
+    }
+
+    private void sendResponse(GenericResponseMessage response) throws IOException {
+        try {
+            output.writeObject(response);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
