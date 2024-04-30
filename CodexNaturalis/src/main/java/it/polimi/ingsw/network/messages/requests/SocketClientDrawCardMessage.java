@@ -1,8 +1,8 @@
-package it.polimi.ingsw.network.messages;
+package it.polimi.ingsw.network.messages.requests;
 
 import java.util.UUID;
 
-public class SocketClientDrawCardMessage extends Message{
+public class SocketClientDrawCardMessage extends GenericRequestMessage {
     private final int position;
     private final UUID gameUUID;
 

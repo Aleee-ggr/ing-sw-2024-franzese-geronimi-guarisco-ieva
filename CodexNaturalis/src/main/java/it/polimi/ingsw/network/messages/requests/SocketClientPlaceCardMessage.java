@@ -1,10 +1,10 @@
-package it.polimi.ingsw.network.messages;
+package it.polimi.ingsw.network.messages.requests;
 
 import it.polimi.ingsw.model.board.Coordinates;
 
 import java.util.UUID;
 
-public class SocketClientPlaceCardMessage extends Message{
+public class SocketClientPlaceCardMessage extends GenericRequestMessage {
     private final Coordinates coordinates;
     private final int cardId;
     private final UUID gameUUID;

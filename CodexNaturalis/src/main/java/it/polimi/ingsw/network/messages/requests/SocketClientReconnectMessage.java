@@ -1,13 +1,13 @@
-package it.polimi.ingsw.network.messages;
+package it.polimi.ingsw.network.messages.requests;
 
 import java.util.UUID;
 
 /**
  * Class representing a message from a client to reconnect to a game in network communication via sockets.
- * This class extends the Message class, inheriting the username field.
+ * This class extends the GenericRequestMessage class, inheriting the username field.
  * It is used when a client wants to reconnect to an existing game specified by a game UUID.
  */
-public class SocketClientReconnectMessage extends Message{
+public class SocketClientReconnectMessage extends GenericRequestMessage {
     private UUID gameUUID;
 
     /**

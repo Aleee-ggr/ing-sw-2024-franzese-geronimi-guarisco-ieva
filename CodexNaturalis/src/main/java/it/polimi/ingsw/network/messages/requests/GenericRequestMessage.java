@@ -1,4 +1,4 @@
-package it.polimi.ingsw.network.messages;
+package it.polimi.ingsw.network.messages.requests;
 
 import java.io.Serializable;
 
@@ -10,7 +10,7 @@ import java.io.Serializable;
  *
  * @author gloriageronimi
  */
-public abstract class Message implements Serializable {
+public abstract class GenericRequestMessage implements Serializable {
     protected String username;
 
     /**

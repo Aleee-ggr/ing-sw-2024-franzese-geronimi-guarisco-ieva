@@ -1,13 +1,13 @@
-package it.polimi.ingsw.network.messages;
+package it.polimi.ingsw.network.messages.requests;
 
 /**
  * Class representing a message from a client to create a new game in the network communication via sockets.
- * This class extends the `Message` class, inheriting the username field.
+ * This class extends the `GenericRequestMessage` class, inheriting the username field.
  * It is used when a client wants to create a new game.
  *
  * @author gloriageronimi
  */
-public class SocketClientCreateGameMessage extends Message{
+public class SocketClientCreateGameMessage extends GenericRequestMessage {
     private final int numPlayers;
     /**
      * Constructor for the SocketClientCreateGameMessage class.

@@ -1,6 +1,6 @@
-package it.polimi.ingsw.network.messages;
+package it.polimi.ingsw.network.messages.requests;
 
-public class SocketValidateCredentialsMessage extends Message {
+public class SocketValidateCredentialsMessage extends GenericRequestMessage {
     private final String password;
 
     /**
