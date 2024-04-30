@@ -28,6 +28,7 @@ public class ClientHandler implements Runnable {
      * Constructs a new ClientHandler object with the specified socket connection.
      *
      * @param socket the socket connection to the client
+     * @param threadMessages a map containing thread messages for each UUID
      * @throws IOException if an I/O error occurs while initializing the input and output streams
      */
     public ClientHandler(Socket socket, Map<UUID, BlockingQueue<ThreadMessage>> threadMessages) throws IOException {
@@ -37,6 +38,10 @@ public class ClientHandler implements Runnable {
         this.threadMessages = threadMessages;
     }
 
+    /**
+     * Starts the client handler thread to handle communication with the client.
+     * Reads objects from the client and processes them accordingly.
+     */
     public void run() {
             try {
                 while (!this.socket.isClosed()) {
@@ -57,6 +62,13 @@ public class ClientHandler implements Runnable {
 
     }
 
+    /**
+     * Handles incoming messages from the client.
+     * Dispatches the message to the appropriate server method for processing.
+     *
+     * @param message the message received from the client
+     * @throws IOException if an I/O error occurs while sending responses
+     */
     private void handleMessage(GenericRequestMessage message) throws IOException {
 
         if (message instanceof SocketClientCreateGameMessage) {
@@ -145,6 +157,12 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Sends a response message back to the client.
+     *
+     * @param response the response message to be sent
+     * @throws IOException if an I/O error occurs while sending the response
+     */
     private void sendResponse(GenericResponseMessage response) throws IOException {
         try {
             output.writeObject(response);
