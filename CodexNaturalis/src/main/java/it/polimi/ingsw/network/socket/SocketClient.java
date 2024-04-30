@@ -2,10 +2,8 @@ package it.polimi.ingsw.network.socket;
 
 
 import it.polimi.ingsw.network.Client;
-import it.polimi.ingsw.network.messages.requests.SocketClientCreateGameMessage;
-import it.polimi.ingsw.network.messages.requests.SocketClientJoinGameMessage;
-import it.polimi.ingsw.network.messages.requests.SocketClientReconnectMessage;
-import it.polimi.ingsw.network.messages.requests.SocketValidateCredentialsMessage;
+import it.polimi.ingsw.network.messages.requests.*;
+import it.polimi.ingsw.network.messages.responses.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -50,7 +48,14 @@ public class SocketClient extends Client {
     }
 
     public void run() {
-        //TODO method to read network and do the request
+        while (true) {
+            try {
+                GenericResponseMessage response = (GenericResponseMessage) input.readObject();
+                handleResponse(response);
+            } catch (IOException | ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     /**
@@ -61,6 +66,32 @@ public class SocketClient extends Client {
         client.close();
         input.close();
         output.close();
+    }
+
+    public void handleResponse(GenericResponseMessage response) {
+        if (response instanceof GetHandColorResponseMessage) {
+            data.setPlayerHandColor(((GetHandColorResponseMessage) response).getUsernameRequiredData(), ((GetHandColorResponseMessage) response).getHandColor());
+        }
+
+        if (response instanceof GetHandResponseMessage) {
+            data.setClientHand(((GetHandResponseMessage) response).getHandIds());
+        }
+
+        if (response instanceof GetPlayerBoardResponseMessage) {
+            if (((GetPlayerBoardResponseMessage) response).getUsernameRequiredData().equals(data.getUsername())) {
+                data.setClientBoard(((GetPlayerBoardResponseMessage) response).getPlayerBoard());
+            } else {
+                data.setPlayerBoard(((GetPlayerBoardResponseMessage) response).getUsernameRequiredData(), ((GetPlayerBoardResponseMessage) response).getPlayerBoard());
+            }
+        }
+
+        if (response instanceof GetPlayerResourcesResponseMessage) {
+            data.updatePlayerResources(((GetPlayerResourcesResponseMessage) response).getUsernameRequiredData(), ((GetPlayerResourcesResponseMessage) response).getPlayerResources());
+        }
+
+        if (response instanceof GetValidPlacementsResponseMessage) {
+            data.setValidPlacements(((GetValidPlacementsResponseMessage) response).getValidPlacements());
+        }
     }
 
     /**
@@ -76,6 +107,7 @@ public class SocketClient extends Client {
      */
     public void joinGame(String username, UUID gameUUID) throws IOException {
         output.writeObject(new SocketClientJoinGameMessage(username, gameUUID));
+        this.setGameId(gameUUID);
     }
 
     /**
