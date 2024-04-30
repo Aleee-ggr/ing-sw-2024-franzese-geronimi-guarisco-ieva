@@ -23,6 +23,10 @@ public class SocketClientJoinGameMessage extends GenericRequestMessage {
         this.gameUUID = gameUUID;
     }
 
+    /**
+     * Gets the UUID of the game the client wants to join.
+     * @return The UUID of the game.
+     */
     public UUID getGameUUID() {
         return gameUUID;
     }

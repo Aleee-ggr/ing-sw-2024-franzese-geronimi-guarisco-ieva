@@ -12,7 +12,6 @@ public class SocketClientLeaveGameMessage extends GenericRequestMessage {
 
     /**
      * Constructor for the SocketClientLeaveGameMessage class.
-     *
      * @param username The username of the client sending the message.
      * @param gameUUID The UUID of the game the client wants to leave.
      */
