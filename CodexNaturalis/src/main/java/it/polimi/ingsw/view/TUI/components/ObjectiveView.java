@@ -5,6 +5,8 @@ import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.view.TUI.components.printables.ObjectiveCard;
 
 public class ObjectiveView {
+    public static final String PLAYER = "player";
+    public static final String SHARED = "shared";
     private final ObjectiveCard personal;
     private final ObjectiveCard[] shared;
 
@@ -46,8 +48,8 @@ public class ObjectiveView {
         out.append("\n".repeat(marginTop));
         int sharedSpace = (cardSpacing / 2 + cardSpacing + 2 * cardWidth) + 1;
         int playerSpace = (cardWidth + cardSpacing / 2) + 1;
-        int playerPadding = ((cardWidth - "player".length()+4) / 2);
-        int sharedPadding = (cardWidth * GameConsts.globalObjectives + cardSpacing - "shared".length()) / 2+1;
+        int playerPadding = ((cardWidth - PLAYER.length()+4) / 2);
+        int sharedPadding = (cardWidth * GameConsts.globalObjectives + cardSpacing - SHARED.length()) / 2+1;
         
         out.append(" ".repeat(marginSide))
                 .append("╭")
@@ -111,8 +113,8 @@ public class ObjectiveView {
         out.append("\n".repeat(marginTop));
         
         return out.toString().formatted(
-                " ".repeat(playerPadding), "player", " ".repeat(playerPadding),
-                " ".repeat(sharedPadding), "shared", " ".repeat(sharedPadding)
+                " ".repeat(playerPadding), PLAYER, " ".repeat(playerPadding),
+                " ".repeat(sharedPadding), SHARED, " ".repeat(sharedPadding)
         );
     }
 }
