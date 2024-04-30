@@ -12,7 +12,6 @@ public class SocketClientReconnectMessage extends GenericRequestMessage {
 
     /**
      * Constructs for the SocketClientReconnectMessage class.
-     *
      * @param username The username of the client sending the message.
      * @param gameUUID The UUID of the game the client wants to reconnect to.
      */
