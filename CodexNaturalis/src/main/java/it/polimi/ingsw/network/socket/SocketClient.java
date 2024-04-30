@@ -126,4 +126,44 @@ public class SocketClient extends Client {
     public void checkCredentials(String username, String password) throws IOException {
         output.writeObject(new SocketValidateCredentialsMessage(username, password));
     }
- }
+
+    public void drawCard(int position, UUID gameUUID) throws IOException {
+        output.writeObject(new SocketClientDrawCardMessage(data.getUsername(), position, gameUUID));
+    }
+
+    public void getScoreMap() throws IOException {
+        output.writeObject(new SocketClientGetScoreMapMessage(data.getUsername()));
+    }
+
+    public void getHand() throws IOException {
+        output.writeObject(new SocketClientGetHandMessage(data.getUsername(), this.gameId));
+    }
+
+    public void getCommonObjectives() throws IOException {
+        output.writeObject(new SocketClientGetCommonObjectivesMessage(data.getUsername(), this.gameId));
+    }
+
+    public void getPlayerResources(String username) throws IOException {
+        output.writeObject(new SocketClientGetPlayerResourcesMessage(data.getUsername(), this.gameId, username));
+    }
+
+    public void getVisibleCards() throws IOException {
+        output.writeObject(new SocketClientGetVisibleCardsMessage(data.getUsername(), this.gameId));
+    }
+
+    public void getBackSideDecks() throws IOException {
+        output.writeObject(new SocketClientGetBackSideDecksMessage(data.getUsername(), this.gameId));
+    }
+
+    public void getValidPlacements() throws IOException {
+        output.writeObject(new SocketClientGetValidPlacementsMessage(data.getUsername(), this.gameId));
+    }
+
+    public void getPlayerBoard(String username) throws IOException {
+        output.writeObject(new SocketClientGetPlayerBoard(data.getUsername(), this.gameId, username));
+    }
+
+    public void getHandColor(String username) throws IOException {
+        output.writeObject(new SocketClientGetHandColorMessage(data.getUsername(), this.gameId, username));
+    }
+}
