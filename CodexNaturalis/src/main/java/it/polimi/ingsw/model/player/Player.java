@@ -9,7 +9,9 @@ import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -29,6 +31,7 @@ public class Player {
     private PlayerBoard board;
     private final ColoredCard[] hand = new ColoredCard[GameConsts.firstHandDim];
     private Objective hiddenObjective;
+    private Objective[] startingObjectives;
     protected final ConcurrentHashMap<Resource, Integer> playerResources = new ConcurrentHashMap<>();
     private final Game game;
 
@@ -91,6 +94,15 @@ public class Player {
     }
 
     /**
+     * Getter for the Starting Objectives of the Player.
+     * @return an ArrayList of Objectives.
+     * @see Objective
+     */
+    public ArrayList<Objective> getStartingObjectives() {
+        return new ArrayList<Objective>(List.of(startingObjectives));
+    }
+
+    /**
      * Getter for the Resources of the Player.
      * @return a Map of Resources and the number of resources.
      * @see Resource
@@ -107,18 +119,31 @@ public class Player {
         this.score = score;
     }
 
+
     /**
-     * Choose the Hidden Object of the Player.
-     * @param index int of the chosen card
+     * Draws the objectives to chose from at the start of the game.
      * @see Objective
      */
-    public void choosePersonalObjective(int index){
-        Objective[] objectivesToChoose = new Objective[GameConsts.objectiesToChooseFrom];
-        //TODO: show possible cards to the client
+    public void setStartingObjectives() {
+        startingObjectives = new Objective[GameConsts.objectiesToChooseFrom];
         for(int i = 0; i < GameConsts.objectiesToChooseFrom; i++){
-            objectivesToChoose[i] = game.getGameObjDeck().draw();
+            startingObjectives[i] = game.getGameObjDeck().draw();
         }
-        hiddenObjective = objectivesToChoose[index];
+    }
+
+    /**
+     * Choose the Hidden Object of the Player.
+     * @param objId int id of the chosen card
+     * @see Objective
+     */
+    public void choosePersonalObjective(int objId) throws Exception {
+        for(Objective obj: startingObjectives){
+            if(obj.getId() == objId){
+                hiddenObjective = obj;
+            } else {
+                throw new Exception("obj not found");
+            }
+        }
     }
 
 

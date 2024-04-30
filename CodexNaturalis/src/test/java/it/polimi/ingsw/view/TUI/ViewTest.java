@@ -1,13 +1,11 @@
 package it.polimi.ingsw.view.TUI;
 
 import it.polimi.ingsw.model.board.Coordinates;
-import it.polimi.ingsw.model.cards.ColoredCard;
 import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.cards.FullDeck;
 import it.polimi.ingsw.model.cards.StdCard;
 import it.polimi.ingsw.model.player.ClientData;
 import it.polimi.ingsw.network.Client;
-import it.polimi.ingsw.network.rmi.RmiClient;
 import org.junit.Before;
 import org.junit.Test;
 

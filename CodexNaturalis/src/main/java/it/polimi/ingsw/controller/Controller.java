@@ -5,8 +5,10 @@ import it.polimi.ingsw.controller.threads.ThreadMessage;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.ColoredCard;
+import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.model.player.Player;
 
+import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 
@@ -34,6 +36,7 @@ public class Controller {
     public void join(String username, UUID messageId){
         try{
             game.addPlayer(username);
+            messageQueue.add(ThreadMessage.okResponse(username, messageId));
         }catch (Exception e){
             messageQueue.add(ThreadMessage.genericError(username, messageId));
         }
@@ -65,6 +68,33 @@ public class Controller {
             messageQueue.add(ThreadMessage.genericError(username, messageId));
         }
         messageQueue.add(ThreadMessage.okResponse(username, messageId));
+    }
+ //LAB31
+    public void choosePersonalObjective(String username, Integer objId, UUID messageId){
+        try{
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
+            user.choosePersonalObjective(objId);
+            messageQueue.add(ThreadMessage.okResponse(username, messageId));
+        } catch(Exception e){
+            messageQueue.add(ThreadMessage.genericError(username, messageId));
+        }
+    }
+
+    public void getStartingObjectives(String username, UUID messageId){
+        try{
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
+            user.setStartingObjectives();
+            ArrayList<Objective> objectives = user.getStartingObjectives();
+
+            ArrayList<Integer> objectiveIds = new ArrayList<>();
+            for(Objective objective : objectives) {
+                objectiveIds.add(objective.getId());
+            }
+            
+            messageQueue.add(ThreadMessage.getStartingObjectivesResponse(username, objectiveIds, messageId));
+        } catch(Exception e){
+            messageQueue.add(ThreadMessage.genericError(username, messageId));
+        }
     }
 
 }
