@@ -7,7 +7,6 @@ public abstract class RmiClientFactory {
 
     public static RmiClient getClient() {
         playerCount++;
-        System.out.println(playerCount);
         return new RmiClient("user_%d".formatted(playerCount), "pass_%d".formatted(playerCount),"localhost", 9090);
     }
 }

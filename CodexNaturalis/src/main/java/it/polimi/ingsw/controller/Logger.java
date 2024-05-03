@@ -14,8 +14,8 @@ public abstract class Logger {
         if (msg.status() == it.polimi.ingsw.controller.threads.Status.ERROR) {
             out.print("\u001B[31m");
         }
-        out.print("[" + new Timestamp(System.currentTimeMillis()) + ":");
-        out.print(msg.status() + "]:\t");
+        out.print("[" + msg.status()  + ": ");
+        out.print(new Timestamp(System.currentTimeMillis())+ "]:\t");
         out.print("type: %s\tplayer: %s\targs: ".formatted(msg.type(), msg.player()));
         out.print(Arrays.toString(msg.args()));
         out.println("\u001B[0m");
