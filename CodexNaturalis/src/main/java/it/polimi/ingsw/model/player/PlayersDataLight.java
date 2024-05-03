@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.player;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
@@ -10,7 +12,7 @@ import java.util.*;
 //TODO: DOCUMENTATION AND CONSTRUCTOR
 
 public class PlayersDataLight {
-    private HashMap<Coordinates, Integer> board = new HashMap<>();
+    private BiMap<Coordinates, Integer> board = HashBiMap.create();
     private List<Integer> order = new ArrayList<>();
     private Map<Resource, Integer> resources = new HashMap<>();
     private List<Resource> handColor = new ArrayList<>(GameConsts.firstHandDim);
@@ -47,7 +49,7 @@ public class PlayersDataLight {
     }
 
     public void setBoard(HashMap<Coordinates, Integer> board) {
-        this.board = board;
+        this.board = HashBiMap.create(board);
     }
 
     public void setOrder(List<Integer> order) {

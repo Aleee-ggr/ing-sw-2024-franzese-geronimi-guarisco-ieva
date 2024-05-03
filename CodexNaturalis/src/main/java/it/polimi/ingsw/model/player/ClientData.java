@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.player;
 
+import com.google.common.collect.BiMap;
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.helpers.exceptions.model.ElementNotInHand;
 import it.polimi.ingsw.helpers.exceptions.model.HandFullException;
