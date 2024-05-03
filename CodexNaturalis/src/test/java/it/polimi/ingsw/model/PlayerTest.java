@@ -114,10 +114,12 @@ public class PlayerTest {
 
         player.drawFirstHand();
 
-        player.getHand()[2] = (ColoredCard) Game.getCardByID(49);
+        player.getHand()[2] = null;
+        int cardId = player.drawDecks(true).getId();
+
         player.playCard(player.getHand()[2], new Coordinates(0, 1));
         player.drawDecks(true);
-        assertNotEquals(49, player.getHand()[2].getId());
+        assertNotEquals(cardId, player.getHand()[2].getId());
     }
 
     @Test (expected = RequirementsError.class)
