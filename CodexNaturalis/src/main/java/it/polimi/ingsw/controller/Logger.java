@@ -16,7 +16,7 @@ public abstract class Logger {
         }
         out.print("[" + new Timestamp(System.currentTimeMillis()) + ":");
         out.print(msg.status() + "]:\t");
-        out.print("type: %s\targs: %s".formatted(msg.type(), msg.args()));
+        out.print("type: %s\tplayer: %s\targs: %s".formatted(msg.type(), msg.player(), msg.args()));
         out.println("\u001B[0m");
         out.flush();
     }
