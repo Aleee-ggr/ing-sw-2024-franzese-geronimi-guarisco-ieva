@@ -111,21 +111,6 @@ public record ThreadMessage(Status status, String player, String type, String[] 
     }
 
     /**
-     * Creates a ThreadMessage for requesting the username.
-     * @param username The username of the player.
-     * @return A ThreadMessage requesting the username.
-     */
-    public static ThreadMessage getUsername(String username) {
-        return new ThreadMessage(
-                Status.REQUEST,
-                username,
-                "getUsername",
-                null,
-                UUID.randomUUID()
-        );
-    }
-
-    /**
      * Creates a ThreadMessage for requesting the score map.
      * @param username The username of the player.
      * @return A ThreadMessage requesting the score map.
@@ -381,25 +366,6 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 "choosePersonalObjectiveResponse",
                 new String[]{
                         String.valueOf(correct)
-                },
-                messageUUID
-        );
-    }
-
-    /**
-     * Creates a ThreadMessage for a username response.
-     * @param username The username of the player.
-     * @param usernameResponse The username requested.
-     * @param messageUUID The UUID of the message.
-     * @return A ThreadMessage for a username response.
-     */
-    public static ThreadMessage getUsernameResponse(String username, String usernameResponse, UUID messageUUID) {
-        return new ThreadMessage(
-                Status.OK,
-                username,
-                "getUsernameResponse",
-                new String[]{
-                        usernameResponse
                 },
                 messageUUID
         );

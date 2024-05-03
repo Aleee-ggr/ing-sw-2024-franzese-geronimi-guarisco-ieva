@@ -13,7 +13,9 @@ import it.polimi.ingsw.model.player.Player;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 
+//TODO: implement exception handling
 /**
  * Main Controller class.
  * It gets messages from the GameThread and calls and changes the model.
@@ -76,7 +78,7 @@ public class Controller {
         }
         messageQueue.add(ThreadMessage.okResponse(username, messageId));
     }
- //LAB31
+
     public void choosePersonalObjective(String username, Integer objId, UUID messageId){
         try{
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
@@ -99,6 +101,19 @@ public class Controller {
             }
             
             messageQueue.add(ThreadMessage.getStartingObjectivesResponse(username, objectiveIds, messageId));
+        } catch(Exception e){
+            messageQueue.add(ThreadMessage.genericError(username, messageId));
+        }
+    }
+
+    public void getScoreMap(String username, UUID messageId){
+        try{
+            ConcurrentHashMap<Player, Integer> scoreBoard = game.getGameBoard().getScore();
+            ConcurrentHashMap<String, Integer> scoreBoardString = new ConcurrentHashMap<>();
+            for (Player player : scoreBoard.keySet()) {
+                scoreBoardString.put(player.getUsername(), scoreBoard.get(player));
+            }
+            messageQueue.add(ThreadMessage.getScoreMapResponse(username, scoreBoardString, messageId));
         } catch(Exception e){
             messageQueue.add(ThreadMessage.genericError(username, messageId));
         }

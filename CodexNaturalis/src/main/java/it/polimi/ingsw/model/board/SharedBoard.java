@@ -157,7 +157,7 @@ public class SharedBoard {
      * Retrieves a copy of the score map.
      * @return A copy of the score map.
      */
-    public Map<Player, Integer> getScore() {
+    public ConcurrentHashMap<Player, Integer> getScore() {
         return new ConcurrentHashMap<>(scoreMap); // Copy the map instead of returning the object itself
     }
 
