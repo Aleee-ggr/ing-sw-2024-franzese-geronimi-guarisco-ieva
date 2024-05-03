@@ -24,7 +24,7 @@ public class PlayerTest {
 
     @Before
     public void setUp() {
-        game = new Game();
+        game = new Game(4);
         player = new MockPlayer("", game);
         HashMap<Resource, Integer> resourceMap = new HashMap<>();
     }

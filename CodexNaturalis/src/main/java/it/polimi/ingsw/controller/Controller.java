@@ -24,15 +24,15 @@ public class Controller {
     private final BlockingQueue<ThreadMessage> messageQueue;
     private Game game;
 
-    public Controller(GameThread thread, BlockingQueue<ThreadMessage> messageQ){
+    public Controller(GameThread thread, BlockingQueue<ThreadMessage> messageQ, Integer maxPlayers){
         this.thread = thread;
         this.messageQueue = messageQ;
-        this.game = new Game();
+        this.game = new Game(maxPlayers);
     }
 
     //TODO: differentiate error responses
     public void createGame(String username, Integer playerNum, UUID gameId, UUID messageId){
-        game = new Game();
+        game = new Game(playerNum);
         messageQueue.add(ThreadMessage.okResponse(username, messageId));
     }
 

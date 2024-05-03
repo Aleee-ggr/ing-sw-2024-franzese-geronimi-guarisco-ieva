@@ -22,7 +22,7 @@ public class PlayerBuilder {
     }
 
     public Player build() {
-        MockPlayer p = new MockPlayer(username, new Game()); //to check
+        MockPlayer p = new MockPlayer(username, new Game(4)); //to check
         for (Resource res : resources.keySet()) {
                 p.setResource(res, resources.get(res));
         }

@@ -19,7 +19,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class ObjectiveTest {
 
-    public static Game game = new Game();
+    public static Game game = new Game(4);
     @Test
     public void testResources() throws InvalidTypeException {
         Map<Resource, Integer> requirements = new HashMap<>() {{

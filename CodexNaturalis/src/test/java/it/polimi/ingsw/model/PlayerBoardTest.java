@@ -21,7 +21,7 @@ public class PlayerBoardTest {
     @Before
     public void setup() {
         board = new PlayerBoard(FullDeck.getFullStartingDeck().draw(), p);
-        p = new MockPlayer("mock", new Game());
+        p = new MockPlayer("mock", new Game(4));
     }
 
     @Test

@@ -45,6 +45,7 @@ public class RmiClient extends Client{
      */
     public RmiClient(String playerUsername, String password, String serverAddress, int serverPort) {
         super(playerUsername, password, serverAddress, serverPort);
+
         try {
             Registry registry = LocateRegistry.getRegistry();
             server = (RmiServerInterface) registry.lookup(RmiServer.getName());
@@ -101,7 +102,13 @@ public class RmiClient extends Client{
      * @throws RemoteException If a remote communication error occurs.
      */
     public UUID newGame(int players) throws ServerConnectionException, RemoteException {
-        return server.newGame(players);
+        boolean validCredentials = server.checkCredentials(data.getUsername(), data.getPassword());
+        UUID game = null;
+        if (validCredentials) {
+            game = server.newGame(players);
+            server.join(game, data.getUsername());
+        }
+        return game;
     }
 
     /**
@@ -110,9 +117,12 @@ public class RmiClient extends Client{
      * @throws ServerConnectionException If there is an issue connecting to the server.
      * @throws RemoteException If a remote communication error occurs.
      */
-    public void joinGame(UUID game) throws ServerConnectionException, RemoteException {
-        server.join(game, data.getUsername());
-        this.setGameId(game);
+    public boolean joinGame(UUID game) throws ServerConnectionException, RemoteException {
+        boolean success = server.join(game, data.getUsername());
+        if (success) {
+            this.setGameId(game);
+        }
+        return success;
     }
 
     /**

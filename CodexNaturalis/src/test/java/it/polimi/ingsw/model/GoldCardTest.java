@@ -15,7 +15,7 @@ public class GoldCardTest {
 
     @Before
     public void setUp() {
-        player = new Player("test", new Game());
+        player = new Player("test", new Game(4));
         player.updateResourcesValue(Resource.FUNGI, 4);
         player.updateResourcesValue(Resource.ANIMAL, 9);
     }

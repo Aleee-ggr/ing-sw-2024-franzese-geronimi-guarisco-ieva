@@ -20,7 +20,7 @@ public class GameTest {
 
     @Before
     public void beforeEach() {
-         game = new Game();
+         game = new Game(4);
   ;  }
     @Test
     public void addPlayer_NewUsernames_FullGame() throws ExistingUsernameException, TooManyPlayersException {

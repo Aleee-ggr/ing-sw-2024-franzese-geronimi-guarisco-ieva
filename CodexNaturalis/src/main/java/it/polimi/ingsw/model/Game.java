@@ -43,6 +43,7 @@ public class Game {
     private int numPlayers = 0;
     private final List<Player> players = new ArrayList<>();
     private SharedBoard gameBoard;
+    private int maxPlayers;
 
     /**
      * Get the card from the corresponding id
@@ -59,8 +60,9 @@ public class Game {
     /**
      * Constructor for the Game class.
      */
-    public Game() {
+    public Game(int maxPlayers) {
         resetBoard();
+        this.maxPlayers = maxPlayers;
     }
 
     /**
@@ -111,15 +113,15 @@ public class Game {
      * the exceptions are managed by the caller.
      * */
     public void addPlayer(String playerUsername) throws TooManyPlayersException, ExistingUsernameException{ /*TODO: the caller needs to manage these exception*/
-        if(players.size() >= GameConsts.maxPlayersNum) {
+        if(this.numPlayers >= maxPlayers) {
             throw new TooManyPlayersException("Too Many Players");
         }
-        Player toAdd = new Player(playerUsername, this);
         for(Player p : players){
-            if(Objects.equals(p.getUsername(), playerUsername)){
+            if(p.getUsername().equals(playerUsername)){
                 throw new ExistingUsernameException("Username Already Exists in this game");
             }
         }
+        Player toAdd = new Player(playerUsername, this);
         players.add(toAdd);
         this.numPlayers += 1;
     }

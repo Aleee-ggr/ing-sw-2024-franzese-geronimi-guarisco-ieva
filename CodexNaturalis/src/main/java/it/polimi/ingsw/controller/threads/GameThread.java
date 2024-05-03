@@ -15,15 +15,15 @@ import java.util.concurrent.BlockingQueue;
  * */
 public class GameThread extends Thread {
     private final BlockingQueue<ThreadMessage> messageQueue;
-    private final Integer playerNum;
+    private final Integer maxPlayers;
     private boolean running = true;
     private final Controller controller;
     private Game game;
 
-    public GameThread(BlockingQueue<ThreadMessage> messageQueue, Integer playerNum) {
+    public GameThread(BlockingQueue<ThreadMessage> messageQueue, Integer maxPlayers) {
         this.messageQueue = messageQueue;
-        this.playerNum = playerNum;
-        this.controller = new Controller(this, messageQueue);
+        this.maxPlayers = maxPlayers;
+        this.controller = new Controller(this, messageQueue, maxPlayers);
     }
 
     @Override
