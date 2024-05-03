@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.GameConsts;
+import it.polimi.ingsw.controller.Logger;
 import it.polimi.ingsw.controller.threads.GameThread;
 import it.polimi.ingsw.controller.threads.Status;
 import it.polimi.ingsw.controller.threads.ThreadMessage;
@@ -88,6 +89,7 @@ public abstract class Server {
             BlockingQueue<ThreadMessage> queue = threadMessages.get(game);
             UUID messageUUID = message.messageUUID();
             queue.add(message);
+            Logger.log(message);
 
             ThreadMessage response;
             boolean responded = false;
@@ -95,6 +97,7 @@ public abstract class Server {
                 response = queue.peek();
                 if (response != null && response.status() != Status.REQUEST) {
                     responded = response.messageUUID().equals(messageUUID);
+                    Logger.log(response);
                 }
             } while (!responded);
         }
