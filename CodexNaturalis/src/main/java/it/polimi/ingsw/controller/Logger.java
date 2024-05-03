@@ -21,10 +21,4 @@ public abstract class Logger {
         out.println("\u001B[0m");
         out.flush();
     }
-
-    private enum Status {
-        INFO,
-        WARNING,
-        FATAL,
-    }
 }
