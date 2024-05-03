@@ -103,6 +103,7 @@ public class RmiServer extends Server implements RmiServerInterface {
         return createGame(player_count);
     }
 
+
     @Override
     public boolean join(UUID game, String player) throws RemoteException {
         ThreadMessage message = ThreadMessage.join(

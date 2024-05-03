@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
@@ -22,7 +21,7 @@ public class PlayerBoardTest {
     @Before
     public void setup() {
         board = new PlayerBoard(FullDeck.getFullStartingDeck().draw(), p);
-        p = new MockPlayer("mock", new Game(UUID.randomUUID()));
+        p = new MockPlayer("mock", new Game());
     }
 
     @Test

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.helpers.DeckFactory;
 import it.polimi.ingsw.helpers.PlayerBuilder;
 import it.polimi.ingsw.helpers.builders.FunctionBuilder;
 import it.polimi.ingsw.helpers.exceptions.model.InvalidTypeException;
@@ -9,12 +8,10 @@ import it.polimi.ingsw.model.board.PlayerBoard;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.player.Player;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
@@ -22,7 +19,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class ObjectiveTest {
 
-    public static Game game = new Game(new UUID(1,1));
+    public static Game game = new Game();
     @Test
     public void testResources() throws InvalidTypeException {
         Map<Resource, Integer> requirements = new HashMap<>() {{

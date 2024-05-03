@@ -9,13 +9,11 @@ import it.polimi.ingsw.model.cards.ColoredCard;
 import it.polimi.ingsw.model.cards.GoldCard;
 import it.polimi.ingsw.model.cards.StdCard;
 import it.polimi.ingsw.model.enums.Resource;
-import it.polimi.ingsw.model.objectives.Objective;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
-import java.util.UUID;
 
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
@@ -26,7 +24,7 @@ public class PlayerTest {
 
     @Before
     public void setUp() {
-        game = new Game(UUID.randomUUID());
+        game = new Game();
         player = new MockPlayer("", game);
         HashMap<Resource, Integer> resourceMap = new HashMap<>();
     }

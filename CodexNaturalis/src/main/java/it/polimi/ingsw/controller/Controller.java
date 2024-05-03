@@ -2,6 +2,8 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.threads.GameThread;
 import it.polimi.ingsw.controller.threads.ThreadMessage;
+import it.polimi.ingsw.helpers.exceptions.model.ExistingUsernameException;
+import it.polimi.ingsw.helpers.exceptions.model.TooManyPlayersException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.ColoredCard;
@@ -25,11 +27,12 @@ public class Controller {
     public Controller(GameThread thread, BlockingQueue<ThreadMessage> messageQ){
         this.thread = thread;
         this.messageQueue = messageQ;
+        this.game = new Game();
     }
 
     //TODO: differentiate error responses
     public void createGame(String username, Integer playerNum, UUID gameId, UUID messageId){
-        game = new Game(gameId);
+        game = new Game();
         messageQueue.add(ThreadMessage.okResponse(username, messageId));
     }
 
@@ -37,8 +40,12 @@ public class Controller {
         try{
             game.addPlayer(username);
             messageQueue.add(ThreadMessage.okResponse(username, messageId));
-        }catch (Exception e){
-            messageQueue.add(ThreadMessage.genericError(username, messageId));
+        }catch (TooManyPlayersException e){
+            messageQueue.add(ThreadMessage.genericError(username, messageId, "Too Many Players"));
+        } catch (ExistingUsernameException e) {
+            messageQueue.add(ThreadMessage.genericError(username, messageId, "Username already exists"));
+        } catch (Exception e) {
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
     }
 

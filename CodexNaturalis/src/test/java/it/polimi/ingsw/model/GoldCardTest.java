@@ -9,14 +9,13 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class GoldCardTest {
     private Player player;
 
     @Before
     public void setUp() {
-        player = new Player("test", new Game(UUID.randomUUID()));
+        player = new Player("test", new Game());
         player.updateResourcesValue(Resource.FUNGI, 4);
         player.updateResourcesValue(Resource.ANIMAL, 9);
     }

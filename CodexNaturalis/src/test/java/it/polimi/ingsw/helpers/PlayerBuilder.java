@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.player.Player;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class PlayerBuilder {
     Map<Resource, Integer> resources = new HashMap<>();
@@ -23,7 +22,7 @@ public class PlayerBuilder {
     }
 
     public Player build() {
-        MockPlayer p = new MockPlayer(username, new Game(new UUID(1,1))); //to check
+        MockPlayer p = new MockPlayer(username, new Game()); //to check
         for (Resource res : resources.keySet()) {
                 p.setResource(res, resources.get(res));
         }

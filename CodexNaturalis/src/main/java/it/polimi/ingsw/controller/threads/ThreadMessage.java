@@ -316,6 +316,23 @@ public record ThreadMessage(Status status, String player, String type, String[] 
     }
 
     /**
+     * Creates a ThreadMessage for a generic error response.
+     * @param username The username of the player.
+     * @param messageUUID The UUID of the message.
+     * @param cause the cause of the error
+     * @return A ThreadMessage for a generic error response.
+     */
+    public static ThreadMessage genericError(String username, UUID messageUUID, String cause) {
+        return new ThreadMessage(
+                Status.ERROR,
+                username,
+                "genericError",
+                new String[] {cause},
+                messageUUID
+        );
+    }
+
+    /**
      * Creates a ThreadMessage for an OK response.
      * @param username The username of the player.
      * @param messageUUID The UUID of the message.

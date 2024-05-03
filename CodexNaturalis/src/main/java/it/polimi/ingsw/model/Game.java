@@ -40,7 +40,6 @@ public class Game {
     Deck<StdCard> gameStdDeck;
     Deck<Objective> gameObjDeck;
     Deck<StartingCard> gameStartingDeck;
-    private final UUID id;
     private int numPlayers = 0;
     private final List<Player> players = new ArrayList<>();
     private SharedBoard gameBoard;
@@ -59,19 +58,9 @@ public class Game {
     }
     /**
      * Constructor for the Game class.
-     * @param id UUID created by the Server.
      */
-    public Game(UUID id) {
-        this.id = id;
+    public Game() {
         resetBoard();
-    }
-
-    /**
-     * Getter for the Game id.
-     * @return the id of the Game as UUID
-     */
-    public UUID getId() {
-        return id;
     }
 
     /**
