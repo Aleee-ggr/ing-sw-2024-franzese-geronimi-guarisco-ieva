@@ -26,6 +26,7 @@ public abstract class Card {
 
     public Card(int id, Corner[] frontCorners, boolean isColored){
         this.isColored = isColored;
+        this.frontSideUp = true;
         this.id = id;
         this.frontCorners = frontCorners;
     }
@@ -43,10 +44,10 @@ public abstract class Card {
      * @return id of the card.
      */
     public int getId(){
-        if (!frontSideUp){
-            return -id;
+        if (frontSideUp){
+            return id;
         }
-        return id;
+        return -id;
     }
 
     /**
