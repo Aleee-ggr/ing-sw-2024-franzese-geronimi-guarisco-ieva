@@ -45,7 +45,7 @@ public class SocketServer extends Server {
                 socket = server.accept();
                 System.out.println("Accepted connection from " + socket.getRemoteSocketAddress());
                 ClientHandler clientHandler = new ClientHandler(socket, threadMessages);
-                new Thread(clientHandler).start();
+                clientHandler.start();
             } catch (IOException e) {
                 System.out.println("Connection error accept connection: " + e.getMessage());
             }

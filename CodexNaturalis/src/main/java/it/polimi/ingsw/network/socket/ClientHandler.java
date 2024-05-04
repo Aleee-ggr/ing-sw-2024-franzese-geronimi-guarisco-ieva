@@ -18,7 +18,7 @@ import java.util.concurrent.BlockingQueue;
  * It provides methods to send and receive objects over the network.
  * @author Samuele Franzese
  */
-public class ClientHandler implements Runnable {
+public class ClientHandler extends Thread {
     private Socket socket;
     private ObjectInputStream input;
     private ObjectOutputStream output;
