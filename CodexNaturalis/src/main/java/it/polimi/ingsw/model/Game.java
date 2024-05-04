@@ -11,6 +11,8 @@ import it.polimi.ingsw.model.player.Player;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static java.lang.Math.abs;
+
 /**
  * Game Class for creating a game with id, players, numPlayers and SharedBoard.
  * @author Alessio Guarisco
@@ -51,7 +53,7 @@ public class Game {
      * @return the card corresponding to the id
      */
     public static Card getCardByID(Integer id) {
-        return cardID.get(id);
+        return cardID.get(abs(id));
     }
 
     public static Objective getObjectiveByID(Integer id) {

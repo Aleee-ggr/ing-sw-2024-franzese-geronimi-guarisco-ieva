@@ -39,9 +39,13 @@ public abstract class Card {
 
     /**
      * Returns the identifier of the card.
+     * the id of the card is positive if the card is front side up, else its negative
      * @return id of the card.
      */
     public int getId(){
+        if (!frontSideUp){
+            return -id;
+        }
         return id;
     }
 
