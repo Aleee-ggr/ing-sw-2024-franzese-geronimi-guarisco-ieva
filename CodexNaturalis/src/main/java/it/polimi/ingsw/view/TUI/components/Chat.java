@@ -2,11 +2,12 @@ package it.polimi.ingsw.view.TUI.components;
 
 import java.util.ArrayList;
 
-public class Chat {
+public class Chat implements Component {
     public static final int chatHeight = 8;
     public static final int chatWidth = 63;
     private final FixedSizeList<String> chat = new FixedSizeList<>(chatHeight);
 
+    @Override
     public String[] toStringArray() {
         ArrayList<String> out = new ArrayList<>(chatHeight);
 

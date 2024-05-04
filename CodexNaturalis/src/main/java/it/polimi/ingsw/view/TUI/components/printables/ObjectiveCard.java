@@ -2,10 +2,11 @@ package it.polimi.ingsw.view.TUI.components.printables;
 
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
+import it.polimi.ingsw.view.TUI.components.Component;
 
 import java.util.Map;
 
-public class ObjectiveCard {
+public class ObjectiveCard implements Component {
     private static final String resourceObjective = """
             ┏━━━━━━━━━━━━━┓
             ┃     %c %c     ┃
@@ -27,10 +28,6 @@ public class ObjectiveCard {
     public ObjectiveCard(Objective objective) {
         this.objective = objective;
         card = setCard(objective);
-    }
-
-    public String[] toStringArray() {
-        return this.toString().split("\n");
     }
 
     @Override

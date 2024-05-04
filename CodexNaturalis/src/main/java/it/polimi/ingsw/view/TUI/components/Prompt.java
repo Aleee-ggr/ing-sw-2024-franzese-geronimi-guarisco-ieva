@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.TUI.components;
 
-public class Prompt {
+public class Prompt implements Component {
     private final String username;
 
     public Prompt(String username) {

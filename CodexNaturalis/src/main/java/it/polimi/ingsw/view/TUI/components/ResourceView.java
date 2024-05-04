@@ -7,7 +7,7 @@ import java.util.Map;
 
 import static java.lang.Math.min;
 
-public class ResourceView {
+public class ResourceView implements Component {
     public static final int width = 73;
     private Map<Resource, Integer> resourceCount;
     private final String username;
@@ -29,10 +29,6 @@ public class ResourceView {
 
     public void setResource(Resource resource, Integer count) {
         this.resourceCount.put(resource, count);
-    }
-
-    public String[] toStringArray() {
-        return toString().split("\n");
     }
 
     @Override

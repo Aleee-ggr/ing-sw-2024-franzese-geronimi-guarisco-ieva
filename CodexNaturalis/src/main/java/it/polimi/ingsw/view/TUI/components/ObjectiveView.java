@@ -4,7 +4,7 @@ package it.polimi.ingsw.view.TUI.components;
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.view.TUI.components.printables.ObjectiveCard;
 
-public class ObjectiveView {
+public class ObjectiveView implements Component {
     public static final String PLAYER = "player";
     public static final String SHARED = "shared";
     private final ObjectiveCard personal;
@@ -37,11 +37,7 @@ public class ObjectiveView {
         contentHeight = 5 + cardHeight;
         marginTop = (height - contentHeight) / 2;
     }
-
-    public String[] toStringArray() {
-        return toString().split("\n");
-    }
-
+    
     public static int getWidth() {
         return width;
     }
