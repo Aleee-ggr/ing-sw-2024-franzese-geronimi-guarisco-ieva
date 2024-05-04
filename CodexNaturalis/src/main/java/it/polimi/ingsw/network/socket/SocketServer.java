@@ -42,18 +42,16 @@ public class SocketServer extends Server {
     public void acceptConnection() {
         while(true) {
             try {
-                ClientHandler clientHandler = new ClientHandler(server.accept(), threadMessages);
+                socket = server.accept();
+                System.out.println("Accepted connection from " + socket.getRemoteSocketAddress());
+                ClientHandler clientHandler = new ClientHandler(socket, threadMessages);
                 new Thread(clientHandler).start();
             } catch (IOException e) {
-                System.out.println("Connection error: " + e.getMessage());
+                System.out.println("Connection error accept connection: " + e.getMessage());
             }
+        }
+    }
 
-            if (!socket.isClosed()) {
-                try {
-                    socket.close();
-                } catch (IOException ignored) {
-                }
-            }
     public void stopServer() {
         try {
             server.close();
