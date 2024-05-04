@@ -122,4 +122,36 @@ public class Controller {
         }
     }
 
+    public void getHand(String username, UUID messageId) {
+        try {
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
+
+            ColoredCard[] hand = user.getHand();
+            ArrayList<Integer> handIds = new ArrayList<>();
+
+            for (ColoredCard card : hand) {
+                handIds.add(card.getId());
+            }
+
+            messageQueue.add(ThreadMessage.getHandResponse(username, handIds, messageId));
+        } catch (Exception e) {
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+        }
+    }
+
+    public void getCommonObjectives(String username, UUID messageId){
+        try{
+            Objective[] objectives = game.getGameBoard().getGlobalObjectives();
+            ArrayList<Integer> objectiveIds = new ArrayList<>();
+
+            for(Objective objective : objectives) {
+                objectiveIds.add(objective.getId());
+            }
+
+            messageQueue.add(ThreadMessage.getCommonObjectivesResponse(username, objectiveIds, messageId));
+        } catch(Exception e){
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+        }
+    }
+    
 }
