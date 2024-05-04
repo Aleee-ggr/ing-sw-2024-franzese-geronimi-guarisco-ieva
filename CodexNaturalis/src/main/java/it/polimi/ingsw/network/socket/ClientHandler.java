@@ -49,7 +49,8 @@ public class ClientHandler implements Runnable {
                     handleMessage(message);
                 }
             } catch (IOException | ClassNotFoundException e) {
-                System.out.println("Error: " + e.getMessage());
+                System.out.print("Error: ");
+                e.printStackTrace();
             } finally {
                 try {
                     input.close();

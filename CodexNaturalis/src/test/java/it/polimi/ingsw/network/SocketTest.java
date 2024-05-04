@@ -22,10 +22,10 @@ public class SocketTest {
     }
 
     @Test
-    public void connectionTest() {
+    public void connectionTest() throws InterruptedException {
         SocketClient client = new SocketClient("prova", "pippo", "localhost", 9090);
         client.startConnection("localhost", 9090);
-
+        Thread.sleep(1000);
         try {
             client.stopConnection();
         } catch (IOException e) {

@@ -40,8 +40,9 @@ public class SocketClient extends Client {
     public boolean startConnection(String serverAddress, int serverPort) {
         try {
             client = new Socket(serverAddress, serverPort);
-            input = new ObjectInputStream(client.getInputStream());
+
             output = new ObjectOutputStream(client.getOutputStream());
+            input = new ObjectInputStream(client.getInputStream());
             return true;
         } catch (IOException e){
             System.out.println("Error with the connection:" + e.getMessage());
