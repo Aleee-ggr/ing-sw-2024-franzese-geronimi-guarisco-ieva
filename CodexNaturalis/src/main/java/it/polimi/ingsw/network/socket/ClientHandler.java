@@ -45,8 +45,10 @@ public class ClientHandler extends Thread {
     public void run() {
             try {
                 while (!this.socket.isClosed()) {
-                    GenericRequestMessage message = (GenericRequestMessage) input.readObject();
-                    handleMessage(message);
+                    if (input.available() > 0) {
+                        GenericRequestMessage message = (GenericRequestMessage) input.readObject();
+                        handleMessage(message);
+                    }
                 }
             } catch (IOException | ClassNotFoundException e) {
                 System.out.print("Error: ");

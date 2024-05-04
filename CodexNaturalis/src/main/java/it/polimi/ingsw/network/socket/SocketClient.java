@@ -43,6 +43,7 @@ public class SocketClient extends Client {
 
             output = new ObjectOutputStream(client.getOutputStream());
             input = new ObjectInputStream(client.getInputStream());
+
             return true;
         } catch (IOException e){
             System.out.println("Error with the connection:" + e.getMessage());

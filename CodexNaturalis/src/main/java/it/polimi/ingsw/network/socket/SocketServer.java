@@ -44,10 +44,10 @@ public class SocketServer extends Server {
             try {
                 socket = server.accept();
                 System.out.println("Accepted connection from " + socket.getRemoteSocketAddress());
-                ClientHandler clientHandler = new ClientHandler(socket, threadMessages);
-                clientHandler.start();
+                new ClientHandler(socket, threadMessages).start();
             } catch (IOException e) {
                 System.out.println("Connection error accept connection: " + e.getMessage());
+                e.printStackTrace();
             }
         }
     }
