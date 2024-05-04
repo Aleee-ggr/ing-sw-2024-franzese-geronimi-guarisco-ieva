@@ -15,6 +15,17 @@ public class SocketServer extends Server {
     private ServerSocket server;
     private Socket socket;
 
+    public SocketServer(int port) {
+        System.out.println("Starting server...");
+        try {
+            server = new ServerSocket(port);
+            System.out.println("Started server on port " + port);
+            new Thread(this::acceptConnection).start();
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
     /**
      * Starts the server on the specified port.
      *
@@ -22,11 +33,7 @@ public class SocketServer extends Server {
      * @throws IOException if an I/O error occurs while creating the server socket
      */
     public void startServer(int port) throws IOException{
-        try {
-            server = new ServerSocket(port);
-        } catch (IOException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+
     }
 
     /**
@@ -47,6 +54,13 @@ public class SocketServer extends Server {
                 } catch (IOException ignored) {
                 }
             }
+    public void stopServer() {
+        try {
+            server.close();
+            socket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
+
