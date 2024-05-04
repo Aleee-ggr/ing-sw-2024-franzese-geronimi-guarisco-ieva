@@ -37,13 +37,15 @@ public class SocketClient extends Client {
      * @param serverAddress The address of the server.
      * @param serverPort The port of the server.
      */
-    private void startConnection(String serverAddress, int serverPort) {
+    public boolean startConnection(String serverAddress, int serverPort) {
         try {
             client = new Socket(serverAddress, serverPort);
             input = new ObjectInputStream(client.getInputStream());
             output = new ObjectOutputStream(client.getOutputStream());
+            return true;
         } catch (IOException e){
             System.out.println("Error with the connection:" + e.getMessage());
+            return false;
         }
     }
 
