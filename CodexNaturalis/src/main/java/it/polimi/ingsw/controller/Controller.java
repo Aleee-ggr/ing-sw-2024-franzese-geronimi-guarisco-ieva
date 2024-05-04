@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.threads.GameThread;
 import it.polimi.ingsw.controller.threads.ThreadMessage;
 import it.polimi.ingsw.helpers.exceptions.model.ExistingUsernameException;
 import it.polimi.ingsw.helpers.exceptions.model.TooManyPlayersException;
+import it.polimi.ingsw.helpers.exceptions.model.UnrecognisedCardException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.ColoredCard;
@@ -15,7 +16,6 @@ import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 
-//TODO: implement exception handling
 /**
  * Main Controller class.
  * It gets messages from the GameThread and calls and changes the model.
@@ -32,7 +32,6 @@ public class Controller {
         this.game = new Game(maxPlayers);
     }
 
-    //TODO: differentiate error responses
     public void createGame(String username, Integer playerNum, UUID gameId, UUID messageId){
         game = new Game(playerNum);
         messageQueue.add(ThreadMessage.okResponse(username, messageId));
@@ -65,14 +64,18 @@ public class Controller {
             Integer cardId = card.getId();
             messageQueue.add(ThreadMessage.drawResponse(username, cardId, messageId));
         } catch (Exception e){
-            messageQueue.add(ThreadMessage.genericError(username, messageId));
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
     }
 
     public void placeCard(String username, Coordinates coordinates, Integer cardId, UUID messageId){
-        try{
+        try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
             user.getPlayerBoard().placeCard(Game.getCardByID(cardId), coordinates);
+        }catch(IndexOutOfBoundsException e){
+            messageQueue.add(ThreadMessage.genericError(username, messageId, "Invalid card placing index"));
+        }catch(UnrecognisedCardException e){
+            messageQueue.add(ThreadMessage.genericError(username, messageId, "Unrecognised card"));
         }catch (Exception e){
             messageQueue.add(ThreadMessage.genericError(username, messageId));
         }
@@ -85,7 +88,7 @@ public class Controller {
             user.choosePersonalObjective(objId);
             messageQueue.add(ThreadMessage.okResponse(username, messageId));
         } catch(Exception e){
-            messageQueue.add(ThreadMessage.genericError(username, messageId));
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
     }
 
@@ -102,12 +105,12 @@ public class Controller {
             
             messageQueue.add(ThreadMessage.getStartingObjectivesResponse(username, objectiveIds, messageId));
         } catch(Exception e){
-            messageQueue.add(ThreadMessage.genericError(username, messageId));
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
     }
 
     public void getScoreMap(String username, UUID messageId){
-        try{
+        try {
             ConcurrentHashMap<Player, Integer> scoreBoard = game.getGameBoard().getScore();
             ConcurrentHashMap<String, Integer> scoreBoardString = new ConcurrentHashMap<>();
             for (Player player : scoreBoard.keySet()) {
@@ -115,7 +118,7 @@ public class Controller {
             }
             messageQueue.add(ThreadMessage.getScoreMapResponse(username, scoreBoardString, messageId));
         } catch(Exception e){
-            messageQueue.add(ThreadMessage.genericError(username, messageId));
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
     }
 
