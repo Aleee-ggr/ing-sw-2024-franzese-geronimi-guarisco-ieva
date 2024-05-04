@@ -9,16 +9,12 @@ import it.polimi.ingsw.view.TUI.RotateBoard;
 import java.util.Map;
 
 
-public class MiniBoard {
+public class MiniBoard implements Component{
     public static final int boardHeight = 8;
     public static final int boardWidth = 29;
     private int singleBoardWidth = 9; //TODO: refactor to have variable width
     private final Character[][] boardToPrint = new Character[singleBoardWidth][boardHeight];
     private final String username;
-
-    public String[] toStringArray() {
-        return toString().split("\n");
-    }
 
     public MiniBoard(String username) {
         this.username = username;

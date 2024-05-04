@@ -9,7 +9,7 @@ import it.polimi.ingsw.view.TUI.components.printables.PrintCards;
 import java.util.ArrayList;
 
 //TODO:
-public class HandView {
+public class HandView implements Component{
     public static final int panelHeight = 22;
     public static final int panelWidth = 19;
 

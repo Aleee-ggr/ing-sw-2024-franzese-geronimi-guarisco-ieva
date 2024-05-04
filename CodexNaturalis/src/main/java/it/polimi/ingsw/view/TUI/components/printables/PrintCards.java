@@ -6,8 +6,9 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.ColoredCard;
 import it.polimi.ingsw.model.cards.Corner;
 import it.polimi.ingsw.model.cards.GoldCard;
+import it.polimi.ingsw.view.TUI.components.Component;
 
-public class PrintCards {
+public class PrintCards implements Component {
     private final ColoredCard card;
 
     private final String cardString;
@@ -17,9 +18,6 @@ public class PrintCards {
         cardString = setCard(card);
     }
 
-    public String[] toStringArray() {
-        return this.toString().split("\n");
-    }
 
     @Override
     public String toString()  {

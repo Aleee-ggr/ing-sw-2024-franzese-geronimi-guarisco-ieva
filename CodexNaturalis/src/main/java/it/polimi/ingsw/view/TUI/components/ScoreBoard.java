@@ -6,7 +6,7 @@ import it.polimi.ingsw.network.Client;
 
 import java.util.ArrayList;
 
-public class ScoreBoard {
+public class ScoreBoard implements Component{
     public static final int scoreHeight = 5;
     public static final int scoreWidth = 19;
     private final ArrayList<String> scoreBoard = new ArrayList<>(scoreHeight);
