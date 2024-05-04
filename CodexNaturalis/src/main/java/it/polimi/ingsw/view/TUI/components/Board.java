@@ -30,6 +30,12 @@ public class Board implements Component {
         this.center = center;
     }
 
+    public void moveCenter(int x, int y) {
+        this.center = center
+                .horizontal(x)
+                .vertical(y);
+    }
+    
     public void compute() {
         List<Integer> cardPlacementList = Client.getData().getClientPlacingOrder();
         BiMap<Coordinates, Integer> cardPlacementMap = HashBiMap.create(Client.getData().getClientBoard());
