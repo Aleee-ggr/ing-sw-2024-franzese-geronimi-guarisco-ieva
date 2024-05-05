@@ -18,6 +18,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public record ThreadMessage(Status status, String player, String type, String[] args, UUID messageUUID) {
 
+    //ThreadMessage with generic response
+
     /**
      * Creates a new message to request the creation of a game.
      * @param username The username of the player making the request.
@@ -54,22 +56,27 @@ public record ThreadMessage(Status status, String player, String type, String[] 
     }
 
     /**
-     * Creates a new message to request choosing a personal objective.
+     * Creates a new message to request placing a card.
      * @param username The username of the player making the request.
-     * @param objectiveId The ID of the objective chosen.
-     * @return A new ThreadMessage to choose a personal objective.
+     * @param coordinates The coordinates where the card will be placed.
+     * @param cardId The ID of the card to be placed.
+     * @return A new ThreadMessage to place a card.
      */
-    public static ThreadMessage choosePersonalObjective (String username, Integer objectiveId) {
+    public static ThreadMessage placeCard(String username, Coordinates coordinates, Integer cardId) {
         return new ThreadMessage(
                 Status.REQUEST,
                 username,
-                "choosePersonalObjective",
-                new String[]{
-                        objectiveId.toString()
+                "place",
+                new String[] {
+                        coordinates.x().toString(),
+                        coordinates.y().toString(),
+                        cardId.toString()
                 },
                 UUID.randomUUID()
         );
     }
+
+    //ThreadMessage with specific response
 
     /**
      * Creates a new message to request drawing a card.
@@ -90,21 +97,18 @@ public record ThreadMessage(Status status, String player, String type, String[] 
     }
 
     /**
-     * Creates a new message to request placing a card.
+     * Creates a new message to request choosing a personal objective.
      * @param username The username of the player making the request.
-     * @param coordinates The coordinates where the card will be placed.
-     * @param cardId The ID of the card to be placed.
-     * @return A new ThreadMessage to place a card.
+     * @param objectiveId The ID of the objective chosen.
+     * @return A new ThreadMessage to choose a personal objective.
      */
-    public static ThreadMessage placeCard(String username, Coordinates coordinates, Integer cardId) {
+    public static ThreadMessage choosePersonalObjective (String username, Integer objectiveId) {
         return new ThreadMessage(
                 Status.REQUEST,
                 username,
-                "place",
-                new String[] {
-                        coordinates.x().toString(),
-                        coordinates.y().toString(),
-                        cardId.toString()
+                "choosePersonalObjective",
+                new String[]{
+                        objectiveId.toString()
                 },
                 UUID.randomUUID()
         );
@@ -284,21 +288,9 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         );
     }
 
-    /**
-     * Creates a ThreadMessage for a generic error response.
-     * @param username The username of the player.
-     * @param messageUUID The UUID of the message.
-     * @return A ThreadMessage for a generic error response.
-     */
-    public static ThreadMessage genericError(String username, UUID messageUUID) {
-        return new ThreadMessage(
-                Status.ERROR,
-                username,
-                "genericError",
-                null,
-                messageUUID
-        );
-    }
+
+
+    //generic Responses
 
     /**
      * Creates a ThreadMessage for a generic error response.
@@ -332,6 +324,9 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 messageUUID
         );
     }
+
+
+    //specific Responses
 
     /**
      * Creates a ThreadMessage for a draw response.
@@ -397,54 +392,6 @@ public record ThreadMessage(Status status, String player, String type, String[] 
     }
 
     /**
-     * Creates a ThreadMessage for a valid placements response.
-     * @param username The username of the player.
-     * @param validPlacements A set of valid placements represented by coordinates.
-     * @param messageUUID The UUID of the message.
-     * @return A ThreadMessage for a valid placements response.
-     */
-    public static ThreadMessage getValidPlacementsResponse(String username, Set<Coordinates> validPlacements, UUID messageUUID) {
-        String[] args = new String[validPlacements.size()];
-
-        int index = 0;
-        for (Coordinates coordinates : validPlacements) {
-            args[index] = coordinates.x() + "," + coordinates.y();
-        }
-
-        return new ThreadMessage(
-                Status.OK,
-                username,
-                "getValidPlacementsResponse",
-                args,
-                messageUUID
-        );
-    }
-
-    /**
-     * Creates a ThreadMessage for a last placed cards response.
-     * @param username The username of the player.
-     * @param lastPlacedCards A Deque of last placed card IDs.
-     * @param messageUUID The UUID of the message.
-     * @return A ThreadMessage for a last placed cards response.
-     */
-    public static ThreadMessage getLastPlacedCardsResponse(String username, Deque<Integer> lastPlacedCards, UUID messageUUID) {
-        String[] args = new String[lastPlacedCards.size()];
-        int index = 0;
-
-        for (Integer cardId : lastPlacedCards) {
-            args[index] = cardId.toString();
-        }
-
-        return new ThreadMessage(
-                Status.OK,
-                username,
-                "getLastPlacedCardsResponse",
-                args,
-                messageUUID
-        );
-    }
-
-    /**
      * Creates a ThreadMessage for a hand response.
      * @param username The username of the player.
      * @param handIds An ArrayList of hand IDs.
@@ -462,52 +409,6 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 Status.OK,
                 username,
                 "getHandResponse",
-                args,
-                messageUUID
-        );
-    }
-
-    /**
-     * Creates a ThreadMessage for a hand color response.
-     * @param username The username of the player.
-     * @param handColors An ArrayList of hand colors.
-     * @param messageUUID The UUID of the message.
-     * @return A ThreadMessage for a hand color response.
-     */
-    public static ThreadMessage getHandColorResponse(String username, ArrayList<Resource> handColors, UUID messageUUID) {
-        String[] args = new String[handColors.size()];
-
-        for (int i = 0; i < handColors.size(); i++) {
-            args[i] = handColors.get(i).toString();
-        }
-
-        return new ThreadMessage(
-                Status.OK,
-                username,
-                "getHandColorResponse",
-                args,
-                messageUUID
-        );
-    }
-
-    /**
-     * Creates a ThreadMessage for a visible card response.
-     * @param username The username of the player.
-     * @param cardId An ArrayList of card IDs.
-     * @param messageUUID The UUID of the message.
-     * @return A ThreadMessage for a visible card response.
-     */
-    public static ThreadMessage getVisibleCardsResponse(String username, ArrayList<Integer> cardId, UUID messageUUID) {
-        String[] args = new String[cardId.size()];
-
-        for (int i = 0; i < cardId.size(); i++) {
-            args[i] = cardId.get(i).toString();
-        }
-
-        return new ThreadMessage(
-                Status.OK,
-                username,
-                "getVisibleCardResponse",
                 args,
                 messageUUID
         );
@@ -585,6 +486,29 @@ public record ThreadMessage(Status status, String player, String type, String[] 
     }
 
     /**
+     * Creates a ThreadMessage for a visible card response.
+     * @param username The username of the player.
+     * @param cardId An ArrayList of card IDs.
+     * @param messageUUID The UUID of the message.
+     * @return A ThreadMessage for a visible card response.
+     */
+    public static ThreadMessage getVisibleCardsResponse(String username, ArrayList<Integer> cardId, UUID messageUUID) {
+        String[] args = new String[cardId.size()];
+
+        for (int i = 0; i < cardId.size(); i++) {
+            args[i] = cardId.get(i).toString();
+        }
+
+        return new ThreadMessage(
+                Status.OK,
+                username,
+                "getVisibleCardResponse",
+                args,
+                messageUUID
+        );
+    }
+
+    /**
      * Creates a ThreadMessage for a back side decks response.
      * @param username The username of the player.
      * @param backSideCardsIds An ArrayList of back side deck card IDs.
@@ -602,6 +526,30 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 Status.OK,
                 username,
                 "getBackSideDecksResponse",
+                args,
+                messageUUID
+        );
+    }
+
+    /**
+     * Creates a ThreadMessage for a valid placements response.
+     * @param username The username of the player.
+     * @param validPlacements A set of valid placements represented by coordinates.
+     * @param messageUUID The UUID of the message.
+     * @return A ThreadMessage for a valid placements response.
+     */
+    public static ThreadMessage getValidPlacementsResponse(String username, Set<Coordinates> validPlacements, UUID messageUUID) {
+        String[] args = new String[validPlacements.size()];
+
+        int index = 0;
+        for (Coordinates coordinates : validPlacements) {
+            args[index] = coordinates.x() + "," + coordinates.y();
+        }
+
+        return new ThreadMessage(
+                Status.OK,
+                username,
+                "getValidPlacementsResponse",
                 args,
                 messageUUID
         );
@@ -627,6 +575,53 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 Status.OK,
                 username,
                 "getBoardResponse",
+                args,
+                messageUUID
+        );
+    }
+
+    /**
+     * Creates a ThreadMessage for a hand color response.
+     * @param username The username of the player.
+     * @param handColors An ArrayList of hand colors.
+     * @param messageUUID The UUID of the message.
+     * @return A ThreadMessage for a hand color response.
+     */
+    public static ThreadMessage getHandColorResponse(String username, ArrayList<Resource> handColors, UUID messageUUID) {
+        String[] args = new String[handColors.size()];
+
+        for (int i = 0; i < handColors.size(); i++) {
+            args[i] = handColors.get(i).toString();
+        }
+
+        return new ThreadMessage(
+                Status.OK,
+                username,
+                "getHandColorResponse",
+                args,
+                messageUUID
+        );
+    }
+
+    /**
+     * Creates a ThreadMessage for a last placed cards response.
+     * @param username The username of the player.
+     * @param lastPlacedCards A Deque of last placed card IDs.
+     * @param messageUUID The UUID of the message.
+     * @return A ThreadMessage for a last placed cards response.
+     */
+    public static ThreadMessage getLastPlacedCardsResponse(String username, Deque<Integer> lastPlacedCards, UUID messageUUID) {
+        String[] args = new String[lastPlacedCards.size()];
+        int index = 0;
+
+        for (Integer cardId : lastPlacedCards) {
+            args[index] = cardId.toString();
+        }
+
+        return new ThreadMessage(
+                Status.OK,
+                username,
+                "getLastPlacedCardsResponse",
                 args,
                 messageUUID
         );
