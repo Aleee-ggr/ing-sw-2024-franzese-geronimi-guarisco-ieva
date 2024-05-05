@@ -22,7 +22,7 @@ public class SocketServer extends Server {
             System.out.println("Started server on port " + port);
             new Thread(this::acceptConnection).start();
         } catch (IOException e) {
-            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -40,13 +40,11 @@ public class SocketServer extends Server {
      * Accepts client connections and creates a new ClientHandler for each accepted connection.
      */
     public void acceptConnection() {
-        while(true) {
+        while(!server.isClosed()) {
             try {
                 socket = server.accept();
-                System.out.println("Accepted connection from " + socket.getRemoteSocketAddress());
                 new ClientHandler(socket, threadMessages).start();
             } catch (IOException e) {
-                System.out.println("Connection error accept connection: " + e.getMessage());
                 e.printStackTrace();
             }
         }

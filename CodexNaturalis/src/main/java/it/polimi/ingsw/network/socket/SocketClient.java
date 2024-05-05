@@ -63,7 +63,8 @@ public class SocketClient extends Client implements Runnable {
                 GenericResponseMessage response = (GenericResponseMessage) input.readObject();
                 handleResponse(response);
             } catch (IOException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
+                System.out.println("Connection with server lost");
+                break;
             }
         }
     }
@@ -73,9 +74,9 @@ public class SocketClient extends Client implements Runnable {
      * @throws IOException If an I/O error occurs while closing the connection.
      */
     public void stopConnection() throws IOException{
-        client.close();
         input.close();
         output.close();
+        client.close();
     }
 
     /**
