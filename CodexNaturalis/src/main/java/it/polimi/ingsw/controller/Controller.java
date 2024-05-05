@@ -41,7 +41,7 @@ public class Controller {
     }
 
     /**
-     * ThreadMessage to create a new Game.
+     * Controller Method to create a new Game.
      * @param username the username of the player that creates the game.
      * @param playerNum the number of players that will join the game.
      * @param gameId the unique identifier of the game.
@@ -53,7 +53,7 @@ public class Controller {
     }
 
     /**
-     * ThreadMessage to join a Game.
+     * Controller Method to join a Game.
      * @param username the username of the player that joins the game.
      * @param messageId the unique identifier of the message.
      * */
@@ -71,7 +71,7 @@ public class Controller {
     }
 
     /**
-     * ThreadMessage to draw a card.
+     * Controller Method to draw a card.
      * @param username the username of the player that draws the card.
      * @param index the index of where to draw the card.
                    4 for the standard deck, 5 for the gold deck, 0-3 for the visible cards.
@@ -96,7 +96,7 @@ public class Controller {
     }
 
     /**
-     * ThreadMessage to place a card.
+     * Controller Method to place a card.
      * @param username the username of the player that places the card.
      * @param coordinates the coordinates where to place the card.
      * @param cardId the unique identifier of the card.
@@ -117,7 +117,7 @@ public class Controller {
     }
 
     /**
-     * ThreadMessage to choose a personal objective.
+     * Controller Method to choose a personal objective.
      * @param username the username of the player that chooses the objective.
      * @param objId the unique identifier of the chosen objective.
      * @param messageId the unique identifier of the message.
@@ -133,7 +133,7 @@ public class Controller {
     }
 
     /**
-     * ThreadMessage to get the starting objectives to chose from.
+     * Controller Method to get the starting objectives to chose from.
      * @param username the username of the player that gets the objectives.
      * @param messageId the unique identifier of the message.
      * */
@@ -155,7 +155,7 @@ public class Controller {
     }
 
     /**
-     * ThreadMessage to get the score map.
+     * Controller Method to get the score map.
      * @param username the username of the player that requests the score map.
      * @param messageId the unique identifier of the message.
      * */
@@ -173,7 +173,7 @@ public class Controller {
     }
 
     /**
-     * ThreadMessage to get the hand of the player.
+     * Controller Method to get the hand of the player.
      * @param username the username of the player that requests the hand.
      * @param messageId the unique identifier of the message.
      * */
@@ -195,7 +195,7 @@ public class Controller {
     }
 
     /**
-     * ThreadMessage to get the common objectives.
+     * Controller Method to get the common objectives.
      * @param username the username of the player that requests the common objectives.
      * @param messageId the unique identifier of the message.
      * */
@@ -215,7 +215,7 @@ public class Controller {
     }
 
     /**
-     * ThreadMessage to get the player resources.
+     * Controller Method to get the player resources.
      * @param username the username of the player that requests the resources.
      * @param usernameRequiredData the username of the player whose resources to get.
      * @param messageId the unique identifier of the message.
@@ -230,7 +230,7 @@ public class Controller {
     }
 
     /**
-     * ThreadMessage to get the visible cards.
+     * Controller Method to get the visible cards.
      * @param username the username of the player that requests the visible cards.
      * @param messageId the unique identifier of the message.
      * */
@@ -251,7 +251,7 @@ public class Controller {
 
     //TODO: return an Arraylist of String of Resources, not cardIds
     /**
-     * ThreadMessage to get the back side resource of decks.
+     * Controller Method to get the back side resource of decks.
      * @param username the username of the player that requests the back resource of decks.
      * @param messageId the unique identifier of the message.
      * */
@@ -267,7 +267,7 @@ public class Controller {
     }
 
     /**
-     * ThreadMessage to get the valid placement coordinates of cards in the board.
+     * Controller Method to get the valid placement coordinates of cards in the board.
      * @param username the username of the player that requests the coordinates.
      * @param messageId the unique identifier of the message.
      * */
@@ -282,7 +282,7 @@ public class Controller {
     }
 
     /**
-     * ThreadMessage to get the map board of a player.
+     * Controller Method to get the map board of a player.
      * @param username the username of the player that requests the board.
      * @param usernameRequiredData the username of the player whose board to get.
      * @param messageId the unique identifier of the message.
@@ -302,7 +302,7 @@ public class Controller {
     }
 
     /**
-     * ThreadMessage to get the resources of cards in the hand of a Player.
+     * Controller Method to get the resources of cards in the hand of a Player.
      * @param username the username of the player that requests the resources.
      * @param usernameRequiredData the username of the player whose hand to get.
      * @param messageId the unique identifier of the message.
@@ -321,7 +321,7 @@ public class Controller {
     }
 
     /**
-     * ThreadMessage to get the Deque of the unique identifiers of the last placed Cards of the player.
+     * Controller Method to get the Deque of the unique identifiers of the last placed Cards of the player.
      * @param username the username of the player that requests the last placed cards.
      * @param messageId the unique identifier of the message.
      * */
