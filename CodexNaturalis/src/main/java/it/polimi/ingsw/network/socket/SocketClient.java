@@ -16,7 +16,7 @@ import java.util.UUID;
  * It extends the Client class and manages a socket connection with a server,
  * allowing the client to create games, join games, and reconnect to games.
  */
-public class SocketClient extends Client {
+public class SocketClient extends Client implements Runnable {
 
     private Socket client;
     private ObjectInputStream input;
@@ -30,6 +30,8 @@ public class SocketClient extends Client {
      */
     public SocketClient(String playerUsername, String password, String serverAddress, int serverPort) {
         super(playerUsername, password, serverAddress, serverPort);
+        startConnection(serverAddress, serverPort);
+        new Thread(this).start();
     }
 
     /**
