@@ -497,7 +497,7 @@ public record ThreadMessage(Status status, String player, String type, String[] 
      * @param messageUUID The UUID of the message.
      * @return A ThreadMessage for a visible card response.
      */
-    public static ThreadMessage getVisibleCardResponse(String username, ArrayList<Integer> cardId, UUID messageUUID) {
+    public static ThreadMessage getVisibleCardsResponse(String username, ArrayList<Integer> cardId, UUID messageUUID) {
         String[] args = new String[cardId.size()];
 
         for (int i = 0; i < cardId.size(); i++) {

@@ -104,11 +104,11 @@ public class Player {
 
     /**
      * Getter for the Resources of the Player.
-     * @return a Map of Resources and the number of resources.
+     * @return a ConcurrentHashMap of Resources and the number of resources.
      * @see Resource
      */
-    public Map<Resource, Integer> getResources() {
-        return Collections.unmodifiableMap(playerResources);
+    public ConcurrentHashMap<Resource, Integer> getResources() {
+        return new ConcurrentHashMap<>(playerResources);
     }
 
     /**

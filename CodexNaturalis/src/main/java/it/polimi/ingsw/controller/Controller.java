@@ -8,6 +8,7 @@ import it.polimi.ingsw.helpers.exceptions.model.UnrecognisedCardException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.ColoredCard;
+import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.model.player.Player;
 
@@ -26,22 +27,22 @@ public class Controller {
     private final BlockingQueue<ThreadMessage> messageQueue;
     private Game game;
 
-    public Controller(GameThread thread, BlockingQueue<ThreadMessage> messageQ, Integer maxPlayers){
+    public Controller(GameThread thread, BlockingQueue<ThreadMessage> messageQ, Integer maxPlayers) {
         this.thread = thread;
         this.messageQueue = messageQ;
         this.game = new Game(maxPlayers);
     }
 
-    public void createGame(String username, Integer playerNum, UUID gameId, UUID messageId){
+    public void createGame(String username, Integer playerNum, UUID gameId, UUID messageId) {
         game = new Game(playerNum);
         messageQueue.add(ThreadMessage.okResponse(username, messageId));
     }
 
-    public void join(String username, UUID messageId){
-        try{
+    public void join(String username, UUID messageId) {
+        try {
             game.addPlayer(username);
             messageQueue.add(ThreadMessage.okResponse(username, messageId));
-        }catch (TooManyPlayersException e){
+        } catch (TooManyPlayersException e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, "Too Many Players"));
         } catch (ExistingUsernameException e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, "Username already exists"));
@@ -50,66 +51,66 @@ public class Controller {
         }
     }
 
-    public void draw(String username, Integer index, UUID messageId){
-        try{
+    public void draw(String username, Integer index, UUID messageId) {
+        try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
             ColoredCard card;
-            if(index == 4) {
+            if (index == 4) {
                 card = user.drawDecks(false);
-            } else if(index == 5) {
+            } else if (index == 5) {
                 card = user.drawDecks(true);
             } else {
                 card = user.drawVisible(index);
             }
             Integer cardId = card.getId();
             messageQueue.add(ThreadMessage.drawResponse(username, cardId, messageId));
-        } catch (Exception e){
+        } catch (Exception e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
     }
 
-    public void placeCard(String username, Coordinates coordinates, Integer cardId, UUID messageId){
+    public void placeCard(String username, Coordinates coordinates, Integer cardId, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
             user.getPlayerBoard().placeCard(Game.getCardByID(cardId), coordinates);
-        }catch(IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, "Invalid card placing index"));
-        }catch(UnrecognisedCardException e){
+        } catch (UnrecognisedCardException e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, "Unrecognised card"));
-        }catch (Exception e){
+        } catch (Exception e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId));
         }
         messageQueue.add(ThreadMessage.okResponse(username, messageId));
     }
 
-    public void choosePersonalObjective(String username, Integer objId, UUID messageId){
-        try{
+    public void choosePersonalObjective(String username, Integer objId, UUID messageId) {
+        try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
             user.choosePersonalObjective(objId);
             messageQueue.add(ThreadMessage.okResponse(username, messageId));
-        } catch(Exception e){
+        } catch (Exception e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
     }
 
-    public void getStartingObjectives(String username, UUID messageId){
-        try{
+    public void getStartingObjectives(String username, UUID messageId) {
+        try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
             user.setStartingObjectives();
             ArrayList<Objective> objectives = user.getStartingObjectives();
 
             ArrayList<Integer> objectiveIds = new ArrayList<>();
-            for(Objective objective : objectives) {
+            for (Objective objective : objectives) {
                 objectiveIds.add(objective.getId());
             }
-            
+
             messageQueue.add(ThreadMessage.getStartingObjectivesResponse(username, objectiveIds, messageId));
-        } catch(Exception e){
+        } catch (Exception e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
     }
 
-    public void getScoreMap(String username, UUID messageId){
+    public void getScoreMap(String username, UUID messageId) {
         try {
             ConcurrentHashMap<Player, Integer> scoreBoard = game.getGameBoard().getScore();
             ConcurrentHashMap<String, Integer> scoreBoardString = new ConcurrentHashMap<>();
@@ -117,7 +118,7 @@ public class Controller {
                 scoreBoardString.put(player.getUsername(), scoreBoard.get(player));
             }
             messageQueue.add(ThreadMessage.getScoreMapResponse(username, scoreBoardString, messageId));
-        } catch(Exception e){
+        } catch (Exception e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
     }
@@ -139,19 +140,55 @@ public class Controller {
         }
     }
 
-    public void getCommonObjectives(String username, UUID messageId){
-        try{
+    public void getCommonObjectives(String username, UUID messageId) {
+        try {
             Objective[] objectives = game.getGameBoard().getGlobalObjectives();
             ArrayList<Integer> objectiveIds = new ArrayList<>();
 
-            for(Objective objective : objectives) {
+            for (Objective objective : objectives) {
                 objectiveIds.add(objective.getId());
             }
 
             messageQueue.add(ThreadMessage.getCommonObjectivesResponse(username, objectiveIds, messageId));
-        } catch(Exception e){
+        } catch (Exception e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
     }
-    
+
+    public void getPlayerResources(String username, String usernameRequiredData, UUID messageId) {
+        try {
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(usernameRequiredData));
+            messageQueue.add(ThreadMessage.getPlayerResourcesResponse(username, user.getResources(), messageId));
+        } catch (Exception e) {
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+        }
+    }
+
+    public void getVisibleCards(String username, UUID messageId) {
+        try {
+            ColoredCard[] visibleCards = (ColoredCard[]) game.getGameBoard().getVisibleCards();
+            ArrayList<Integer> cardIds = new ArrayList<>();
+
+            for (ColoredCard card : visibleCards) {
+                cardIds.add(card.getId());
+            }
+
+            messageQueue.add(ThreadMessage.getVisibleCardsResponse(username, cardIds, messageId));
+        } catch (Exception e) {
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+        }
+    }
+
+    //TODO: return an Arraylist of String of Resources, not cardIds
+    public void getBackSideDecks(String username, UUID messageId) {
+        try {
+            ArrayList<Integer> cardIds = new ArrayList<>();
+            cardIds.add(game.getGameBoard().getGoldDeck().peekFirstCard().getId());
+            cardIds.add(game.getGameBoard().getStdDeck().peekFirstCard().getId());
+            messageQueue.add(ThreadMessage.getBackSideDecksResponse(username, cardIds, messageId));
+        } catch (Exception e) {
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+        }
+    }
+
 }

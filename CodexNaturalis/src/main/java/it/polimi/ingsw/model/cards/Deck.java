@@ -48,6 +48,20 @@ public class Deck<CardType> {
     }
 
     /**
+     * Peeks at the first card in the deck.
+     * It's used for getting the back color of the Deck.
+     * @return The first card in the deck, or null if the deck is empty.
+     */
+    public CardType peekFirstCard(){
+        synchronized (cards) {
+            if (!cards.isEmpty()) {
+                return cards.getFirst();
+            }
+            return null;
+        }
+    }
+
+    /**
      * Checks if the deck is empty.
      * @return True if the deck is empty, otherwise false.
      */
