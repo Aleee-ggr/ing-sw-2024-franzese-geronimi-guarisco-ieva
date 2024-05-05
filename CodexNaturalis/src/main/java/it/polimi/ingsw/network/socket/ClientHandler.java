@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.socket;
 
+import it.polimi.ingsw.controller.threads.Status;
 import it.polimi.ingsw.controller.threads.ThreadMessage;
 import it.polimi.ingsw.network.Server;
 import it.polimi.ingsw.network.messages.requests.*;
@@ -43,26 +44,23 @@ public class ClientHandler extends Thread {
      * Reads objects from the client and processes them accordingly.
      */
     public void run() {
-            try {
-                while (!this.socket.isClosed()) {
-                    if (input.available() > 0) {
-                        GenericRequestMessage message = (GenericRequestMessage) input.readObject();
-                        handleMessage(message);
-                    }
-                }
-            } catch (IOException | ClassNotFoundException e) {
-                System.out.print("Error: ");
-                e.printStackTrace();
-            } finally {
-                try {
-                    input.close();
-                    output.close();
-                    socket.close();
-                } catch (IOException e) {
-                    System.out.println("Error closing connection" + e.getMessage());
-                }
+        try {
+            while (!socket.isClosed()) {
+                GenericRequestMessage message = (GenericRequestMessage) input.readObject();
+                System.out.println("Message received: " + message);
+                handleMessage(message);
             }
-
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Client disconnected");
+        } finally {
+            try {
+                input.close();
+                output.close();
+                socket.close();
+            } catch (IOException e) {
+                System.out.println("Error closing connection" + e.getMessage());
+            }
+        }
     }
 
     /**
@@ -75,12 +73,25 @@ public class ClientHandler extends Thread {
     private void handleMessage(GenericRequestMessage message) throws IOException {
 
         if (message instanceof SocketClientCreateGameMessage) {
-            Server.createGame(((SocketClientCreateGameMessage) message).getNumPlayers());
+            UUID id = Server.createGame(((SocketClientCreateGameMessage) message).getNumPlayers());
+            ThreadMessage threadMessage = ThreadMessage.join(message.getUsername());
+            Server.sendMessage(id, threadMessage);
+            ThreadMessage response = threadMessages.get(id).remove();
+
+            if (response.status() == Status.OK) {
+                CreateGameResponseMessage responseMessage = new CreateGameResponseMessage(id);
+                sendResponse(responseMessage);
+            }
             return;
         }
 
         if (message instanceof SocketClientJoinGameMessage) {
             ThreadMessage threadMessage = ThreadMessage.join(message.getUsername());
+            Server.sendMessage(((SocketClientJoinGameMessage) message).getGameUUID(), threadMessage);
+            ThreadMessage response = threadMessages.get(((SocketClientJoinGameMessage) message).getGameUUID()).remove();
+
+            JoinGameResponseMessage responseMessage = new JoinGameResponseMessage(((SocketClientJoinGameMessage) message).getGameUUID(), response.status() != Status.ERROR);
+            sendResponse(responseMessage);
             return;
         }
 
