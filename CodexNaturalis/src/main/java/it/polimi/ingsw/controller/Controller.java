@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.model.player.Player;
 
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -78,7 +79,7 @@ public class Controller {
         } catch (UnrecognisedCardException e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, "Unrecognised card"));
         } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId));
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
         messageQueue.add(ThreadMessage.okResponse(username, messageId));
     }
@@ -190,5 +191,16 @@ public class Controller {
             messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
     }
+
+    public void getValidPlacements(String username, UUID messageId) {
+        try {
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
+            Set<Coordinates> validPlacements = user.getPlayerBoard().getValidPlacements();
+            messageQueue.add(ThreadMessage.getValidPlacementsResponse(username, validPlacements, messageId));
+        } catch (Exception e) {
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+        }
+    }
+
 
 }
