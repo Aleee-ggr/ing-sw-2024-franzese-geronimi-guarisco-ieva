@@ -13,10 +13,8 @@ import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.model.player.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.UUID;
+import java.awt.*;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -217,4 +215,31 @@ public class Controller {
             messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
     }
+
+    public void getHandColor(String username, String usernameRequiredData, UUID messageId) {
+        try {
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(usernameRequiredData));
+            ArrayList<Resource> handColors = new ArrayList<>();
+            for (ColoredCard c : user.getHand()) {
+                handColors.add(c.getBackResource());
+            }
+            messageQueue.add(ThreadMessage.getHandColorResponse(username, handColors, messageId));
+        } catch (Exception e) {
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+        }
+    }
+
+    public void getLastPlacedCards(String username, UUID messageId){
+        try {
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
+            Deque<Integer> cardIds = new ArrayDeque<>();
+            for (Card card : user.getPlayerBoard().getLastPlacedCards()) {
+                cardIds.add(card.getId());
+            }
+            messageQueue.add(ThreadMessage.getLastPlacedCardsResponse(username, cardIds, messageId));
+        } catch (Exception e) {
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+        }
+    }
+    
 }

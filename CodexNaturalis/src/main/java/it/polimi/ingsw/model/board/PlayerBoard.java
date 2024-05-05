@@ -87,6 +87,14 @@ public class PlayerBoard {
     }
 
     /**
+     * Method getLastPlacedCards, returns the Deque of the last placed Cards.
+     * @return Deque of the last placed Cards.
+     */
+    public Deque<Card> getLastPlacedCards() {
+        return lastPlacedCards;
+    }
+
+    /**
      * Method that returns the possible positions for placing a Card on the board. <br/>
      * it's used if a player is disconnected. <br/>
      * in normal execution of the game the validPlacements hashset is updated while placing a card.<br/>
