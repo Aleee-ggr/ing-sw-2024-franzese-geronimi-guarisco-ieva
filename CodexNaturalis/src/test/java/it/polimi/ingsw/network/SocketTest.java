@@ -14,7 +14,7 @@ public class SocketTest {
 
     @BeforeClass
     public static void setup() {
-        server = new SocketServer(9090);
+        server = new SocketServer(9091);
     }
 
     @AfterClass
@@ -24,7 +24,7 @@ public class SocketTest {
 
     @Test
     public void connectionTest() throws InterruptedException {
-        SocketClient client = new SocketClient("prova", "pippo", "localhost", 9090);
+        SocketClient client = new SocketClient("prova", "pippo", "localhost", 9091);
         Thread.sleep(1000);
 
         try {
@@ -36,7 +36,7 @@ public class SocketTest {
 
     @Test
     public void createGameTest() throws InterruptedException {
-        SocketClient client = new SocketClient("prova", "pippo", "localhost", 9090);
+        SocketClient client = new SocketClient("prova", "pippo", "localhost", 9091);
 
         try {
             client.createGame("prova", 3);
@@ -56,8 +56,8 @@ public class SocketTest {
 
     @Test
     public void joinGameTest() throws InterruptedException {
-        SocketClient client = new SocketClient("prova", "pippo", "localhost", 9090);
-        SocketClient client2 = new SocketClient("prova_2", "pippo", "localhost", 9090);
+        SocketClient client = new SocketClient("prova", "pippo", "localhost", 9091);
+        SocketClient client2 = new SocketClient("prova_2", "pippo", "localhost", 9091);
 
         try {
             client.createGame("prova", 3);
