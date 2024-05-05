@@ -115,7 +115,6 @@ public class SocketClient extends Client implements Runnable {
         if (response instanceof JoinGameResponseMessage) {
             if (((JoinGameResponseMessage) response).isJoinedGame()) {
                 this.setGameId(((JoinGameResponseMessage) response).getGameUUID());
-                System.out.println("Joined game: " + gameId);
             }
         }
     }

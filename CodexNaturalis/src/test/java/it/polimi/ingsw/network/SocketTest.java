@@ -3,6 +3,7 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.network.socket.SocketClient;
 import it.polimi.ingsw.network.socket.SocketServer;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -44,6 +45,7 @@ public class SocketTest {
         }
 
         Thread.sleep(1000);
+        Assert.assertNotNull(client.gameId);
 
         try {
             client.stopConnection();
@@ -55,7 +57,6 @@ public class SocketTest {
     @Test
     public void joinGameTest() throws InterruptedException {
         SocketClient client = new SocketClient("prova", "pippo", "localhost", 9090);
-
         SocketClient client2 = new SocketClient("prova_2", "pippo", "localhost", 9090);
 
         try {
@@ -66,6 +67,8 @@ public class SocketTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        Assert.assertEquals(client.gameId, client2.gameId);
 
         try {
             client.stopConnection();
