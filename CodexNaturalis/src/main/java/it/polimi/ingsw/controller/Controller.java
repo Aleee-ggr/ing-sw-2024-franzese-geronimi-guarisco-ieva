@@ -71,31 +71,6 @@ public class Controller {
     }
 
     /**
-     * Controller Method to draw a card.
-     * @param username the username of the player that draws the card.
-     * @param index the index of where to draw the card.
-                   4 for the standard deck, 5 for the gold deck, 0-3 for the visible cards.
-     * @param messageId the unique identifier of the message.
-     * */
-    public void draw(String username, Integer index, UUID messageId) {
-        try {
-            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
-            ColoredCard card;
-            if (index == 4) {
-                card = user.drawDecks(false);
-            } else if (index == 5) {
-                card = user.drawDecks(true);
-            } else {
-                card = user.drawVisible(index);
-            }
-            Integer cardId = card.getId();
-            messageQueue.add(ThreadMessage.drawResponse(username, cardId, messageId));
-        } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
-        }
-    }
-
-    /**
      * Controller Method to place a card.
      * @param username the username of the player that places the card.
      * @param coordinates the coordinates where to place the card.
@@ -117,6 +92,31 @@ public class Controller {
     }
 
     /**
+     * Controller Method to draw a card.
+     * @param username the username of the player that draws the card.
+     * @param index the index of where to draw the card.
+    4 for the standard deck, 5 for the gold deck, 0-3 for the visible cards.
+     * @param messageId the unique identifier of the message.
+     * */
+    public void draw(String username, Integer index, UUID messageId) {
+        try {
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
+            ColoredCard card;
+            if (index == 4) {
+                card = user.drawDecks(false);
+            } else if (index == 5) {
+                card = user.drawDecks(true);
+            } else {
+                card = user.drawVisible(index);
+            }
+            Integer cardId = card.getId();
+            messageQueue.add(ThreadMessage.drawResponse(username, cardId, messageId));
+        } catch (Exception e) {
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+        }
+    }
+
+    /**
      * Controller Method to choose a personal objective.
      * @param username the username of the player that chooses the objective.
      * @param objId the unique identifier of the chosen objective.
@@ -127,28 +127,6 @@ public class Controller {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
             user.choosePersonalObjective(objId);
             messageQueue.add(ThreadMessage.okResponse(username, messageId));
-        } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
-        }
-    }
-
-    /**
-     * Controller Method to get the starting objectives to chose from.
-     * @param username the username of the player that gets the objectives.
-     * @param messageId the unique identifier of the message.
-     * */
-    public void getStartingObjectives(String username, UUID messageId) {
-        try {
-            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
-            user.setStartingObjectives();
-            ArrayList<Objective> objectives = user.getStartingObjectives();
-
-            ArrayList<Integer> objectiveIds = new ArrayList<>();
-            for (Objective objective : objectives) {
-                objectiveIds.add(objective.getId());
-            }
-
-            messageQueue.add(ThreadMessage.getStartingObjectivesResponse(username, objectiveIds, messageId));
         } catch (Exception e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
@@ -209,6 +187,28 @@ public class Controller {
             }
 
             messageQueue.add(ThreadMessage.getCommonObjectivesResponse(username, objectiveIds, messageId));
+        } catch (Exception e) {
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+        }
+    }
+
+    /**
+     * Controller Method to get the starting objectives to chose from.
+     * @param username the username of the player that gets the objectives.
+     * @param messageId the unique identifier of the message.
+     * */
+    public void getStartingObjectives(String username, UUID messageId) {
+        try {
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
+            user.setStartingObjectives();
+            ArrayList<Objective> objectives = user.getStartingObjectives();
+
+            ArrayList<Integer> objectiveIds = new ArrayList<>();
+            for (Objective objective : objectives) {
+                objectiveIds.add(objective.getId());
+            }
+
+            messageQueue.add(ThreadMessage.getStartingObjectivesResponse(username, objectiveIds, messageId));
         } catch (Exception e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
