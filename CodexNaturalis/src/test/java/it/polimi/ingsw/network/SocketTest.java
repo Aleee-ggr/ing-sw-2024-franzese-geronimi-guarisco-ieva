@@ -24,10 +24,52 @@ public class SocketTest {
     @Test
     public void connectionTest() throws InterruptedException {
         SocketClient client = new SocketClient("prova", "pippo", "localhost", 9090);
-        client.startConnection("localhost", 9090);
         Thread.sleep(1000);
+
         try {
             client.stopConnection();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void createGameTest() throws InterruptedException {
+        SocketClient client = new SocketClient("prova", "pippo", "localhost", 9090);
+
+        try {
+            client.createGame("prova", 3);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Thread.sleep(1000);
+
+        try {
+            client.stopConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void joinGameTest() throws InterruptedException {
+        SocketClient client = new SocketClient("prova", "pippo", "localhost", 9090);
+
+        SocketClient client2 = new SocketClient("prova_2", "pippo", "localhost", 9090);
+
+        try {
+            client.createGame("prova", 3);
+            Thread.sleep(1000);
+            client2.joinGame("prova_2", client.gameId);
+            Thread.sleep(1000);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            client.stopConnection();
+            client2.stopConnection();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
