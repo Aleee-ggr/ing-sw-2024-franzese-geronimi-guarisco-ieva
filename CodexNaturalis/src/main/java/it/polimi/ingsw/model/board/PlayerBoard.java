@@ -78,6 +78,13 @@ public class PlayerBoard {
         return board.get(coordinates);
     }
 
+    /**
+     * Method getBoard, returns the HashMap of the Board.
+     * @return Hashmap of coordinates and cards.
+     */
+    public HashMap<Coordinates, Card> getBoard() {
+        return new HashMap<>(board);
+    }
 
     /**
      * Method that returns the possible positions for placing a Card on the board. <br/>

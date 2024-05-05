@@ -7,12 +7,14 @@ import it.polimi.ingsw.helpers.exceptions.model.TooManyPlayersException;
 import it.polimi.ingsw.helpers.exceptions.model.UnrecognisedCardException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
+import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.ColoredCard;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.model.player.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
@@ -202,5 +204,17 @@ public class Controller {
         }
     }
 
-
+    public void getBoard(String username, String usernameRequiredData, UUID messageId) {
+        try {
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(usernameRequiredData));
+            HashMap<Coordinates, Card> board = user.getPlayerBoard().getBoard();
+            HashMap<Coordinates, Integer> boardIds = new HashMap<>();
+            for (Coordinates coordinate : board.keySet()) {
+                boardIds.put(coordinate, board.get(coordinate).getId());
+            }
+            messageQueue.add(ThreadMessage.getBoardResponse(username, boardIds, messageId));
+        } catch (Exception e) {
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+        }
+    }
 }
