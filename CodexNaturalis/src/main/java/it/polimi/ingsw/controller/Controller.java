@@ -28,17 +28,35 @@ public class Controller {
     private final BlockingQueue<ThreadMessage> messageQueue;
     private Game game;
 
+    /**
+     * Constructor for the Controller class.
+     * @param thread the GameThread when the Game is instantiated.
+     * @param messageQ the BlockingQueue that will contain the messages.
+     * @param maxPlayers the maximum number of players that can join a game.
+     * */
     public Controller(GameThread thread, BlockingQueue<ThreadMessage> messageQ, Integer maxPlayers) {
         this.thread = thread;
         this.messageQueue = messageQ;
         this.game = new Game(maxPlayers);
     }
 
+    /**
+     * ThreadMessage to create a new Game.
+     * @param username the username of the player that creates the game.
+     * @param playerNum the number of players that will join the game.
+     * @param gameId the unique identifier of the game.
+     * @param messageId the unique identifier of the message.
+     * */
     public void createGame(String username, Integer playerNum, UUID gameId, UUID messageId) {
         game = new Game(playerNum);
         messageQueue.add(ThreadMessage.okResponse(username, messageId));
     }
 
+    /**
+     * ThreadMessage to join a Game.
+     * @param username the username of the player that joins the game.
+     * @param messageId the unique identifier of the message.
+     * */
     public void join(String username, UUID messageId) {
         try {
             game.addPlayer(username);
@@ -52,6 +70,13 @@ public class Controller {
         }
     }
 
+    /**
+     * ThreadMessage to draw a card.
+     * @param username the username of the player that draws the card.
+     * @param index the index of where to draw the card.
+                   4 for the standard deck, 5 for the gold deck, 0-3 for the visible cards.
+     * @param messageId the unique identifier of the message.
+     * */
     public void draw(String username, Integer index, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
@@ -70,6 +95,13 @@ public class Controller {
         }
     }
 
+    /**
+     * ThreadMessage to place a card.
+     * @param username the username of the player that places the card.
+     * @param coordinates the coordinates where to place the card.
+     * @param cardId the unique identifier of the card.
+     * @param messageId the unique identifier of the message.
+     * */
     public void placeCard(String username, Coordinates coordinates, Integer cardId, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
@@ -84,6 +116,12 @@ public class Controller {
         messageQueue.add(ThreadMessage.okResponse(username, messageId));
     }
 
+    /**
+     * ThreadMessage to choose a personal objective.
+     * @param username the username of the player that chooses the objective.
+     * @param objId the unique identifier of the chosen objective.
+     * @param messageId the unique identifier of the message.
+     * */
     public void choosePersonalObjective(String username, Integer objId, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
@@ -94,6 +132,11 @@ public class Controller {
         }
     }
 
+    /**
+     * ThreadMessage to get the starting objectives to chose from.
+     * @param username the username of the player that gets the objectives.
+     * @param messageId the unique identifier of the message.
+     * */
     public void getStartingObjectives(String username, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
@@ -111,6 +154,11 @@ public class Controller {
         }
     }
 
+    /**
+     * ThreadMessage to get the score map.
+     * @param username the username of the player that requests the score map.
+     * @param messageId the unique identifier of the message.
+     * */
     public void getScoreMap(String username, UUID messageId) {
         try {
             ConcurrentHashMap<Player, Integer> scoreBoard = game.getGameBoard().getScore();
@@ -124,6 +172,11 @@ public class Controller {
         }
     }
 
+    /**
+     * ThreadMessage to get the hand of the player.
+     * @param username the username of the player that requests the hand.
+     * @param messageId the unique identifier of the message.
+     * */
     public void getHand(String username, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
@@ -141,6 +194,11 @@ public class Controller {
         }
     }
 
+    /**
+     * ThreadMessage to get the common objectives.
+     * @param username the username of the player that requests the common objectives.
+     * @param messageId the unique identifier of the message.
+     * */
     public void getCommonObjectives(String username, UUID messageId) {
         try {
             Objective[] objectives = game.getGameBoard().getGlobalObjectives();
@@ -156,6 +214,12 @@ public class Controller {
         }
     }
 
+    /**
+     * ThreadMessage to get the player resources.
+     * @param username the username of the player that requests the resources.
+     * @param usernameRequiredData the username of the player whose resources to get.
+     * @param messageId the unique identifier of the message.
+     * */
     public void getPlayerResources(String username, String usernameRequiredData, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(usernameRequiredData));
@@ -165,6 +229,11 @@ public class Controller {
         }
     }
 
+    /**
+     * ThreadMessage to get the visible cards.
+     * @param username the username of the player that requests the visible cards.
+     * @param messageId the unique identifier of the message.
+     * */
     public void getVisibleCards(String username, UUID messageId) {
         try {
             ColoredCard[] visibleCards = (ColoredCard[]) game.getGameBoard().getVisibleCards();
@@ -181,6 +250,11 @@ public class Controller {
     }
 
     //TODO: return an Arraylist of String of Resources, not cardIds
+    /**
+     * ThreadMessage to get the back side resource of decks.
+     * @param username the username of the player that requests the back resource of decks.
+     * @param messageId the unique identifier of the message.
+     * */
     public void getBackSideDecks(String username, UUID messageId) {
         try {
             ArrayList<Integer> cardIds = new ArrayList<>();
@@ -192,6 +266,11 @@ public class Controller {
         }
     }
 
+    /**
+     * ThreadMessage to get the valid placement coordinates of cards in the board.
+     * @param username the username of the player that requests the coordinates.
+     * @param messageId the unique identifier of the message.
+     * */
     public void getValidPlacements(String username, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
@@ -202,6 +281,12 @@ public class Controller {
         }
     }
 
+    /**
+     * ThreadMessage to get the map board of a player.
+     * @param username the username of the player that requests the board.
+     * @param usernameRequiredData the username of the player whose board to get.
+     * @param messageId the unique identifier of the message.
+     * */
     public void getBoard(String username, String usernameRequiredData, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(usernameRequiredData));
@@ -216,6 +301,12 @@ public class Controller {
         }
     }
 
+    /**
+     * ThreadMessage to get the resources of cards in the hand of a Player.
+     * @param username the username of the player that requests the resources.
+     * @param usernameRequiredData the username of the player whose hand to get.
+     * @param messageId the unique identifier of the message.
+     * */
     public void getHandColor(String username, String usernameRequiredData, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(usernameRequiredData));
@@ -229,6 +320,11 @@ public class Controller {
         }
     }
 
+    /**
+     * ThreadMessage to get the Deque of the unique identifiers of the last placed Cards of the player.
+     * @param username the username of the player that requests the last placed cards.
+     * @param messageId the unique identifier of the message.
+     * */
     public void getLastPlacedCards(String username, UUID messageId){
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
@@ -241,5 +337,5 @@ public class Controller {
             messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
     }
-    
+
 }
