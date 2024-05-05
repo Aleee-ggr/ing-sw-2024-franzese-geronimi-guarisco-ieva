@@ -104,6 +104,17 @@ public class SocketClient extends Client {
         if (response instanceof GetValidPlacementsResponseMessage) {
             data.setValidPlacements(((GetValidPlacementsResponseMessage) response).getValidPlacements());
         }
+
+        if (response instanceof CreateGameResponseMessage) {
+            setGameId(((CreateGameResponseMessage) response).getGameUUID());
+        }
+
+        if (response instanceof JoinGameResponseMessage) {
+            if (((JoinGameResponseMessage) response).isJoinedGame()) {
+                this.setGameId(((JoinGameResponseMessage) response).getGameUUID());
+                System.out.println("Joined game: " + gameId);
+            }
+        }
     }
 
     /**
@@ -124,7 +135,6 @@ public class SocketClient extends Client {
      */
     public void joinGame(String username, UUID gameUUID) throws IOException {
         output.writeObject(new SocketClientJoinGameMessage(username, gameUUID));
-        this.setGameId(gameUUID);
     }
 
     /**
