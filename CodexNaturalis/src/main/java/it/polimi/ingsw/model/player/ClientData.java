@@ -27,6 +27,7 @@ public class ClientData {
     private int playerNum;
 
     private final Integer[] globalObjectives = new Integer[GameConsts.globalObjectives];
+    private ArrayList<Integer> startingObjectives = new ArrayList<>();
     private Integer personalObjective;
 
     /**
@@ -91,6 +92,9 @@ public class ClientData {
     public void setPersonalObjective(Integer personalObjective) {
         this.personalObjective = personalObjective;
     }
+    public void setStartingObjectives(ArrayList<Integer> startingObjectives) {
+        this.startingObjectives = startingObjectives;
+    }
 
     public void setGlobalObjectives(Integer obj1, Integer obj2) {
         this.globalObjectives[0] = obj1;
@@ -103,6 +107,10 @@ public class ClientData {
 
     public Map<Coordinates, Integer> getClientBoard() {
         return Collections.unmodifiableMap(playersData.get(this.username).getBoard());
+    }
+
+    public ArrayList<Integer> getStartingObjectives() {
+        return startingObjectives;
     }
 
     public ArrayList<Integer> getClientPlacingOrder(){

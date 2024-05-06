@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.Server;
 
+import java.lang.reflect.Array;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -290,8 +291,16 @@ public class RmiClient extends Client{
      * @throws ServerConnectionException If there is an issue connecting to the server.
      * @throws RemoteException If a remote communication error occurs.
      */
-    public void getStartingObjectives() throws  ServerConnectionException, RemoteException {
-        Server.getStartingObjectives(this.gameId, data.getUsername());
+    public boolean getStartingObjectives() throws  ServerConnectionException, RemoteException {
+        //Server.getStartingObjectives(this.gameId, data.getUsername());
+        ArrayList<Integer> startingObjectives = Server.getStartingObjectives(this.gameId, data.getUsername());
+
+        if (startingObjectives != null) {
+            data.setStartingObjectives(startingObjectives);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

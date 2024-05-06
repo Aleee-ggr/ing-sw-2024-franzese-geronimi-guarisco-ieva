@@ -241,12 +241,16 @@ public abstract class Server {
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
-        ArrayList<Integer> startingObjectives = new ArrayList<>();
-        for (String arg : response.args()) {
-            startingObjectives.add(Integer.parseInt(arg));
-        }
+        if (response.status() == Status.OK) {
+            ArrayList<Integer> startingObjectives = new ArrayList<>();
+            for (String arg : response.args()) {
+                startingObjectives.add(Integer.parseInt(arg));
+            }
 
-        return startingObjectives;
+            return startingObjectives;
+        } else {
+            return null;
+        }
     }
 
     public static HashMap<Resource, Integer> getPlayerResources(UUID game, String username, String usernameRequiredData) {
