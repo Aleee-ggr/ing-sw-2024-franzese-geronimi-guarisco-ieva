@@ -150,6 +150,10 @@ public class ClientData {
         this.playersData.get(username).setStartingCard(startingCardId);
     }
 
+    public Integer getStartingCard(String username){
+        return this.playersData.get(username).getStartingCard();
+    }
+
     public void updatePlayerResources(String username, Map<Resource, Integer> newMap){
         this.playersData.get(username).updateResources(newMap);
     }
