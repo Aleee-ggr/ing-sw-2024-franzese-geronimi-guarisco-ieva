@@ -301,6 +301,12 @@ public class GameThread extends Thread {
                         msg.messageUUID()
                 );
                 break;
+            case "getPlayers":
+                controller.getPlayers(
+                        msg.player(),
+                        msg.messageUUID()
+                );
+                break;
             case "kill":
                 gameState = GameState.STOP;
                 break;

@@ -125,6 +125,18 @@ public class Controller {
         }
     }
 
+    public void getPlayers(String username, UUID messageId) {
+        try {
+            ArrayList<String> players = new ArrayList<>();
+            for (Player player : game.getPlayers()) {
+                players.add(player.getUsername());
+            }
+            messageQueue.add(ThreadMessage.getPlayersResponse(username, players, messageId));
+        } catch (Exception e) {
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+        }
+    }
+
     /**
      * Controller Method to choose a personal objective.
      * @param username the username of the player that chooses the objective.

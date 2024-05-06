@@ -9,7 +9,6 @@ import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.Server;
 
-import java.lang.reflect.Array;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -182,6 +181,17 @@ public class RmiClient extends Client{
 
         if (playerResources != null) {
             data.updatePlayerResources(usernameRequiredData, playerResources);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean getPlayers() throws ServerConnectionException, RemoteException {
+        ArrayList<String> players = Server.getPlayers(this.gameId, data.getUsername());
+
+        if (players != null) {
+            //TODO: add method in ClientData to save them
             return true;
         } else {
             return false;

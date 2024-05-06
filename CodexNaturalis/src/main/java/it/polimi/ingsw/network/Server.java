@@ -273,6 +273,24 @@ public abstract class Server {
         }
     }
 
+    public static ArrayList<String> getPlayers(UUID game, String username) {
+        ThreadMessage message = ThreadMessage.getPlayers(
+                username
+        );
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+
+        if (response.status() == Status.OK) {
+            ArrayList<String> players = new ArrayList<>();
+            Collections.addAll(players, response.args());
+
+            return players;
+        } else {
+            return null;
+        }
+
+    }
+
     public static HashMap<Resource, Integer> getPlayerResources(UUID game, String username, String usernameRequiredData) {
         ThreadMessage message = ThreadMessage.getPlayerResources(
                 username,

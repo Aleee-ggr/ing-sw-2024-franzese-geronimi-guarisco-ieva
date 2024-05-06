@@ -706,12 +706,19 @@ public record ThreadMessage(Status status, String player, String type, String[] 
      * @param messageUUID The UUID of the message.
      * @return A ThreadMessage for a players response.
      */
-    public static ThreadMessage getPlayersResponse(String username, String[] players, UUID messageUUID) {
+    public static ThreadMessage getPlayersResponse(String username, ArrayList<String> players, UUID messageUUID) {
+        String[] args = new String[players.size()];
+        int index = 0;
+
+        for (String player : players) {
+            args[index] = player;
+        }
+
         return new ThreadMessage(
                 Status.OK,
                 username,
                 "getPlayersResponse",
-                players,
+                args,
                 messageUUID
         );
     }
