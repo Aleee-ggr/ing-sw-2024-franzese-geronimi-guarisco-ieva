@@ -2,21 +2,16 @@ package it.polimi.ingsw.view.TUI.components.printables;
 
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.cards.ColoredCard;
-import it.polimi.ingsw.model.cards.Corner;
-import it.polimi.ingsw.model.cards.GoldCard;
+import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.view.TUI.components.Component;
 
 public class PrintCards implements Component {
-    private final ColoredCard card;
-
     private final String cardString;
     public final static int width = 15;
     public final static int height = 5;
 
-    public PrintCards(ColoredCard card) {
-        this.card = card;
+    public PrintCards(Card card) {
         cardString = setCard(card);
     }
 
@@ -26,15 +21,31 @@ public class PrintCards implements Component {
         return cardString;
     }
 
-    private static String setCard(ColoredCard card) {
+    private static String setCard(Card inCard) {
         Corner[] corners;
         StringBuilder out = new StringBuilder();
+        
+        if(inCard instanceof ColoredCard colored){
 
-        if (card.isFrontSideUp()) {
-            corners = card.getFrontCorners();
+            if(colored.isFrontSideUp()){
+                corners = colored.getFrontCorners();
+            } else {
+                corners = colored.getBackCorners();
+            }
+            
+        } else if(inCard instanceof StartingCard starting){
+
+            if(starting.isFrontSideUp()){
+                corners = starting.getFrontCorners();
+            } else {
+                corners = starting.getBackCorners();
+            }
+            
         } else {
-            corners = card.getBackCorners();
+            throw new RuntimeException("Card type not supported");
         }
+        
+
 
         //first and second row
         if(corners[0].isCoverable() && corners[1].isCoverable()){
@@ -74,19 +85,54 @@ public class PrintCards implements Component {
             out.append("┃  ");
         }
 
-        out.append("   ");
 
-        if(card instanceof GoldCard){
-            out.append('┃')
+        if(inCard instanceof GoldCard){
+            GoldCard card = (GoldCard)inCard;
+            out.append("   ┃")
                     .append(card.getBackResource().toChar())
-                    .append('┃');
+                    .append("┃   ");
+        } else if(inCard instanceof StdCard){
+            StdCard card = (StdCard)inCard;
+            out.append("    ")
+                    .append(card.getBackResource().toChar())
+                    .append("    ");
+        } else if(inCard instanceof StartingCard){
+            if(!((StartingCard)inCard).isFrontSideUp()){
+                out.append("    ")
+                        .append("s")
+                        .append("    ");
+            } else {
+                int resourceNum = ((StartingCard)inCard).getFrontResources().size();
+                switch(resourceNum) {
+                    case 1:
+                        out.append("    ")
+                                .append(((StartingCard) inCard).getFrontResources().getFirst().toChar())
+                                .append("    ");
+                        break;
+                    case 2:
+                        out.append("   ")
+                                .append(((StartingCard) inCard).getFrontResources().getFirst().toChar())
+                                .append(" ")
+                                .append(((StartingCard) inCard).getFrontResources().getLast().toChar())
+                                .append("   ");
+                        break;
+                    case 3:
+                        out.append("  ")
+                                .append(((StartingCard) inCard).getFrontResources().getFirst().toChar())
+                                .append(" ")
+                                .append(((StartingCard) inCard).getFrontResources().get(1).toChar())
+                                .append(" ")
+                                .append(((StartingCard) inCard).getFrontResources().getLast().toChar())
+                                .append("  ");
+                        break;
+                    default:
+                        throw new RuntimeException("Invalid number of resources");
+                }
+            }
         } else {
-            out.append(' ')
-                    .append(card.getBackResource().toChar())
-                    .append(' ');
+            throw new RuntimeException("Card type not supported");
         }
 
-        out.append("   ");
 
         if(corners[1].isCoverable() && corners[3].isCoverable()){
             out.append("┣━┫\n");
@@ -135,10 +181,10 @@ public class PrintCards implements Component {
 
 
     public static void main(String[] args) {
-        Card ncard = Game.getCardByID(15);
+        Card ncard = Game.getCardByID(86);
         ncard.setFrontSideUp(true);
-        PrintCards print = new PrintCards((ColoredCard) ncard);
-        System.out.print(print.toString());
+        PrintCards print = new PrintCards(ncard);
+        System.out.print(print);
     }
 
 }
