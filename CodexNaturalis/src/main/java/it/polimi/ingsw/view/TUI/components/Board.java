@@ -121,11 +121,10 @@ public class Board implements Component {
     }
 
     private boolean isInView(Coordinates coordinates) {
-        Coordinates relativeCoordinates = getOffsetCoordinates(coordinates);
-        return  (relativeCoordinates.x() >= 0 &&
-                relativeCoordinates.y() >= 0 &&
-                relativeCoordinates.x() < width &&
-                relativeCoordinates.y() >= height
+        return  (coordinates.x() >= 0 &&
+                coordinates.y() >= 0 &&
+                coordinates.x() < width &&
+                coordinates.y() < height
         );
     }
 }
