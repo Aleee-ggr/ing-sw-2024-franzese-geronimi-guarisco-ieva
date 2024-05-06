@@ -169,6 +169,12 @@ public class ClientHandler extends Thread {
             ChooseStartingObjectiveResponseMessage response = new ChooseStartingObjectiveResponseMessage(Server.choosePersonalObjective(((SocketClientChooseStartingObjective) message).getGameUUID(), message.getUsername(), ((SocketClientChooseStartingObjective) message).getObjectiveID()));
             sendResponse(response);
         }
+
+        if (message instanceof SocketClientWaitUpdateMessage) {
+            Server.waitUpdate(((SocketClientWaitUpdateMessage) message).getGameUUID(), message.getUsername());
+            WaitUpdateResponseMessage response = new WaitUpdateResponseMessage(true);
+            sendResponse(response);
+        }
     }
 
     /**

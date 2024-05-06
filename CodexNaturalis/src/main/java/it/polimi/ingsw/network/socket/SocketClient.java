@@ -243,4 +243,8 @@ public class SocketClient extends Client implements Runnable {
     public void getHandColor(String username) throws IOException {
         output.writeObject(new SocketClientGetHandColorMessage(data.getUsername(), this.gameId, username));
     }
+
+    public void waitUpdate(String username) throws IOException {
+        output.writeObject(new SocketClientWaitUpdateMessage(data.getUsername(), this.gameId));
+    }
 }
