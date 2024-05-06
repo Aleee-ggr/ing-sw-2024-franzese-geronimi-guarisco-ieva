@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="client" type="Application" factoryName="Application">
+  <configuration default="false" name="client" type="Application" factoryName="Application" singleton="false">
     <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.App" />
     <module name="PSP11" />
     <option name="PROGRAM_PARAMETERS" value="client" />
