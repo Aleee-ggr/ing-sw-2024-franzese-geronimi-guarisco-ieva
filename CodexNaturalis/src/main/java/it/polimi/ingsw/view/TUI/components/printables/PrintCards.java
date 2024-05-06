@@ -3,7 +3,6 @@ package it.polimi.ingsw.view.TUI.components.printables;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.*;
-import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.view.TUI.components.Component;
 
 public class PrintCards implements Component {

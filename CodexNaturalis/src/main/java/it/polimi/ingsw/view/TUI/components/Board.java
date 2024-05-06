@@ -11,7 +11,9 @@ import it.polimi.ingsw.model.cards.StartingCard;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.view.TUI.RotateBoard;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 public class Board implements Component {
@@ -72,6 +74,16 @@ public class Board implements Component {
                 throw new RuntimeException("Unknown card type");
             }
 
+        }
+
+        Set<Coordinates> validPosition = Client.getData().getValidPlacements();
+        BiMap<Coordinates, Integer> validPlacementMap = HashBiMap.create();
+
+        for (Coordinates c: validPosition) {
+            Coordinates relativeCoordinates = getOffsetCoordinates(c);
+            if (isInView(relativeCoordinates)) {
+                board[relativeCoordinates.y()][relativeCoordinates.x()] = 'v';
+            }
         }
     }
 

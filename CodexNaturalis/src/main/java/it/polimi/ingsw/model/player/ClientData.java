@@ -166,6 +166,10 @@ public class ClientData {
         this.playersData.get(username).updateResources(newMap);
     }
 
+    public Set<Coordinates> getValidPlacements() {
+        return validPlacements;
+    }
+
     /**
      * Setter for the possible placement of Cards.
      * @param validPlacements The new set of Coordinates.
