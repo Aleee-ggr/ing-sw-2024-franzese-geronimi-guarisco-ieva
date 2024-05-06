@@ -23,6 +23,7 @@ public abstract class Server {
     protected static final Map<UUID, Integer> games = new ConcurrentHashMap<>(); // TODO: remove game while closed
     protected static final Map<String, String> players = new ConcurrentHashMap<>();
     protected static final Map<String, UUID> playerGame = new ConcurrentHashMap<>();
+    protected static final Map<UUID, Map<String, Boolean>> gameTurns = new ConcurrentHashMap<>();
 
     /**
      * Creates a new game with the specified number of players and starts its thread.
@@ -39,9 +40,22 @@ public abstract class Server {
         }
         BlockingQueue<ThreadMessage> messageQueue = new LinkedBlockingDeque<>();
         threadMessages.put(id, messageQueue);
-        new GameThread(messageQueue, numberOfPlayers).start();
+        gameTurns.put(id, new ConcurrentHashMap<>());
+        new GameThread(messageQueue, gameTurns.get(id), numberOfPlayers).start();
         addGame(id, numberOfPlayers);
         return id;
+    }
+
+    //TODO: to finish
+    /**
+     * Joins a player to a game.
+     * @param game the unique ID of the game to join
+     * @param player the username of the player to join the game
+     * @return true if the player was successfully joined to the game, false otherwise
+     */
+    public static boolean joinGame(UUID game, String player){
+        gameTurns.get(game).put(player, false);
+        return true;
     }
 
     /**
