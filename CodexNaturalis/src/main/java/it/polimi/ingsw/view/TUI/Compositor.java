@@ -77,7 +77,7 @@ public class Compositor {
 
         int y;
         for(y = 0; y < HandView.panelHeight; y++){
-            out.append(" ".repeat(HandView.panelWidth)) //TODO: to create
+            out.append(hand.toStringArray()[y])
                     .append("┃\n");
         }
 

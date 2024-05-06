@@ -12,6 +12,8 @@ public class PrintCards implements Component {
     private final ColoredCard card;
 
     private final String cardString;
+    public final static int width = 15;
+    public final static int height = 5;
 
     public PrintCards(ColoredCard card) {
         this.card = card;

@@ -9,7 +9,9 @@ import it.polimi.ingsw.network.Client;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ViewTest {
     @Before
@@ -18,6 +20,8 @@ public class ViewTest {
         final ClientData clientData = Client.getData();
         clientData.setGlobalObjectives(99, 98);
         clientData.setPersonalObjective(99);
+
+        clientData.setClientHand(new ArrayList<>(List.of(1, 2, 3)));
 
         clientData.setPlayerNum(4);
         clientData.addPlayer("player1");
