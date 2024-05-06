@@ -8,9 +8,10 @@ import java.util.UUID;
 
 class RmiRemoteHandler extends Thread {
     private final RmiClient client;
-    private UUID game;
     private final Shared<ViewState> gameState;
     private final Shared<String> input;
+    private String[] players;
+    private UUID game;
 
     RmiRemoteHandler(RmiClient client, Shared<ViewState> gameState, Shared<String> input, UUID game) {
         this.client = client;
@@ -23,7 +24,6 @@ class RmiRemoteHandler extends Thread {
     @Override
     public void run() {
         joinGame();
-
         gameState.setElement(ViewState.LOBBY);
         while (gameState.getElement() != ViewState.STOP) {
             try {
@@ -37,12 +37,14 @@ class RmiRemoteHandler extends Thread {
                         setupFetch();
                         gameState.setElement(ViewState.SETUP_STARTING);
                         break;
+
                     case SETUP_STARTING:
                         waitInput();
                         setupStarting();
                         input.setElement(null);
                         gameState.setElement(ViewState.SETUP_OBJECTIVES);
                         break;
+
                     case SETUP_OBJECTIVES:
                         waitInput();
                         setupObjectives();
@@ -50,6 +52,23 @@ class RmiRemoteHandler extends Thread {
                         gameState.setElement(ViewState.FETCH_DATA);
                         break;
 
+                    case FETCH_DATA:
+                        client.waitUpdate();
+                        fetch();
+                        gameState.setElement(ViewState.PLACE_CARD);
+                        break;
+
+                    case PLACE_CARD:
+                        waitInput();
+                        gameState.setElement(ViewState.DRAW);
+                        input.setElement(null);
+                        break;
+
+                    case DRAW:
+                        waitInput();
+                        gameState.setElement(ViewState.FETCH_DATA);
+                        input.setElement(null);
+                        break;
                 }
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
@@ -99,6 +118,20 @@ class RmiRemoteHandler extends Thread {
         int in = Integer.parseInt(input.getElement());
         try {
             client.chooseStartingObjective(in);
+        } catch (ServerConnectionException|RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void fetch() {
+        try {
+            client.getHand();
+            client.getCommonObjectives();
+            client.getPlayerBoard();
+            client.getSharedBoard();
+            client.getVisibleCards();
+            client.getBackSideDecks();
+            //TODO add other getters
         } catch (ServerConnectionException|RemoteException e) {
             throw new RuntimeException(e);
         }
