@@ -7,6 +7,9 @@ import it.polimi.ingsw.view.TUI.components.Component;
 import java.util.Map;
 
 public class ObjectiveCard implements Component {
+    public static final int width = 15;
+    public static final int height = 5;
+
     private static final String resourceObjective = """
             ┏━━━━━━━━━━━━━┓
             ┃     %c %c     ┃

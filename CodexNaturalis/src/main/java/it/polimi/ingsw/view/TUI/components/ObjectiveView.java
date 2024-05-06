@@ -28,8 +28,8 @@ public class ObjectiveView implements Component {
         assert shared.length == GameConsts.globalObjectives;
         this.personal = personal;
         this.shared = shared;
-        cardHeight = personal.toStringArray().length;
-        cardWidth = personal.toStringArray()[0].length();
+        cardHeight = ObjectiveCard.height;
+        cardWidth = ObjectiveCard.width;
 
         contentWidth = ((1 + GameConsts.globalObjectives) * cardWidth) + (2 * cardSpacing) + 4;
         marginSide = (width - contentWidth) / 2;
