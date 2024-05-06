@@ -304,6 +304,22 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         );
     }
 
+    /**
+     * Creates a ThreadMessage for requesting the players.
+     * used to get the turn order for players.
+     * @param username The username of the player.
+     * @return A ThreadMessage requesting the players.
+     */
+    public static ThreadMessage getPlayers(String username){
+        return new ThreadMessage(
+                Status.REQUEST,
+                username,
+                "getPlayers",
+                null,
+                UUID.randomUUID()
+        );
+    }
+
 //TODO: add getStartingCard
 
     //generic Responses
