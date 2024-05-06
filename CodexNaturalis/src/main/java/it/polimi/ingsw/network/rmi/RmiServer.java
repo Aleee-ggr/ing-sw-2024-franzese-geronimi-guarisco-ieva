@@ -129,11 +129,6 @@ public class RmiServer extends Server implements RmiServerInterface {
     }
 
     @Override
-    public void waitUpdate(UUID game, String name) throws RemoteException {
-
-    }
-
-    @Override
     public boolean checkCredentials(String username, String password) {
         return isValidPlayer(username, password);
     }

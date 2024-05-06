@@ -317,5 +317,14 @@ public abstract class Server {
 
         return validPlacements;
     }
+    public static void waitUpdate(UUID game, String username) {
+        while(!gameTurns.get(game).get(username)) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 }
 

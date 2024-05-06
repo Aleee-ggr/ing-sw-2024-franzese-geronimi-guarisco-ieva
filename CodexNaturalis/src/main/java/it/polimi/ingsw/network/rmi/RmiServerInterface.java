@@ -79,14 +79,6 @@ public interface RmiServerInterface extends Remote {
     String postChat(UUID game, String name, String message) throws RemoteException;
 
     /**
-     * Waits for an update in the game.
-     * @param game The UUID of the game.
-     * @param name The name of the player waiting for the update.
-     * @throws RemoteException If an RMI error occurs.
-     */
-    void waitUpdate(UUID game, String name) throws RemoteException;
-
-    /**
      * Check whether the given credentials are valid (size < 16 and username is not reused)
      * @param username the username of the player
      * @param password the password of the player
