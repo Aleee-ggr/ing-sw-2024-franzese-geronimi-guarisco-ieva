@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.cards.ColoredCard;
 import it.polimi.ingsw.model.cards.Corner;
 import it.polimi.ingsw.model.cards.StartingCard;
 import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.view.TUI.RotateBoard;
 
 import java.util.List;
 
@@ -49,6 +50,7 @@ public class Board implements Component {
                     board[relativeCoordinates.y()][relativeCoordinates.x()] = 'S';
                     if (cardId < 0) {
                         setCorners(relativeCoordinates, starting.getBackCorners());
+                        setLines(relativeCoordinates);
                     }
                     continue;
                 } 
@@ -62,6 +64,7 @@ public class Board implements Component {
                     }
 
                     setCorners(relativeCoordinates, colored.getFrontCorners());
+                    setLines(relativeCoordinates);
 
                     continue;
                 }
@@ -83,6 +86,17 @@ public class Board implements Component {
             sb.append('\n');
         }
         return sb.toString();
+    }
+    private void setLines(Coordinates c){
+        int i = 0;
+        for(Coordinates neighbor : c.getNeighbors()){
+            if(isInView(neighbor) && i<2){
+                i++;
+                board[neighbor.y()][neighbor.x()] = '┃';
+            }else if(isInView(neighbor)){
+                board[neighbor.y()][neighbor.x()] = '━';
+            }
+        }
     }
 
     private void setCorners(Coordinates c, Corner[] corners) {
@@ -114,10 +128,11 @@ public class Board implements Component {
     }
 
     private Coordinates getOffsetCoordinates(Coordinates coordinates) {
+        coordinates = RotateBoard.rotateCoordinates(coordinates, -45);
         coordinates = doubleCoordinates(coordinates);
         return new Coordinates(
                 coordinates.x() +  baseOffset_x - center.x(),
-                coordinates.y() + baseOffset_y - center.y());
+                -coordinates.y() + baseOffset_y - center.y());
     }
 
     private boolean isInView(Coordinates coordinates) {

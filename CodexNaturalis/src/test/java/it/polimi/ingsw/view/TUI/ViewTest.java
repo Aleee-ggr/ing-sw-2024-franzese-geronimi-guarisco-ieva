@@ -44,7 +44,7 @@ public class ViewTest {
 
         //HashMap<Coordinates, Integer> map2 = new HashMap<>(map);
 
-        clientData.addPlayerCard("usernameTest",new Coordinates(0, 0), deck.draw().getId());
+        clientData.addPlayerCard("usernameTest",new Coordinates(0, 0), FullDeck.getFullStartingDeck().draw().getId());
         clientData.addPlayerCard("usernameTest",new Coordinates(0, 1), deck.draw().getId());
         clientData.addPlayerCard("usernameTest",new Coordinates(-1, 0), deck.draw().getId());
         clientData.addPlayerCard("usernameTest",new Coordinates(-1, 1), deck.draw().getId());
