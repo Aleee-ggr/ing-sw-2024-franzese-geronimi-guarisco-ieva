@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.TUI.controller;
 
 import it.polimi.ingsw.helpers.exceptions.network.ServerConnectionException;
+import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.rmi.RmiClient;
 
 import java.rmi.RemoteException;
@@ -131,6 +132,7 @@ class RmiRemoteHandler extends Thread {
             client.getSharedBoard();
             client.getVisibleCards();
             client.getBackSideDecks();
+            client.getPlayerResources(Client.getData().getUsername());
             //TODO add other getters
         } catch (ServerConnectionException|RemoteException e) {
             throw new RuntimeException(e);
