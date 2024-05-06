@@ -56,6 +56,21 @@ public record ThreadMessage(Status status, String player, String type, String[] 
     }
 
     /**
+     * Creates a new message to wait for updates from the Client.
+     * @param username The username of the player making the request.
+     * @return A new ThreadMessage to wait for updates.
+     */
+    public static ThreadMessage update(String username){
+        return new ThreadMessage(
+                Status.REQUEST,
+                username,
+                "update",
+                null,
+                UUID.randomUUID()
+        );
+    }
+
+    /**
      * Creates a new message to request placing a card.
      * @param username The username of the player making the request.
      * @param coordinates The coordinates where the card will be placed.
@@ -75,6 +90,7 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 UUID.randomUUID()
         );
     }
+
 
     //ThreadMessage with specific response
 
@@ -288,7 +304,7 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         );
     }
 
-
+//TODO: add getStartingCard
 
     //generic Responses
 
