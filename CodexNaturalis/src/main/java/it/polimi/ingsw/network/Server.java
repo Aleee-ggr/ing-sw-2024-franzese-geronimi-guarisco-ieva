@@ -317,6 +317,20 @@ public abstract class Server {
 
         return validPlacements;
     }
+    public static Integer getStartingCard(UUID game, String username) {
+        ThreadMessage message = ThreadMessage.getStartingCard(
+                username
+        );
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+
+        if (response.status() == Status.OK) {
+            return Integer.parseInt(response.args()[0]);
+        } else {
+            return null;
+        }
+    }
+
     public static void waitUpdate(UUID game, String username) {
         while(!gameTurns.get(game).get(username)) {
             try {

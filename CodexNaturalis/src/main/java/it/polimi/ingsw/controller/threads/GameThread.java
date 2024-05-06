@@ -2,7 +2,6 @@ package it.polimi.ingsw.controller.threads;
 
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.controller.Controller;
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.model.player.Player;
@@ -11,8 +10,6 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 /**
  * GameThread Class, used to manage the thread-side logic for the controller.
@@ -293,6 +290,12 @@ public class GameThread extends Thread {
                 controller.getLastPlacedCards(
                         msg.player(),
                         msg.messageUUID());
+                break;
+            case "getStartingCard":
+                controller.getStartingCards(
+                        msg.player(),
+                        msg.messageUUID()
+                );
                 break;
             case "kill":
                 gameState = GameState.STOP;

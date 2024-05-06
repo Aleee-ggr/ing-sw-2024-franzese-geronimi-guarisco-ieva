@@ -322,6 +322,15 @@ public record ThreadMessage(Status status, String player, String type, String[] 
     }
 
 //TODO: add getStartingCard
+    public static ThreadMessage getStartingCard(String username) {
+        return new ThreadMessage(
+                Status.REQUEST,
+                username,
+                "getStartingCard",
+                null,
+                UUID.randomUUID()
+        );
+    }
 
     //generic Responses
 
@@ -412,6 +421,18 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 "choosePersonalObjectiveResponse",
                 new String[]{
                         String.valueOf(correct)
+                },
+                messageUUID
+        );
+    }
+
+    public static ThreadMessage getStartingCardResponse(String username, Integer cardId, UUID messageUUID) {
+        return new ThreadMessage(
+                Status.OK,
+                username,
+                "getStartingCardResponse",
+                new String[]{
+                        cardId.toString()
                 },
                 messageUUID
         );

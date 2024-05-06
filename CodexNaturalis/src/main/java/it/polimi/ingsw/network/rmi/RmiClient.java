@@ -302,6 +302,16 @@ public class RmiClient extends Client{
         server.wait(this.gameId, data.getUsername());
     }
 
+    public boolean getStartingCard() throws ServerConnectionException, RemoteException {
+        Integer startingCardId = Server.getStartingCard(this.gameId, data.getUsername());
+
+        if (startingCardId != null) {
+            data.setStartingCard(data.getUsername(), startingCardId);
+            return true;
+        } else {
+            return false;
+        }
+    }
     //TODO: methods to implement
 
     /**

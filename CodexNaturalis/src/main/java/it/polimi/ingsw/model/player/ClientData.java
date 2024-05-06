@@ -1,10 +1,8 @@
 package it.polimi.ingsw.model.player;
 
-import com.google.common.collect.BiMap;
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.helpers.exceptions.model.ElementNotInHand;
 import it.polimi.ingsw.helpers.exceptions.model.HandFullException;
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.enums.Resource;
 
@@ -146,6 +144,10 @@ public class ClientData {
 
     public void setPlayerHandColor(String username, ArrayList<Resource> newHand){
         this.playersData.get(username).updateHand(newHand);
+    }
+
+    public void setStartingCard(String username, Integer startingCardId) {
+        this.playersData.get(username).setStartingCard(startingCardId);
     }
 
     public void updatePlayerResources(String username, Map<Resource, Integer> newMap){

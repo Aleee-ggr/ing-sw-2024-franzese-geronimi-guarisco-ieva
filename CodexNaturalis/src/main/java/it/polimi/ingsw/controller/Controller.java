@@ -223,6 +223,17 @@ public class Controller {
         }
     }
 
+    public void getStartingCards(String username, UUID messageId) {
+        try {
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
+            Card startingCard = user.getPlayerBoard().getCard(new Coordinates(0, 0));
+
+            messageQueue.add(ThreadMessage.getStartingCardResponse(username, startingCard.getId(), messageId));
+        } catch (Exception e) {
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+        }
+    }
+
     /**
      * Controller Method to get the player resources.
      * @param username the username of the player that requests the resources.
