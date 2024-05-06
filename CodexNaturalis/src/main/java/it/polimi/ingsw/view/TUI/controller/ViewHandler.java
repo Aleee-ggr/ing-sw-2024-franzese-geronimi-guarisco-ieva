@@ -35,26 +35,13 @@ class ViewHandler extends Thread {
                 case LOBBY, SETUP_FETCH:
                     out.println("waiting...");
                     break;
-                    
+
                 case SETUP_STARTING:
-                    StartingCardView startingCardView = new StartingCardView(
-                            (StartingCard) Game.getCardByID(Client.getData().getStartingCard(username))
-                    );
-                    out.println(startingCardView);
-                    input.setElement(String.valueOf(in.nextInt()));
+                    setupStarting();
                     break;
 
                 case SETUP_OBJECTIVES:
-                    out.print("\033[H\033[2J");
-                    out.flush();
-                    ObjectiveCard[] objectives = Client.getData()
-                            .getStartingObjectives()
-                            .stream()
-                            .map((Game::getObjectiveByID))
-                            .map(ObjectiveCard::new)
-                            .toArray(ObjectiveCard[]::new);
-                    StartingObjectiveView startingObjectiveView = new StartingObjectiveView(objectives);
-                    out.println(startingObjectiveView);
+                    setupObjectives();
                     break;
 
                 case WAIT_TURN:
@@ -63,19 +50,45 @@ class ViewHandler extends Thread {
                     break;
 
                 case PLACE_CARD, DRAW:
-                    out.print("\033[H\033[2J");
-                    out.flush();
-                    if (compositor == null) {
-                        compositor = new Compositor(players);
-                    }
-                    out.print(compositor);
-                    input.setElement(in.nextLine());
+                    compositor = mainView(compositor);
                     break;
 
                 default:
                     throw new RuntimeException("Unknown state %s".formatted(state.getElement()));
             }
         }
+    }
+
+    private Compositor mainView(Compositor compositor) {
+        out.print("\033[H\033[2J");
+        out.flush();
+        if (compositor == null) {
+            compositor = new Compositor(players);
+        }
+        out.print(compositor);
+        input.setElement(in.nextLine());
+        return compositor;
+    }
+
+    private void setupObjectives() {
+        out.print("\033[H\033[2J");
+        out.flush();
+        ObjectiveCard[] objectives = Client.getData()
+                .getStartingObjectives()
+                .stream()
+                .map((Game::getObjectiveByID))
+                .map(ObjectiveCard::new)
+                .toArray(ObjectiveCard[]::new);
+        StartingObjectiveView startingObjectiveView = new StartingObjectiveView(objectives);
+        out.println(startingObjectiveView);
+    }
+
+    private void setupStarting() {
+        StartingCardView startingCardView = new StartingCardView(
+                (StartingCard) Game.getCardByID(Client.getData().getStartingCard(username))
+        );
+        out.println(startingCardView);
+        input.setElement(String.valueOf(in.nextInt()));
     }
 
     private  void sleepAndClear() {try {
