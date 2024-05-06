@@ -73,6 +73,7 @@ public class GameThread extends Thread {
         }
         if (controller.getGame().getPlayers().size() == maxPlayers){
             gameState = GameState.SETUP;
+            controller.getGame().setGameState(GameState.SETUP);
         }
     }
 
@@ -103,6 +104,7 @@ public class GameThread extends Thread {
             turnMap.put(currentPlayer, false);
         }
         gameState = GameState.MAIN;
+        controller.getGame().setGameState(GameState.MAIN);
     }
 
     public void mainGame(){
@@ -111,6 +113,7 @@ public class GameThread extends Thread {
             turnMap.put(player.getUsername(), true);
             if(playerTurn(player.getUsername()) || controller.getGame().getGameBoard().areCardsOver()){
                 gameState = GameState.ENDGAME;
+                controller.getGame().setGameState(GameState.ENDGAME);
             }
             turnMap.put(player.getUsername(), false);
         }
@@ -177,6 +180,7 @@ public class GameThread extends Thread {
             }
         }
         gameState = GameState.STOP;
+        controller.getGame().setGameState(GameState.STOP);
     }
 
     private ThreadMessage getMessage() {

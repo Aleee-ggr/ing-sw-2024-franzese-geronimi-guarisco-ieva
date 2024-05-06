@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.GameConsts;
+import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.model.board.SharedBoard;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.helpers.exceptions.model.ExistingUsernameException;
@@ -46,6 +47,7 @@ public class Game {
     private final List<Player> players = new ArrayList<>();
     private SharedBoard gameBoard;
     private int maxPlayers;
+    private GameState gameState;
 
     /**
      * Get the card from the corresponding id
@@ -56,9 +58,15 @@ public class Game {
         return cardID.get(abs(id));
     }
 
+    /**
+     * Get the objective from the corresponding id
+     * @param id the id of the objective
+     * @return the objective corresponding to the id
+     */
     public static Objective getObjectiveByID(Integer id) {
         return objectiveID.get(id);
     }
+
     /**
      * Constructor for the Game class.
      */
@@ -116,6 +124,21 @@ public class Game {
     }
 
     /**
+     * Getter for the GameState of the Game.
+     * @return the GameState of the Game
+     * */
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    /**
+     * Setter for the GameState of the Game.
+     * */
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
+
+    /**
      * Method used to add a Player in Game
      * @param playerUsername is the player username as a String
      * @throws TooManyPlayersException while trying to add a player when the Game is full
@@ -153,6 +176,10 @@ public class Game {
         }
     }
 
+    /**
+     * Method used to manage the objectives of the game. <br/>
+     * It shuffles the deck and draws the objectives to be placed in the SharedBoard.
+     * */
     public void manageObjectives(){ //TODO: try catch if there are obj in sharedboard
         gameObjDeck.shuffle();
         Objective[] objectiveToAdd = new Objective[GameConsts.globalObjectives];
@@ -160,14 +187,5 @@ public class Game {
             objectiveToAdd[i] = gameObjDeck.draw();
         }
         gameBoard.setObjectives(objectiveToAdd);
-    }
-    
-    /**
-     * TODO: methods to implement:
-     */
-    public void startGame(){
-
-    }
-    public void endGame(){
     }
 }
