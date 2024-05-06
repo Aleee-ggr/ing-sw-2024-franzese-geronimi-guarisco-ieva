@@ -27,20 +27,29 @@ public class ViewTest {
         clientData.addPlayer("player1");
         clientData.addPlayer("player2");
         clientData.addPlayer("player3");
+        clientData.updateScore("player1", 10);
+        clientData.updateScore("player2", 12);
+        clientData.updateScore("player3", 13);
+        clientData.updateScore("usernameTest", 19);
 
+
+        Deck<StdCard> deck = FullDeck.getFullStdDeck();
+        deck.shuffle();
         HashMap<Coordinates, Integer> map =  new HashMap<>();
         map.put(new Coordinates(0,0), FullDeck.getFullStartingDeck().draw().getId());
         clientData.setPlayerBoard("player1", new HashMap<>(map));
-        clientData.setPlayerBoard("player2", new HashMap<>(map));
+        clientData.addPlayerCard("player2", new Coordinates(0, 0), FullDeck.getFullStartingDeck().draw().getId());
+        clientData.addPlayerCard("player2", new Coordinates(0, 1), deck.draw().getId());
+        clientData.setPlayerBoard("player3", new HashMap<>(map));
 
-        HashMap<Coordinates, Integer> map2 = new HashMap<>(map);
-        Deck<StdCard> deck = FullDeck.getFullStdDeck();
-        deck.shuffle();
-        map2.put(new Coordinates(0, 1), deck.draw().getId());
-        map2.put(new Coordinates(-1, 0), deck.draw().getId());
-        map2.put(new Coordinates(-1, 1), deck.draw().getId());
-        map2.put(new Coordinates(0, 2), deck.draw().getId());
-        clientData.setPlayerBoard("player3", new HashMap<>(map2));
+        //HashMap<Coordinates, Integer> map2 = new HashMap<>(map);
+
+        clientData.addPlayerCard("usernameTest",new Coordinates(0, 0), deck.draw().getId());
+        clientData.addPlayerCard("usernameTest",new Coordinates(0, 1), deck.draw().getId());
+        clientData.addPlayerCard("usernameTest",new Coordinates(-1, 0), deck.draw().getId());
+        clientData.addPlayerCard("usernameTest",new Coordinates(-1, 1), deck.draw().getId());
+        clientData.addPlayerCard("usernameTest",new Coordinates(0, 2), deck.draw().getId());
+        //clientData.setPlayerBoard("usernameTest", new HashMap<>(map2));
 
 
 

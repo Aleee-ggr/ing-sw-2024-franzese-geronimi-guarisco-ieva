@@ -51,7 +51,7 @@ public class Board implements Component {
                         setCorners(relativeCoordinates, starting.getBackCorners());
                     }
                     continue;
-                }
+                } 
                 if (card instanceof ColoredCard colored) {
                     board[relativeCoordinates.y()][relativeCoordinates.x()] = colored.getBackResource().toChar();
                     if (cardId < 0) {
@@ -78,8 +78,9 @@ public class Board implements Component {
         StringBuilder sb = new StringBuilder();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                sb.append(board[y][x]);
+                sb.append(board[y][x] != null ? board[y][x] : " ");
             }
+            sb.append('\n');
         }
         return sb.toString();
     }

@@ -12,9 +12,15 @@ public class ScoreBoard implements Component{
     private final ArrayList<String> scoreBoard = new ArrayList<>(scoreHeight);
     private final ClientData clientData = Client.getData();
 
-    public String[] get() {
+    @Override
+    public String toString() {
+        StringBuilder sb = get();
+        return sb.toString();
+    }
 
-        scoreBoard.add("ScoreBoard:         ");
+    public StringBuilder get() {
+        StringBuilder out = new StringBuilder();
+        out.append("ScoreBoard:        \n");
 
         for(String player: clientData.getScoreBoard().keySet()){
             String score = clientData.getScoreBoard().get(player).toString();
@@ -27,17 +33,17 @@ public class ScoreBoard implements Component{
             int spacesCount = scoreWidth - (player.length() + score.length() + 2);
             String spaces = " ".repeat(spacesCount);
 
-            scoreBoard.add(String.format("%s: %s%s", player, spaces, score));
+            out.append(String.format("%s: %s%s\n", player, spaces, score));
         }
 
 
         if(clientData.getPlayerNum()< GameConsts.maxPlayersNum){
             if(clientData.getPlayerNum() == 2){
-                scoreBoard.add("                    ");
+                out.append("                    \n");
             }
-            scoreBoard.add("                    ");
+            out.append("                    \n");
         }
 
-        return scoreBoard.toArray(new String[0]);
+        return out;
     }
 }

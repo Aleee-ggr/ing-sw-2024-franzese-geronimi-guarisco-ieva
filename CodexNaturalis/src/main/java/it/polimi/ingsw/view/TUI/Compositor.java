@@ -19,7 +19,7 @@ public class Compositor {
     private ResourceView resources = new ResourceView(clientData.getUsername());
     private HandView hand = new HandView();
     //private DeckView deck = new DeckView();
-    //private final BoardView board = new BoardView();
+    private final Board board = new Board();
     private ScoreBoard scoreBoard = new ScoreBoard();
     private final Prompt prompt = new Prompt(clientData.getUsername());
 
@@ -75,12 +75,22 @@ public class Compositor {
         out.append("━".repeat(ResourceView.width));
         out.append('\n');
 
+
         int y;
         for(y = 0; y < HandView.panelHeight; y++){
             out.append(hand.toStringArray()[y])
-                    .append("┃\n");
+                    .append("┃")
+                    .append(board.toStringArray()[y])
+                    .append("\n");
         }
 
+
+        for(; y < HandView.panelHeight + ScoreBoard.scoreHeight; y++) {
+            out.append(scoreBoard.toStringArray()[y - HandView.panelHeight])
+                    .append("┃")
+                    .append(board.toStringArray()[y])
+                    .append("\n");
+        }
 
         //TODO: finish when board is completed
 
