@@ -75,8 +75,8 @@ public class Controller {
         }
     }
 
-    public void update(String username, UUID messageId) {
-        messageQueue.add(ThreadMessage.okResponse(username, messageId));
+    public void update(String username,boolean playerTurn, UUID messageId) {
+        messageQueue.add(ThreadMessage.updateResponse(username,playerTurn, messageId));
     }
 
     /**
@@ -135,9 +135,9 @@ public class Controller {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
             user.choosePersonalObjective(objId);
-            messageQueue.add(ThreadMessage.okResponse(username, messageId));
+            messageQueue.add(ThreadMessage.choosePersonalObjectiveResponse(username, true, messageId));
         } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+            messageQueue.add(ThreadMessage.choosePersonalObjectiveResponse(username, false,messageId));
         }
     }
 

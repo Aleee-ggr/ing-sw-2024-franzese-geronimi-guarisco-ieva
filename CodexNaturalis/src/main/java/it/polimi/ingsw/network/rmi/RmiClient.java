@@ -290,15 +290,16 @@ public class RmiClient extends Client{
      * @throws ServerConnectionException If there is an issue connecting to the server.
      * @throws RemoteException If a remote communication error occurs.
      */
-    public void getStartingObjectives() throws  ServerConnectionException, RemoteException{
+    public void getStartingObjectives() throws  ServerConnectionException, RemoteException {
         Server.getStartingObjectives(this.gameId, data.getUsername());
+    }
+
     /**
      * Waits for an update from the server.
      * @throws RemoteException If a remote communication error occurs.
      */
     public void waitUpdate() throws RemoteException {
         server.wait(this.gameId, data.getUsername());
-    }
     }
 
     //TODO: methods to implement
