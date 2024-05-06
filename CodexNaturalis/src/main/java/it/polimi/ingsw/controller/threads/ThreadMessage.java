@@ -56,21 +56,6 @@ public record ThreadMessage(Status status, String player, String type, String[] 
     }
 
     /**
-     * Creates a new message to wait for updates from the Client.
-     * @param username The username of the player making the request.
-     * @return A new ThreadMessage to wait for updates.
-     */
-    public static ThreadMessage update(String username){
-        return new ThreadMessage(
-                Status.REQUEST,
-                username,
-                "update",
-                null,
-                UUID.randomUUID()
-        );
-    }
-
-    /**
      * Creates a new message to request placing a card.
      * @param username The username of the player making the request.
      * @param coordinates The coordinates where the card will be placed.
@@ -92,7 +77,23 @@ public record ThreadMessage(Status status, String player, String type, String[] 
     }
 
 
+
     //ThreadMessage with specific response
+
+    /**
+     * Creates a new message to wait for updates from the Client.
+     * @param username The username of the player making the request.
+     * @return A new ThreadMessage to wait for updates.
+     */
+    public static ThreadMessage update(String username){
+        return new ThreadMessage(
+                Status.REQUEST,
+                username,
+                "update",
+                null,
+                UUID.randomUUID()
+        );
+    }
 
     /**
      * Creates a new message to request drawing a card.
@@ -359,6 +360,24 @@ public record ThreadMessage(Status status, String player, String type, String[] 
 
 
     //specific Responses
+
+    /**
+     * Creates a ThreadMessage for an update response.
+     * @param username The username of the player.
+     * @param playerTurn A boolean indicating whether it is the player's turn.
+     * @param messageUUID The UUID of the message.
+     */
+    public static ThreadMessage updateResponse(String username, boolean playerTurn, UUID messageUUID) {
+        return new ThreadMessage(
+                Status.OK,
+                username,
+                "updateResponse",
+                new String[] {
+                        String.valueOf(playerTurn)
+                },
+                messageUUID
+        );
+    }
 
     /**
      * Creates a ThreadMessage for a draw response.
@@ -658,4 +677,23 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 messageUUID
         );
     }
+
+    /**
+     * Creates a ThreadMessage for a players response.
+     * @param username The username of the player.
+     * @param players An array of player usernames.
+     * @param messageUUID The UUID of the message.
+     * @return A ThreadMessage for a players response.
+     */
+    public static ThreadMessage getPlayersResponse(String username, String[] players, UUID messageUUID) {
+        return new ThreadMessage(
+                Status.OK,
+                username,
+                "getPlayersResponse",
+                players,
+                messageUUID
+        );
+    }
+
+
 }
