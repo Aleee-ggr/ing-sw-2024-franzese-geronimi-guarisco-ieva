@@ -78,6 +78,8 @@ public interface RmiServerInterface extends Remote {
      */
     String postChat(UUID game, String name, String message) throws RemoteException;
 
+    void wait(UUID game, String name) throws RemoteException;
+
     /**
      * Check whether the given credentials are valid (size < 16 and username is not reused)
      * @param username the username of the player

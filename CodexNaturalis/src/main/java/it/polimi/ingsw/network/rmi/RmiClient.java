@@ -292,6 +292,13 @@ public class RmiClient extends Client{
      */
     public void getStartingObjectives() throws  ServerConnectionException, RemoteException{
         Server.getStartingObjectives(this.gameId, data.getUsername());
+    /**
+     * Waits for an update from the server.
+     * @throws RemoteException If a remote communication error occurs.
+     */
+    public void waitUpdate() throws RemoteException {
+        server.wait(this.gameId, data.getUsername());
+    }
     }
 
     //TODO: methods to implement
@@ -304,13 +311,5 @@ public class RmiClient extends Client{
      */
     public void postChat(String message) throws  ServerConnectionException, RemoteException{
         server.postChat(this.gameId, data.getUsername(), message);
-    }
-
-    /**
-     * Waits for an update from the server.
-     * @throws RemoteException If a remote communication error occurs.
-     */
-    public void waitUpdate() throws RemoteException {
-        server.waitUpdate(this.gameId, data.getUsername());
     }
 }

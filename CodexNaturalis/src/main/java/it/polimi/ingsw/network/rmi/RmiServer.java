@@ -116,6 +116,10 @@ public class RmiServer extends Server implements RmiServerInterface {
         return response.status() != Status.ERROR;
     }
 
+    public void wait(UUID game, String player) throws RemoteException{
+        Server.waitUpdate(game, player);
+    }
+
     //TODO: methods to implement
 
     @Override
