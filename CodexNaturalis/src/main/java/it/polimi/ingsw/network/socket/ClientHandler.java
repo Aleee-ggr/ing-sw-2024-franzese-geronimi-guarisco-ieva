@@ -86,11 +86,7 @@ public class ClientHandler extends Thread {
         }
 
         if (message instanceof SocketClientJoinGameMessage) {
-            ThreadMessage threadMessage = ThreadMessage.join(message.getUsername());
-            Server.sendMessage(((SocketClientJoinGameMessage) message).getGameUUID(), threadMessage);
-            ThreadMessage response = threadMessages.get(((SocketClientJoinGameMessage) message).getGameUUID()).remove();
-
-            JoinGameResponseMessage responseMessage = new JoinGameResponseMessage(((SocketClientJoinGameMessage) message).getGameUUID(), response.status() != Status.ERROR);
+            JoinGameResponseMessage responseMessage = new JoinGameResponseMessage(((SocketClientJoinGameMessage) message).getGameUUID(), Server.joinGame(((SocketClientJoinGameMessage) message).getGameUUID(), message.getUsername()));
             sendResponse(responseMessage);
             return;
         }

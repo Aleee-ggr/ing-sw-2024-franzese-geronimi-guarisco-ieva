@@ -106,18 +106,11 @@ public class RmiServer extends Server implements RmiServerInterface {
 
     @Override
     public boolean join(UUID game, String player) throws RemoteException {
-        ThreadMessage message = ThreadMessage.join(
-                player
-        );
-
-        sendMessage(game, message);
-        ThreadMessage response = threadMessages.get(game).remove();
-
-        return response.status() != Status.ERROR;
+        return joinGame(game, player);
     }
 
     public void wait(UUID game, String player) throws RemoteException{
-        Server.waitUpdate(game, player);
+        waitUpdate(game, player);
     }
 
     //TODO: methods to implement

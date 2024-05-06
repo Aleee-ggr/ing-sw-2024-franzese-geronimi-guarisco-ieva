@@ -46,7 +46,6 @@ public abstract class Server {
         return id;
     }
 
-    //TODO: to finish
     /**
      * Joins a player to a game.
      * @param game the unique ID of the game to join
@@ -55,7 +54,13 @@ public abstract class Server {
      */
     public static boolean joinGame(UUID game, String player){
         gameTurns.get(game).put(player, false);
-        return true;
+        ThreadMessage message = ThreadMessage.join(
+                player
+        );
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+
+        return response.status() != Status.ERROR;
     }
 
     /**
