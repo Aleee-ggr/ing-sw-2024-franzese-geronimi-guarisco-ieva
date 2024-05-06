@@ -147,13 +147,17 @@ public abstract class Server {
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
-        ArrayList<Integer> hand = new ArrayList<>();
+        if (response.status() == Status.OK) {
+            ArrayList<Integer> hand = new ArrayList<>();
 
-        for (String arg : response.args()) {
-            hand.add(Integer.parseInt(arg));
+            for (String arg : response.args()) {
+                hand.add(Integer.parseInt(arg));
+            }
+
+            return hand;
+        } else {
+            return null;
         }
-
-        return hand;
     }
 
     public static boolean choosePersonalObjective(UUID game, String username, Integer objectiveId) {
@@ -175,13 +179,17 @@ public abstract class Server {
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
-        ArrayList<Resource> handColor = new ArrayList<>();
+        if (response.status() == Status.OK) {
+            ArrayList<Resource> handColor = new ArrayList<>();
 
-        for (String arg : response.args()) {
-            handColor.add(Resource.valueOf(arg));
+            for (String arg : response.args()) {
+                handColor.add(Resource.valueOf(arg));
+            }
+
+            return handColor;
+        } else {
+            return null;
         }
-
-        return handColor;
     }
 
     public static HashMap<Coordinates, Integer> getBoard(UUID game, String username, String usernameRequiredData) {
@@ -192,15 +200,19 @@ public abstract class Server {
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
-        HashMap<Coordinates, Integer> board = new HashMap<>();
+        if (response.status() == Status.OK) {
+            HashMap<Coordinates, Integer> board = new HashMap<>();
 
-        for (String arg : response.args()) {
-            String[] parts = arg.split(",");
-            Coordinates coordinates = new Coordinates(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
-            board.put(coordinates, Integer.parseInt(parts[2]));
+            for (String arg : response.args()) {
+                String[] parts = arg.split(",");
+                Coordinates coordinates = new Coordinates(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
+                board.put(coordinates, Integer.parseInt(parts[2]));
+            }
+
+            return board;
+        } else {
+            return null;
         }
-
-        return board;
     }
 
     public static Deque<Integer> getLastPlacedCards(UUID game, String username) {
@@ -210,13 +222,17 @@ public abstract class Server {
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
-        Deque<Integer> cards = new ArrayDeque<>();
+        if (response.status() == Status.OK) {
+            Deque<Integer> cards = new ArrayDeque<>();
 
-        for (String arg : response.args()) {
-            cards.add(Integer.parseInt(arg));
+            for (String arg : response.args()) {
+                cards.add(Integer.parseInt(arg));
+            }
+
+            return cards;
+        } else {
+            return null;
         }
-
-        return cards;
     }
 
     public static ArrayList<Integer> getCommonObjectives(UUID game, String username){
@@ -226,12 +242,16 @@ public abstract class Server {
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
-        ArrayList<Integer> commonObjectives = new ArrayList<>();
-        for (String arg : response.args()) {
-            commonObjectives.add(Integer.parseInt(arg));
-        }
+        if (response.status() == Status.OK) {
+            ArrayList<Integer> commonObjectives = new ArrayList<>();
+            for (String arg : response.args()) {
+                commonObjectives.add(Integer.parseInt(arg));
+            }
 
-        return commonObjectives;
+            return commonObjectives;
+        } else {
+            return null;
+        }
     }
 
     public static ArrayList<Integer> getStartingObjectives(UUID game, String username){
@@ -261,18 +281,22 @@ public abstract class Server {
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
-        HashMap<Resource, Integer> playerResources = new HashMap<>();
+        if (response.status() == Status.OK) {
+            HashMap<Resource, Integer> playerResources = new HashMap<>();
 
-        for (String arg : response.args()) {
-            String[] parts = arg.split(":");
-            if (parts.length == 2) {
-                Resource resource = Resource.valueOf(parts[0]);
-                Integer value = Integer.parseInt(parts[1]);
-                playerResources.put(resource, value);
+            for (String arg : response.args()) {
+                String[] parts = arg.split(":");
+                if (parts.length == 2) {
+                    Resource resource = Resource.valueOf(parts[0]);
+                    Integer value = Integer.parseInt(parts[1]);
+                    playerResources.put(resource, value);
+                }
             }
-        }
 
-        return playerResources;
+            return playerResources;
+        } else {
+            return null;
+        }
     }
 
     public static ArrayList<Integer> getVisibleCards(UUID game, String username) {
@@ -282,12 +306,16 @@ public abstract class Server {
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
-        ArrayList<Integer> visibleCards = new ArrayList<>();
-        for (String arg : response.args()) {
-            visibleCards.add(Integer.parseInt(arg));
-        }
+        if (response.status() == Status.OK) {
+            ArrayList<Integer> visibleCards = new ArrayList<>();
+            for (String arg : response.args()) {
+                visibleCards.add(Integer.parseInt(arg));
+            }
 
-        return visibleCards;
+            return visibleCards;
+        } else {
+            return null;
+        }
     }
 
     public static ArrayList<Integer> getBackSideDecks(UUID game, String username) {
@@ -297,12 +325,16 @@ public abstract class Server {
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
-        ArrayList<Integer> backSideDecks = new ArrayList<>();
-        for (String arg : response.args()) {
-            backSideDecks.add(Integer.parseInt(arg));
-        }
+        if (response.status() == Status.OK) {
+            ArrayList<Integer> backSideDecks = new ArrayList<>();
+            for (String arg : response.args()) {
+                backSideDecks.add(Integer.parseInt(arg));
+            }
 
-        return backSideDecks;
+            return backSideDecks;
+        } else {
+            return null;
+        }
     }
 
     public static Set<Coordinates> getValidPlacements(UUID game, String username) {
@@ -312,14 +344,18 @@ public abstract class Server {
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
-        Set<Coordinates> validPlacements = new HashSet<>();
+        if (response.status() == Status.OK) {
+            Set<Coordinates> validPlacements = new HashSet<>();
 
-        for (String arg : response.args()) {
-            String[] parts = arg.split(",");
-            validPlacements.add(new Coordinates(Integer.parseInt(parts[0]), Integer.parseInt(parts[1])));
+            for (String arg : response.args()) {
+                String[] parts = arg.split(",");
+                validPlacements.add(new Coordinates(Integer.parseInt(parts[0]), Integer.parseInt(parts[1])));
+            }
+
+            return validPlacements;
+        } else {
+            return null;
         }
-
-        return validPlacements;
     }
     public static Integer getStartingCard(UUID game, String username) {
         ThreadMessage message = ThreadMessage.getStartingCard(
@@ -345,4 +381,5 @@ public abstract class Server {
         }
     }
 }
+
 

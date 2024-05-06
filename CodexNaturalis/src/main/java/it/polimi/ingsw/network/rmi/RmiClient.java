@@ -142,8 +142,15 @@ public class RmiClient extends Client{
      * @throws ServerConnectionException If there is an issue connecting to the server.
      * @throws RemoteException If a remote communication error occurs.
      */
-    public ArrayList<Integer> getHand() throws ServerConnectionException, RemoteException {
-        return Server.getHand(this.gameId, data.getUsername());
+    public boolean getHand() throws ServerConnectionException, RemoteException {
+        ArrayList<Integer> handIds = Server.getHand(this.gameId, data.getUsername());
+
+        if (handIds != null) {
+            data.setClientHand(handIds);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -152,8 +159,15 @@ public class RmiClient extends Client{
      * @throws ServerConnectionException If there is an issue connecting to the server.
      * @throws RemoteException If a remote communication error occurs.
      */
-    public ArrayList<Integer> getCommonObjectives() throws ServerConnectionException, RemoteException {
-        return Server.getCommonObjectives(this.gameId, data.getUsername());
+    public boolean getCommonObjectives() throws ServerConnectionException, RemoteException {
+        ArrayList<Integer> commonObjectives = Server.getCommonObjectives(this.gameId, data.getUsername());
+
+        if (commonObjectives != null) {
+            data.setGlobalObjectives(commonObjectives.get(0), commonObjectives.get(1));
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -163,8 +177,15 @@ public class RmiClient extends Client{
      * @throws ServerConnectionException If there is an issue connecting to the server.
      * @throws RemoteException If a remote communication error occurs.
      */
-    public HashMap<Resource, Integer> getPlayerResources(String usernameRequiredData) throws ServerConnectionException, RemoteException {
-        return Server.getPlayerResources(this.gameId, data.getUsername(), usernameRequiredData);
+    public boolean getPlayerResources(String usernameRequiredData) throws ServerConnectionException, RemoteException {
+        HashMap<Resource, Integer> playerResources = Server.getPlayerResources(this.gameId, data.getUsername(), usernameRequiredData);
+
+        if (playerResources != null) {
+            data.updatePlayerResources(usernameRequiredData, playerResources);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -193,8 +214,15 @@ public class RmiClient extends Client{
      * @throws ServerConnectionException If there is an issue connecting to the server.
      * @throws RemoteException If a remote communication error occurs.
      */
-    public Set<Coordinates> getValidPlacements() throws ServerConnectionException, RemoteException {
-        return Server.getValidPlacements(this.gameId, data.getUsername());
+    public boolean getValidPlacements() throws ServerConnectionException, RemoteException {
+        Set<Coordinates> validPlacements = Server.getValidPlacements(this.gameId, data.getUsername());
+
+        if (validPlacements != null) {
+            data.setValidPlacements(validPlacements);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -204,8 +232,37 @@ public class RmiClient extends Client{
      * @throws ServerConnectionException If there is an issue connecting to the server.
      * @throws RemoteException If a remote communication error occurs.
      */
-    public ArrayList<Resource> getPlayerHandColor(String usernameRequiredData) throws ServerConnectionException, RemoteException {
-        return Server.getHandColor(this.gameId, data.getUsername(), usernameRequiredData);
+    public boolean getPlayerHandColor(String usernameRequiredData) throws ServerConnectionException, RemoteException {
+        ArrayList<Resource> handColor = Server.getHandColor(this.gameId, data.getUsername(), usernameRequiredData);
+
+        if (handColor != null) {
+            data.setPlayerHandColor(usernameRequiredData, handColor);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean getClientBoard() throws ServerConnectionException, RemoteException {
+        HashMap<Coordinates, Integer> clientBoard = Server.getBoard(this.gameId, data.getUsername(), data.getUsername());
+
+        if (clientBoard != null) {
+            data.setClientBoard(clientBoard);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean getPlayerBoard(String usernameRequiredData) throws ServerConnectionException, RemoteException {
+        HashMap<Coordinates, Integer> clientBoard = Server.getBoard(this.gameId, data.getUsername(), usernameRequiredData);
+
+        if (clientBoard != null) {
+            data.setPlayerBoard(usernameRequiredData, clientBoard);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
