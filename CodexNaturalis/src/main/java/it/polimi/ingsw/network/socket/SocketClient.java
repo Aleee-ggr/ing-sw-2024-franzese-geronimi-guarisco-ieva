@@ -74,6 +74,7 @@ public class SocketClient extends Client implements Runnable {
      * @throws IOException If an I/O error occurs while closing the connection.
      */
     public void stopConnection() throws IOException{
+        output.writeObject(new SocketClientCloseConnection(data.getUsername()));
         input.close();
         output.close();
         client.close();
@@ -244,6 +245,29 @@ public class SocketClient extends Client implements Runnable {
         output.writeObject(new SocketClientGetHandColorMessage(data.getUsername(), this.gameId, username));
     }
 
+    /**
+     * Sends a request message to the server to retrieve the list of players in the game.
+     * @param username the username of the client making the request.
+     * @throws IOException if there is an error during communication with the server.
+     */
+    public void getPlayers(String username) throws IOException {
+        output.writeObject(new SocketClientGetPlayersMessage(data.getUsername(), this.gameId));
+    }
+
+    /**
+     * Sends a request message to the server to retrieve the starting card of the player.
+     * @param username the username of the client making the request.
+     * @throws IOException if there is an error during communication with the server.
+     */
+    public void getStartingCard(String username) throws IOException {
+        output.writeObject(new SocketClientGetStartingCardMessage(data.getUsername(), this.gameId));
+    }
+
+    /**
+     * Sends a request message to the server to notify when it's this player's turn.
+     * @param username the username of the client making the request.
+     * @throws IOException if there is an error during communication with the server.
+     */
     public void waitUpdate(String username) throws IOException {
         output.writeObject(new SocketClientWaitUpdateMessage(data.getUsername(), this.gameId));
     }
