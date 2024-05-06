@@ -13,7 +13,6 @@ import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.model.player.Player;
 
-import java.awt.*;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,7 +23,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Alessio Guarisco
  * */
 public class Controller {
-    private final GameThread thread;
     private final BlockingQueue<ThreadMessage> messageQueue;
     private Game game;
 
@@ -35,9 +33,16 @@ public class Controller {
      * @param maxPlayers the maximum number of players that can join a game.
      * */
     public Controller(GameThread thread, BlockingQueue<ThreadMessage> messageQ, Integer maxPlayers) {
-        this.thread = thread;
         this.messageQueue = messageQ;
         this.game = new Game(maxPlayers);
+    }
+
+    /**
+     * Getter for the Game.
+     * @return the Game object.
+     * */
+    public Game getGame() {
+        return game;
     }
 
     /**
@@ -68,6 +73,10 @@ public class Controller {
         } catch (Exception e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
+    }
+
+    public void update(String username, UUID messageId) {
+        messageQueue.add(ThreadMessage.okResponse(username, messageId));
     }
 
     /**

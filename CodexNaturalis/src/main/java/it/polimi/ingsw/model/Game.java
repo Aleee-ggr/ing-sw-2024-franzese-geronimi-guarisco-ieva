@@ -108,6 +108,14 @@ public class Game {
     }
 
     /**
+     * Getter for the max number of players in the game.
+     * @return the max number of players in the game
+     */
+    public int getMaxPlayers() {
+        return maxPlayers;
+    }
+
+    /**
      * Method used to add a Player in Game
      * @param playerUsername is the player username as a String
      * @throws TooManyPlayersException while trying to add a player when the Game is full
