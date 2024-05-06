@@ -5,8 +5,8 @@ import it.polimi.ingsw.model.cards.StartingCard;
 import it.polimi.ingsw.view.TUI.components.printables.ObjectiveCard;
 
 public class StartingCardView implements Component{
-    public static final int width = 146;
-    public static final int height = 27;
+    public static final int width = 166;
+    public static final int height = 39;
 
     private final static String HEADER="STARTING OBJECTIVES";
 
