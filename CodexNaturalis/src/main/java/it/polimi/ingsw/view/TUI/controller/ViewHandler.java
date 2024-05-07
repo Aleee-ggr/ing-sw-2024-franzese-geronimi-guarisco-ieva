@@ -63,7 +63,7 @@ class ViewHandler extends Thread {
         out.print("\033[H\033[2J");
         out.flush();
         if (compositor == null) {
-            compositor = new Compositor(players);
+            compositor = new Compositor(Client.getData().getPlayers().toArray(new String[0]));
         }
         out.print(compositor);
         input.setElement(in.nextLine());
