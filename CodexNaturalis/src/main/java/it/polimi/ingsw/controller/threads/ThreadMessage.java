@@ -290,6 +290,16 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         );
     }
 
+    public static ThreadMessage getAvailableGames(String username) {
+        return new ThreadMessage(
+                Status.REQUEST,
+                username,
+                "getAvailableGames",
+                null,
+                UUID.randomUUID()
+        );
+    }
+
     /**
      * Creates a ThreadMessage for requesting last placed cards.
      * @param username The username of the player.
@@ -454,6 +464,22 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 new String[]{
                         cardId.toString()
                 },
+                messageUUID
+        );
+    }
+
+    public static ThreadMessage getAvailableGamesResponse(String username, ArrayList<UUID> availableGames, UUID messageUUID) {
+        String[] args = new String[availableGames.size()];
+
+        for (int i = 0; i < availableGames.size(); i++) {
+            args[i] = availableGames.get(i).toString();
+        }
+
+        return new ThreadMessage(
+                Status.OK,
+                username,
+                "getAvailableGamesResponse",
+                args,
                 messageUUID
         );
     }

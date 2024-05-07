@@ -2,6 +2,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.controller.Logger;
+import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.controller.threads.GameThread;
 import it.polimi.ingsw.controller.threads.Status;
 import it.polimi.ingsw.controller.threads.ThreadMessage;
@@ -122,7 +123,39 @@ public abstract class Server {
         }
     }
 
-    public static HashMap<String, Integer> getScoreMap(UUID game, String username) {
+    public static ArrayList<UUID> getAvailableGames(UUID game, String username) {
+        ThreadMessage message = ThreadMessage.getAvailableGames(
+                username
+        );
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+
+        if (response.status() == Status.OK) {
+            ArrayList<UUID> availableGames = new ArrayList<>();
+            for (String arg : response.args()) {
+                availableGames.add(UUID.fromString(arg));
+            }
+
+            return availableGames;
+        } else {
+            return null;
+        }
+
+    }
+
+    public static GameState getGameStateServer(UUID game, String username) {
+        ThreadMessage message = ThreadMessage.getGameState(
+                username
+        );
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+
+        if (response.status() == Status.OK) {
+            return GameState.valueOf(response.args()[0]);
+        } else {
+            return null;
+        }
+    }
 
     public static HashMap<String, Integer> getScoreMapServer(UUID game, String username) {
         ThreadMessage message = ThreadMessage.getScoreMap(
