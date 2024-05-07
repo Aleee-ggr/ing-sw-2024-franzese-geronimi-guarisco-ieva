@@ -106,7 +106,7 @@ public class RmiClient extends Client{
         UUID game = null;
         if (validCredentials) {
             game = server.newGame(players);
-            server.join(game, data.getUsername());
+            joinGame(game);
         }
         return game;
     }
