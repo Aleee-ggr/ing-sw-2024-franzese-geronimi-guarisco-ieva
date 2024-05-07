@@ -163,6 +163,11 @@ public class RmiServer extends Server implements RmiServerInterface {
     }
 
     @Override
+    public boolean setStartingCard(UUID game, String username, boolean frontSideUp) throws RemoteException {
+        return setStartingCardServer(game, username, frontSideUp);
+    }
+
+    @Override
     public ArrayList<Resource> getHandColor(UUID game, String name, String nameRequiredData) throws RemoteException {
         return getHandColorServer(game, name, nameRequiredData);
     }

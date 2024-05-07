@@ -387,6 +387,12 @@ public class RmiClient extends Client{
         }
     }
 
+    public boolean setStartingCard(boolean frontSideUp) throws ServerConnectionException, RemoteException {
+        boolean success = remoteObject.setStartingCard(this.gameId, data.getUsername(), frontSideUp);
+
+        return success;
+    }
+
     /**
      * Waits for an update from the server.
      * @throws RemoteException If a remote communication error occurs.

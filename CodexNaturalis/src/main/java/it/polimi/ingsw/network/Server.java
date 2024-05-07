@@ -200,6 +200,17 @@ public abstract class Server {
         }
     }
 
+    public static boolean setStartingCardServer(UUID game, String username, boolean frontSideUp) {
+        ThreadMessage message = ThreadMessage.placeStartingCard(
+                username,
+                String.valueOf(frontSideUp)
+        );
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+
+        return response.status() != Status.ERROR;
+    }
+
     public static boolean choosePersonalObjectiveServer(UUID game, String username, Integer objectiveId) {
         ThreadMessage message = ThreadMessage.choosePersonalObjective(
                 username,

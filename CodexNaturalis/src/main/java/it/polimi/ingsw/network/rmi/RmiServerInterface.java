@@ -81,6 +81,9 @@ public interface RmiServerInterface extends Remote {
     boolean choosePersonalObjective(UUID game, String username, Integer objectiveId) throws RemoteException;
 
     ArrayList<Integer> getStartingObjectives(UUID game, String username) throws RemoteException;
+
+    boolean setStartingCard(UUID game, String username, boolean frontSideUp) throws RemoteException;
+
     /**
      * Allows a player to join an existing game.
      * @param game The UUID of the game.
