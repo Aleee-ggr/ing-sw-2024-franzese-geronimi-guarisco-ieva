@@ -313,6 +313,7 @@ public class GameThread extends Thread {
                         Boolean.parseBoolean(msg.args()[0]),
                         msg.messageUUID()
                 );
+                break;
             case "getGameState":
                 controller.getGameState(
                         msg.player(),
