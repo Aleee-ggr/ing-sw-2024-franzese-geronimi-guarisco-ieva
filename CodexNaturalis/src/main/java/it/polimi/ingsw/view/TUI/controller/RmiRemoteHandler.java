@@ -11,7 +11,6 @@ class RmiRemoteHandler extends Thread {
     private final RmiClient client;
     private final Shared<ViewState> gameState;
     private final Shared<String> input;
-    private String[] players;
     private UUID game;
 
     RmiRemoteHandler(RmiClient client, Shared<ViewState> gameState, Shared<String> input, UUID game) {
@@ -135,11 +134,12 @@ class RmiRemoteHandler extends Thread {
         try {
             client.getHand();
             client.getCommonObjectives();
-            client.getPlayerBoard();
-            client.getSharedBoard();
+            for (String player : Client.getData().getPlayers()) {
+                client.getPlayerBoard(player);
+                client.getPlayerResources(player);
+            }
             client.getVisibleCards();
             client.getBackSideDecks();
-            client.getPlayerResources(Client.getData().getUsername());
             //TODO add other getters
         } catch (ServerConnectionException|RemoteException e) {
             throw new RuntimeException(e);
