@@ -33,6 +33,11 @@ public class ClientData {
     private ArrayList<Integer> startingObjectives = new ArrayList<>();
     private Integer personalObjective;
 
+    private HashMap<String, Integer> scoreMap;
+
+    private ArrayList<Integer> visibleCards;
+    private ArrayList<Integer> backSideDecks;
+
     private GameState gameState;
 
     /**
@@ -109,11 +114,34 @@ public class ClientData {
         return players;
     }
 
+    public ArrayList<Integer> getVisibleCards() {
+        return visibleCards;
+    }
+
+    public ArrayList<Integer> getBackSideDecks() {
+        return backSideDecks;
+    }
+
+    public HashMap<String, Integer> getScoreMap() {
+        return scoreMap;
+    }
+
     public void setPersonalObjective(Integer personalObjective) {
         this.personalObjective = personalObjective;
     }
     public void setStartingObjectives(ArrayList<Integer> startingObjectives) {
         this.startingObjectives = startingObjectives;
+    }
+    public void setVisibleCards(ArrayList<Integer> visibleCards) {
+        this.visibleCards = visibleCards;
+    }
+
+    public void setBackSideDecks(ArrayList<Integer> backSideDecks) {
+        this.backSideDecks = backSideDecks;
+    }
+
+    public void setScoreMap(HashMap<String, Integer> scoreMap) {
+        this.scoreMap = scoreMap;
     }
 
     public void setGlobalObjectives(Integer obj1, Integer obj2) {

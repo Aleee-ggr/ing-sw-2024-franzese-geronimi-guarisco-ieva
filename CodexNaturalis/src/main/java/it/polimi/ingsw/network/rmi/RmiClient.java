@@ -132,8 +132,15 @@ public class RmiClient extends Client{
      * @throws ServerConnectionException If there is an issue connecting to the server.
      * @throws RemoteException If a remote communication error occurs.
      */
-    public HashMap<String, Integer> getScoreMap() throws ServerConnectionException, RemoteException {
-        return remoteObject.getScoreMap(this.gameId, data.getUsername());
+    public boolean getScoreMap() throws ServerConnectionException, RemoteException {
+        HashMap<String, Integer> scoreMap = remoteObject.getScoreMap(this.gameId, data.getUsername());
+
+        if (scoreMap != null) {
+            data.setScoreMap(scoreMap);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -221,8 +228,15 @@ public class RmiClient extends Client{
      * @throws ServerConnectionException If there is an issue connecting to the server.
      * @throws RemoteException If a remote communication error occurs.
      */
-    public ArrayList<Integer> getVisibleCards() throws ServerConnectionException, RemoteException {
-        return remoteObject.getVisibleCards(this.gameId, data.getUsername());
+    public boolean getVisibleCards() throws ServerConnectionException, RemoteException {
+        ArrayList<Integer> visibleCards = remoteObject.getVisibleCards(this.gameId, data.getUsername());
+
+        if (visibleCards != null) {
+            data.setVisibleCards(visibleCards);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -231,8 +245,15 @@ public class RmiClient extends Client{
      * @throws ServerConnectionException If there is an issue connecting to the server.
      * @throws RemoteException If a remote communication error occurs.
      */
-    public ArrayList<Integer> getBackSideDecks() throws ServerConnectionException, RemoteException {
-        return remoteObject.getBackSideDecks(this.gameId, data.getUsername());
+    public boolean getBackSideDecks() throws ServerConnectionException, RemoteException {
+        ArrayList<Integer> backSideDecks = remoteObject.getBackSideDecks(this.gameId, data.getUsername());
+
+        if (backSideDecks != null) {
+            data.setBackSideDecks(backSideDecks);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
