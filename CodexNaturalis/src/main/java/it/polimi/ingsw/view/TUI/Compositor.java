@@ -25,13 +25,18 @@ public class Compositor {
 
     private final ObjectiveView objectiveView = createObjectiveView();
 
+    @Override
+    public String toString() {
+        return updateView();
+    }
+
     public Compositor(String[] players) {
         for(int i = 0; i < miniBoard.length; i++){
             miniBoard[i] = new MiniBoard(players[i]);
         }
     }
 
-    public void updateView(){
+    public String updateView(){
         StringBuilder out = new StringBuilder();
 
         for (MiniBoard miniBoard : miniBoard) {
@@ -95,8 +100,7 @@ public class Compositor {
         //TODO: finish when board is completed
 
 
-        System.out.print(out);
-        System.out.print(prompt);
+        return out.toString();
     }
 
 
