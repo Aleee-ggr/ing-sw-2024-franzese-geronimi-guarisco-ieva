@@ -9,6 +9,7 @@ import java.util.Map;
 public class ObjectiveCard implements Component {
     public static final int width = 15;
     public static final int height = 5;
+    public final int id;
 
     private static final String resourceObjective = """
             ┏━━━━━━━━━━━━━┓
@@ -31,6 +32,7 @@ public class ObjectiveCard implements Component {
     public ObjectiveCard(Objective objective) {
         this.objective = objective;
         card = setCard(objective);
+        this.id = objective.getId();
     }
 
     @Override

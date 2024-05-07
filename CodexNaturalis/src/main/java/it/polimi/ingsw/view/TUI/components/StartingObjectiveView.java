@@ -22,8 +22,14 @@ public class StartingObjectiveView implements Component{
     private final int contentHeight;
     private final int marginTop;
 
+    private final int[] objectiveIds;
+
     public StartingObjectiveView(ObjectiveCard[] objectives) {
         this.objectives = objectives;
+        objectiveIds = new int[]{
+                objectives[0].id,
+                objectives[1].id,
+        };
         cardHeight = ObjectiveCard.height;
         cardWidth = ObjectiveCard.width;
 
@@ -32,6 +38,10 @@ public class StartingObjectiveView implements Component{
 
         contentHeight = 5 + cardHeight;
         marginTop = (height - contentHeight) / 2;
+    }
+
+    public int[] getObjectives() {
+        return objectiveIds;
     }
 
     @Override

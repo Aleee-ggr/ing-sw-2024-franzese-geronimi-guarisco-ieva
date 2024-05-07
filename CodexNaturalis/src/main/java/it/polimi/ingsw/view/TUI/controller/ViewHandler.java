@@ -81,6 +81,9 @@ class ViewHandler extends Thread {
                 .toArray(ObjectiveCard[]::new);
         StartingObjectiveView startingObjectiveView = new StartingObjectiveView(objectives);
         out.println(startingObjectiveView);
+        int value = in.nextInt();
+        value = startingObjectiveView.getObjectives()[value];
+        input.setElement(String.valueOf(value));
     }
 
     private void setupStarting() {
@@ -88,7 +91,11 @@ class ViewHandler extends Thread {
                 (StartingCard) Game.getCardByID(Client.getData().getStartingCard(username))
         );
         out.println(startingCardView);
-        input.setElement(String.valueOf(in.nextInt()));
+        int value = in.nextInt();
+        if (value == 2) {
+            value = -value;
+        }
+        input.setElement(String.valueOf(value));
     }
 
     private  void sleepAndClear() {try {
