@@ -91,20 +91,21 @@ class RmiRemoteHandler extends Thread {
     private void joinGame() {
         try {
             if (game == null) {
-                game = client.newGame(4);
+                game = client.newGame(2);
             } else {
                 client.joinGame(game);
             }
         } catch (ServerConnectionException | RemoteException e) {
             throw new RuntimeException(e);
         }
+        System.out.println(game);
     }
 
     private void setupFetch() {
         try {
             client.getStartingCard();
-        client.getStartingObjectives();
-        gameState.setElement(ViewState.SETUP_STARTING);
+            client.getStartingObjectives();
+            gameState.setElement(ViewState.SETUP_STARTING);
         } catch (ServerConnectionException | RemoteException e) {
             throw new RuntimeException(e);
         }

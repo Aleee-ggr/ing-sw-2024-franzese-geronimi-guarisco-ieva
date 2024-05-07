@@ -8,6 +8,7 @@ import it.polimi.ingsw.view.TUI.controller.TuiController;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -29,12 +30,17 @@ public class App
                 case 1:
                     break;
                 case 2:
+                    input = new Scanner(System.in).next();
+                    UUID id = null;
+                    if (input.length() > 3) {
+                        id = UUID.fromString(input);
+                    }
                     RmiClient client = new RmiClient(
                             String.valueOf(ThreadLocalRandom.current().nextInt(100, 10000)),
                             "password",
                             "localhost",
                             9090);
-                    new TuiController(client, null);
+                    new TuiController(client, id);
                     break;
                 default:
                     System.out.println("Unknown option!");
