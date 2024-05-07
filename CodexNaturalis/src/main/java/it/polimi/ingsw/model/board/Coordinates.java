@@ -1,9 +1,10 @@
 package it.polimi.ingsw.model.board;
 
-import java.util.List;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
-public record Coordinates(Integer x, Integer y) {
+public record Coordinates(Integer x, Integer y) implements Serializable {
 
     /**
      * @param offset how much to shift the coordinates horizontally (same sign as x)
