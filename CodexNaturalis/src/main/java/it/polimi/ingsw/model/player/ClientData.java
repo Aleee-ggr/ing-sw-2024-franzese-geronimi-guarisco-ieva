@@ -25,7 +25,7 @@ public class ClientData {
     private ArrayList<Coordinates> validPlacementsArray = new ArrayList<>(); //TODO: merge
     private ArrayList<Integer> hand = new ArrayList<>(GameConsts.firstHandDim);
 
-    private final Map<String, PlayersDataLight> playersData;
+    private final Map<String, PlayersDataLight> playersData = new HashMap<>();
     private ArrayList<String> players;
     private int playerNum;
 
@@ -42,7 +42,6 @@ public class ClientData {
     public ClientData(String username, String password) {
         this.username = username;
         this.password = password;
-        playersData = new ConcurrentHashMap<>();
         playersData.put(username, new PlayersDataLight());
         validPlacements = new HashSet<>();
     }
@@ -74,6 +73,9 @@ public class ClientData {
     public void setPlayers(ArrayList<String> players) {
         this.players = players;
         this.playerNum = players.size();
+        for(String player : players){
+            playersData.put(player, new PlayersDataLight());
+        }
     }
 
     public String getPassword() {

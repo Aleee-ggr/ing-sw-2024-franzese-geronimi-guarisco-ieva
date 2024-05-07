@@ -102,8 +102,8 @@ class RmiRemoteHandler extends Thread {
 
     private void setupFetch() {
         try {
-            client.getStartingCard();
             client.getPlayers();
+            client.getStartingCard();
             client.getStartingObjectives();
             gameState.setElement(ViewState.SETUP_STARTING);
         } catch (ServerConnectionException | RemoteException e) {
