@@ -9,9 +9,8 @@ import it.polimi.ingsw.network.Client;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import javax.print.attribute.HashDocAttributeSet;
+import java.util.*;
 
 public class ViewTest {
     @Before
@@ -49,6 +48,13 @@ public class ViewTest {
         clientData.addPlayerCard("usernameTest",new Coordinates(-1, 0), deck.draw().getId());
         clientData.addPlayerCard("usernameTest",new Coordinates(-1, 1), deck.draw().getId());
         clientData.addPlayerCard("usernameTest",new Coordinates(0, 2), deck.draw().getId());
+
+        Set<Coordinates> coord = new HashSet<>();
+        coord.add(new Coordinates(1, 0));
+        coord.add(new Coordinates(-1, 2));
+        coord.add(new Coordinates(0, -1));
+        coord.add(new Coordinates(1, 2));
+        clientData.setValidPlacements(coord);
         //clientData.setPlayerBoard("usernameTest", new HashMap<>(map2));
 
 

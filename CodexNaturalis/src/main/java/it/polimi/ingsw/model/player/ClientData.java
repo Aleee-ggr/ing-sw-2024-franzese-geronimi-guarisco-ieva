@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.enums.Resource;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 //TODO: DOCUMENTATION
 
@@ -21,6 +22,7 @@ public class ClientData {
     private String password;
     private UUID gameId;
     private Set<Coordinates> validPlacements;
+    private ArrayList<Coordinates> validPlacementsArray = new ArrayList<>(); //TODO: merge
     private ArrayList<Integer> hand = new ArrayList<>(GameConsts.firstHandDim);
 
     private final Map<String, PlayersDataLight> playersData;
@@ -170,12 +172,17 @@ public class ClientData {
         return validPlacements;
     }
 
+    public ArrayList<Coordinates> getValidPlacementsArray() {
+        return validPlacementsArray;
+    }
+
     /**
      * Setter for the possible placement of Cards.
      * @param validPlacements The new set of Coordinates.
      */
-    public void setValidPlacements(Set<Coordinates> validPlacements) {
+    public void setValidPlacements(Set<Coordinates> validPlacements) { //TODO: to merge
         this.validPlacements = validPlacements;
+        this.validPlacementsArray.addAll(validPlacements);
     }
 
     public void addPlayerCard(String username, Coordinates coordinates, Integer CardId){

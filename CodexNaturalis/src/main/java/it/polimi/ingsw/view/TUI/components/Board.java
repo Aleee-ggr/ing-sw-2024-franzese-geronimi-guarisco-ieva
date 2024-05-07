@@ -76,13 +76,12 @@ public class Board implements Component {
 
         }
 
-        Set<Coordinates> validPosition = Client.getData().getValidPlacements();
-        BiMap<Coordinates, Integer> validPlacementMap = HashBiMap.create();
+        ArrayList<Coordinates> validPosition = Client.getData().getValidPlacementsArray();
 
-        for (Coordinates c: validPosition) {
-            Coordinates relativeCoordinates = getOffsetCoordinates(c);
+        for (int i = 0; i< validPosition.size(); i++) {
+            Coordinates relativeCoordinates = getOffsetCoordinates(validPosition.get(i));
             if (isInView(relativeCoordinates)) {
-                board[relativeCoordinates.y()][relativeCoordinates.x()] = 'v';
+                board[relativeCoordinates.y()][relativeCoordinates.x()] = Integer.toHexString(i).toCharArray()[0];
             }
         }
     }
