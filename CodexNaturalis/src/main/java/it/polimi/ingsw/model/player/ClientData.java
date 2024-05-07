@@ -73,6 +73,7 @@ public class ClientData {
 
     public void setPlayers(ArrayList<String> players) {
         this.players = players;
+        this.playerNum = players.size();
     }
 
     public String getPassword() {

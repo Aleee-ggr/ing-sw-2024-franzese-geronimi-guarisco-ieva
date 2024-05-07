@@ -123,6 +123,7 @@ class RmiRemoteHandler extends Thread {
 
     private void setupObjectives() {
         int in = Integer.parseInt(input.getElement());
+        System.out.println(in);
         try {
             client.chooseStartingObjective(in);
         } catch (ServerConnectionException|RemoteException e) {

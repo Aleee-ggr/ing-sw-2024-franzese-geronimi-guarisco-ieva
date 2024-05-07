@@ -367,7 +367,12 @@ public class RmiClient extends Client{
      * @throws RemoteException If a remote communication error occurs.
      */
     public boolean chooseStartingObjective(int objectiveId) throws  ServerConnectionException, RemoteException{
-        return remoteObject.choosePersonalObjective(this.gameId, data.getUsername(), objectiveId);
+        boolean success = remoteObject.choosePersonalObjective(this.gameId, data.getUsername(), objectiveId);
+        if (success) {
+            data.setPersonalObjective(objectiveId);
+            System.out.println(objectiveId);
+        }
+        return success;
     }
 
     /**
