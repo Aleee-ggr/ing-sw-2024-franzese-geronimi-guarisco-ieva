@@ -101,6 +101,7 @@ public class GameThread extends Thread {
                     startChosen = true;
                 }
             }
+            controller.getGame().getPlayers().stream().filter(p -> p.getUsername().equals(currentPlayer)).toList().getFirst().drawFirstHand();
             turnMap.put(currentPlayer, false);
         }
         gameState = GameState.MAIN;
