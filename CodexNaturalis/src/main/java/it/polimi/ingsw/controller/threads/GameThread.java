@@ -295,18 +295,24 @@ public class GameThread extends Thread {
                         msg.player(),
                         msg.messageUUID());
                 break;
-            case "getStartingCard":
-                controller.getStartingCards(
-                        msg.player(),
-                        msg.messageUUID()
-                );
-                break;
             case "getPlayers":
                 controller.getPlayers(
                         msg.player(),
                         msg.messageUUID()
                 );
                 break;
+            case "getStartingCard":
+                controller.getStartingCards(
+                        msg.player(),
+                        msg.messageUUID()
+                );
+                break;
+            case "placeStartingCard":
+                controller.placeStartingCard(
+                        msg.player(),
+                        Boolean.parseBoolean(msg.args()[0]),
+                        msg.messageUUID()
+                );
             case "getGameState":
                 controller.getGameState(
                         msg.player(),

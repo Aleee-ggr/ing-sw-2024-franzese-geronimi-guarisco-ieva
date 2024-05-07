@@ -235,17 +235,6 @@ public class Controller {
         }
     }
 
-    public void getStartingCards(String username, UUID messageId) {
-        try {
-            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
-            Card startingCard = user.getPlayerBoard().getCard(new Coordinates(0, 0));
-
-            messageQueue.add(ThreadMessage.getStartingCardResponse(username, startingCard.getId(), messageId));
-        } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
-        }
-    }
-
     /**
      * Controller Method to get the player resources.
      * @param username the username of the player that requests the resources.
@@ -281,6 +270,7 @@ public class Controller {
         }
     }
 
+
     //TODO: return an Arraylist of String of Resources, not cardIds
     /**
      * Controller Method to get the back side resource of decks.
@@ -297,7 +287,6 @@ public class Controller {
             messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
     }
-
     /**
      * Controller Method to get the valid placement coordinates of cards in the board.
      * @param username the username of the player that requests the coordinates.
@@ -366,6 +355,30 @@ public class Controller {
             }
             messageQueue.add(ThreadMessage.getLastPlacedCardsResponse(username, cardIds, messageId));
         } catch (Exception e) {
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+        }
+    }
+
+    public void getStartingCards(String username, UUID messageId) {
+        try {
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
+
+            Card startingCard = user.drawStartingCard();
+
+            messageQueue.add(ThreadMessage.getStartingCardResponse(username, startingCard.getId(), messageId));
+        } catch (Exception e) {
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+        }
+    }
+
+    public void placeStartingCard(String username, boolean bool, UUID messageId){
+        try{
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
+
+            user.setFirstCard(bool);
+
+            messageQueue.add(ThreadMessage.okResponse(username, messageId));
+        } catch (Exception e){
             messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
     }

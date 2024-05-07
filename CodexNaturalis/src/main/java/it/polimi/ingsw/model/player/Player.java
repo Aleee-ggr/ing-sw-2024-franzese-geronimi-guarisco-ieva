@@ -33,6 +33,7 @@ public class Player {
     private Objective hiddenObjective;
     private Objective[] startingObjectives;
     protected final ConcurrentHashMap<Resource, Integer> playerResources = new ConcurrentHashMap<>();
+    private StartingCard s;
     private final Game game;
 
     /**
@@ -154,9 +155,15 @@ public class Player {
      * @see PlayerBoard
      * */
     public void setFirstCard(boolean frontsideup) {
-        StartingCard s = game.getGameStartingDeck().draw();
         s.setFrontSideUp(frontsideup);
         this.board = new PlayerBoard(s, this);
+    }
+
+
+    public StartingCard drawStartingCard() {
+        s = game.getGameStartingDeck().draw();
+        this.board = new PlayerBoard(s, this);
+        return s;
     }
 
     /**
