@@ -123,6 +123,8 @@ public abstract class Server {
     }
 
     public static HashMap<String, Integer> getScoreMap(UUID game, String username) {
+
+    public static HashMap<String, Integer> getScoreMapServer(UUID game, String username) {
         ThreadMessage message = ThreadMessage.getScoreMap(
                 username
         );
@@ -145,7 +147,7 @@ public abstract class Server {
         return scoreMap;
     }
 
-    public static ArrayList<Integer> getHand(UUID game, String username) {
+    public static ArrayList<Integer> getHandServer(UUID game, String username) {
         ThreadMessage message = ThreadMessage.getHand(
                 username
         );
@@ -165,7 +167,7 @@ public abstract class Server {
         }
     }
 
-    public static boolean choosePersonalObjective(UUID game, String username, Integer objectiveId) {
+    public static boolean choosePersonalObjectiveServer(UUID game, String username, Integer objectiveId) {
         ThreadMessage message = ThreadMessage.choosePersonalObjective(
                 username,
                 objectiveId
@@ -176,7 +178,7 @@ public abstract class Server {
         return Boolean.parseBoolean(response.args()[0]);
     }
 
-    public static ArrayList<Resource> getHandColor(UUID game, String username, String usernameRequiredData) {
+    public static ArrayList<Resource> getHandColorServer(UUID game, String username, String usernameRequiredData) {
         ThreadMessage message = ThreadMessage.getHandColor(
                 username,
                 usernameRequiredData
@@ -197,7 +199,7 @@ public abstract class Server {
         }
     }
 
-    public static HashMap<Coordinates, Integer> getBoard(UUID game, String username, String usernameRequiredData) {
+    public static HashMap<Coordinates, Integer> getBoardServer(UUID game, String username, String usernameRequiredData) {
         ThreadMessage message = ThreadMessage.getBoard(
                 username,
                 usernameRequiredData
@@ -240,7 +242,7 @@ public abstract class Server {
         }
     }
 
-    public static ArrayList<Integer> getCommonObjectives(UUID game, String username){
+    public static ArrayList<Integer> getCommonObjectivesServer(UUID game, String username){
         ThreadMessage message = ThreadMessage.getCommonObjectives(
                 username
         );
@@ -259,7 +261,7 @@ public abstract class Server {
         }
     }
 
-    public static ArrayList<Integer> getStartingObjectives(UUID game, String username){
+    public static ArrayList<Integer> getStartingObjectivesServer(UUID game, String username){
         ThreadMessage message = ThreadMessage.getStartingObjectives(
                 username
         );
@@ -278,7 +280,7 @@ public abstract class Server {
         }
     }
 
-    public static ArrayList<String> getPlayers(UUID game, String username) {
+    public static ArrayList<String> getPlayersServer(UUID game, String username) {
         ThreadMessage message = ThreadMessage.getPlayers(
                 username
         );
@@ -296,7 +298,7 @@ public abstract class Server {
 
     }
 
-    public static HashMap<Resource, Integer> getPlayerResources(UUID game, String username, String usernameRequiredData) {
+    public static HashMap<Resource, Integer> getPlayerResourcesServer(UUID game, String username, String usernameRequiredData) {
         ThreadMessage message = ThreadMessage.getPlayerResources(
                 username,
                 usernameRequiredData
@@ -322,7 +324,7 @@ public abstract class Server {
         }
     }
 
-    public static ArrayList<Integer> getVisibleCards(UUID game, String username) {
+    public static ArrayList<Integer> getVisibleCardsServer(UUID game, String username) {
         ThreadMessage message = ThreadMessage.getVisibleCards(
                 username
         );
@@ -341,7 +343,7 @@ public abstract class Server {
         }
     }
 
-    public static ArrayList<Integer> getBackSideDecks(UUID game, String username) {
+    public static ArrayList<Integer> getBackSideDecksServer(UUID game, String username) {
         ThreadMessage message = ThreadMessage.getBackSideDecks(
                 username
         );
@@ -360,7 +362,7 @@ public abstract class Server {
         }
     }
 
-    public static Set<Coordinates> getValidPlacements(UUID game, String username) {
+    public static Set<Coordinates> getValidPlacementsServer(UUID game, String username) {
         ThreadMessage message = ThreadMessage.getValidPlacements(
                 username
         );
@@ -380,7 +382,8 @@ public abstract class Server {
             return null;
         }
     }
-    public static Integer getStartingCard(UUID game, String username) {
+
+    public static Integer getStartingCardServer(UUID game, String username) {
         ThreadMessage message = ThreadMessage.getStartingCard(
                 username
         );

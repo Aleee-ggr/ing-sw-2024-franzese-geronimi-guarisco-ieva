@@ -1,9 +1,14 @@
 package it.polimi.ingsw.network.rmi;
 
+import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.model.board.Coordinates;
+import it.polimi.ingsw.model.enums.Resource;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -49,6 +54,33 @@ public interface RmiServerInterface extends Remote {
      */
     UUID newGame(Integer player_count) throws RemoteException;
 
+    Integer getStartingCard(UUID game, String name) throws RemoteException;
+
+    HashMap<String, Integer> getScoreMap(UUID game, String name) throws RemoteException;
+
+    ArrayList<Integer> getHand(UUID game, String name) throws RemoteException;
+
+    ArrayList<Integer> getCommonObjectives(UUID game, String name) throws RemoteException;
+
+    HashMap<Resource, Integer> getPlayerResources(UUID game, String name, String nameRequiredData) throws RemoteException;
+
+    ArrayList<String> getPlayers(UUID game, String name) throws RemoteException;
+
+    GameState getGameState(UUID game, String name) throws RemoteException;
+
+    ArrayList<Integer> getVisibleCards(UUID game, String name) throws RemoteException;
+
+    ArrayList<Integer> getBackSideDecks(UUID game, String name) throws RemoteException;
+
+    Set<Coordinates> getValidPlacements(UUID game, String name) throws RemoteException;
+
+    HashMap<Coordinates, Integer> getBoard(UUID game, String name, String nameRequiredData) throws RemoteException;
+
+    ArrayList<Resource> getHandColor(UUID game, String name, String nameRequiredData) throws RemoteException;
+
+    boolean choosePersonalObjective(UUID game, String username, Integer objectiveId) throws RemoteException;
+
+    ArrayList<Integer> getStartingObjectives(UUID game, String username) throws RemoteException;
     /**
      * Allows a player to join an existing game.
      * @param game The UUID of the game.

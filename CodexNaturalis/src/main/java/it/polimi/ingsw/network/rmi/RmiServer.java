@@ -1,8 +1,10 @@
 package it.polimi.ingsw.network.rmi;
 
+import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.controller.threads.Status;
 import it.polimi.ingsw.controller.threads.ThreadMessage;
 import it.polimi.ingsw.model.board.Coordinates;
+import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.network.Server;
 
 import java.rmi.NotBoundException;
@@ -10,6 +12,9 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -103,6 +108,74 @@ public class RmiServer extends Server implements RmiServerInterface {
         return createGame(player_count);
     }
 
+    public Integer getStartingCard(UUID game, String player) throws RemoteException {
+        return getStartingCardServer(game, player);
+    }
+
+    @Override
+    public HashMap<String, Integer> getScoreMap(UUID game, String name) throws RemoteException {
+        return getScoreMapServer(game, name);
+    }
+
+    @Override
+    public ArrayList<Integer> getHand(UUID game, String name) throws RemoteException {
+        return getHandServer(game, name);
+    }
+
+    @Override
+    public ArrayList<Integer> getCommonObjectives(UUID game, String name) throws RemoteException {
+        return getCommonObjectivesServer(game, name);
+    }
+
+    @Override
+    public HashMap<Resource, Integer> getPlayerResources(UUID game, String name, String nameRequiredData) throws RemoteException {
+        return getPlayerResourcesServer(game, name, nameRequiredData);
+    }
+
+    @Override
+    public ArrayList<String> getPlayers(UUID game, String name) throws RemoteException {
+        return getPlayersServer(game, name);
+    }
+
+    @Override
+    public GameState getGameState(UUID game, String name) throws RemoteException {
+        return getGameStateServer(game, name);
+    }
+
+    @Override
+    public ArrayList<Integer> getVisibleCards(UUID game, String name) throws RemoteException {
+        return getVisibleCardsServer(game, name);
+    }
+
+    @Override
+    public ArrayList<Integer> getBackSideDecks(UUID game, String name) throws RemoteException {
+        return getBackSideDecksServer(game, name);
+    }
+
+    @Override
+    public Set<Coordinates> getValidPlacements(UUID game, String name) throws RemoteException {
+        return getValidPlacementsServer(game, name);
+    }
+
+    @Override
+    public HashMap<Coordinates, Integer> getBoard(UUID game, String name, String nameRequiredData) throws RemoteException {
+        return getBoardServer(game, name, nameRequiredData);
+    }
+
+    @Override
+    public ArrayList<Resource> getHandColor(UUID game, String name, String nameRequiredData) throws RemoteException {
+        return getHandColorServer(game, name, nameRequiredData);
+    }
+
+    @Override
+    public boolean choosePersonalObjective(UUID game, String username, Integer objectiveId) throws RemoteException {
+        return choosePersonalObjectiveServer(game, username, objectiveId);
+    }
+
+    @Override
+    public ArrayList<Integer> getStartingObjectives(UUID game, String username) throws RemoteException {
+        return getStartingObjectivesServer(game, username);
+    }
 
     @Override
     public boolean join(UUID game, String player) throws RemoteException {

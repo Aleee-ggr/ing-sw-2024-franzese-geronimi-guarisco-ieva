@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.rmi;
 
 
+import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.helpers.exceptions.model.ElementNotInHand;
 import it.polimi.ingsw.helpers.exceptions.model.HandFullException;
 import it.polimi.ingsw.helpers.exceptions.network.ServerConnectionException;
@@ -32,7 +33,7 @@ import java.util.UUID;
 
 public class RmiClient extends Client{
 
-    private RmiServerInterface server;
+    private RmiServerInterface remoteObject;
 
     /**
      * Constructs a new RmiClient object with the specified player username, password, server address, and server port.
@@ -48,7 +49,7 @@ public class RmiClient extends Client{
 
         try {
             Registry registry = LocateRegistry.getRegistry();
-            server = (RmiServerInterface) registry.lookup(RmiServer.getName());
+            remoteObject = (RmiServerInterface) registry.lookup(RmiServer.getName());
         } catch (RemoteException | NotBoundException e) {
             throw new RuntimeException(e);
         }
@@ -60,7 +61,7 @@ public class RmiClient extends Client{
      * @throws RemoteException If a remote communication error occurs.
      */
     public boolean checkCredentials() throws RemoteException {
-        return server.checkCredentials(data.getUsername(), data.getPassword());
+        return remoteObject.checkCredentials(data.getUsername(), data.getPassword());
     }
 
     /**
@@ -70,7 +71,7 @@ public class RmiClient extends Client{
      * @throws RemoteException If a remote communication error occurs.
      */
     public void drawCard(int position) throws ServerConnectionException, RemoteException {
-        int id = server.drawCard(this.gameId, data.getUsername(), position);
+        int id = remoteObject.drawCard(this.gameId, data.getUsername(), position);
         try{
             data.addToHand(id);
         } catch (HandFullException e ){
@@ -91,7 +92,7 @@ public class RmiClient extends Client{
         } catch (ElementNotInHand e ){
             e.printStackTrace();
         }
-        server.placeCard(this.gameId, data.getUsername(), coordinates, cardId);
+        remoteObject.placeCard(this.gameId, data.getUsername(), coordinates, cardId);
     }
 
     /**
@@ -102,10 +103,10 @@ public class RmiClient extends Client{
      * @throws RemoteException If a remote communication error occurs.
      */
     public UUID newGame(int players) throws ServerConnectionException, RemoteException {
-        boolean validCredentials = server.checkCredentials(data.getUsername(), data.getPassword());
+        boolean validCredentials = remoteObject.checkCredentials(data.getUsername(), data.getPassword());
         UUID game = null;
         if (validCredentials) {
-            game = server.newGame(players);
+            game = remoteObject.newGame(players);
             joinGame(game);
         }
         return game;
@@ -118,7 +119,7 @@ public class RmiClient extends Client{
      * @throws RemoteException If a remote communication error occurs.
      */
     public boolean joinGame(UUID game) throws ServerConnectionException, RemoteException {
-        boolean success = server.join(game, data.getUsername());
+        boolean success = remoteObject.join(game, data.getUsername());
         if (success) {
             this.setGameId(game);
         }
@@ -132,7 +133,7 @@ public class RmiClient extends Client{
      * @throws RemoteException If a remote communication error occurs.
      */
     public HashMap<String, Integer> getScoreMap() throws ServerConnectionException, RemoteException {
-        return Server.getScoreMap(this.gameId, data.getUsername());
+        return remoteObject.getScoreMap(this.gameId, data.getUsername());
     }
 
     /**
@@ -142,7 +143,7 @@ public class RmiClient extends Client{
      * @throws RemoteException If a remote communication error occurs.
      */
     public boolean getHand() throws ServerConnectionException, RemoteException {
-        ArrayList<Integer> handIds = Server.getHand(this.gameId, data.getUsername());
+        ArrayList<Integer> handIds = remoteObject.getHand(this.gameId, data.getUsername());
 
         if (handIds != null) {
             data.setClientHand(handIds);
@@ -159,7 +160,7 @@ public class RmiClient extends Client{
      * @throws RemoteException If a remote communication error occurs.
      */
     public boolean getCommonObjectives() throws ServerConnectionException, RemoteException {
-        ArrayList<Integer> commonObjectives = Server.getCommonObjectives(this.gameId, data.getUsername());
+        ArrayList<Integer> commonObjectives = remoteObject.getCommonObjectives(this.gameId, data.getUsername());
 
         if (commonObjectives != null) {
             data.setGlobalObjectives(commonObjectives.get(0), commonObjectives.get(1));
@@ -177,7 +178,7 @@ public class RmiClient extends Client{
      * @throws RemoteException If a remote communication error occurs.
      */
     public boolean getPlayerResources(String usernameRequiredData) throws ServerConnectionException, RemoteException {
-        HashMap<Resource, Integer> playerResources = Server.getPlayerResources(this.gameId, data.getUsername(), usernameRequiredData);
+        HashMap<Resource, Integer> playerResources = remoteObject.getPlayerResources(this.gameId, data.getUsername(), usernameRequiredData);
 
         if (playerResources != null) {
             data.updatePlayerResources(usernameRequiredData, playerResources);
@@ -188,7 +189,7 @@ public class RmiClient extends Client{
     }
 
     public boolean getPlayers() throws ServerConnectionException, RemoteException {
-        ArrayList<String> players = Server.getPlayers(this.gameId, data.getUsername());
+        ArrayList<String> players = remoteObject.getPlayers(this.gameId, data.getUsername());
 
         if (players != null) {
             //TODO: add method in ClientData to save them
@@ -198,6 +199,22 @@ public class RmiClient extends Client{
         }
     }
 
+    public boolean getGameState() throws ServerConnectionException, RemoteException {
+        GameState gameState = remoteObject.getGameState(this.gameId, data.getUsername());
+
+        if (gameState != null) {
+            data.setGameState(gameState);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean getAvailableGames() throws ServerConnectionException, RemoteException {
+        ArrayList<UUID> availableGames = Server.getAvailableGames(this.gameId, data.getUsername());
+        return availableGames != null && !availableGames.isEmpty();
+    }
+
     /**
      * Retrieves the visible cards from the server.
      * @return A list of visible card IDs.
@@ -205,7 +222,7 @@ public class RmiClient extends Client{
      * @throws RemoteException If a remote communication error occurs.
      */
     public ArrayList<Integer> getVisibleCards() throws ServerConnectionException, RemoteException {
-        return Server.getVisibleCards(this.gameId, data.getUsername());
+        return remoteObject.getVisibleCards(this.gameId, data.getUsername());
     }
 
     /**
@@ -215,7 +232,7 @@ public class RmiClient extends Client{
      * @throws RemoteException If a remote communication error occurs.
      */
     public ArrayList<Integer> getBackSideDecks() throws ServerConnectionException, RemoteException {
-        return Server.getBackSideDecks(this.gameId, data.getUsername());
+        return remoteObject.getBackSideDecks(this.gameId, data.getUsername());
     }
 
     /**
@@ -225,7 +242,7 @@ public class RmiClient extends Client{
      * @throws RemoteException If a remote communication error occurs.
      */
     public boolean getValidPlacements() throws ServerConnectionException, RemoteException {
-        Set<Coordinates> validPlacements = Server.getValidPlacements(this.gameId, data.getUsername());
+        Set<Coordinates> validPlacements = remoteObject.getValidPlacements(this.gameId, data.getUsername());
 
         if (validPlacements != null) {
             data.setValidPlacements(validPlacements);
@@ -243,7 +260,7 @@ public class RmiClient extends Client{
      * @throws RemoteException If a remote communication error occurs.
      */
     public boolean getPlayerHandColor(String usernameRequiredData) throws ServerConnectionException, RemoteException {
-        ArrayList<Resource> handColor = Server.getHandColor(this.gameId, data.getUsername(), usernameRequiredData);
+        ArrayList<Resource> handColor = remoteObject.getHandColor(this.gameId, data.getUsername(), usernameRequiredData);
 
         if (handColor != null) {
             data.setPlayerHandColor(usernameRequiredData, handColor);
@@ -254,7 +271,7 @@ public class RmiClient extends Client{
     }
 
     public boolean getClientBoard() throws ServerConnectionException, RemoteException {
-        HashMap<Coordinates, Integer> clientBoard = Server.getBoard(this.gameId, data.getUsername(), data.getUsername());
+        HashMap<Coordinates, Integer> clientBoard = remoteObject.getBoard(this.gameId, data.getUsername(), data.getUsername());
 
         if (clientBoard != null) {
             data.setClientBoard(clientBoard);
@@ -265,7 +282,7 @@ public class RmiClient extends Client{
     }
 
     public boolean getPlayerBoard(String usernameRequiredData) throws ServerConnectionException, RemoteException {
-        HashMap<Coordinates, Integer> clientBoard = Server.getBoard(this.gameId, data.getUsername(), usernameRequiredData);
+        HashMap<Coordinates, Integer> clientBoard = remoteObject.getBoard(this.gameId, data.getUsername(), usernameRequiredData);
 
         if (clientBoard != null) {
             data.setPlayerBoard(usernameRequiredData, clientBoard);
@@ -281,7 +298,7 @@ public class RmiClient extends Client{
      * @throws RemoteException If a remote communication error occurs.
      */
     public void setClientHand() throws ServerConnectionException, RemoteException {
-        data.setClientHand(Server.getHand(this.gameId, data.getUsername()));
+        data.setClientHand(remoteObject.getHand(this.gameId, data.getUsername()));
     }
 
     /**
@@ -290,7 +307,7 @@ public class RmiClient extends Client{
      * @throws RemoteException If a remote communication error occurs.
      */
     public void setValidPlacements() throws ServerConnectionException, RemoteException {
-        data.setValidPlacements(Server.getValidPlacements(this.gameId, data.getUsername()));
+        data.setValidPlacements(remoteObject.getValidPlacements(this.gameId, data.getUsername()));
     }
 
     /**
@@ -299,9 +316,9 @@ public class RmiClient extends Client{
      * @throws ServerConnectionException If there is an issue connecting to the server.
      * @throws RemoteException If a remote communication error occurs.
      */
-    public void updateScore(String username) throws ServerConnectionException, RemoteException {
+    /*public void updateScore(String username) throws ServerConnectionException, RemoteException {
         data.updateScore(username, Server.getScoreMap(this.gameId, data.getUsername()).get(username));
-    }
+    }*/
 
     /**
      * Sets the client's board with data from the server.
@@ -309,7 +326,7 @@ public class RmiClient extends Client{
      * @throws RemoteException If a remote communication error occurs.
      */
     public void setClientBoard() throws ServerConnectionException, RemoteException {
-        data.setClientBoard(Server.getBoard(this.gameId, data.getUsername(), data.getUsername()));
+        data.setClientBoard(remoteObject.getBoard(this.gameId, data.getUsername(), data.getUsername()));
     }
 
     /**
@@ -319,7 +336,7 @@ public class RmiClient extends Client{
      * @throws RemoteException If a remote communication error occurs.
      */
     public void updatePlayerResources(String username) throws ServerConnectionException, RemoteException {
-        data.updatePlayerResources(username, Server.getPlayerResources(this.gameId, data.getUsername(), username));
+        data.updatePlayerResources(username, remoteObject.getPlayerResources(this.gameId, data.getUsername(), username));
     }
 
     /**
@@ -329,7 +346,7 @@ public class RmiClient extends Client{
      * @throws RemoteException If a remote communication error occurs.
      */
     public void setPlayerBoard(String username) throws ServerConnectionException, RemoteException {
-        data.setPlayerBoard(username, Server.getBoard(this.gameId, data.getUsername(), username));
+        data.setPlayerBoard(username, remoteObject.getBoard(this.gameId, data.getUsername(), username));
     }
 
     /**
@@ -339,7 +356,7 @@ public class RmiClient extends Client{
      * @throws RemoteException If a remote communication error occurs.
      */
     public void setPlayerHandColor(String username) throws ServerConnectionException, RemoteException {
-        data.setPlayerHandColor(username, Server.getHandColor(this.gameId, data.getUsername(), username));
+        data.setPlayerHandColor(username, remoteObject.getHandColor(this.gameId, data.getUsername(), username));
     }
 
     /**
@@ -350,7 +367,7 @@ public class RmiClient extends Client{
      * @throws RemoteException If a remote communication error occurs.
      */
     public boolean chooseStartingObjective(int objectiveId) throws  ServerConnectionException, RemoteException{
-        return Server.choosePersonalObjective(this.gameId, data.getUsername(), objectiveId);
+        return remoteObject.choosePersonalObjective(this.gameId, data.getUsername(), objectiveId);
     }
 
     /**
@@ -360,7 +377,7 @@ public class RmiClient extends Client{
      */
     public boolean getStartingObjectives() throws  ServerConnectionException, RemoteException {
         //Server.getStartingObjectives(this.gameId, data.getUsername());
-        ArrayList<Integer> startingObjectives = Server.getStartingObjectives(this.gameId, data.getUsername());
+        ArrayList<Integer> startingObjectives = remoteObject.getStartingObjectives(this.gameId, data.getUsername());
 
         if (startingObjectives != null) {
             data.setStartingObjectives(startingObjectives);
@@ -375,11 +392,11 @@ public class RmiClient extends Client{
      * @throws RemoteException If a remote communication error occurs.
      */
     public void waitUpdate() throws RemoteException {
-        server.wait(this.gameId, data.getUsername());
+        remoteObject.wait(this.gameId, data.getUsername());
     }
 
     public boolean getStartingCard() throws ServerConnectionException, RemoteException {
-        Integer startingCardId = Server.getStartingCard(this.gameId, data.getUsername());
+        Integer startingCardId = remoteObject.getStartingCard(this.gameId, data.getUsername());
 
         if (startingCardId != null) {
             data.setStartingCard(data.getUsername(), startingCardId);
@@ -397,6 +414,6 @@ public class RmiClient extends Client{
      * @throws RemoteException If a remote communication error occurs.
      */
     public void postChat(String message) throws  ServerConnectionException, RemoteException{
-        server.postChat(this.gameId, data.getUsername(), message);
+        remoteObject.postChat(this.gameId, data.getUsername(), message);
     }
 }

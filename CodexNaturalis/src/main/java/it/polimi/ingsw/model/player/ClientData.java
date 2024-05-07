@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.GameConsts;
+import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.helpers.exceptions.model.ElementNotInHand;
 import it.polimi.ingsw.helpers.exceptions.model.HandFullException;
 import it.polimi.ingsw.model.board.Coordinates;
@@ -8,7 +9,6 @@ import it.polimi.ingsw.model.enums.Resource;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 //TODO: DOCUMENTATION
 
@@ -31,6 +31,8 @@ public class ClientData {
     private final Integer[] globalObjectives = new Integer[GameConsts.globalObjectives];
     private ArrayList<Integer> startingObjectives = new ArrayList<>();
     private Integer personalObjective;
+
+    private GameState gameState;
 
     /**
      * Constructs a new ClientData object with the specified username.
@@ -91,6 +93,10 @@ public class ClientData {
         return personalObjective;
     }
 
+    public GameState getGameState() {
+        return gameState;
+    }
+
     public void setPersonalObjective(Integer personalObjective) {
         this.personalObjective = personalObjective;
     }
@@ -101,6 +107,10 @@ public class ClientData {
     public void setGlobalObjectives(Integer obj1, Integer obj2) {
         this.globalObjectives[0] = obj1;
         this.globalObjectives[1] = obj2;
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 
     public void addPlayer(String username){
