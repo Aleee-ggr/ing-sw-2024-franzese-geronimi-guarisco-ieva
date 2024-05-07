@@ -5,6 +5,7 @@ import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.rmi.RmiClient;
 
 import java.rmi.RemoteException;
+import java.util.HashMap;
 import java.util.UUID;
 
 class RmiRemoteHandler extends Thread {
@@ -134,7 +135,10 @@ class RmiRemoteHandler extends Thread {
         try {
             client.getHand();
             client.getCommonObjectives();
+            client.getScoreMap();
+            client.getScore();
             for (String player : Client.getData().getPlayers()) {
+                Client.getData().setPlayerBoard(player, new HashMap<>());
                 client.getPlayerBoard(player);
                 client.getPlayerResources(player);
             }

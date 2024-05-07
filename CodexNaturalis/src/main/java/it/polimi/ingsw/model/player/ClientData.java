@@ -180,6 +180,7 @@ public class ClientData {
 
     public ConcurrentHashMap<String, Integer> getScoreBoard() {
         ConcurrentHashMap<String, Integer> scoreboard = new ConcurrentHashMap<>();
+        playersData.remove(null); //TODO redo
         for(String player : playersData.keySet()){
             scoreboard.put(player, playersData.get(player).getScore());
         }

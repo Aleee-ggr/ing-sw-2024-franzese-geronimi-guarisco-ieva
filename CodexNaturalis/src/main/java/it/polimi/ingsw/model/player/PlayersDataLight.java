@@ -18,7 +18,7 @@ public class PlayersDataLight {
     private List<Integer> order = new ArrayList<>();
     private Map<Resource, Integer> resources = new HashMap<>();
     private List<Resource> handColor = new ArrayList<>(GameConsts.firstHandDim);
-    private Integer score;
+    private Integer score = 0;
     private Integer startingCard;
 
     /*
