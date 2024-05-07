@@ -69,7 +69,7 @@ public class GameThread extends Thread {
         if(GameState.lobby.contains(msg.type())){
             respond(msg);
         } else {
-            messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "Invalid message for context."));
+            messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "Invalid message for context: %s".formatted(msg.type())));
         }
         if (controller.getGame().getPlayers().size() == maxPlayers){
             gameState = GameState.SETUP;
@@ -92,7 +92,7 @@ public class GameThread extends Thread {
                 } else if(!msg.player().equals(currentPlayer)){
                     messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "not player's turn."));
                 } else {
-                    messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "Invalid message for context."));
+                    messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "Invalid message for context: %s".formatted(msg.type())));
                 }
 
                 if(msg.type().equals("choosePersonalObjective")){ //TODO: needs to check responses!
@@ -129,7 +129,7 @@ public class GameThread extends Thread {
             } else if(!msg.player().equals(currentPlayer)){
                 messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "not player's turn."));
             } else {
-                messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "Invalid message for context."));
+                messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "Invalid message for context: %s".formatted(msg.type())));
             }
             if(msg.type().equals("place")){
                 place = true;
@@ -143,7 +143,7 @@ public class GameThread extends Thread {
             } else if(!msg.player().equals(currentPlayer)){
                 messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "not player's turn."));
             } else {
-                messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "Invalid message for context."));
+                messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "Invalid message for context: %s".formatted(msg.type())));
             }
             if(msg.type().equals("draw")){
                 draw = true;
@@ -176,7 +176,7 @@ public class GameThread extends Thread {
                 respond(msg);
             } else {
                 i --;
-                messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "Invalid message for context."));
+                messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "Invalid message for context: %s".formatted(msg.type())));
             }
         }
         gameState = GameState.STOP;
