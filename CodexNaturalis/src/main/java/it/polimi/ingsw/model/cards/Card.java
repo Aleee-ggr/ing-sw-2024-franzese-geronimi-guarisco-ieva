@@ -66,7 +66,8 @@ public abstract class Card {
         return Arrays.copyOf(frontCorners, GameConsts.numCorners);
     }
 
-    public void setFrontSideUp(boolean frontSideUp) {
+    public Card setFrontSideUp(boolean frontSideUp) {
         this.frontSideUp = frontSideUp;
+        return this;
     }
 }

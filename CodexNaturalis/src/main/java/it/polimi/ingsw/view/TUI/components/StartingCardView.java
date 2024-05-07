@@ -3,12 +3,13 @@ package it.polimi.ingsw.view.TUI.components;
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.model.cards.StartingCard;
 import it.polimi.ingsw.view.TUI.components.printables.ObjectiveCard;
+import it.polimi.ingsw.view.TUI.components.printables.PrintCards;
 
 public class StartingCardView implements Component{
     public static final int width = 166;
     public static final int height = 39;
 
-    private final static String HEADER="STARTING OBJECTIVES";
+    private final static String HEADER="STARTING CARD FACES";
 
 
     private final StartingCard startingCard;
@@ -65,17 +66,14 @@ public class StartingCardView implements Component{
                 .append("│")
                 .append("\n");
         for (int i = 0; i < cardHeight; i++) {
-            /*TODO print card
             out.append(" ".repeat(marginSide))
                     .append("│")
                     .append(" ".repeat(cardSpacing/2))
-                    .append(objectives[0].toStringArray()[i])
+                    .append(new PrintCards(startingCard.setFrontSideUp(true)).toStringArray()[i])
                     .append(" ".repeat(cardSpacing))
-                    .append(objectives[1].toStringArray()[i])
+                    .append(new PrintCards(startingCard.setFrontSideUp(false)).toStringArray()[i])
                     .append(" ".repeat(cardSpacing/2))
                     .append("│\n");
-
-             */
         }
         out.append(" ".repeat(marginSide))
                 .append("│")
