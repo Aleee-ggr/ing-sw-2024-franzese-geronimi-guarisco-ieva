@@ -321,7 +321,11 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         );
     }
 
-//TODO: add getStartingCard
+    /**
+     * Creates a ThreadMessage for requesting the starting card.
+     * @param username The username of the player.
+     * @return A ThreadMessage requesting the starting card.
+     */
     public static ThreadMessage getStartingCard(String username) {
         return new ThreadMessage(
                 Status.REQUEST,
@@ -331,6 +335,22 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 UUID.randomUUID()
         );
     }
+
+    /**
+     * Creates a ThreadMessage for requesting the game state.
+     * @param username The username of the player.
+     * @return A ThreadMessage requesting the game state.
+     */
+    public static ThreadMessage getGameState(String username){
+        return new ThreadMessage(
+                Status.REQUEST,
+                username,
+                "getGameState",
+                null,
+                UUID.randomUUID()
+        );
+    }
+
 
     //generic Responses
 
@@ -723,5 +743,23 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         );
     }
 
-
+    /**
+     * Creates a ThreadMessage for the game state response.
+     * @param username The username of the player.
+     * @param gameState The game state.
+     * @param messageUUID The UUID of the message.
+     * @return A ThreadMessage for a gameState response.
+     * */
+    public static ThreadMessage getGameStateResponse(String username, String gameState, UUID messageUUID){
+        String[] args = new String[1];
+        args[0] = gameState;
+        return new ThreadMessage(
+                Status.REQUEST,
+                username,
+                "getGameState",
+                args,
+                messageUUID
+        );
+    }
 }
+

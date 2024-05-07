@@ -370,4 +370,17 @@ public class Controller {
         }
     }
 
+    /**
+     * Controller Method to get the state of the game.
+     * @param username the username of the player that requests the state.
+     * @param messageId the unique identifier of the message.
+     * */
+    public void getGameState(String username, UUID messageId){
+        try{
+            messageQueue.add(ThreadMessage.getGameStateResponse(username, game.getGameState().toString(), messageId));
+        } catch (Exception e){
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+        }
+    }
+
 }
