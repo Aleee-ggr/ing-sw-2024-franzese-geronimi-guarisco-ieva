@@ -88,7 +88,7 @@ public class Controller {
      * */
     public void placeCard(String username, Coordinates coordinates, Integer cardId, UUID messageId) {
         try {
-            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
             user.getPlayerBoard().placeCard(Game.getCardByID(cardId), coordinates);
         } catch (IndexOutOfBoundsException e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, "Invalid card placing index"));
@@ -109,7 +109,7 @@ public class Controller {
      * */
     public void draw(String username, Integer index, UUID messageId) {
         try {
-            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
             ColoredCard card;
             if (index == 4) {
                 card = user.drawDecks(false);
@@ -145,7 +145,7 @@ public class Controller {
      * */
     public void choosePersonalObjective(String username, Integer objId, UUID messageId) {
         try {
-            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
             user.choosePersonalObjective(objId);
             messageQueue.add(ThreadMessage.choosePersonalObjectiveResponse(username, true, messageId));
         } catch (Exception e) {
@@ -178,7 +178,7 @@ public class Controller {
      * */
     public void getHand(String username, UUID messageId) {
         try {
-            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
 
             ColoredCard[] hand = user.getHand();
             ArrayList<Integer> handIds = new ArrayList<>();
@@ -220,7 +220,7 @@ public class Controller {
      * */
     public void getStartingObjectives(String username, UUID messageId) {
         try {
-            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
             user.setStartingObjectives();
             ArrayList<Objective> objectives = user.getStartingObjectives();
 
@@ -243,7 +243,7 @@ public class Controller {
      * */
     public void getPlayerResources(String username, String usernameRequiredData, UUID messageId) {
         try {
-            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(usernameRequiredData));
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(usernameRequiredData)).toArray()[0];
             messageQueue.add(ThreadMessage.getPlayerResourcesResponse(username, user.getResources(), messageId));
         } catch (Exception e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
@@ -294,7 +294,7 @@ public class Controller {
      * */
     public void getValidPlacements(String username, UUID messageId) {
         try {
-            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
             Set<Coordinates> validPlacements = user.getPlayerBoard().getValidPlacements();
             messageQueue.add(ThreadMessage.getValidPlacementsResponse(username, validPlacements, messageId));
         } catch (Exception e) {
@@ -310,7 +310,7 @@ public class Controller {
      * */
     public void getBoard(String username, String usernameRequiredData, UUID messageId) {
         try {
-            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(usernameRequiredData));
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(usernameRequiredData)).toArray()[0];
             HashMap<Coordinates, Card> board = user.getPlayerBoard().getBoard();
             HashMap<Coordinates, Integer> boardIds = new HashMap<>();
             for (Coordinates coordinate : board.keySet()) {
@@ -330,7 +330,7 @@ public class Controller {
      * */
     public void getHandColor(String username, String usernameRequiredData, UUID messageId) {
         try {
-            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(usernameRequiredData));
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(usernameRequiredData)).toArray()[0];
             ArrayList<Resource> handColors = new ArrayList<>();
             for (ColoredCard c : user.getHand()) {
                 handColors.add(c.getBackResource());
@@ -348,7 +348,7 @@ public class Controller {
      * */
     public void getLastPlacedCards(String username, UUID messageId){
         try {
-            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
             Deque<Integer> cardIds = new ArrayDeque<>();
             for (Card card : user.getPlayerBoard().getLastPlacedCards()) {
                 cardIds.add(card.getId());
@@ -361,7 +361,7 @@ public class Controller {
 
     public void getStartingCards(String username, UUID messageId) {
         try {
-            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
 
             Card startingCard = user.drawStartingCard();
 
@@ -373,7 +373,7 @@ public class Controller {
 
     public void placeStartingCard(String username, boolean bool, UUID messageId){
         try{
-            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username));
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
 
             user.setFirstCard(bool);
 
