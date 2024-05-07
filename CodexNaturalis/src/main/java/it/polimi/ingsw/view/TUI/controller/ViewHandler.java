@@ -44,7 +44,7 @@ class ViewHandler extends Thread {
                     setupObjectives();
                     break;
 
-                case WAIT_TURN:
+                case WAIT_TURN, FETCH_DATA:
                     sleepAndClear();
                     System.out.println("Waiting for turn...");
                     break;
