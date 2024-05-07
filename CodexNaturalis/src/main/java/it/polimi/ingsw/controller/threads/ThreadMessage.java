@@ -290,16 +290,6 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         );
     }
 
-    public static ThreadMessage getAvailableGames(String username) {
-        return new ThreadMessage(
-                Status.REQUEST,
-                username,
-                "getAvailableGames",
-                null,
-                UUID.randomUUID()
-        );
-    }
-
     /**
      * Creates a ThreadMessage for requesting last placed cards.
      * @param username The username of the player.
@@ -332,7 +322,7 @@ public record ThreadMessage(Status status, String player, String type, String[] 
     }
 
     /**
-     * Creates a ThreadMessage for requesting the starting card.
+     * Creates a ThreadMessage for requesting to draw the starting card.
      * @param username The username of the player.
      * @return A ThreadMessage requesting the starting card.
      */
@@ -342,6 +332,18 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 username,
                 "getStartingCard",
                 null,
+                UUID.randomUUID()
+        );
+    }
+
+    public static ThreadMessage placeStartingCard(String username, String bool){
+        return new ThreadMessage(
+                Status.REQUEST,
+                username,
+                "placeStartingCard",
+                new String[]{
+                        bool
+                },
                 UUID.randomUUID()
         );
     }
@@ -356,6 +358,16 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 Status.REQUEST,
                 username,
                 "getGameState",
+                null,
+                UUID.randomUUID()
+        );
+    }
+
+    public static ThreadMessage getAvailableGames(String username) {
+        return new ThreadMessage(
+                Status.REQUEST,
+                username,
+                "getAvailableGames",
                 null,
                 UUID.randomUUID()
         );
@@ -464,22 +476,6 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 new String[]{
                         cardId.toString()
                 },
-                messageUUID
-        );
-    }
-
-    public static ThreadMessage getAvailableGamesResponse(String username, ArrayList<UUID> availableGames, UUID messageUUID) {
-        String[] args = new String[availableGames.size()];
-
-        for (int i = 0; i < availableGames.size(); i++) {
-            args[i] = availableGames.get(i).toString();
-        }
-
-        return new ThreadMessage(
-                Status.OK,
-                username,
-                "getAvailableGamesResponse",
-                args,
                 messageUUID
         );
     }
@@ -764,6 +760,22 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 Status.OK,
                 username,
                 "getPlayersResponse",
+                args,
+                messageUUID
+        );
+    }
+
+    public static ThreadMessage getAvailableGamesResponse(String username, ArrayList<UUID> availableGames, UUID messageUUID) {
+        String[] args = new String[availableGames.size()];
+
+        for (int i = 0; i < availableGames.size(); i++) {
+            args[i] = availableGames.get(i).toString();
+        }
+
+        return new ThreadMessage(
+                Status.OK,
+                username,
+                "getAvailableGamesResponse",
                 args,
                 messageUUID
         );
