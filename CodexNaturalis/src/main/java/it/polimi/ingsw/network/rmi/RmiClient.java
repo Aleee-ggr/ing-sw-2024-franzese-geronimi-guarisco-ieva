@@ -48,7 +48,7 @@ public class RmiClient extends Client{
         super(playerUsername, password, serverAddress, serverPort);
 
         try {
-            Registry registry = LocateRegistry.getRegistry();
+            Registry registry = LocateRegistry.getRegistry(serverAddress, 1099);
             remoteObject = (RmiServerInterface) registry.lookup(RmiServer.getName());
         } catch (RemoteException | NotBoundException e) {
             throw new RuntimeException(e);

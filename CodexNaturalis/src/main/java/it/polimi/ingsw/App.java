@@ -45,7 +45,7 @@ public class App
                     RmiClient client = new RmiClient(
                             String.valueOf(ThreadLocalRandom.current().nextInt(100, 10000)),
                             "password",
-                            "localhost",
+                            serverAddress,
                             9090);
                     new TuiController(client, id);
                     break;
