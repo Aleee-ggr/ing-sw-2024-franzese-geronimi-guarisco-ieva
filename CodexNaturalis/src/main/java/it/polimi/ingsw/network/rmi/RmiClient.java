@@ -192,7 +192,7 @@ public class RmiClient extends Client{
         ArrayList<String> players = remoteObject.getPlayers(this.gameId, data.getUsername());
 
         if (players != null) {
-            //TODO: add method in ClientData to save them
+            data.setPlayers(players);
             return true;
         } else {
             return false;

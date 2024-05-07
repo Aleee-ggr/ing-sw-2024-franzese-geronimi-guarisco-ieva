@@ -26,6 +26,7 @@ public class ClientData {
     private ArrayList<Integer> hand = new ArrayList<>(GameConsts.firstHandDim);
 
     private final Map<String, PlayersDataLight> playersData;
+    private ArrayList<String> players;
     private int playerNum;
 
     private final Integer[] globalObjectives = new Integer[GameConsts.globalObjectives];
@@ -70,6 +71,10 @@ public class ClientData {
         this.username = username;
     }
 
+    public void setPlayers(ArrayList<String> players) {
+        this.players = players;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -95,6 +100,10 @@ public class ClientData {
 
     public GameState getGameState() {
         return gameState;
+    }
+
+    public ArrayList<String> getPlayers() {
+        return players;
     }
 
     public void setPersonalObjective(Integer personalObjective) {
