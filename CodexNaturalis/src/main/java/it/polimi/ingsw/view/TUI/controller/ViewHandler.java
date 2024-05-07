@@ -81,7 +81,7 @@ class ViewHandler extends Thread {
                 .toArray(ObjectiveCard[]::new);
         StartingObjectiveView startingObjectiveView = new StartingObjectiveView(objectives);
         out.println(startingObjectiveView);
-        int value = in.nextInt();
+        int value = in.nextInt()-1;
         value = startingObjectiveView.getObjectives()[value];
         input.setElement(String.valueOf(value));
     }

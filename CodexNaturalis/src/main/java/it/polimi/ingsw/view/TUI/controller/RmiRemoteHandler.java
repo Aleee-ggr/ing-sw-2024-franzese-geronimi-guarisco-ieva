@@ -113,7 +113,7 @@ class RmiRemoteHandler extends Thread {
     }
 
     private void setupStarting() {
-        Integer side = Integer.valueOf(input.getElement())-1;
+        Integer side = Integer.valueOf(input.getElement());
         try {
             client.setStartingCard(side == 1);
         } catch (ServerConnectionException|RemoteException e) {
@@ -122,7 +122,7 @@ class RmiRemoteHandler extends Thread {
     }
 
     private void setupObjectives() {
-        int in = Integer.parseInt(input.getElement())-1;
+        int in = Integer.parseInt(input.getElement());
         try {
             client.chooseStartingObjective(in);
         } catch (ServerConnectionException|RemoteException e) {
