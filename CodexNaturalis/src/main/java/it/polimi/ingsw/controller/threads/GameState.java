@@ -8,7 +8,8 @@ public enum GameState {
     MAIN,
     ENDGAME,
     STOP;
-    public static final ImmutableSet<String> lobby = ImmutableSet.of("join");
+    public static final ImmutableSet<String> lobby = ImmutableSet.of("join",
+                                                                     "getGameState");
     public static final ImmutableSet<String> setup = ImmutableSet.of("join",
                                                                     "getHand",
                                                                     "getPlayers",
@@ -16,7 +17,8 @@ public enum GameState {
                                                                     "getStartingObjectives",
                                                                     "getCommonObjectives",
                                                                     "getStartingCard",
-                                                                    "choosePersonalObjectiveResponse");
+                                                                    "choosePersonalObjectiveResponse",
+                                                                    "getGameState");
     public static final ImmutableSet<String> main = ImmutableSet.of("join",
                                                                     "draw",
                                                                     "place",
@@ -31,7 +33,8 @@ public enum GameState {
                                                                     "getBoard",
                                                                     "getHandColor",
                                                                     "getLastPlacedCards",
-                                                                    "update");
+                                                                    "update",
+                                                                    "getGameState");
     public static final ImmutableSet<String> endgame = main;
     public static final ImmutableSet<String> stop = ImmutableSet.of("update");
     public static final ImmutableSet<String> getters = ImmutableSet.of("getHand", //TODO: check if this is all
@@ -46,5 +49,6 @@ public enum GameState {
                                                                         "getValidPlacements",
                                                                         "getBoard",
                                                                         "getHandColor",
-                                                                        "getLastPlacedCards");
+                                                                        "getLastPlacedCards",
+                                                                        "getGameState");
 }
