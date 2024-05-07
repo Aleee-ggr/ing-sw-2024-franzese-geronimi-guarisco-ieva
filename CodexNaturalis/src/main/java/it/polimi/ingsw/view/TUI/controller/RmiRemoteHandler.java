@@ -106,7 +106,6 @@ class RmiRemoteHandler extends Thread {
             client.getStartingCard();
             client.getPlayers();
             client.getStartingObjectives();
-
             gameState.setElement(ViewState.SETUP_STARTING);
         } catch (ServerConnectionException | RemoteException e) {
             throw new RuntimeException(e);
@@ -114,7 +113,7 @@ class RmiRemoteHandler extends Thread {
     }
 
     private void setupStarting() {
-        Integer side = Integer.valueOf(input.getElement());
+        Integer side = Integer.valueOf(input.getElement())-1;
         try {
             client.setStartingCard(side == 1);
         } catch (ServerConnectionException|RemoteException e) {
@@ -123,7 +122,7 @@ class RmiRemoteHandler extends Thread {
     }
 
     private void setupObjectives() {
-        int in = Integer.parseInt(input.getElement());
+        int in = Integer.parseInt(input.getElement())-1;
         try {
             client.chooseStartingObjective(in);
         } catch (ServerConnectionException|RemoteException e) {
