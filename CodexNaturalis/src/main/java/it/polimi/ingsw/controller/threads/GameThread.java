@@ -97,7 +97,7 @@ public class GameThread extends Thread {
 
                 if(msg.type().equals("choosePersonalObjective")){ //TODO: needs to check responses!
                     objChosen = true;
-                } else if(msg.type().equals("chooseStartingCard")){
+                } else if(msg.type().equals("placeStartingCard")){
                     startChosen = true;
                 }
             }
