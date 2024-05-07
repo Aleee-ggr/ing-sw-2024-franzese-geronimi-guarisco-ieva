@@ -48,8 +48,9 @@ public class Board implements Component {
             Coordinates relativeCoordinates  = getOffsetCoordinates(current);
             if (isInView(relativeCoordinates)) {
                 Card card = Game.getCardByID(cardId);
-                if (card instanceof StartingCard starting) {
+                if (card instanceof StartingCard starting) { //TODO: check if starting card is frontsideup
                     board[relativeCoordinates.y()][relativeCoordinates.x()] = 'S';
+                    setLines(relativeCoordinates);
                     if (cardId < 0) {
                         setCorners(relativeCoordinates, starting.getBackCorners());
                         setLines(relativeCoordinates);
