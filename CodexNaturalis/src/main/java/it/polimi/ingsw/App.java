@@ -30,10 +30,17 @@ public class App
                 case 1:
                     break;
                 case 2:
+                    System.out.print("Insert game uuid: ");
                     input = new Scanner(System.in).next();
                     UUID id = null;
                     if (input.length() > 3) {
                         id = UUID.fromString(input);
+                    }
+                    System.out.print("Insert server address: ");
+                    input = new Scanner(System.in).next();
+                    String serverAddress = "localhost";
+                    if (input.matches("([0-9]+\\.)+[0-9]+")) {
+                        serverAddress = input;
                     }
                     RmiClient client = new RmiClient(
                             String.valueOf(ThreadLocalRandom.current().nextInt(100, 10000)),
