@@ -137,12 +137,10 @@ public class Player {
      * @param objId int id of the chosen card
      * @see Objective
      */
-    public void choosePersonalObjective(int objId) throws Exception {
+    public void choosePersonalObjective(int objId) {
         for(Objective obj: startingObjectives){
             if(obj.getId() == objId){
                 hiddenObjective = obj;
-            } else {
-                throw new Exception("obj not found");
             }
         }
     }

@@ -149,7 +149,7 @@ public class Controller {
             user.choosePersonalObjective(objId);
             messageQueue.add(ThreadMessage.choosePersonalObjectiveResponse(username, true, messageId));
         } catch (Exception e) {
-            messageQueue.add(ThreadMessage.choosePersonalObjectiveResponse(username, false,messageId));
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
     }
 
