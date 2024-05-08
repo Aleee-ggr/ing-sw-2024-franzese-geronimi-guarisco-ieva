@@ -86,13 +86,16 @@ public class RmiClient extends Client{
      * @throws ServerConnectionException If there is an issue connecting to the server.
      * @throws RemoteException If a remote communication error occurs.
      */
-    public void placeCard(Coordinates coordinates, Integer cardId) throws ServerConnectionException, RemoteException {
-        try{
-            data.removeFromHand(cardId);
-        } catch (ElementNotInHand e ){
-            e.printStackTrace();
+    public boolean placeCard(Coordinates coordinates, Integer cardId) throws ServerConnectionException, RemoteException {
+        boolean success = remoteObject.placeCard(this.gameId, data.getUsername(), coordinates, cardId);
+        if(success){
+            try {
+                data.removeFromHand(cardId);
+            } catch (ElementNotInHand e) {
+                throw new RuntimeException(e);
+            }
         }
-        remoteObject.placeCard(this.gameId, data.getUsername(), coordinates, cardId);
+        return success;
     }
 
     /**
