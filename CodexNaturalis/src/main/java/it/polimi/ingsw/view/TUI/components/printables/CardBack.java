@@ -1,9 +1,13 @@
 package it.polimi.ingsw.view.TUI.components.printables;
 
-import java.util.Arrays;
-import java.util.Iterator;
+import it.polimi.ingsw.model.enums.Resource;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class CardBack implements Iterable<String> {
+    public static final int width = 15;
+    public static final int height = 5;
     public static final String animalsBack = """
             ┏━━━━━━━━━━━━━┓
             ┃   |\\.-./|   ┃
@@ -35,4 +39,11 @@ public abstract class CardBack implements Iterable<String> {
             insectsBack,
             fungiBack
     };
+
+    public static final Map<Resource, String> resources = new HashMap<>() {{
+        put(Resource.FUNGI, fungiBack);
+        put(Resource.PLANT, plantsBack);
+        put(Resource.ANIMAL, animalsBack);
+        put(Resource.INSECT, insectsBack);
+    }};
 }
