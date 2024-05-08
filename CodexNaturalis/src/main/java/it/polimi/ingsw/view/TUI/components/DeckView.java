@@ -17,7 +17,7 @@ public class DeckView implements Component {
 
     private static final int paddingLeft = (width - contentHeight - 2) / 2;
     private static final int paddingTop = (height - contentHeight - 4) / 2;
-    private static final String header = "DRAW";
+    private static final String header = "DRAW YOUR CARD";
 
     private Resource[] backs = new Resource[2];
     private Card[] visibleCards = new Card[GameConsts.visibleCards];
