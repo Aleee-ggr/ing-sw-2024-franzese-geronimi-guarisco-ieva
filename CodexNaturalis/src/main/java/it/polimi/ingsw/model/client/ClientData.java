@@ -16,8 +16,7 @@ public abstract class ClientData {
     private ArrayList<Card> order;
     private HashMap<Resource, Integer> resources;
 
-    public ClientData(String username) {
-        this.username = username;
+    public ClientData() {
         this.board = HashBiMap.create();
         this.order = new ArrayList<>();
         this.resources = new HashMap<>();
