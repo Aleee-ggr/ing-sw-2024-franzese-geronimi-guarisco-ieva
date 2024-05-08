@@ -64,6 +64,14 @@
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
           <version>3.3.0</version>
+          <configuration>
+            <archive>
+              <manifest>
+                <addClasspath>true</addClasspath>
+                <mainClass>it.polimi.ingsw.App</mainClass>
+              </manifest>
+            </archive>
+          </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-install-plugin</artifactId>
@@ -99,11 +107,6 @@
           <configuration>
             <shadedArtifactAttached>true</shadedArtifactAttached>
             <shadedClassifierName>release</shadedClassifierName>
-            <transformers>
-              <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                <mainClass>it.polimi.ingsw.App</mainClass>
-              </transformer>
-            </transformers>
           </configuration>
           <executions>
             <execution>
