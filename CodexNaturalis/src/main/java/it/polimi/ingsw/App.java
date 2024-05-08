@@ -3,7 +3,6 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.helpers.exceptions.network.ServerConnectionException;
 import it.polimi.ingsw.network.rmi.RmiClient;
 import it.polimi.ingsw.network.rmi.RmiServer;
-import it.polimi.ingsw.view.TUI.controller.TuiController;
 
 import java.rmi.RemoteException;
 import java.util.List;
@@ -47,7 +46,6 @@ public class App
                             "password",
                             serverAddress,
                             9090);
-                    new TuiController(client, id);
                     break;
                 default:
                     System.out.println("Unknown option!");
