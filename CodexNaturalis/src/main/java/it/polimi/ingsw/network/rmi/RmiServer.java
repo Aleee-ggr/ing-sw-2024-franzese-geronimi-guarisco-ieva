@@ -28,7 +28,7 @@ import java.util.UUID;
  * Runtime shutdown hooks are used to cleanly stop the server when the application exits.
  */
 public class RmiServer extends Server implements RmiServerInterface {
-    private static final String name = "rmiServer";
+    private static final String name = "CodexServer";
     private final Registry registry;
 
     /**
@@ -39,7 +39,7 @@ public class RmiServer extends Server implements RmiServerInterface {
     public RmiServer(int port) throws RemoteException {
         System.out.println("Starting server...");
         RmiServerInterface stub = (RmiServerInterface) UnicastRemoteObject.exportObject(this, port);
-        registry = LocateRegistry.createRegistry(1099);
+        registry = LocateRegistry.createRegistry(port);
         registry.rebind(name, stub);
         System.out.println("Started!");
         Runtime.getRuntime().addShutdownHook(new Thread(this::stop));

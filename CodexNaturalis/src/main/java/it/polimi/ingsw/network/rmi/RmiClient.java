@@ -33,7 +33,7 @@ import java.util.UUID;
 
 public class RmiClient extends Client{
 
-    private RmiServerInterface remoteObject;
+    private final RmiServerInterface remoteObject;
 
     /**
      * Constructs a new RmiClient object with the specified player username, password, server address, and server port.
@@ -48,7 +48,7 @@ public class RmiClient extends Client{
         super(playerUsername, password, serverAddress, serverPort);
 
         try {
-            Registry registry = LocateRegistry.getRegistry(serverAddress, 1099);
+            Registry registry = LocateRegistry.getRegistry(serverAddress, serverPort);
             remoteObject = (RmiServerInterface) registry.lookup(RmiServer.getName());
         } catch (RemoteException | NotBoundException e) {
             throw new RuntimeException(e);
