@@ -12,6 +12,7 @@
           <option name="goals">
             <list>
               <option value="package" />
+              <option value="shade:shade" />
             </list>
           </option>
           <option name="multimoduleDir" />
