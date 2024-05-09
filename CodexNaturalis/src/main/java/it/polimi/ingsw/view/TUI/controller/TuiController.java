@@ -34,14 +34,13 @@ public class TuiController {
             do {
                 clear();
                 out.println("Available games: ");
-                client.fetchAvailableGames();
 
                 for (int i = 1; i <= client.getAvailableGames().size(); i++) {
                     System.out.printf("%d.\t%s\n", i, client.getAvailableGames().get(i));
                 }
                 out.println("Select game to play (0 to create a new game)");
 
-                selected = select(0, 100); //TODO add actual upper range
+                selected = select(0, client.getAvailableGames().size());
 
                 if (selected == 0) {
                     createGame();
