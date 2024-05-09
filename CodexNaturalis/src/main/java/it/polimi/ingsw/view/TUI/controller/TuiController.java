@@ -29,17 +29,18 @@ public class TuiController {
         try {
             client.fetchAvailableGames();
 
-            out.println("Available games: ");
-            System.out.println("game");
-            out.println("Select game to play (0 to create a new game)");
-            client.fetchAvailableGames();
-
-            for (int i = 1; i <= client.getAvailableGames().size(); i++) {
-                System.out.printf("%d.\t%s\n", i, client.getAvailableGames().get(i));
-            }
 
             int selected;
             do {
+                clear();
+                out.println("Available games: ");
+                client.fetchAvailableGames();
+
+                for (int i = 1; i <= client.getAvailableGames().size(); i++) {
+                    System.out.printf("%d.\t%s\n", i, client.getAvailableGames().get(i));
+                }
+                out.println("Select game to play (0 to create a new game)");
+
                 selected = select(0, 100); //TODO add actual upper range
 
                 if (selected == 0) {
