@@ -193,7 +193,7 @@ public class RmiClient extends Client implements ClientInterface {
             commonObjectivesList.add(Game.getObjectiveByID(id));
         }
 
-        this.commonObjectives = commonObjectivesList;
+        ((PlayerData) playerData.get(username)).setGlobalObjectives(commonObjectivesList);
         return true;
     }
 

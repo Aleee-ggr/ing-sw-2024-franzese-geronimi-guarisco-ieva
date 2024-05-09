@@ -31,7 +31,6 @@ public class Client {
     protected HashMap<String, ClientData> playerData;
     protected HashMap<String, Integer> scoreMap;
 
-    protected ArrayList<Objective> commonObjectives;
     protected ArrayList<Card> visibleCards;
     protected ArrayList<Card> backSideDecks;
 
@@ -49,7 +48,6 @@ public class Client {
         this.scoreMap = new HashMap<>();
         this.playerData = new HashMap<>();
         this.gameState = GameState.LOBBY;
-        this.commonObjectives = new ArrayList<>();
     }
 
     public GameState getGameState() {
