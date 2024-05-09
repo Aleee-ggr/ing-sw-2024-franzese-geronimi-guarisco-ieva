@@ -1,11 +1,16 @@
 package it.polimi.ingsw.view.TUI;
 
 import it.polimi.ingsw.GameConsts;
-import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.board.Coordinates;
+import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.components.*;
 import it.polimi.ingsw.view.TUI.components.printables.ObjectiveCard;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Compositor {
     private static final int screenWidth = 166;
@@ -14,11 +19,11 @@ public class Compositor {
     private final ClientInterface client;
     private final MiniBoard[] miniBoard;
     private final Chat chat = new Chat();
-    private ResourceView resources;
-    private HandView hand = new HandView();
+    private final ResourceView resources;
+    private final HandView hand;
     //private DeckView deck = new DeckView();
-    private final Board board = new Board();
-    private ScoreBoard scoreBoard = new ScoreBoard();
+    private final Board board;
+    private final ScoreBoard scoreBoard;
     private final Prompt prompt;
 
     private final ObjectiveView objectiveView = createObjectiveView();
@@ -30,12 +35,16 @@ public class Compositor {
 
     public Compositor(String[] players, ClientInterface client) {
         this.client = client;
-        miniBoard = new MiniBoard[client.getPlayerNum()-1];
 
+        miniBoard = new MiniBoard[client.getPlayerNum()-1];
         for(int i = 0; i < miniBoard.length; i++){
-            miniBoard[i] = new MiniBoard(players[i]);
+            miniBoard[i] = new MiniBoard(players[i], client);
         }
+
         this.resources = new ResourceView(client.getUsername());
+        this.hand = new HandView(client);
+        this.board = new Board(client);
+        this.scoreBoard = new ScoreBoard(client);
         this.prompt = new Prompt(client.getUsername());
     }
 
@@ -43,7 +52,8 @@ public class Compositor {
         StringBuilder out = new StringBuilder();
 
         for (MiniBoard miniBoard : miniBoard) {
-            miniBoard.setBoard(client.getPlayerBoard(miniBoard.getUsername()));
+            Map<Coordinates, Integer> convertedBoard = convertBoard(((Client)client).getPlayerData().get(miniBoard.getUsername()).getBoard());
+            miniBoard.setBoard(convertedBoard);
         }
 
         for(int y = 0; y < MiniBoard.boardHeight; y++){
@@ -58,7 +68,7 @@ public class Compositor {
         }
 
 
-        switch(clientData.getPlayerNum()-1){
+        switch(client.getPlayerNum()-1){
             case 1:
                 out.append("━".repeat(MiniBoard.boardWidth));
                 break;
@@ -108,13 +118,22 @@ public class Compositor {
 
 
 
-    private static ObjectiveView createObjectiveView(){
-        ObjectiveCard personal = new ObjectiveCard(Game.getObjectiveByID(clientData.getPersonalObjective()));
+    private ObjectiveView createObjectiveView(){
+        PlayerData clientData = (PlayerData) client.getPlayerData().get(client.getUsername());
+        ObjectiveCard personal = new ObjectiveCard(clientData.getPersonalObjective());
         ObjectiveCard[] global = new ObjectiveCard[GameConsts.globalObjectives];
         for (int i = 0; i < GameConsts.globalObjectives; i++) {
-            global[i] = new ObjectiveCard(Game.getObjectiveByID(clientData.getGlobalObjectives()[i]));
+            global[i] = new ObjectiveCard(clientData.getGlobalObjectives().get(i));
         }
         return new ObjectiveView(personal, global);
+    }
+
+    private Map<Coordinates, Integer> convertBoard(Map<Coordinates, Card> board){
+        Map<Coordinates, Integer> convertedBoard = new HashMap<>();
+        for (Map.Entry<Coordinates, Card> entry : board.entrySet()) {
+            convertedBoard.put(entry.getKey(), entry.getValue().getId());
+        }
+        return convertedBoard;
     }
 
 }

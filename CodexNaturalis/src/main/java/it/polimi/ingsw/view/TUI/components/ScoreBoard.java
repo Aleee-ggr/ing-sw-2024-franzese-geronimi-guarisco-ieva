@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.TUI.components;
 
 import it.polimi.ingsw.GameConsts;
-import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.network.ClientInterface;
 
 import java.util.ArrayList;
 
@@ -9,7 +9,11 @@ public class ScoreBoard implements Component{
     public static final int scoreHeight = 5;
     public static final int scoreWidth = 19;
     private final ArrayList<String> scoreBoard = new ArrayList<>(scoreHeight);
-    private final ClientData clientData = Client.getData();
+    private final ClientInterface client;
+
+    public ScoreBoard(ClientInterface client) {
+        this.client = client;
+    }
 
     @Override
     public String toString() {
@@ -21,8 +25,8 @@ public class ScoreBoard implements Component{
         StringBuilder out = new StringBuilder();
         out.append("ScoreBoard:        \n");
 
-        for(String player: clientData.getScoreBoard().keySet()){
-            String score = clientData.getScoreBoard().get(player).toString();
+        for(String player: client.getScoreMap().keySet()){
+            String score = client.getScoreMap().get(player).toString();
             int maxLength = scoreWidth - score.length() - 2;
 
             if (player.length() > maxLength) {
@@ -36,8 +40,8 @@ public class ScoreBoard implements Component{
         }
 
 
-        if(clientData.getPlayerNum()< GameConsts.maxPlayersNum){
-            if(clientData.getPlayerNum() == 2){
+        if(client.getPlayerNum()< GameConsts.maxPlayersNum){
+            if(client.getPlayerNum() == 2){
                 out.append("                    \n");
             }
             out.append("                    \n");

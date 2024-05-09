@@ -1,8 +1,7 @@
 package it.polimi.ingsw.view.TUI.controller;
 
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.cards.StartingCard;
-import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.model.client.PlayerData;
+import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.Compositor;
 import it.polimi.ingsw.view.TUI.components.StartingCardView;
 import it.polimi.ingsw.view.TUI.components.StartingObjectiveView;
@@ -18,11 +17,14 @@ class ViewHandler extends Thread {
     private final Scanner in = new Scanner(System.in);
     private final PrintWriter out = new PrintWriter(System.out, true);
     private String[] players;
+    private final ClientInterface client;
 
-    public ViewHandler(Shared<ViewState> state, Shared<String> input, String username) {
+
+    public ViewHandler(Shared<ViewState> state, Shared<String> input, String username, ClientInterface client) {
         this.state = state;
         this.input = input;
         this.username = username;
+        this.client = client;
     }
 
     @Override
@@ -63,7 +65,7 @@ class ViewHandler extends Thread {
         out.print("\033[H\033[2J");
         out.flush();
         if (compositor == null) {
-            compositor = new Compositor(Client.getData().getPlayers().toArray(new String[0]));
+            compositor = new Compositor(client.getPlayers().toArray(new String[0]), client);
         }
         out.print(compositor);
         input.setElement(in.nextLine());
@@ -73,10 +75,9 @@ class ViewHandler extends Thread {
     private void setupObjectives() {
         out.print("\033[H\033[2J");
         out.flush();
-        ObjectiveCard[] objectives = Client.getData()
+        ObjectiveCard[] objectives = ((PlayerData)client)
                 .getStartingObjectives()
                 .stream()
-                .map((Game::getObjectiveByID))
                 .map(ObjectiveCard::new)
                 .toArray(ObjectiveCard[]::new);
         StartingObjectiveView startingObjectiveView = new StartingObjectiveView(objectives);
@@ -88,7 +89,7 @@ class ViewHandler extends Thread {
 
     private void setupStarting() {
         StartingCardView startingCardView = new StartingCardView(
-                (StartingCard) Game.getCardByID(Client.getData().getStartingCard(username))
+                ((PlayerData)client).getStartingCard()
         );
         out.println(startingCardView);
         int value = in.nextInt();

@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.ColoredCard;
-import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.RotateBoard;
 
 import java.util.Map;
@@ -13,13 +13,14 @@ import java.util.Map;
 public class MiniBoard implements Component{
     public static final int boardHeight = 8;
     public static final int boardWidth = 29;
-    private int singleBoardWidth; //TODO: refactor to have variable width
+    private int singleBoardWidth;
     private Character[][] boardToPrint;
-    private final ClientData clientData = Client.getData();
+    private final ClientInterface client;
     private final String username;
 
-    public MiniBoard(String username) {
+    public MiniBoard(String username, ClientInterface client) {
         this.username = username;
+        this.client = client;
     }
 
     public String getUsername() {
@@ -28,7 +29,7 @@ public class MiniBoard implements Component{
 
     public void setBoard(Map<Coordinates, Integer> board) {
         Map<Coordinates, Integer> rotatedBoard = RotateBoard.rotateBoard(board);
-        singleBoardWidth = (boardWidth - (clientData.getPlayerNum()-2)) / (clientData.getPlayerNum()-1);
+        singleBoardWidth = (boardWidth - (client.getPlayerNum()-2)) / (client.getPlayerNum()-1);
         boardToPrint = new Character[singleBoardWidth][boardHeight];
         for (int y = 0; y < boardHeight; y++){
             for(int x = 0; x < singleBoardWidth; x++){

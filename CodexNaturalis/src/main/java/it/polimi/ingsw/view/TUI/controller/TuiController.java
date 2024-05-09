@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.TUI.controller;
 
-import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.Compositor;
 
@@ -18,7 +17,7 @@ public class TuiController {
 
     public TuiController(ClientInterface client) {
         this.client = client;
-        this.compositor = new Compositor(client.getPlayers().toArray(new String[0]));
+        this.compositor = new Compositor(client.getPlayers().toArray(new String[0]), client);
     }
 
     public void start() {

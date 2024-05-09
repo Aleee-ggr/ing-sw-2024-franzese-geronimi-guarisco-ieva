@@ -1,14 +1,11 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.controller.threads.GameState;
-import it.polimi.ingsw.helpers.exceptions.network.ServerConnectionException;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.client.ClientData;
-import it.polimi.ingsw.model.objectives.Objective;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 /**

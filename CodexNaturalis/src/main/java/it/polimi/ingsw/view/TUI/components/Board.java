@@ -1,21 +1,19 @@
 package it.polimi.ingsw.view.TUI.components;
 
 import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.ColoredCard;
 import it.polimi.ingsw.model.cards.Corner;
 import it.polimi.ingsw.model.cards.StartingCard;
-import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.model.client.PlayerData;
+import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.RotateBoard;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-//TODO: fix with new refactor
+
 public class Board implements Component {
     public static final int width = 147;
     public static final int height = 27;
@@ -24,8 +22,11 @@ public class Board implements Component {
     private static final int baseOffset_x = width / 2;
     private static final int baseOffset_y = height / 2;
 
+    private final ClientInterface client;
 
-    public Board() {
+
+    public Board(ClientInterface client) {
+        this.client = client;
         this.center = new Coordinates(0, 0);
     }
 
@@ -40,18 +41,18 @@ public class Board implements Component {
     }
     
     public void compute() {
-        List<Integer> cardPlacementList = Client.getData().getClientPlacingOrder();
-        BiMap<Coordinates, Integer> cardPlacementMap = HashBiMap.create(Client.getData().getClientBoard());
+        PlayerData player = (PlayerData) client.getPlayerData().get(client.getUsername());
+        List<Card> cardPlacementList = player.getOrder();
+        BiMap<Coordinates, Card> cardPlacementMap = player.getBoard();
 
-        for (Integer cardId: cardPlacementList) {
-            Coordinates current = cardPlacementMap.inverse().get(cardId);
+        for (Card card: cardPlacementList) {
+            Coordinates current = cardPlacementMap.inverse().get(card);
             Coordinates relativeCoordinates  = getOffsetCoordinates(current);
             if (isInView(relativeCoordinates)) {
-                Card card = Game.getCardByID(cardId);
-                if (card instanceof StartingCard starting) { //TODO: check if starting card is frontsideup
+                if (card instanceof StartingCard starting) {
                     board[relativeCoordinates.y()][relativeCoordinates.x()] = 'S';
                     setLines(relativeCoordinates);
-                    if (cardId < 0) {
+                    if (!card.isFrontSideUp()) {
                         setCorners(relativeCoordinates, starting.getBackCorners());
                         setLines(relativeCoordinates);
                     }
@@ -59,7 +60,7 @@ public class Board implements Component {
                 } 
                 if (card instanceof ColoredCard colored) {
                     board[relativeCoordinates.y()][relativeCoordinates.x()] = colored.getBackResource().toChar();
-                    if (cardId < 0) {
+                    if (!card.isFrontSideUp()) {
                         for (Coordinates neighbor : relativeCoordinates.getNeighbors()) {
                             board[neighbor.y()][neighbor.x()] = 'N';
                         }
@@ -77,7 +78,7 @@ public class Board implements Component {
 
         }
 
-        ArrayList<Coordinates> validPosition = Client.getData().getValidPlacementsArray();
+        ArrayList<Coordinates> validPosition = player.getValidPlacements();
 
         for (int i = 0; i< validPosition.size(); i++) {
             Coordinates relativeCoordinates = getOffsetCoordinates(validPosition.get(i));

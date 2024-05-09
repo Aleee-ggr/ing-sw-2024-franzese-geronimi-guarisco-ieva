@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.client.ClientData;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
