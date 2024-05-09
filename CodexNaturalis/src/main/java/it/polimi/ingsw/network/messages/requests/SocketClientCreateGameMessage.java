@@ -12,11 +12,9 @@ public class SocketClientCreateGameMessage extends GenericRequestMessage {
 
     /**
      * Constructor for the SocketClientCreateGameMessage class.
-     * @param username The username of the client sending the message.
      * @param numPlayers The number of players for the game.
      */
-    public SocketClientCreateGameMessage(String username, int numPlayers) {
-        this.username = username;
+    public SocketClientCreateGameMessage(int numPlayers) {
         this.numPlayers = numPlayers;
     }
 

@@ -36,10 +36,10 @@ public class SocketTest {
 
     @Test
     public void createGameTest() throws InterruptedException {
-        SocketClient client = new SocketClient("prova", "pippo", "localhost", 9091);
+        SocketClient client = new SocketClient( "localhost", 9091);
 
         try {
-            client.createGame("prova", 3);
+            client.newGame( 3);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -56,13 +56,13 @@ public class SocketTest {
 
     @Test
     public void joinGameTest() throws InterruptedException {
-        SocketClient client = new SocketClient("prova", "pippo", "localhost", 9091);
-        SocketClient client2 = new SocketClient("prova_2", "pippo", "localhost", 9091);
+        SocketClient client = new SocketClient("localhost", 9091);
+        SocketClient client2 = new SocketClient("localhost", 9091);
 
         try {
-            client.createGame("prova", 3);
+            client.newGame(3);
             Thread.sleep(1000);
-            client2.joinGame("prova_2", client.gameId);
+            client2.joinGame( client.gameId);
             Thread.sleep(1000);
         } catch (IOException e) {
             throw new RuntimeException(e);

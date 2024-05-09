@@ -54,6 +54,10 @@ public class Client {
         return gameState;
     }
 
+    public ArrayList<UUID> getAvailableGames() {
+        return this.availableGames;
+    }
+
     public int getPlayerNum() {
         return playerNum;
     }

@@ -58,7 +58,8 @@ public class RmiClient extends Client implements ClientInterface {
     }
 
     /**
-     * Draws a card from the server and adds it to the client's hand at the specified position.
+     * Draws a card from the server from the deck or the visible card specified
+     * by the position and adds it to the client's hand.
      * @param position The index of the deck to draw from.
      * @throws RemoteException If a remote communication error occurs.
      */
@@ -351,11 +352,6 @@ public class RmiClient extends Client implements ClientInterface {
 
         ((PlayerData)playerData.get(username)).setStartingCard((StartingCard) Game.getCardByID(startingCardId));
         return true;
-    }
-
-    @Override
-    public ArrayList<UUID> getAvailableGames() {
-        return this.availableGames;
     }
 
     /**
