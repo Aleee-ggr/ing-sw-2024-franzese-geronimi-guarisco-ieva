@@ -42,7 +42,7 @@ public class ClientApp {
             }
         } else {
             try {
-                SocketClient client = new SocketClient(username, password, ip, port);
+                SocketClient client = new SocketClient(ip, port);
                 client.startConnection(ip, port);
             } catch (Exception e) {
                 System.out.println("Error with the connection:" + e.getMessage());

@@ -24,7 +24,7 @@ public class SocketTest {
 
     @Test
     public void connectionTest() throws InterruptedException {
-        SocketClient client = new SocketClient("prova", "pippo", "localhost", 9091);
+        SocketClient client = new SocketClient("localhost", 9091);
         Thread.sleep(1000);
 
         try {
