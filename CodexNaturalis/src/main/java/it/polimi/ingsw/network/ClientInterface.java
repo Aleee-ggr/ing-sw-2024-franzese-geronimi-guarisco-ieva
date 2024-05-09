@@ -1,10 +1,11 @@
 package it.polimi.ingsw.network;
 
-import it.polimi.ingsw.helpers.exceptions.network.ServerConnectionException;
+import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.model.board.Coordinates;
+import it.polimi.ingsw.model.client.ClientData;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
+import java.util.HashMap;
 import java.util.UUID;
 
 public interface ClientInterface {
@@ -31,4 +32,9 @@ public interface ClientInterface {
     boolean fetchOpponentsHandColor() throws IOException;
     boolean fetchStartingObjectives() throws IOException;
     boolean fetchStartingCard() throws IOException;
+
+    GameState getGameState();
+    int getPlayerNum();
+    HashMap<String, ClientData> getPlayerData();
+    HashMap<String, Integer> getScoreMap();
 }
