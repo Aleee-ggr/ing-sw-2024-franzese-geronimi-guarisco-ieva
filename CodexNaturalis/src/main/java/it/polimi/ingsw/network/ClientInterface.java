@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.client.ClientData;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
@@ -18,7 +19,7 @@ public interface ClientInterface {
     void drawCard(int position) throws IOException;
     boolean placeCard(Coordinates coordinates, int CardId) throws IOException;
     boolean placeStartingCard(boolean frontSideUp) throws IOException;
-    boolean chooseStartingObjective(int objectiveId);
+    boolean choosePersonalObjective(int objectiveId) throws IOException;
 
     boolean fetchAvailableGames() throws IOException;
     boolean fetchGameState() throws IOException;

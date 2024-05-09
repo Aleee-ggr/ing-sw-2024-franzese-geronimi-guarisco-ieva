@@ -85,9 +85,8 @@ public class RmiClient extends Client implements ClientInterface {
     }
 
     @Override
-    public boolean chooseStartingObjective(int objectiveId) {
-
-        return false;
+    public boolean choosePersonalObjective(int objectiveId) throws RemoteException {
+        return remoteObject.choosePersonalObjective(this.gameId, username, objectiveId);
     }
 
     /**
