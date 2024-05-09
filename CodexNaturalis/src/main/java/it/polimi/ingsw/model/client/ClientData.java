@@ -16,9 +16,9 @@ import java.util.HashMap;
  * The class is abstract and is extended by the PlayerData class and the OpponentData class.
  * */
 public abstract class ClientData {
-    private BiMap<Coordinates, Card> board;
-    private ArrayList<Card> order;
-    private HashMap<Resource, Integer> resources;
+    protected BiMap<Coordinates, Card> board;
+    protected ArrayList<Card> order;
+    protected HashMap<Resource, Integer> resources;
 
     /**
      * Constructor for the ClientData class.

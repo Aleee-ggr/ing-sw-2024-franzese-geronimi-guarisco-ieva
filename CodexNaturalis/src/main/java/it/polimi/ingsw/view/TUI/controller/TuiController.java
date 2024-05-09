@@ -1,20 +1,19 @@
 package it.polimi.ingsw.view.TUI.controller;
 
-import it.polimi.ingsw.helpers.exceptions.network.ServerConnectionException;
-import it.polimi.ingsw.network.rmi.RmiClient;
+import it.polimi.ingsw.network.ClientInterface;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.rmi.RemoteException;
+import java.util.UUID;
 
 public class TuiController {
     BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     PrintWriter out = new PrintWriter(System.out, true);
-    private final RmiClient client;
+    private final ClientInterface client;
 
-    public TuiController(RmiClient client) {
+    public TuiController(ClientInterface client) {
         this.client = client;
     }
 
@@ -31,15 +30,23 @@ public class TuiController {
             client.fetchAvailableGames();
 
             out.println("Available games: ");
-            //TODO print available games (indexed starting at 1)
+            System.out.println("game");
             out.println("Select game to play (0 to create a new game)");
+            client.fetchAvailableGames();
+
+            for (int i = 1; i <= client.getAvailableGames().size(); i++) {
+                System.out.printf("%d.\t%s\n", i, client.getAvailableGames().get(i));
+            }
+
             int selected;
             do {
                 selected = select(0, 100); //TODO add actual upper range
+
                 if (selected == 0) {
                     createGame();
                 } else {
-                    //TODO join game
+                    UUID choice = client.getAvailableGames().get(selected);
+                    client.joinGame(choice);
                 }
             } while (selected < 0);
         } catch (IOException e) {throw new RuntimeException(e);}
@@ -117,6 +124,6 @@ public class TuiController {
     }
 
     private void fetchSetup() {
-        //TODO fetch messages
+
     }
 }

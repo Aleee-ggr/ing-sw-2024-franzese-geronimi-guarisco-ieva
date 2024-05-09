@@ -6,7 +6,6 @@ import com.google.common.collect.HashBiMap;
 import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.helpers.exceptions.model.ElementNotInHand;
 import it.polimi.ingsw.helpers.exceptions.model.HandFullException;
-import it.polimi.ingsw.helpers.exceptions.network.ServerConnectionException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
@@ -24,7 +23,6 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -354,6 +352,11 @@ public class RmiClient extends Client implements ClientInterface {
 
         ((PlayerData)playerData.get(username)).setStartingCard((StartingCard) Game.getCardByID(startingCardId));
         return true;
+    }
+
+    @Override
+    public ArrayList<UUID> getAvailableGames() {
+        return this.availableGames;
     }
 
     /**

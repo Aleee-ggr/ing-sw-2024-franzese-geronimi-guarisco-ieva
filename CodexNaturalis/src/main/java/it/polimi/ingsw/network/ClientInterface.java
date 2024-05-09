@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.client.ClientData;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -37,4 +38,5 @@ public interface ClientInterface {
     int getPlayerNum();
     HashMap<String, ClientData> getPlayerData();
     HashMap<String, Integer> getScoreMap();
+    ArrayList<UUID> getAvailableGames();
 }
