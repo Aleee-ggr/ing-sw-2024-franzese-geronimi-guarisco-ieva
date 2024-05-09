@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.ColoredCard;
-import it.polimi.ingsw.model.player.ClientData;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.view.TUI.RotateBoard;
 

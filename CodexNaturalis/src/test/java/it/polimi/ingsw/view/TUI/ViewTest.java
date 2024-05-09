@@ -4,12 +4,10 @@ import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.cards.FullDeck;
 import it.polimi.ingsw.model.cards.StdCard;
-import it.polimi.ingsw.model.player.ClientData;
 import it.polimi.ingsw.network.Client;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.print.attribute.HashDocAttributeSet;
 import java.util.*;
 
 public class ViewTest {

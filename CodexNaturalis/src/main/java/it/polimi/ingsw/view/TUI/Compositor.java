@@ -1,10 +1,7 @@
 package it.polimi.ingsw.view.TUI;
 
 import it.polimi.ingsw.GameConsts;
-import it.polimi.ingsw.helpers.exceptions.model.InvalidTypeException;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.enums.Resource;
-import it.polimi.ingsw.model.player.ClientData;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.view.TUI.components.*;
 import it.polimi.ingsw.view.TUI.components.printables.ObjectiveCard;

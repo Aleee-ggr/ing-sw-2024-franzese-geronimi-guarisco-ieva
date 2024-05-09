@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class ClientData {
-    private String username;
-
     private BiMap<Coordinates, Card> board;
     private ArrayList<Card> order;
     private HashMap<Resource, Integer> resources;
@@ -20,10 +18,6 @@ public abstract class ClientData {
         this.board = HashBiMap.create();
         this.order = new ArrayList<>();
         this.resources = new HashMap<>();
-    }
-
-    public String getUsername() {
-        return username;
     }
 
     public BiMap<Coordinates, Card> getBoard() {
@@ -36,10 +30,6 @@ public abstract class ClientData {
 
     public HashMap<Resource, Integer> getResources() {
         return new HashMap<>(resources);
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public void setBoard(BiMap<Coordinates, Card> board) {

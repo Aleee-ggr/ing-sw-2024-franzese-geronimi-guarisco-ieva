@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.TUI.components;
 
 import it.polimi.ingsw.GameConsts;
-import it.polimi.ingsw.model.player.ClientData;
 import it.polimi.ingsw.network.Client;
 
 import java.util.ArrayList;
