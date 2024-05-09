@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.messages.responses;
 
 import it.polimi.ingsw.model.board.Coordinates;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 /**
@@ -9,23 +10,23 @@ import java.util.Set;
  * Extends GenericResponseMessage.
  */
 public class GetValidPlacementsResponseMessage extends GenericResponseMessage{
-    private final Set<Coordinates> validPlacements;
+    private final ArrayList<Coordinates> validPlacements;
 
     /**
      * Constructs a GetValidPlacementsResponseMessage with the specified valid placements.
      *
      * @param validPlacements the set of valid placements
      */
-    public GetValidPlacementsResponseMessage(Set<Coordinates> validPlacements) {
+    public GetValidPlacementsResponseMessage(ArrayList<Coordinates> validPlacements) {
         this.validPlacements = validPlacements;
     }
 
     /**
      * Retrieves the set of valid placements.
      *
-     * @return the set of valid placements
+     * @return the ArrayList of valid placements
      */
-    public Set<Coordinates> getValidPlacements() {
+    public ArrayList<Coordinates> getValidPlacements() {
         return validPlacements;
     }
 }

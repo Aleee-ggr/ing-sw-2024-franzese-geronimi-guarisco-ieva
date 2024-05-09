@@ -11,6 +11,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.UUID;
 
+//TODO: fix with new refactor
+
 /**
  * The SocketClient class represents a client that uses sockets for network communication.
  * It extends the Client class and manages a socket connection with a server,
@@ -24,12 +26,11 @@ public class SocketClient extends Client implements Runnable {
 
     /**
      * Constructor for SocketClient.
-     * @param playerUsername The username of the player.
      * @param serverAddress The address of the server.
      * @param serverPort The port of the server.
      */
-    public SocketClient(String playerUsername, String password, String serverAddress, int serverPort) {
-        super(playerUsername, password, serverAddress, serverPort);
+    public SocketClient(String serverAddress, int serverPort) {
+        super(serverAddress, serverPort);
         startConnection(serverAddress, serverPort);
         new Thread(this).start();
     }
@@ -271,4 +272,5 @@ public class SocketClient extends Client implements Runnable {
     public void waitUpdate(String username) throws IOException {
         output.writeObject(new SocketClientWaitUpdateMessage(data.getUsername(), this.gameId));
     }
+    */
 }

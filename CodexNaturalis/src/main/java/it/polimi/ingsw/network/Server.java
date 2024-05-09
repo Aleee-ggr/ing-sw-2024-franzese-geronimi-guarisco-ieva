@@ -123,11 +123,12 @@ public abstract class Server {
         }
     }
 
-    public static ArrayList<UUID> getAvailableGames(UUID game, String username) {
+    //TODO: fix getAvailableGames: how can I search for games with a game UUID required as parameter?
+    public static ArrayList<UUID> getAvailableGamesServer(String username) {
         ThreadMessage message = ThreadMessage.getAvailableGames(
                 username
         );
-        sendMessage(game, message);
+        /*sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
         if (response.status() == Status.OK) {
@@ -139,7 +140,8 @@ public abstract class Server {
             return availableGames;
         } else {
             return null;
-        }
+        }*/
+        return new ArrayList<UUID>();
 
     }
 
@@ -406,7 +408,7 @@ public abstract class Server {
         }
     }
 
-    public static Set<Coordinates> getValidPlacementsServer(UUID game, String username) {
+    public static ArrayList<Coordinates> getValidPlacementsServer(UUID game, String username) {
         ThreadMessage message = ThreadMessage.getValidPlacements(
                 username
         );
@@ -414,7 +416,7 @@ public abstract class Server {
         ThreadMessage response = threadMessages.get(game).remove();
 
         if (response.status() == Status.OK) {
-            Set<Coordinates> validPlacements = new HashSet<>();
+            ArrayList<Coordinates> validPlacements = new ArrayList<>();
 
             for (String arg : response.args()) {
                 String[] parts = arg.split(",");

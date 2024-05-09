@@ -153,7 +153,7 @@ public class RmiServer extends Server implements RmiServerInterface {
     }
 
     @Override
-    public Set<Coordinates> getValidPlacements(UUID game, String name) throws RemoteException {
+    public ArrayList<Coordinates> getValidPlacements(UUID game, String name) throws RemoteException {
         return getValidPlacementsServer(game, name);
     }
 
@@ -191,6 +191,11 @@ public class RmiServer extends Server implements RmiServerInterface {
         waitUpdate(game, player);
     }
 
+    @Override
+    public ArrayList<UUID> getAvailableGames(String username) throws RemoteException {
+        return getAvailableGamesServer(username);
+    }
+
     //TODO: methods to implement
 
     @Override
@@ -202,7 +207,6 @@ public class RmiServer extends Server implements RmiServerInterface {
     public String postChat(UUID game, String name, String message) throws RemoteException {
         return "";
     }
-
     @Override
     public boolean checkCredentials(String username, String password) {
         return isValidPlayer(username, password);

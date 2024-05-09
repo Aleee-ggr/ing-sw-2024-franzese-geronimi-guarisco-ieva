@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-
+//TODO: fix with new refactor
 public class Board implements Component {
     public static final int width = 147;
     public static final int height = 27;

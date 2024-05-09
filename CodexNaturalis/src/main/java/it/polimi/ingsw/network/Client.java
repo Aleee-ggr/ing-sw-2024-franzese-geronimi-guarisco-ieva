@@ -1,9 +1,14 @@
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.helpers.exceptions.network.ServerConnectionException;
 import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.player.ClientData;
+import it.polimi.ingsw.model.client.ClientData;
+import it.polimi.ingsw.model.objectives.Objective;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -12,89 +17,81 @@ import java.util.UUID;
  * @author Daniele Ieva
  */
 public class Client {
-    protected UUID gameId;
     protected final String serverAddress;
     protected final int serverPort;
-    protected static ClientData data = null;
+
+    protected String username;
+    protected String password;
+
+    protected UUID gameId;
+    protected GameState gameState;
+    protected ArrayList<UUID> availableGames;
+    protected int playerNum = 0;
+    protected ArrayList<String> players;
+    protected HashMap<String, ClientData> playerData;
+    protected HashMap<String, Integer> scoreMap;
+
+    protected ArrayList<Objective> commonObjectives;
+    protected ArrayList<Card> visibleCards;
+    protected ArrayList<Card> backSideDecks;
+
 
     /**
      * Constructs a new Client object with the specified player username, server address, and server port.
-     * @param playerUsername The username of the player.
      * @param serverAddress  The address of the server.
      * @param serverPort     The port of the server.
      */
-    public Client(String playerUsername, String password, String serverAddress, int serverPort) {
-        data = new ClientData(playerUsername, password);
+    public Client(String serverAddress, int serverPort) {
         this.serverAddress = serverAddress;
         this.serverPort = serverPort;
+        this.availableGames = new ArrayList<>();
+        this.players = new ArrayList<>();
+        this.scoreMap = new HashMap<>();
+        this.playerData = new HashMap<>();
+        this.gameState = GameState.LOBBY;
+        this.commonObjectives = new ArrayList<>();
     }
 
-    public static ClientData getData() {
-        return data;
+    public GameState getGameState() {
+        return gameState;
     }
 
-    public void setUsername(String username) {
-        data.setUsername(username);
+    public int getPlayerNum() {
+        return playerNum;
     }
 
-    public void setPassword(String password) {
-        data.setPassword(password);
+    public ArrayList<String> getPlayers() {
+        return new ArrayList<>(players);
     }
-    /**
-     * Sets the game ID associated with the client.
-     * @param gameId The game ID to set.
-     */
+
+    public HashMap<String, ClientData> getPlayerData() {
+        return new HashMap<>(playerData);
+    }
+
+    public HashMap<String, Integer> getScoreMap() {
+        return new HashMap<>(scoreMap);
+    }
+
+
     public void setGameId(UUID gameId) {
         this.gameId = gameId;
     }
 
-    /**
-     * Getter for the score of the client.
-     * @return The score of the client.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
-     */
-    public Integer getScore() throws ServerConnectionException{
-        return null;
+    public void setPlayerNum(int playerNum) {
+        this.playerNum = playerNum;
     }
 
-    /**
-     * Getter for the player board of the client.
-     * @return The player board of the client.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
-     */
-    public String getPlayerBoard() throws ServerConnectionException{
-        return null;
+    public void setPlayerData(HashMap<String, ClientData> playerData) {
+        this.playerData = playerData;
     }
 
-    /**
-     * Getter for the shared board.
-     * @return The shared board from the server.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
-     */
-    public String getSharedBoard() throws ServerConnectionException{
-        return null;
+    public void setScoreMap(HashMap<String, Integer> scoreMap) {
+        this.scoreMap = scoreMap;
     }
 
-    /**
-     * Draws a card from the server.
-     * @return The card drawn from the server.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
-     */
-    public Card drawCard() throws ServerConnectionException{
-        return null;
-    }
-
-    /**
-     * Places a card on the board.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
-     */
-    public void placeCard() throws ServerConnectionException{
-    }
-
-    /**
-     * Join a game.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
-     */
-    public void joinGame() throws ServerConnectionException{
+    //TODO: implementation at RMI/Socket level
+    public void setCredential(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 }

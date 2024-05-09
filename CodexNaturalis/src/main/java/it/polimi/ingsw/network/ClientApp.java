@@ -36,7 +36,7 @@ public class ClientApp {
 
         if (tech == 1) {
             try {
-                RmiClient client = new RmiClient(username, password, ip, port);
+                RmiClient client = new RmiClient(ip, port);
             } catch (Exception e) {
                 System.out.println("Error with the connection:" + e.getMessage());
             }

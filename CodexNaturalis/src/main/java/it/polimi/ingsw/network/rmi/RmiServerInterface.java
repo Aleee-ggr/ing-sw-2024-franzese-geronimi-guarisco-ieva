@@ -72,7 +72,7 @@ public interface RmiServerInterface extends Remote {
 
     ArrayList<Integer> getBackSideDecks(UUID game, String name) throws RemoteException;
 
-    Set<Coordinates> getValidPlacements(UUID game, String name) throws RemoteException;
+    ArrayList<Coordinates> getValidPlacements(UUID game, String name) throws RemoteException;
 
     HashMap<Coordinates, Integer> getBoard(UUID game, String name, String nameRequiredData) throws RemoteException;
 
@@ -123,4 +123,6 @@ public interface RmiServerInterface extends Remote {
      * @throws RemoteException If an RMI error occurs.
      */
     boolean checkCredentials(String username, String password) throws RemoteException;
+
+    ArrayList<UUID> getAvailableGames(String username) throws RemoteException;
 }

@@ -1,14 +1,22 @@
 package it.polimi.ingsw.network.rmi;
 
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.helpers.exceptions.model.ElementNotInHand;
 import it.polimi.ingsw.helpers.exceptions.model.HandFullException;
 import it.polimi.ingsw.helpers.exceptions.network.ServerConnectionException;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
+import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.cards.StartingCard;
+import it.polimi.ingsw.model.client.OpponentData;
+import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.model.enums.Resource;
+import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.network.Client;
-import it.polimi.ingsw.network.Server;
+import it.polimi.ingsw.network.ClientInterface;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -27,25 +35,21 @@ import java.util.UUID;
  *
  * @see Client
  * @see RmiServerInterface
- * @author Alessio Guarisco
- * @author Gloria Geronimi
  */
 
-public class RmiClient extends Client{
+public class RmiClient extends Client implements ClientInterface {
 
     private final RmiServerInterface remoteObject;
 
     /**
      * Constructs a new RmiClient object with the specified player username, password, server address, and server port.
      * Connects to the RMI server at the given address and port, and initializes the client.
-     * @param playerUsername The username of the player.
-     * @param password The password of the player.
      * @param serverAddress The address of the server.
      * @param serverPort The port of the server.
      * @throws RuntimeException If an error occurs while connecting to the server.
      */
-    public RmiClient(String playerUsername, String password, String serverAddress, int serverPort) {
-        super(playerUsername, password, serverAddress, serverPort);
+    public RmiClient(String serverAddress, int serverPort) {
+        super(serverAddress, serverPort);
 
         try {
             Registry registry = LocateRegistry.getRegistry(serverAddress, serverPort);
@@ -56,41 +60,50 @@ public class RmiClient extends Client{
     }
 
     /**
-     * Checks the credentials of the client with the server.
-     * @return True if the credentials are valid, false otherwise.
-     * @throws RemoteException If a remote communication error occurs.
-     */
-    public boolean checkCredentials() throws RemoteException {
-        return remoteObject.checkCredentials(data.getUsername(), data.getPassword());
-    }
-
-    /**
      * Draws a card from the server and adds it to the client's hand at the specified position.
      * @param position The index of the deck to draw from.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
      * @throws RemoteException If a remote communication error occurs.
      */
-    public void drawCard(int position) throws ServerConnectionException, RemoteException {
-        int id = remoteObject.drawCard(this.gameId, data.getUsername(), position);
+    @Override
+    public void drawCard(int position) throws RemoteException {
+        int id = remoteObject.drawCard(this.gameId, username, position);
         try{
-            data.addToHand(id);
+            ((PlayerData) playerData.get(username)).addToHand(Game.getCardByID(id));
         } catch (HandFullException e ){
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public boolean placeStartingCard(boolean frontSideUp) throws RemoteException{
+        int cardId;
+        if(!frontSideUp){
+            cardId = -((PlayerData) playerData.get(username)).getStartingCard().getId();
+        } else {
+            cardId = ((PlayerData) playerData.get(username)).getStartingCard().getId();
+        }
+        placeCard(new Coordinates(0, 0), cardId);
+        return false;
+    }
+
+    @Override
+    public boolean chooseStartingObjective(int objectiveId) {
+
+        return false;
     }
 
     /**
      * Places a card from the client's hand onto the board at the specified coordinates.
      * @param coordinates The coordinates on the board where the card will be placed.
      * @param cardId The ID of the card to be placed.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
      * @throws RemoteException If a remote communication error occurs.
      */
-    public boolean placeCard(Coordinates coordinates, Integer cardId) throws ServerConnectionException, RemoteException {
-        boolean success = remoteObject.placeCard(this.gameId, data.getUsername(), coordinates, cardId);
+    @Override
+    public boolean placeCard(Coordinates coordinates, int cardId) throws RemoteException {
+        boolean success = remoteObject.placeCard(this.gameId, username, coordinates, cardId);
         if(success){
             try {
-                data.removeFromHand(cardId);
+                ((PlayerData) playerData.get(username)).removeFromHand(Game.getCardByID(cardId));
             } catch (ElementNotInHand e) {
                 throw new RuntimeException(e);
             }
@@ -102,353 +115,263 @@ public class RmiClient extends Client{
      * Requests to create a new game with the specified number of players.
      * @param players The number of players for the new game.
      * @return The UUID of the newly created game.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
      * @throws RemoteException If a remote communication error occurs.
      */
-    public UUID newGame(int players) throws ServerConnectionException, RemoteException {
-        boolean validCredentials = remoteObject.checkCredentials(data.getUsername(), data.getPassword());
+    @Override
+    public UUID newGame(int players) throws RemoteException {
         UUID game = null;
-        if (validCredentials) {
-            game = remoteObject.newGame(players);
-            joinGame(game);
-        }
+        game = remoteObject.newGame(players);
         return game;
     }
 
     /**
      * Requests to join a game with the specified UUID.
      * @param game The UUID of the game to join.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
      * @throws RemoteException If a remote communication error occurs.
      */
-    public boolean joinGame(UUID game) throws ServerConnectionException, RemoteException {
-        boolean success = remoteObject.join(game, data.getUsername());
+    @Override
+    public boolean joinGame(UUID game) throws RemoteException {
+        boolean success = remoteObject.join(game, this.username);
         if (success) {
             this.setGameId(game);
         }
         return success;
     }
 
-    /**
-     * Retrieves a map of player scores from the server.
-     * @return a map of player's usernames with theirs scores.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
-     * @throws RemoteException If a remote communication error occurs.
-     */
-    public boolean getScoreMap() throws ServerConnectionException, RemoteException {
-        HashMap<String, Integer> scoreMap = remoteObject.getScoreMap(this.gameId, data.getUsername());
-
-        if (scoreMap != null) {
-            data.setScoreMap(scoreMap);
-            return true;
-        } else {
-            return false;
-        }
+    @Override
+    public boolean checkCredentials(String username, String password) throws RemoteException {
+        return remoteObject.checkCredentials(username, password);
     }
 
-    /**
-     * Retrieves the client's hand from the server.
-     * @return A list of card IDs in the client's hand.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
-     * @throws RemoteException If a remote communication error occurs.
-     */
-    public boolean getHand() throws ServerConnectionException, RemoteException {
-        ArrayList<Integer> handIds = remoteObject.getHand(this.gameId, data.getUsername());
-
-        if (handIds != null) {
-            data.setClientHand(handIds);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Retrieves the common objectives from the server.
-     * @return A list of common objective IDs.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
-     * @throws RemoteException If a remote communication error occurs.
-     */
-    public boolean getCommonObjectives() throws ServerConnectionException, RemoteException {
-        ArrayList<Integer> commonObjectives = remoteObject.getCommonObjectives(this.gameId, data.getUsername());
-
-        if (commonObjectives != null) {
-            data.setGlobalObjectives(commonObjectives.get(0), commonObjectives.get(1));
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Retrieves the resources of a player from the server.
-     * @param usernameRequiredData The username of the player whose resources are to be retrieved.
-     * @return A map of resource types to quantities.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
-     * @throws RemoteException If a remote communication error occurs.
-     */
-    public boolean getPlayerResources(String usernameRequiredData) throws ServerConnectionException, RemoteException {
-        HashMap<Resource, Integer> playerResources = remoteObject.getPlayerResources(this.gameId, data.getUsername(), usernameRequiredData);
-
-        if (playerResources != null) {
-            data.updatePlayerResources(usernameRequiredData, playerResources);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean getPlayers() throws ServerConnectionException, RemoteException {
-        ArrayList<String> players = remoteObject.getPlayers(this.gameId, data.getUsername());
-
-        if (players != null) {
-            data.setPlayers(players);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean getGameState() throws ServerConnectionException, RemoteException {
-        GameState gameState = remoteObject.getGameState(this.gameId, data.getUsername());
-
-        if (gameState != null) {
-            data.setGameState(gameState);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean getAvailableGames() throws ServerConnectionException, RemoteException {
-        ArrayList<UUID> availableGames = Server.getAvailableGames(this.gameId, data.getUsername());
+    @Override
+    public boolean fetchAvailableGames() throws RemoteException{
+        this.availableGames = remoteObject.getAvailableGames(username);
         return availableGames != null && !availableGames.isEmpty();
     }
 
-    /**
-     * Retrieves the visible cards from the server.
-     * @return A list of visible card IDs.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
-     * @throws RemoteException If a remote communication error occurs.
-     */
-    public boolean getVisibleCards() throws ServerConnectionException, RemoteException {
-        ArrayList<Integer> visibleCards = remoteObject.getVisibleCards(this.gameId, data.getUsername());
-
-        if (visibleCards != null) {
-            data.setVisibleCards(visibleCards);
-            return true;
-        } else {
+    @Override
+    public boolean fetchGameState() throws RemoteException {
+        GameState gameState = remoteObject.getGameState(this.gameId, this.username);
+        if (gameState == null){
             return false;
         }
+        this.gameState = gameState;
+        return true;
     }
 
-    /**
-     * Retrieves the back side decks from the server.
-     * @return A list of back side deck IDs.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
-     * @throws RemoteException If a remote communication error occurs.
-     */
-    public boolean getBackSideDecks() throws ServerConnectionException, RemoteException {
-        ArrayList<Integer> backSideDecks = remoteObject.getBackSideDecks(this.gameId, data.getUsername());
+    @Override
+    public boolean fetchPlayers() throws RemoteException {
+        ArrayList<String> players = remoteObject.getPlayers(this.gameId, this.username);
 
-        if (backSideDecks != null) {
-            data.setBackSideDecks(backSideDecks);
-            return true;
-        } else {
+        if (players == null){
             return false;
         }
+
+        for(String player : players){
+            if(player.equals(this.username)) {
+                playerData.put(player, new PlayerData());
+            } else {
+                playerData.put(player, new OpponentData());
+            }
+        }
+
+        this.players = players;
+        return true;
     }
 
-    /**
-     * Retrieves the valid placements from the server.
-     * @return A set of coordinates representing valid placements.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
-     * @throws RemoteException If a remote communication error occurs.
-     */
-    public boolean getValidPlacements() throws ServerConnectionException, RemoteException {
-        Set<Coordinates> validPlacements = remoteObject.getValidPlacements(this.gameId, data.getUsername());
+    @Override
+    public boolean fetchCommonObjectives() throws RemoteException {
+        ArrayList<Integer> commonObjectivesId = remoteObject.getCommonObjectives(this.gameId, this.username);
 
-        if (validPlacements != null) {
-            data.setValidPlacements(validPlacements);
-            return true;
-        } else {
+        if(commonObjectivesId == null) {
             return false;
         }
+
+        ArrayList<Objective> commonObjectivesList = new ArrayList<>();
+
+        for (Integer id : commonObjectivesId) {
+            commonObjectivesList.add(Game.getObjectiveByID(id));
+        }
+
+        this.commonObjectives = commonObjectivesList;
+        return true;
     }
 
-    /**
-     * Retrieves the hand color of a player from the server.
-     * @param usernameRequiredData The username of the player whose hand color is to be retrieved.
-     * @return A list of resources representing the hand color.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
-     * @throws RemoteException If a remote communication error occurs.
-     */
-    public boolean getPlayerHandColor(String usernameRequiredData) throws ServerConnectionException, RemoteException {
-        ArrayList<Resource> handColor = remoteObject.getHandColor(this.gameId, data.getUsername(), usernameRequiredData);
+    @Override
+    public boolean fetchVisibleCardsAndDecks() throws RemoteException {
+        ArrayList<Integer> visibleCards = remoteObject.getVisibleCards(this.gameId, this.username);
+        ArrayList<Integer> backSideDecks = remoteObject.getBackSideDecks(this.gameId, this.username);
 
-        if (handColor != null) {
-            data.setPlayerHandColor(usernameRequiredData, handColor);
-            return true;
-        } else {
+        if (visibleCards == null || backSideDecks == null) {
             return false;
         }
+
+        ArrayList<Card> visibleCardsList = new ArrayList<>();
+        ArrayList<Card> backSideDecksList = new ArrayList<>();
+
+        for (Integer id : visibleCards) {
+            visibleCardsList.add(Game.getCardByID(id));
+        }
+        for (Integer id : backSideDecks) {
+            backSideDecksList.add(Game.getCardByID(id));
+        }
+
+        this.visibleCards = visibleCardsList;
+        this.backSideDecks = backSideDecksList;
+        return true;
     }
 
-    public boolean getClientBoard() throws ServerConnectionException, RemoteException {
-        HashMap<Coordinates, Integer> clientBoard = remoteObject.getBoard(this.gameId, data.getUsername(), data.getUsername());
+    @Override
+    public boolean fetchScoreMap() throws RemoteException {
+        HashMap<String, Integer> scoreMap = remoteObject.getScoreMap(this.gameId, this.username);
 
-        if (clientBoard != null) {
-            data.setClientBoard(clientBoard);
-            return true;
-        } else {
+        if (scoreMap == null) {
             return false;
         }
+
+        this.scoreMap = scoreMap;
+        return true;
     }
 
-    public boolean getPlayerBoard(String usernameRequiredData) throws ServerConnectionException, RemoteException {
-        HashMap<Coordinates, Integer> clientBoard = remoteObject.getBoard(this.gameId, data.getUsername(), usernameRequiredData);
+    @Override
+    public boolean fetchPlayersResources() throws RemoteException {
+        HashMap<String, HashMap<Resource, Integer>> playersResourcesMap = new HashMap<>();
 
-        if (clientBoard != null) {
-            data.setPlayerBoard(usernameRequiredData, clientBoard);
-            return true;
-        } else {
+        for(String player : players){
+            HashMap<Resource, Integer> playerResources = remoteObject.getPlayerResources(this.gameId, this.username, player);
+
+            if(playerResources == null){
+                return false;
+            }
+
+            playersResourcesMap.put(player, playerResources);
+        }
+
+        for(String player : players){
+            playerData.get(player).setResources(playersResourcesMap.get(player));
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean fetchPlayersBoards() throws RemoteException { //TODO: to check
+        HashMap<String, HashMap<Coordinates, Integer>> playersBoardMap = new HashMap<>();
+
+        for(String player : players){
+            HashMap<Coordinates, Integer> playerBoardId = remoteObject.getBoard(this.gameId, this.username, player);
+
+            if(playerBoardId == null){
+                return false;
+            }
+
+            playersBoardMap.put(player, playerBoardId);
+        }
+
+        for(String player : players){
+            BiMap<Coordinates, Card> playerBoard = HashBiMap.create();
+
+            for(Coordinates c : playersBoardMap.get(player).keySet()){
+                playerBoard.put(c, Game.getCardByID(playersBoardMap.get(player).get(c)));
+            }
+
+            playerData.get(player).setBoard(playerBoard);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean fetchValidPlacements() throws RemoteException {
+        ArrayList<Coordinates> validPlacements = remoteObject.getValidPlacements(this.gameId, this.username);
+
+        if (validPlacements == null) {
             return false;
         }
+
+        ((PlayerData) playerData.get(username)).setValidPlacements(validPlacements);
+        return true;
     }
 
-    /**
-     * Sets the client's hand with data from the server.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
-     * @throws RemoteException If a remote communication error occurs.
-     */
-    public void setClientHand() throws ServerConnectionException, RemoteException {
-        data.setClientHand(remoteObject.getHand(this.gameId, data.getUsername()));
-    }
+    @Override
+    public boolean fetchClientHand() throws RemoteException {
+        ArrayList<Integer> handIds = remoteObject.getHand(this.gameId, this.username);
 
-    /**
-     * Sets the client's valid placements with data from the server.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
-     * @throws RemoteException If a remote communication error occurs.
-     */
-    public void setValidPlacements() throws ServerConnectionException, RemoteException {
-        data.setValidPlacements(remoteObject.getValidPlacements(this.gameId, data.getUsername()));
-    }
-
-    /**
-     * Updates the score of the specified player.
-     * @param username The username of the player whose score is to be updated.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
-     * @throws RemoteException If a remote communication error occurs.
-     */
-    /*public void updateScore(String username) throws ServerConnectionException, RemoteException {
-        data.updateScore(username, Server.getScoreMap(this.gameId, data.getUsername()).get(username));
-    }*/
-
-    /**
-     * Sets the client's board with data from the server.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
-     * @throws RemoteException If a remote communication error occurs.
-     */
-    public void setClientBoard() throws ServerConnectionException, RemoteException {
-        data.setClientBoard(remoteObject.getBoard(this.gameId, data.getUsername(), data.getUsername()));
-    }
-
-    /**
-     * Updates the resources of the specified player.
-     * @param username The username of the player whose resources are to be updated.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
-     * @throws RemoteException If a remote communication error occurs.
-     */
-    public void updatePlayerResources(String username) throws ServerConnectionException, RemoteException {
-        data.updatePlayerResources(username, remoteObject.getPlayerResources(this.gameId, data.getUsername(), username));
-    }
-
-    /**
-     * Sets the board of the specified player with data from the server.
-     * @param username The username of the player whose board is to be set.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
-     * @throws RemoteException If a remote communication error occurs.
-     */
-    public void setPlayerBoard(String username) throws ServerConnectionException, RemoteException {
-        data.setPlayerBoard(username, remoteObject.getBoard(this.gameId, data.getUsername(), username));
-    }
-
-    /**
-     * Sets the hand color of the specified player with data from the server.
-     * @param username The username of the player whose hand color is to be set.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
-     * @throws RemoteException If a remote communication error occurs.
-     */
-    public void setPlayerHandColor(String username) throws ServerConnectionException, RemoteException {
-        data.setPlayerHandColor(username, remoteObject.getHandColor(this.gameId, data.getUsername(), username));
-    }
-
-    /**
-     * Allows the client to choose a starting objective.
-     * @param objectiveId The ID of the chosen objective.
-     * @return True if the choice is successful, false otherwise.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
-     * @throws RemoteException If a remote communication error occurs.
-     */
-    public boolean chooseStartingObjective(int objectiveId) throws  ServerConnectionException, RemoteException{
-        boolean success = remoteObject.choosePersonalObjective(this.gameId, data.getUsername(), objectiveId);
-        if (success) {
-            data.setPersonalObjective(objectiveId);
-            System.out.println(objectiveId);
-        }
-        return success;
-    }
-
-    /**
-     * Retrieves the starting objectives from the server.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
-     * @throws RemoteException If a remote communication error occurs.
-     */
-    public boolean getStartingObjectives() throws  ServerConnectionException, RemoteException {
-        //Server.getStartingObjectives(this.gameId, data.getUsername());
-        ArrayList<Integer> startingObjectives = remoteObject.getStartingObjectives(this.gameId, data.getUsername());
-
-        if (startingObjectives != null) {
-            data.setStartingObjectives(startingObjectives);
-            return true;
-        } else {
+        if(handIds == null){
             return false;
         }
+
+        ArrayList<Card> hand = new ArrayList<>();
+
+        for(int id : handIds){
+            hand.add(Game.getCardByID(id));
+        }
+
+        ((PlayerData) playerData.get(username)).setClientHand(hand);
+        return true;
     }
 
-    public boolean setStartingCard(boolean frontSideUp) throws ServerConnectionException, RemoteException {
-        boolean success = remoteObject.setStartingCard(this.gameId, data.getUsername(), frontSideUp);
+    @Override
+    public boolean fetchOpponentsHandColor() throws RemoteException {
+        for(String player : players){
+            if(player.equals(this.username)){
+                continue;
+            }
 
-        return success;
+            ArrayList<Resource> handColor = remoteObject.getHandColor(this.gameId, this.username, player);
+            if(handColor == null){
+                return false;
+            }
+
+            ((OpponentData) playerData.get(player)).setHandColor(handColor);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean fetchStartingObjectives() throws RemoteException {
+        ArrayList<Integer> startingObjectives = remoteObject.getStartingObjectives(this.gameId, this.username);
+        if(startingObjectives == null){
+            return false;
+        }
+
+        ArrayList<Objective> startingObjectivesList = new ArrayList<>();
+        for(int id : startingObjectives){
+            startingObjectivesList.add(Game.getObjectiveByID(id));
+        }
+
+        ((PlayerData)playerData.get(username)).setStartingObjectives(startingObjectivesList);
+
+        return true;
+    }
+
+    @Override
+    public boolean fetchStartingCard() throws RemoteException {
+        Integer startingCardId = remoteObject.getStartingCard(this.gameId, this.username);
+        if(startingCardId == null){
+            return false;
+        }
+
+        ((PlayerData)playerData.get(username)).setStartingCard((StartingCard) Game.getCardByID(startingCardId));
+        return true;
     }
 
     /**
      * Waits for an update from the server.
      * @throws RemoteException If a remote communication error occurs.
      */
+    @Override
     public void waitUpdate() throws RemoteException {
-        remoteObject.wait(this.gameId, data.getUsername());
+        remoteObject.wait(this.gameId, this.username);
     }
-
-    public boolean getStartingCard() throws ServerConnectionException, RemoteException {
-        Integer startingCardId = remoteObject.getStartingCard(this.gameId, data.getUsername());
-
-        if (startingCardId != null) {
-            data.setStartingCard(data.getUsername(), startingCardId);
-            return true;
-        } else {
-            return false;
-        }
-    }
-    //TODO: methods to implement
 
     /**
      * Posts a chat message on the server.
      * @param message The chat message to post.
-     * @throws ServerConnectionException If there is an issue connecting to the server.
      * @throws RemoteException If a remote communication error occurs.
      */
-    public void postChat(String message) throws  ServerConnectionException, RemoteException{
-        remoteObject.postChat(this.gameId, data.getUsername(), message);
+    @Override
+    public void postChat(String message) throws RemoteException{
+        remoteObject.postChat(this.gameId, username, message);
     }
 }

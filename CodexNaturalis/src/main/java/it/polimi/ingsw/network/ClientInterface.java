@@ -1,31 +1,34 @@
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.helpers.exceptions.network.ServerConnectionException;
 import it.polimi.ingsw.model.board.Coordinates;
 
+import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.UUID;
 
 public interface ClientInterface {
-    UUID newGame(int players);
-    boolean joinGame(UUID game);
-    boolean checkCredentials(String username, String password);
-    void waitUpdate();
-    void postChat(String message);
-    void drawCard(int position);
-    boolean placeCard(Coordinates coordinates, int CardId);
-    boolean placeStartingCard(boolean frontSideUp);
+    UUID newGame(int players) throws IOException;
+    boolean joinGame(UUID game) throws IOException;
+    boolean checkCredentials(String username, String password) throws IOException;
+    void waitUpdate() throws IOException;
+    void postChat(String message) throws IOException;
+    void drawCard(int position) throws IOException;
+    boolean placeCard(Coordinates coordinates, int CardId) throws IOException;
+    boolean placeStartingCard(boolean frontSideUp) throws IOException;
     boolean chooseStartingObjective(int objectiveId);
 
-    boolean fetchAvailableGames();
-    boolean fetchGameState();
-    boolean fetchPlayers();
-    boolean fetchCommonObjectives();
-    boolean fetchVisibleCardsAndDecks();
-    boolean fetchScoreMap();
-    boolean fetchPlayersResources();
-    boolean fetchPlayersBoards();
-    boolean fetchValidPlacements();
-    boolean fetchClientHand();
-    boolean fetchOpponentsHandColor();
-    boolean fetchStartingObjectives();
-    boolean fetchStartingCard();
+    boolean fetchAvailableGames() throws IOException;
+    boolean fetchGameState() throws IOException;
+    boolean fetchPlayers() throws IOException;
+    boolean fetchCommonObjectives() throws IOException;
+    boolean fetchVisibleCardsAndDecks() throws IOException;
+    boolean fetchScoreMap() throws IOException;
+    boolean fetchPlayersResources() throws IOException;
+    boolean fetchPlayersBoards() throws IOException;
+    boolean fetchValidPlacements() throws IOException;
+    boolean fetchClientHand() throws IOException;
+    boolean fetchOpponentsHandColor() throws IOException;
+    boolean fetchStartingObjectives() throws IOException;
+    boolean fetchStartingCard() throws IOException;
 }

@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.rmi.RemoteException;
 
 public class TuiController {
     BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -27,7 +28,7 @@ public class TuiController {
 
     private void selectGame() {
         try {
-            client.getAvailableGames();
+            client.fetchAvailableGames();
 
             out.println("Available games: ");
             //TODO print available games (indexed starting at 1)
@@ -41,7 +42,7 @@ public class TuiController {
                     //TODO join game
                 }
             } while (selected < 0);
-        } catch (ServerConnectionException | IOException e) {throw new RuntimeException(e);}
+        } catch (IOException e) {throw new RuntimeException(e);}
     }
 
     private void lobby() {
@@ -107,7 +108,7 @@ public class TuiController {
             } while (selection < 2 || selection > 4);
 
             client.newGame(selection);
-        } catch(IOException | ServerConnectionException e) {throw new RuntimeException(e);}
+        } catch(IOException e) {throw new RuntimeException(e);}
     }
 
     private void clear() {

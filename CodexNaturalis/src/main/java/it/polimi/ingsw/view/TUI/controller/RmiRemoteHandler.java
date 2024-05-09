@@ -20,7 +20,7 @@ class RmiRemoteHandler extends Thread {
         this.gameState = gameState;
         this.input = input;
     }
-
+    //TODO: fix with new refactor
 
     @Override
     public void run() {
@@ -35,27 +35,27 @@ class RmiRemoteHandler extends Thread {
                         break;
 
                     case SETUP_FETCH:
-                        setupFetch();
+                        //setupFetch();
                         gameState.setElement(ViewState.SETUP_STARTING);
                         break;
 
                     case SETUP_STARTING:
                         waitInput();
-                        setupStarting();
+                        //setupStarting();
                         input.setElement(null);
                         gameState.setElement(ViewState.SETUP_OBJECTIVES);
                         break;
 
                     case SETUP_OBJECTIVES:
                         waitInput();
-                        setupObjectives();
+                        //setupObjectives();
                         input.setElement(null);
                         gameState.setElement(ViewState.FETCH_DATA);
                         break;
 
                     case FETCH_DATA:
                         client.waitUpdate();
-                        fetch();
+                        //fetch();
                         gameState.setElement(ViewState.PLACE_CARD);
                         break;
 
@@ -95,13 +95,14 @@ class RmiRemoteHandler extends Thread {
             } else {
                 client.joinGame(game);
             }
-        } catch (ServerConnectionException | RemoteException e) {
+        } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
         System.out.println(game);
     }
 
-    private void setupFetch() {
+    //TODO: fix with new refactor
+    /*private void setupFetch() {
         try {
             client.getPlayers();
             client.getStartingCard();
@@ -110,18 +111,20 @@ class RmiRemoteHandler extends Thread {
         } catch (ServerConnectionException | RemoteException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private void setupStarting() {
+    }*/
+    //TODO: fix with new refactor
+    /*private void setupStarting() {
         Integer side = Integer.valueOf(input.getElement());
         try {
             client.setStartingCard(side == 1);
         } catch (ServerConnectionException|RemoteException e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
-    private void setupObjectives() {
+    //TODO: fix with new refactor
+
+    /*private void setupObjectives() {
         int in = Integer.parseInt(input.getElement());
         System.out.println(in);
         try {
@@ -148,5 +151,5 @@ class RmiRemoteHandler extends Thread {
         } catch (ServerConnectionException|RemoteException e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 }

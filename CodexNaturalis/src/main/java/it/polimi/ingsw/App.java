@@ -14,6 +14,8 @@ import java.util.concurrent.ThreadLocalRandom;
  * Hello world!
  *
  */
+
+//TODO: add set username after refactor
 public class App 
 {
     public static void main( String[] args) throws RemoteException, ServerConnectionException {
@@ -42,8 +44,6 @@ public class App
                         serverAddress = input;
                     }
                     RmiClient client = new RmiClient(
-                            String.valueOf(ThreadLocalRandom.current().nextInt(100, 10000)),
-                            "password",
                             serverAddress,
                             9090);
                     break;
