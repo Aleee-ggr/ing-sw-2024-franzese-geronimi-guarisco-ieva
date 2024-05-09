@@ -40,4 +40,6 @@ public interface ClientInterface {
     HashMap<String, ClientData> getPlayerData();
     HashMap<String, Integer> getScoreMap();
     ArrayList<UUID> getAvailableGames();
+    ArrayList<String> getPlayers();
+    String getUsername();
 }

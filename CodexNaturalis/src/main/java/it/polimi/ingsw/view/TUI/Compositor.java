@@ -3,22 +3,23 @@ package it.polimi.ingsw.view.TUI;
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.components.*;
 import it.polimi.ingsw.view.TUI.components.printables.ObjectiveCard;
 
 public class Compositor {
     private static final int screenWidth = 166;
     private static final int screenHeight = 39;
-    private static final ClientData clientData = Client.getData();
 
-    private final MiniBoard[] miniBoard = new MiniBoard[clientData.getPlayerNum()-1];
+    private final ClientInterface client;
+    private final MiniBoard[] miniBoard;
     private final Chat chat = new Chat();
-    private ResourceView resources = new ResourceView(clientData.getUsername());
+    private ResourceView resources;
     private HandView hand = new HandView();
     //private DeckView deck = new DeckView();
     private final Board board = new Board();
     private ScoreBoard scoreBoard = new ScoreBoard();
-    private final Prompt prompt = new Prompt(clientData.getUsername());
+    private final Prompt prompt;
 
     private final ObjectiveView objectiveView = createObjectiveView();
 
@@ -27,17 +28,22 @@ public class Compositor {
         return updateView();
     }
 
-    public Compositor(String[] players) {
+    public Compositor(String[] players, ClientInterface client) {
+        this.client = client;
+        miniBoard = new MiniBoard[client.getPlayerNum()-1];
+
         for(int i = 0; i < miniBoard.length; i++){
             miniBoard[i] = new MiniBoard(players[i]);
         }
+        this.resources = new ResourceView(client.getUsername());
+        this.prompt = new Prompt(client.getUsername());
     }
 
     public String updateView(){
         StringBuilder out = new StringBuilder();
 
         for (MiniBoard miniBoard : miniBoard) {
-            miniBoard.setBoard(clientData.getPlayerBoard(miniBoard.getUsername()));
+            miniBoard.setBoard(client.getPlayerBoard(miniBoard.getUsername()));
         }
 
         for(int y = 0; y < MiniBoard.boardHeight; y++){

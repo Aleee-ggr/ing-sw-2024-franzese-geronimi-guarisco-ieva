@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
-//TODO: fix with new refactor
+//TODO: lots of methods are not implemented
 
 /**
  * The SocketClient class represents a client that uses sockets for network communication.

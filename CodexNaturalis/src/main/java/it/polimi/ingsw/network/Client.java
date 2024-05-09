@@ -50,6 +50,10 @@ public class Client {
         this.gameState = GameState.LOBBY;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     public GameState getGameState() {
         return gameState;
     }
@@ -96,4 +100,5 @@ public class Client {
         this.username = username;
         this.password = password;
     }
+
 }

@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view.TUI.controller;
 
+import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientInterface;
+import it.polimi.ingsw.view.TUI.Compositor;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,9 +14,11 @@ public class TuiController {
     BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     PrintWriter out = new PrintWriter(System.out, true);
     private final ClientInterface client;
+    private final Compositor compositor;
 
     public TuiController(ClientInterface client) {
         this.client = client;
+        this.compositor = new Compositor(client.getPlayers().toArray(new String[0]));
     }
 
     public void start() {
