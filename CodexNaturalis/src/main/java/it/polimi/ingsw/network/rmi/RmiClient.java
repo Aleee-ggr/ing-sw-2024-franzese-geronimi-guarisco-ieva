@@ -138,7 +138,12 @@ public class RmiClient extends Client implements ClientInterface {
 
     @Override
     public boolean checkCredentials(String username, String password) throws RemoteException {
-        return remoteObject.checkCredentials(username, password);
+        if(remoteObject.checkCredentials(username, password)){
+            this.username = username;
+            this.password = password;
+            return true;
+        }
+        return false;
     }
 
     @Override
