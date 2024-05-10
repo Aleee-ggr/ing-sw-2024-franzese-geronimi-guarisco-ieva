@@ -43,12 +43,23 @@ public class BoardViewTest {
 
         HashBiMap<Coordinates, Card> coordinateBoard = HashBiMap.create();
         coordinateBoard.put(new Coordinates(0, 0), Game.getCardByID(1));
-        client.createPlayerData(new ArrayList<>(List.of(client.getUsername(), "player")));
+        coordinateBoard.put(new Coordinates(0, 1), Game.getCardByID(12));
+        ArrayList<Card> order = new ArrayList<>();
+        order.add(Game.getCardByID(1));
+        order.add(Game.getCardByID(12));
+
+
+        ArrayList<String> players = new ArrayList<>();
+        players.add(client.getUsername());
+        players.add(client2.getUsername());
+
+        client.createPlayerData(players);
+
         client.getPlayerData().setBoard(coordinateBoard);
+        client.getPlayerData().setOrder(order);
 
         for(String s : board.toStringArray()){
             System.out.println(s);
-            System.out.println("test");
         }
     }
 
