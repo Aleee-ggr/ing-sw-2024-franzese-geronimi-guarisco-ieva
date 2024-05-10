@@ -66,6 +66,7 @@ public class ObjectiveTest {
                 .setType("cover")
                 .build();
 
+        player.drawStartingCard();
         player.setFirstCard(true);
         PlayerBoard board = player.getPlayerBoard();
 
@@ -98,6 +99,7 @@ public class ObjectiveTest {
                 .build();
         Player player = new Player("", game);
 
+        player.drawStartingCard();
         player.setFirstCard(true);
         PlayerBoard board = player.getPlayerBoard();
         Card fungi = new StdCard(0, null, Resource.FUNGI, false);
@@ -135,6 +137,7 @@ public class ObjectiveTest {
                 .build();
         Player player = new Player("", game);
 
+        player.drawStartingCard();
         player.setFirstCard(true);
         PlayerBoard board = player.getPlayerBoard();
         Card fungi = new StdCard(0, null, Resource.FUNGI, false);
@@ -171,6 +174,7 @@ public class ObjectiveTest {
                 .build();
         Player player = new Player("", game);
 
+        player.drawStartingCard();
         player.setFirstCard(true);
         PlayerBoard board = player.getPlayerBoard();
         Card fungi = new StdCard(0, null, Resource.FUNGI, false);
