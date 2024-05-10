@@ -86,6 +86,7 @@ public class PlayerTest {
 
     @Test
     public void playCard_cardRemoved() throws RequirementsError {
+        player.drawStartingCard();
         player.setFirstCard(true);
         player.drawFirstHand();
         int first_id = player.getHand()[0].getId();
@@ -96,6 +97,7 @@ public class PlayerTest {
 
     @Test
     public void playCard_stdCard_hasPoints() throws RequirementsError{
+        player.drawStartingCard();
         player.setFirstCard(true);
         player.drawFirstHand();
         player.getHand()[0] = (ColoredCard) Game.getCardByID(18);
@@ -106,6 +108,7 @@ public class PlayerTest {
 
     @Test
     public void playCard_playGoldCard_playable() throws RequirementsError {
+        player.drawStartingCard();
         player.setFirstCard(true);
 
         for (Resource res : Resource.values()) {
@@ -124,6 +127,7 @@ public class PlayerTest {
 
     @Test (expected = RequirementsError.class)
     public void playCard_playGoldCard_unplayable() throws RequirementsError {
+        player.drawStartingCard();
         player.setFirstCard(true);
 
         for (Resource res : Resource.values()) {
