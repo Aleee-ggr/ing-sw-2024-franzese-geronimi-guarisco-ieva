@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.TUI.components;
 
 import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.components.printables.PrintCards;
 
@@ -24,7 +23,7 @@ public class HandView implements Component{
 
     public HandView(ClientInterface client) {
         this.client = client;
-        ArrayList<Card> intHand = ((PlayerData)client).getClientHand();
+        ArrayList<Card> intHand = client.getPlayerData().getClientHand();
         for(Card card : intHand){
             cardsToPrint.add(new PrintCards(card));
         }

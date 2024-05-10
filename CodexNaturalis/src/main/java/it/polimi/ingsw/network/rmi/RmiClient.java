@@ -75,12 +75,22 @@ public class RmiClient extends Client implements ClientInterface {
 
     @Override
     public boolean placeStartingCard(boolean frontSideUp) throws RemoteException{
-        return remoteObject.setStartingCard(gameId, username, frontSideUp);
+        boolean success =  remoteObject.setStartingCard(gameId, username, frontSideUp);
+        if (success) {
+            getPlayerData().setStartingCard(
+                    (StartingCard)getPlayerData().getStartingCard().setFrontSideUp(frontSideUp)
+            );
+        }
+        return success;
     }
 
     @Override
     public boolean choosePersonalObjective(int objectiveId) throws RemoteException {
-        return remoteObject.choosePersonalObjective(this.gameId, username, objectiveId);
+        boolean success = remoteObject.choosePersonalObjective(this.gameId, username, objectiveId);
+        if (success) {
+            getPlayerData().setPersonalObjective(Game.getObjectiveByID(objectiveId));
+        }
+        return success;
     }
 
     /**
@@ -176,6 +186,7 @@ public class RmiClient extends Client implements ClientInterface {
         }
 
         this.players = players;
+        this.playerNum = players.size();
         return true;
     }
 

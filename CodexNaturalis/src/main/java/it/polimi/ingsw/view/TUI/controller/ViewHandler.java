@@ -1,15 +1,6 @@
 package it.polimi.ingsw.view.TUI.controller;
 
-import it.polimi.ingsw.model.client.PlayerData;
-import it.polimi.ingsw.network.ClientInterface;
-import it.polimi.ingsw.view.TUI.Compositor;
-import it.polimi.ingsw.view.TUI.components.StartingCardView;
-import it.polimi.ingsw.view.TUI.components.StartingObjectiveView;
-import it.polimi.ingsw.view.TUI.components.printables.ObjectiveCard;
-
-import java.io.PrintWriter;
-import java.util.Scanner;
-
+/*
 class ViewHandler extends Thread {
     private final Shared<ViewState> state;
     private final Shared<String> input;
@@ -109,3 +100,4 @@ class ViewHandler extends Thread {
 
     }
 }
+*/

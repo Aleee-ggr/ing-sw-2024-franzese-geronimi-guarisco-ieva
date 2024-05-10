@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.TUI.controller;
 
+import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.Compositor;
@@ -18,7 +19,6 @@ public class TuiController {
     BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     PrintWriter out = new PrintWriter(System.out, true);
     private final ClientInterface client;
-    private Compositor compositor;
 
     public TuiController(ClientInterface client) {
         this.client = client;
@@ -37,15 +37,13 @@ public class TuiController {
     private void selectGame() {
         try {
             client.fetchAvailableGames();
-
-
             int selected;
             do {
                 clear();
                 out.println("Available games: ");
 
                 for (int i = 0; i < client.getAvailableGames().size(); i++) {
-                    System.out.printf("%d.\t%s\n", i+1, client.getAvailableGames().get(i));
+                    out.printf("%d.\t%s\n", i+1, client.getAvailableGames().get(i));
                 }
                 out.println("Select game to play (0 to create a new game)");
 
@@ -61,14 +59,9 @@ public class TuiController {
     }
 
     private void lobby() {
-        try {
-            clear();
-            out.println("waiting for players...");
-            client.waitUpdate();
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        clear();
+        out.println("waiting for players...");
+        waitUpdate();
     }
 
     private void setup() {
@@ -101,7 +94,8 @@ public class TuiController {
 
 
         while (!done) {
-            System.out.println(
+            clear();
+            out.println(
                     new StartingCardView(
                             client.getPlayerData().getStartingCard()
                     )
@@ -112,13 +106,23 @@ public class TuiController {
         }
 
         try {
-            System.out.println(sel);
             client.placeStartingCard(sel == 1);
         } catch (IOException e) {throw new RuntimeException(e);}
     }
 
     private void mainGame() {
-        //TODO main part of the game
+        clear();
+        waitUpdate();
+        fetchData();
+
+        Compositor compositor = new Compositor(client);
+        while (client.getGameState() != GameState.STOP) {
+            out.println(compositor);
+            clear();
+
+            waitUpdate();
+            fetchData();
+        }
     }
 
     private int select(int min, int max) {
@@ -138,7 +142,7 @@ public class TuiController {
             int selection = 0;
 
             do {
-                System.out.println("Insert number of players: ");
+                out.println("Insert number of players: ");
                 try {
                     selection = Integer.parseInt(in.readLine());
                 } catch (NumberFormatException ignored) {
@@ -159,6 +163,26 @@ public class TuiController {
             client.fetchPlayers();
             client.fetchStartingObjectives();
             client.fetchStartingCard();
+        } catch (IOException e) {throw new RuntimeException(e);}
+    }
+
+    private void fetchData() {
+        try {
+            client.fetchClientHand();
+            client.fetchCommonObjectives();
+            client.fetchPlayersBoards();
+            client.fetchPlayersResources();
+            client.fetchScoreMap();
+            client.fetchGameState();
+            client.fetchVisibleCardsAndDecks();
+            client.fetchOpponentsHandColor();
+            client.fetchOpponentsHandColor();
+        } catch (IOException e) {throw new RuntimeException(e);}
+    }
+
+    private void waitUpdate() {
+        try {
+            client.waitUpdate();
         } catch (IOException e) {throw new RuntimeException(e);}
     }
 }

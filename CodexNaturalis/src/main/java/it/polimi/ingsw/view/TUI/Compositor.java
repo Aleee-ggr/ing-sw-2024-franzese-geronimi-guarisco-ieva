@@ -26,19 +26,20 @@ public class Compositor {
     private final ScoreBoard scoreBoard;
     private final Prompt prompt;
 
-    private final ObjectiveView objectiveView = createObjectiveView();
+    private final ObjectiveView objectiveView;
 
     @Override
     public String toString() {
         return updateView();
     }
 
-    public Compositor(String[] players, ClientInterface client) {
+    public Compositor(ClientInterface client) {
         this.client = client;
-
+        System.out.println(client);
+        System.out.println(this.client);
         miniBoard = new MiniBoard[client.getPlayerNum()-1];
         for(int i = 0; i < miniBoard.length; i++){
-            miniBoard[i] = new MiniBoard(players[i], client);
+            miniBoard[i] = new MiniBoard(client.getPlayers().get(i), client);
         }
 
         this.resources = new ResourceView(client.getUsername());
@@ -46,6 +47,7 @@ public class Compositor {
         this.board = new Board(client);
         this.scoreBoard = new ScoreBoard(client);
         this.prompt = new Prompt(client.getUsername());
+        this.objectiveView = createObjectiveView(client);
     }
 
     public String updateView(){
@@ -116,10 +118,8 @@ public class Compositor {
         return out.toString();
     }
 
-
-
-    private ObjectiveView createObjectiveView(){
-        PlayerData clientData = (PlayerData) client.getOpponentData().get(client.getUsername());
+    private ObjectiveView createObjectiveView(ClientInterface client){
+        PlayerData clientData = client.getPlayerData();
         ObjectiveCard personal = new ObjectiveCard(clientData.getPersonalObjective());
         ObjectiveCard[] global = new ObjectiveCard[GameConsts.globalObjectives];
         for (int i = 0; i < GameConsts.globalObjectives; i++) {

@@ -75,7 +75,7 @@ public class ViewTest {
 
     @Test
     public void viewTest() {
-        Compositor view = new Compositor(new String[]{"player1", "player2", "player3"}, (ClientInterface) clientData);
+        Compositor view = new Compositor((ClientInterface) clientData);
         view.updateView();
     }
 }
