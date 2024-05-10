@@ -129,6 +129,10 @@ public class RmiClient extends Client implements ClientInterface {
      */
     @Override
     public boolean joinGame(UUID game) throws RemoteException {
+        if(username == null && password == null){
+            System.out.println("Please login first");
+            return false;
+        }
         boolean success = remoteObject.join(game, this.username);
         if (success) {
             this.setGameId(game);
