@@ -40,10 +40,9 @@ public class Board implements Component {
                 .vertical(y);
     }
     
-    public void compute() {
-        PlayerData player = (PlayerData) client.getOpponentData().get(client.getUsername());
-        List<Card> cardPlacementList = player.getOrder();
-        BiMap<Coordinates, Card> cardPlacementMap = player.getBoard();
+    public void compute() {;
+        List<Card> cardPlacementList = client.getPlayerData().getOrder();
+        BiMap<Coordinates, Card> cardPlacementMap = client.getPlayerData().getBoard();
 
         for (Card card: cardPlacementList) {
             Coordinates current = cardPlacementMap.inverse().get(card);
@@ -78,7 +77,7 @@ public class Board implements Component {
 
         }
 
-        ArrayList<Coordinates> validPosition = player.getValidPlacements();
+        ArrayList<Coordinates> validPosition = client.getPlayerData().getValidPlacements();
 
         for (int i = 0; i< validPosition.size(); i++) {
             Coordinates relativeCoordinates = getOffsetCoordinates(validPosition.get(i));

@@ -113,6 +113,7 @@ public class Compositor {
         //TODO: finish when board is completed
 
 
+        out.append(prompt.toString());
         return out.toString();
     }
 
