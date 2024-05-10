@@ -93,7 +93,7 @@ public class TuiController {
 
         try {
             client.choosePersonalObjective(
-                    playerData.getStartingObjectives().get(sel).getId()
+                    playerData.getStartingObjectives().get(sel-1).getId()
             );
         } catch (IOException e) {throw new RuntimeException(e);}
 
