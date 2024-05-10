@@ -23,6 +23,11 @@
       <version>22.0.1</version>
     </dependency>
     <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-fxml</artifactId>
+      <version>22-ea+11</version>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.13.2</version>
@@ -95,7 +100,7 @@
           <artifactId>javafx-maven-plugin</artifactId>
           <version>0.0.8</version>
           <configuration>
-            <mainClass>it.polimi.ingsw.App</mainClass>
+            <mainClass>it.polimi.ingsw.view.GUI.Gui</mainClass>
           </configuration>
         </plugin>
 
