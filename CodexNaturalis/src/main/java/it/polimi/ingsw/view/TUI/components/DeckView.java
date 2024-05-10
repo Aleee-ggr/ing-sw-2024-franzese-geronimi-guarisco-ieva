@@ -54,7 +54,7 @@ public class DeckView implements Component {
             printCards[i] = new PrintCards(visibleCards[i]);
         }
         StringBuilder out = new StringBuilder()
-                .append("\n".repeat(paddingTop))
+                .append(" \n".repeat(paddingTop))
                 .append(" ".repeat(paddingLeft))
                 .append("╭")
                 .append("─".repeat(contentWidth))
@@ -119,7 +119,7 @@ public class DeckView implements Component {
                 .append("─".repeat(contentWidth))
                 .append("╯\n");
 
-
+        out.append(" \n".repeat(paddingTop+1));
         return out.toString();
     }
 }

@@ -36,6 +36,7 @@ public class ObjectiveView implements Component {
 
         contentHeight = 5 + cardHeight;
         marginTop = (height - contentHeight) / 2;
+        System.out.println(marginTop);
     }
     
     public static int getWidth() {
@@ -49,7 +50,7 @@ public class ObjectiveView implements Component {
     @Override
     public String toString() {
         StringBuilder out =  new StringBuilder();
-        out.append("\n".repeat(marginTop));
+        out.append(" \n".repeat(marginTop));
         int sharedSpace = (cardSpacing / 2 + cardSpacing + 2 * cardWidth) + 1;
         int playerSpace = (cardWidth + cardSpacing / 2) + 1;
         int playerPadding = ((cardWidth - PLAYER.length()+4) / 2);
@@ -114,8 +115,7 @@ public class ObjectiveView implements Component {
                 .append("╯")
                 .append("\n");
 
-        out.append("\n".repeat(marginTop));
-        
+        out.append(" \n".repeat(marginTop+1));
         return out.toString().formatted(
                 " ".repeat(playerPadding), PLAYER, " ".repeat(playerPadding),
                 " ".repeat(sharedPadding), SHARED, " ".repeat(sharedPadding)
