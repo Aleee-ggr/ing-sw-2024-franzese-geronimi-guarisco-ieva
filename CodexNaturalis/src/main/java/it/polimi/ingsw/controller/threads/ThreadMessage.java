@@ -754,6 +754,7 @@ public record ThreadMessage(Status status, String player, String type, String[] 
 
         for (String player : players) {
             args[index] = player;
+            index++;
         }
 
         return new ThreadMessage(

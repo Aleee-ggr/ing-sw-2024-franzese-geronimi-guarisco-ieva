@@ -3,6 +3,7 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.client.ClientData;
+import it.polimi.ingsw.model.client.PlayerData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,15 +65,15 @@ public class Client {
     }
 
     public ArrayList<String> getPlayers() {
-        return new ArrayList<>(players);
+        return this.players;
     }
 
-    public HashMap<String, ClientData> getPlayerData() {
-        return new HashMap<>(playerData);
+    public HashMap<String, ClientData> getOpponentData() {
+        return this.playerData;
     }
 
     public HashMap<String, Integer> getScoreMap() {
-        return new HashMap<>(scoreMap);
+        return this.scoreMap;
     }
 
 
@@ -92,8 +93,12 @@ public class Client {
         this.scoreMap = scoreMap;
     }
 
+    public PlayerData getPlayerData() {
+        return (PlayerData) playerData.get(username);
+    }
+
     //TODO: implementation at RMI/Socket level
-    public void setCredential(String username, String password) {
+    public void setCredentials(String username, String password) {
         this.username = username;
         this.password = password;
     }

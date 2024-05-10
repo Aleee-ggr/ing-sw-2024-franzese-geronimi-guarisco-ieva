@@ -123,26 +123,8 @@ public abstract class Server {
         }
     }
 
-    //TODO: fix getAvailableGames: how can I search for games with a game UUID required as parameter?
     public static ArrayList<UUID> getAvailableGamesServer(String username) {
-        ThreadMessage message = ThreadMessage.getAvailableGames(
-                username
-        );
-        /*sendMessage(game, message);
-        ThreadMessage response = threadMessages.get(game).remove();
-
-        if (response.status() == Status.OK) {
-            ArrayList<UUID> availableGames = new ArrayList<>();
-            for (String arg : response.args()) {
-                availableGames.add(UUID.fromString(arg));
-            }
-
-            return availableGames;
-        } else {
-            return null;
-        }*/
-        return new ArrayList<UUID>();
-
+        return new ArrayList<>(games.keySet());
     }
 
     public static GameState getGameStateServer(UUID game, String username) {
@@ -334,10 +316,7 @@ public abstract class Server {
         ThreadMessage response = threadMessages.get(game).remove();
 
         if (response.status() == Status.OK) {
-            ArrayList<String> players = new ArrayList<>();
-            Collections.addAll(players, response.args());
-
-            return players;
+            return new ArrayList<>(List.of(response.args()));
         } else {
             return null;
         }

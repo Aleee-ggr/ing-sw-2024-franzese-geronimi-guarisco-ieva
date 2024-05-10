@@ -1,23 +1,30 @@
 package it.polimi.ingsw.view.TUI.controller;
 
+import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.Compositor;
+import it.polimi.ingsw.view.TUI.components.StartingCardView;
+import it.polimi.ingsw.view.TUI.components.StartingObjectiveView;
+import it.polimi.ingsw.view.TUI.components.printables.ObjectiveCard;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class TuiController {
     BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     PrintWriter out = new PrintWriter(System.out, true);
     private final ClientInterface client;
-    private final Compositor compositor;
+    private Compositor compositor;
 
     public TuiController(ClientInterface client) {
         this.client = client;
-        this.compositor = new Compositor(client.getPlayers().toArray(new String[0]), client);
+        client.setCredentials(
+                String.valueOf(ThreadLocalRandom.current().nextInt(100, 1000)),
+                "password");
     }
 
     public void start() {
@@ -26,7 +33,6 @@ public class TuiController {
         setup();
         mainGame();
     }
-
 
     private void selectGame() {
         try {
@@ -38,17 +44,16 @@ public class TuiController {
                 clear();
                 out.println("Available games: ");
 
-                for (int i = 1; i <= client.getAvailableGames().size(); i++) {
-                    System.out.printf("%d.\t%s\n", i, client.getAvailableGames().get(i));
+                for (int i = 0; i < client.getAvailableGames().size(); i++) {
+                    System.out.printf("%d.\t%s\n", i+1, client.getAvailableGames().get(i));
                 }
                 out.println("Select game to play (0 to create a new game)");
 
                 selected = select(0, client.getAvailableGames().size());
-
                 if (selected == 0) {
                     createGame();
                 } else {
-                    UUID choice = client.getAvailableGames().get(selected);
+                    UUID choice = client.getAvailableGames().get(selected - 1);
                     client.joinGame(choice);
                 }
             } while (selected < 0);
@@ -69,24 +74,47 @@ public class TuiController {
     private void setup() {
         fetchSetup();
         boolean done = false;
+        PlayerData playerData  = client.getPlayerData();
+        int sel = 1;
         while (!done) {
             clear();
-            /* TODO print objective view
-            System.out.println(new StartingObjectiveView(
-
-            ));
-             */
+            out.println(
+                    new StartingObjectiveView(
+                            playerData.getStartingObjectives()
+                                    .stream()
+                                    .map(ObjectiveCard::new)
+                                    .toArray(ObjectiveCard[]::new)
+                    )
+            );
             out.println("Select starting objective: ");
-            done = select(1, 2) >= 0;
+            sel = select(1, 2);
+            done = sel >= 0;
         }
-        //TODO send selection
+
+        try {
+            client.choosePersonalObjective(
+                    playerData.getStartingObjectives().get(sel).getId()
+            );
+        } catch (IOException e) {throw new RuntimeException(e);}
+
         done = false;
 
+
         while (!done) {
-            // TODO Print StartingCardView
+            System.out.println(
+                    new StartingCardView(
+                            client.getPlayerData().getStartingCard()
+                    )
+            );
             out.println("Select starting card face: ");
-            done = select(1, 2) >= 0;
+            sel = select(1, 2);
+            done = sel >= 0;
         }
+
+        try {
+            System.out.println(sel);
+            client.placeStartingCard(sel == 1);
+        } catch (IOException e) {throw new RuntimeException(e);}
     }
 
     private void mainGame() {
@@ -97,7 +125,7 @@ public class TuiController {
         int selection;
         try {
             selection = Integer.parseInt(in.readLine());
-            if (!(min <= selection && selection <= max)) {
+            if (min <= selection && selection <= max) {
                 return selection;
             }
         } catch (NumberFormatException ignored) {
@@ -127,6 +155,10 @@ public class TuiController {
     }
 
     private void fetchSetup() {
-
+        try {
+            client.fetchPlayers();
+            client.fetchStartingObjectives();
+            client.fetchStartingCard();
+        } catch (IOException e) {throw new RuntimeException(e);}
     }
 }

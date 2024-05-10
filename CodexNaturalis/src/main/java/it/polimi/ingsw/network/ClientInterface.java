@@ -3,6 +3,7 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.client.ClientData;
+import it.polimi.ingsw.model.client.PlayerData;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,9 +37,11 @@ public interface ClientInterface {
 
     GameState getGameState();
     int getPlayerNum();
-    HashMap<String, ClientData> getPlayerData();
+    HashMap<String, ClientData> getOpponentData();
+    PlayerData getPlayerData();
     HashMap<String, Integer> getScoreMap();
     ArrayList<UUID> getAvailableGames();
     ArrayList<String> getPlayers();
     String getUsername();
+    void setCredentials(String username, String password);
 }

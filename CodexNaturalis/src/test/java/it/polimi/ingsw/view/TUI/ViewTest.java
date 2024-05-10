@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.cards.FullDeck;
 import it.polimi.ingsw.model.cards.StdCard;
 import it.polimi.ingsw.model.client.PlayerData;
-import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientInterface;
 import org.junit.Before;
@@ -22,8 +21,8 @@ public class ViewTest {
     @Before
     public void setUp() {
         String username = "usernameTest";
-        clientData.setCredential(username, "passwordTest");
-        PlayerData playerData = ((PlayerData)clientData.getPlayerData().get(username));
+        clientData.setCredentials(username, "passwordTest");
+        PlayerData playerData = ((PlayerData)clientData.getOpponentData().get(username));
 
         playerData.setGlobalObjectives(new ArrayList<>(List.of(Game.getObjectiveByID(98),
                                                                Game.getObjectiveByID(99))));

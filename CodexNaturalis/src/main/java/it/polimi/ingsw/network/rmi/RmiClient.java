@@ -75,14 +75,7 @@ public class RmiClient extends Client implements ClientInterface {
 
     @Override
     public boolean placeStartingCard(boolean frontSideUp) throws RemoteException{
-        int cardId;
-        if(!frontSideUp){
-            cardId = -((PlayerData) playerData.get(username)).getStartingCard().getId();
-        } else {
-            cardId = ((PlayerData) playerData.get(username)).getStartingCard().getId();
-        }
-        placeCard(new Coordinates(0, 0), cardId);
-        return false;
+        return remoteObject.setStartingCard(gameId, username, frontSideUp);
     }
 
     @Override
@@ -119,6 +112,7 @@ public class RmiClient extends Client implements ClientInterface {
     public UUID newGame(int players) throws RemoteException {
         UUID game = null;
         game = remoteObject.newGame(players);
+        joinGame(game);
         return game;
     }
 
@@ -169,7 +163,6 @@ public class RmiClient extends Client implements ClientInterface {
     @Override
     public boolean fetchPlayers() throws RemoteException {
         ArrayList<String> players = remoteObject.getPlayers(this.gameId, this.username);
-
         if (players == null){
             return false;
         }
@@ -346,8 +339,9 @@ public class RmiClient extends Client implements ClientInterface {
         for(int id : startingObjectives){
             startingObjectivesList.add(Game.getObjectiveByID(id));
         }
-
-        ((PlayerData)playerData.get(username)).setStartingObjectives(startingObjectivesList);
+        System.out.println(username);
+        System.out.println(playerData.keySet());
+        getPlayerData().setStartingObjectives(startingObjectivesList);
 
         return true;
     }

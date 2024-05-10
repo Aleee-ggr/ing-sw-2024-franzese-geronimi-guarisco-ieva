@@ -52,7 +52,7 @@ public class Compositor {
         StringBuilder out = new StringBuilder();
 
         for (MiniBoard miniBoard : miniBoard) {
-            Map<Coordinates, Integer> convertedBoard = convertBoard(((Client)client).getPlayerData().get(miniBoard.getUsername()).getBoard());
+            Map<Coordinates, Integer> convertedBoard = convertBoard(((Client)client).getOpponentData().get(miniBoard.getUsername()).getBoard());
             miniBoard.setBoard(convertedBoard);
         }
 
@@ -119,7 +119,7 @@ public class Compositor {
 
 
     private ObjectiveView createObjectiveView(){
-        PlayerData clientData = (PlayerData) client.getPlayerData().get(client.getUsername());
+        PlayerData clientData = (PlayerData) client.getOpponentData().get(client.getUsername());
         ObjectiveCard personal = new ObjectiveCard(clientData.getPersonalObjective());
         ObjectiveCard[] global = new ObjectiveCard[GameConsts.globalObjectives];
         for (int i = 0; i < GameConsts.globalObjectives; i++) {

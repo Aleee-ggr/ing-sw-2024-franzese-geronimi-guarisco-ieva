@@ -3,12 +3,11 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.helpers.exceptions.network.ServerConnectionException;
 import it.polimi.ingsw.network.rmi.RmiClient;
 import it.polimi.ingsw.network.rmi.RmiServer;
+import it.polimi.ingsw.view.TUI.controller.TuiController;
 
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Scanner;
-import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Hello world!
@@ -31,12 +30,6 @@ public class App
                 case 1:
                     break;
                 case 2:
-                    System.out.print("Insert game uuid: ");
-                    input = new Scanner(System.in).next();
-                    UUID id = null;
-                    if (input.length() > 3) {
-                        id = UUID.fromString(input);
-                    }
                     System.out.print("Insert server address: ");
                     input = new Scanner(System.in).next();
                     String serverAddress = "localhost";
@@ -46,6 +39,7 @@ public class App
                     RmiClient client = new RmiClient(
                             serverAddress,
                             9090);
+                    new TuiController(client).start();
                     break;
                 default:
                     System.out.println("Unknown option!");

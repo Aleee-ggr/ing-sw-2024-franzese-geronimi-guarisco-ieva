@@ -41,7 +41,7 @@ public class Board implements Component {
     }
     
     public void compute() {
-        PlayerData player = (PlayerData) client.getPlayerData().get(client.getUsername());
+        PlayerData player = (PlayerData) client.getOpponentData().get(client.getUsername());
         List<Card> cardPlacementList = player.getOrder();
         BiMap<Coordinates, Card> cardPlacementMap = player.getBoard();
 
