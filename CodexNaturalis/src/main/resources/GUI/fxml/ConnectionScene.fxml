@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" style="-fx-background-color: efedd6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="900.0" fitWidth="1600.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Background.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="serverIp" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="500.0" StackPane.alignment="CENTER">
+         <StackPane.margin>
+            <Insets bottom="80.0" />
+         </StackPane.margin>
+      </TextField>
+      <Label text="INSERT THE SERVER IP " textFill="#432918">
+         <font>
+            <Font name="Trattatello" size="30.0" />
+         </font>
+         <StackPane.margin>
+            <Insets bottom="250.0" />
+         </StackPane.margin>
+      </Label>
+      <TextField fx:id="serverPort" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="500.0">
+         <StackPane.margin>
+            <Insets top="300.0" />
+         </StackPane.margin>
+      </TextField>
+      <Label text="PORT" textFill="#432918">
+         <font>
+            <Font name="Trattatello" size="30.0" />
+         </font>
+         <StackPane.margin>
+            <Insets top="130.0" />
+         </StackPane.margin>
+      </Label>
+      <Button fx:id="connectButton" mnemonicParsing="false" onAction="#changeLoginScene" prefHeight="100.0" prefWidth="200.0" text="CONNECT" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_RIGHT">
+         <font>
+            <Font name="Trattatello" size="30.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <effect>
+            <Glow />
+         </effect>
+         <StackPane.margin>
+            <Insets bottom="100.0" right="130.0" />
+         </StackPane.margin>
+      </Button>
+      <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" prefHeight="100.0" prefWidth="200.0" text="BACK" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_LEFT">
+         <font>
+            <Font name="Trattatello" size="30.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <effect>
+            <Glow />
+         </effect>
+         <StackPane.margin>
+            <Insets bottom="100.0" left="130.0" />
+         </StackPane.margin>
+      </Button>
+   </children>
+</StackPane>
