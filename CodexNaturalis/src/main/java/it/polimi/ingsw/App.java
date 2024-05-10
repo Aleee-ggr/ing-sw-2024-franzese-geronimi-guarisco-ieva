@@ -36,6 +36,7 @@ public class App
                     if (input.matches("([0-9]+\\.)+[0-9]+")) {
                         serverAddress = input;
                     }
+                    System.setProperty("java.rmi.server.hostname", serverAddress);
                     RmiClient client = new RmiClient(
                             serverAddress,
                             9090);

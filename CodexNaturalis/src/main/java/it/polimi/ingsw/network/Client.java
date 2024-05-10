@@ -77,13 +77,19 @@ public class Client {
         return this.scoreMap;
     }
 
+    public ArrayList<Card> getVisibleCards() {
+        return visibleCards;
+    }
+
+    public ArrayList<Card> getDecksBacks() {
+        return backSideDecks;
+    }
 
     public void setGameId(UUID gameId) {
         this.gameId = gameId;
     }
 
     public void createPlayerData(ArrayList<String> players) {
-        System.out.println("HERE!");
         for(String player : players){
             if(player.equals(this.username)) {
                 playerData.put(player, new PlayerData());
@@ -110,6 +116,14 @@ public class Client {
         this.scoreMap = scoreMap;
     }
 
+    public void setVisibleCards(ArrayList<Card> visibleCards) {
+        this.visibleCards = visibleCards;
+    }
+
+    public void setBackSideDecks(ArrayList<Card> backSideDecks) {
+        this.backSideDecks = backSideDecks;
+    }
+
     public PlayerData getPlayerData() {
         return (PlayerData) playerData.get(username);
     }
@@ -120,13 +134,7 @@ public class Client {
         this.password = password;
     }
 
-    public ArrayList<Card> getVisibleCards() {
-        return visibleCards;
-    }
 
-    public ArrayList<Card> getDecksBacks() {
-        return backSideDecks;
-    }
 
 
 }

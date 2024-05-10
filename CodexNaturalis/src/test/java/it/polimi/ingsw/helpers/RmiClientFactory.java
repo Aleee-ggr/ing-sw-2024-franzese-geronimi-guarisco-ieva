@@ -3,6 +3,7 @@ package it.polimi.ingsw.helpers;
 import it.polimi.ingsw.network.rmi.RmiClient;
 
 import java.rmi.RemoteException;
+import java.util.Random;
 
 
 //TODO: add usernames after refactor
@@ -11,9 +12,10 @@ public abstract class RmiClientFactory {
 
     public static RmiClient getClient() {
         playerCount++;
+        Random rn = new Random();
         RmiClient client = new RmiClient("localhost", 9090);
         try {
-            client.checkCredentials("player", "password");
+            client.checkCredentials("player" + rn.nextInt(), "password");
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
