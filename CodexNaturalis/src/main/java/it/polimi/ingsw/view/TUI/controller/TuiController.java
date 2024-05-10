@@ -19,6 +19,7 @@ public class TuiController {
     BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     PrintWriter out = new PrintWriter(System.out, true);
     private final ClientInterface client;
+    Compositor compositor = null;
 
     public TuiController(ClientInterface client) {
         this.client = client;
@@ -114,11 +115,12 @@ public class TuiController {
         clear();
         waitUpdate();
         fetchData();
-        Compositor compositor = new Compositor(client);
+        compositor = new Compositor(client);
         while (client.getGameState() != GameState.STOP) {
             out.println(compositor);
             try {
-                in.readLine();
+                String command = in.readLine();
+                handleCommand(command);
             } catch (IOException e) {throw new RuntimeException(e);}
             clear();
             waitUpdate();
@@ -141,7 +143,6 @@ public class TuiController {
     private void createGame() {
         try {
             int selection = 0;
-
             do {
                 out.println("Insert number of players: ");
                 try {
@@ -179,6 +180,56 @@ public class TuiController {
     private void waitUpdate() {
         try {
             client.waitUpdate();
+        } catch (IOException e) {throw new RuntimeException(e);}
+    }
+
+    /**
+     * List of available commands:
+     *  - place [card] [position]: place the card in the given position
+     *  - view [deck|objectives|board]: show the selected element
+     *  - switch [player]: show the view from the given player side
+     *  - draw [int index]: draw the card at the given position
+     *  - w / a / s / d: move the view of the board
+     *  - h: show this list
+     * @param command the command to execute
+     */
+    private void handleCommand(String command) {
+        String[] cmd = command.split(" ");
+        try {
+            switch (cmd[0]) {
+                case "place":
+                    break;
+                case "view":
+                    break;
+                case "switch":
+                    break;
+                case "draw":
+                    client.drawCard(Integer.parseInt(cmd[1]));
+                    break;
+                case "w":
+                    compositor.getBoard().moveCenter(1, 0);
+                    break;
+                case "a":
+                    compositor.getBoard().moveCenter(0, -1);
+                    break;
+                case "s":
+                    compositor.getBoard().moveCenter(-1, 0);
+                    break;
+                case "d":
+                    compositor.getBoard().moveCenter(0, 1);
+                    break;
+                case "h", "help":
+                    out.println("""
+                            List of available commands:
+                              - place [card] [position]: place the card in the given position
+                              - view [deck|objectives|board]: show the selected element
+                              - switch [player]: show the view from the given player side
+                              - draw [int index]: draw the card at the given position
+                              - w / a / s / d: move the view of the board
+                              - h: show this list""");
+                    in.read();
+                    break;
+            }
         } catch (IOException e) {throw new RuntimeException(e);}
     }
 

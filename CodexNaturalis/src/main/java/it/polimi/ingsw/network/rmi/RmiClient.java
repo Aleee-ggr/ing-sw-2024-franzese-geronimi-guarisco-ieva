@@ -382,4 +382,6 @@ public class RmiClient extends Client implements ClientInterface {
     public void postChat(String message) throws RemoteException{
         remoteObject.postChat(this.gameId, username, message);
     }
+
+
 }

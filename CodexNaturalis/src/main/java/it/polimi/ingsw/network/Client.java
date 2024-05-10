@@ -120,6 +120,13 @@ public class Client {
         this.password = password;
     }
 
+    public ArrayList<Card> getVisibleCards() {
+        return visibleCards;
+    }
+
+    public ArrayList<Card> getDecksBacks() {
+        return backSideDecks;
+    }
 
 
 }

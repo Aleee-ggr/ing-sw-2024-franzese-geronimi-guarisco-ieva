@@ -2,6 +2,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.model.board.Coordinates;
+import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.client.ClientData;
 import it.polimi.ingsw.model.client.PlayerData;
 
@@ -34,6 +35,9 @@ public interface ClientInterface {
     boolean fetchOpponentsHandColor() throws IOException;
     boolean fetchStartingObjectives() throws IOException;
     boolean fetchStartingCard() throws IOException;
+
+    ArrayList<Card> getVisibleCards();
+    ArrayList<Card> getDecksBacks();
 
     GameState getGameState();
     int getPlayerNum();

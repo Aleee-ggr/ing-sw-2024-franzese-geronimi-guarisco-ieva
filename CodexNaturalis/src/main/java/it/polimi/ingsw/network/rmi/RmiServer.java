@@ -7,6 +7,8 @@ import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.network.Server;
 
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -14,7 +16,6 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -38,6 +39,11 @@ public class RmiServer extends Server implements RmiServerInterface {
      */
     public RmiServer(int port) throws RemoteException {
         System.out.println("Starting server...");
+        try {
+            System.out.println(Inet4Address.getLocalHost().getHostAddress());
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
         RmiServerInterface stub = (RmiServerInterface) UnicastRemoteObject.exportObject(this, port);
         registry = LocateRegistry.createRegistry(port);
         registry.rebind(name, stub);

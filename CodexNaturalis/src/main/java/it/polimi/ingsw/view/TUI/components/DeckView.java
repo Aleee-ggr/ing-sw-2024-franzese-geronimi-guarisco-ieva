@@ -2,9 +2,13 @@ package it.polimi.ingsw.view.TUI.components;
 
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.cards.ColoredCard;
 import it.polimi.ingsw.model.enums.Resource;
+import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.components.printables.CardBack;
 import it.polimi.ingsw.view.TUI.components.printables.PrintCards;
+
+import java.util.ArrayList;
 
 public class DeckView implements Component {
     private static final int width = 146;
@@ -21,11 +25,10 @@ public class DeckView implements Component {
 
     private Resource[] backs = new Resource[2];
     private Card[] visibleCards = new Card[GameConsts.visibleCards];
+    private ClientInterface client;
 
-
-    public DeckView(Resource[] backs, Card[] visibleCards) {
-        this.backs = backs;
-        this.visibleCards = visibleCards;
+    public DeckView(ClientInterface client) {
+        this.client = client;
     }
 
     public void replaceVisibleCard(int index, Card newCard) {
@@ -38,6 +41,14 @@ public class DeckView implements Component {
 
     @Override
     public String toString() {
+        this.visibleCards = client.getVisibleCards().toArray(new Card[0]);
+        ArrayList<Resource> res = new ArrayList<>();
+        for (Card card : client.getDecksBacks()) {
+            ColoredCard colored = (ColoredCard) card;
+            res.add(colored.getBackResource());
+        }
+        this.backs = res.toArray(new Resource[0]);
+
         PrintCards[] printCards = new PrintCards[visibleCards.length];
         for (int i = 0; i < visibleCards.length; i++) {
             printCards[i] = new PrintCards(visibleCards[i]);

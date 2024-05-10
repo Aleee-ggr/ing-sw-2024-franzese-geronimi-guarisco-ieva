@@ -8,6 +8,7 @@ import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.components.*;
 import it.polimi.ingsw.view.TUI.components.printables.ObjectiveCard;
+import it.polimi.ingsw.view.TUI.controller.View;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,12 +22,10 @@ public class Compositor {
     private final Chat chat = new Chat();
     private final ResourceView resources;
     private final HandView hand;
-    //private DeckView deck = new DeckView();
-    private final Board board;
     private final ScoreBoard scoreBoard;
     private final Prompt prompt;
-
-    private final ObjectiveView objectiveView;
+    private Map<View, Component> mainComponent = new HashMap<>();
+    private View view = View.BOARD;
 
     @Override
     public String toString() {
@@ -42,10 +41,11 @@ public class Compositor {
 
         this.resources = new ResourceView(client.getUsername());
         this.hand = new HandView(client);
-        this.board = new Board(client);
+        mainComponent.put(View.BOARD,  new Board(client));
         this.scoreBoard = new ScoreBoard(client);
         this.prompt = new Prompt(client.getUsername());
-        this.objectiveView = createObjectiveView(client);
+        mainComponent.put(View.OBJECTIVES, createObjectiveView(client));
+        mainComponent.put(View.DECK, new DeckView(client));
     }
 
     public String updateView(){
@@ -98,20 +98,18 @@ public class Compositor {
         for(y = 0; y < HandView.panelHeight; y++){
             out.append(hand.toStringArray()[y])
                     .append("┃")
-                    .append(board.toStringArray()[y])
+                    .append(mainComponent.get(view).toStringArray()[y])
                     .append("\n");
         }
-
 
         for(int of_y = 0; of_y < ScoreBoard.scoreHeight; of_y++) {
             out.append(scoreBoard.toStringArray()[of_y])
                     .append("┃")
-                    .append(board.toStringArray()[y + of_y])
+                    .append(mainComponent.get(view).toStringArray()[y + of_y])
                     .append("\n");
         }
 
         //TODO: finish when board is completed
-
 
         out.append(prompt.toString());
         return out.toString();
@@ -135,4 +133,11 @@ public class Compositor {
         return convertedBoard;
     }
 
+    public Board getBoard() {
+        return (Board) mainComponent.get(View.BOARD);
+    }
+
+    public void switchView(View view) {
+        this.view = view;
+    }
 }
