@@ -360,7 +360,7 @@ public class RmiClient extends Client implements ClientInterface {
             return false;
         }
 
-        ((PlayerData)playerData.get(username)).setStartingCard((StartingCard) Game.getCardByID(startingCardId));
+        ((PlayerData)playerData.get(username)).placeStartingCard(Game.getCardByID(startingCardId));
         return true;
     }
 

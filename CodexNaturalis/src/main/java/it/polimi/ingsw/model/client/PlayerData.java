@@ -130,6 +130,7 @@ public class PlayerData extends ClientData {
      * */
     public void setStartingCard(StartingCard startingCard) {
         this.startingCard = startingCard;
+
     }
 
     /**
@@ -156,6 +157,16 @@ public class PlayerData extends ClientData {
         } else {
             clientHand.remove(card);
         }
+    }
+
+    /**
+     * Places the starting card on the board.
+     * @param card The starting card to be placed on the board.
+     */
+    public void placeStartingCard(Card card){
+        this.board.put(new Coordinates(0, 0), card);
+        this.order.add(card);
+        this.setStartingCard((StartingCard) card);
     }
 
 

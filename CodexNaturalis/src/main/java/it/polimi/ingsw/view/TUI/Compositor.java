@@ -42,9 +42,10 @@ public class Compositor {
 
         this.resources = new ResourceView(client.getUsername());
         this.hand = new HandView(client);
-        mainComponent.put(View.BOARD,  new Board(client));
         this.scoreBoard = new ScoreBoard(client);
         this.prompt = new Prompt(client.getUsername());
+
+        mainComponent.put(View.BOARD,  new Board(client));
         mainComponent.put(View.OBJECTIVES, createObjectiveView(client));
         mainComponent.put(View.DECK, new DeckView(client));
     }
