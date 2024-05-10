@@ -200,6 +200,7 @@ public class TuiController {
                 case "place":
                     break;
                 case "view":
+                    compositor.switchView(View.getView(cmd[1]));
                     break;
                 case "switch":
                     break;

@@ -29,6 +29,7 @@ public class Compositor {
 
     @Override
     public String toString() {
+        System.out.println(view);
         return updateView();
     }
 
