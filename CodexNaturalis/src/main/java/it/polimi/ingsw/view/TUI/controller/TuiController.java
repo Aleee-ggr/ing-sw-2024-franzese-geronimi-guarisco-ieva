@@ -114,12 +114,13 @@ public class TuiController {
         clear();
         waitUpdate();
         fetchData();
-
         Compositor compositor = new Compositor(client);
         while (client.getGameState() != GameState.STOP) {
             out.println(compositor);
+            try {
+                in.readLine();
+            } catch (IOException e) {throw new RuntimeException(e);}
             clear();
-
             waitUpdate();
             fetchData();
         }
@@ -153,11 +154,6 @@ public class TuiController {
         } catch(IOException e) {throw new RuntimeException(e);}
     }
 
-    private void clear() {
-        out.print("\033[H\033[2J");
-        out.flush();
-    }
-
     private void fetchSetup() {
         try {
             client.fetchPlayers();
@@ -185,4 +181,10 @@ public class TuiController {
             client.waitUpdate();
         } catch (IOException e) {throw new RuntimeException(e);}
     }
+
+    private void clear() {
+        out.print("\033[H\033[2J");
+        out.flush();
+    }
+
 }

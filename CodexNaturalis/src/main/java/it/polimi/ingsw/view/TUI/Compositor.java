@@ -35,8 +35,6 @@ public class Compositor {
 
     public Compositor(ClientInterface client) {
         this.client = client;
-        System.out.println(client);
-        System.out.println(this.client);
         miniBoard = new MiniBoard[client.getPlayerNum()-1];
         for(int i = 0; i < miniBoard.length; i++){
             miniBoard[i] = new MiniBoard(client.getPlayers().get(i), client);
@@ -105,10 +103,10 @@ public class Compositor {
         }
 
 
-        for(; y < HandView.panelHeight + ScoreBoard.scoreHeight; y++) {
-            out.append(scoreBoard.toStringArray()[y - HandView.panelHeight])
+        for(int of_y = 0; of_y < ScoreBoard.scoreHeight; of_y++) {
+            out.append(scoreBoard.toStringArray()[of_y])
                     .append("┃")
-                    .append(board.toStringArray()[y])
+                    .append(board.toStringArray()[y + of_y])
                     .append("\n");
         }
 

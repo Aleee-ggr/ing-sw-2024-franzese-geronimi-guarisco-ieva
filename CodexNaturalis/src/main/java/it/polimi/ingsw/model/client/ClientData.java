@@ -27,7 +27,11 @@ public abstract class ClientData {
     public ClientData() {
         this.board = HashBiMap.create();
         this.order = new ArrayList<>();
-        this.resources = new HashMap<>();
+        this.resources = new HashMap<>() {{
+            for (Resource res : Resource.values()) {
+                put(res, 0);
+            }
+        }};
     }
 
     /**

@@ -177,16 +177,7 @@ public class RmiClient extends Client implements ClientInterface {
             return false;
         }
 
-        for(String player : players){
-            if(player.equals(this.username)) {
-                playerData.put(player, new PlayerData());
-            } else {
-                playerData.put(player, new OpponentData());
-            }
-        }
-
-        this.players = players;
-        this.playerNum = players.size();
+        createPlayerData(players);
         return true;
     }
 
@@ -238,6 +229,11 @@ public class RmiClient extends Client implements ClientInterface {
 
         if (scoreMap == null) {
             return false;
+        }
+        for (String player : players) {
+            if (!scoreMap.containsKey(player)) {
+                scoreMap.put(player, 0);
+            }
         }
 
         this.scoreMap = scoreMap;

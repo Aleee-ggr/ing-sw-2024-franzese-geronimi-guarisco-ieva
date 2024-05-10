@@ -3,6 +3,7 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.client.ClientData;
+import it.polimi.ingsw.model.client.OpponentData;
 import it.polimi.ingsw.model.client.PlayerData;
 
 import java.util.ArrayList;
@@ -81,6 +82,22 @@ public class Client {
         this.gameId = gameId;
     }
 
+    public void createPlayerData(ArrayList<String> players) {
+        System.out.println("HERE!");
+        for(String player : players){
+            if(player.equals(this.username)) {
+                playerData.put(player, new PlayerData());
+            } else {
+                playerData.put(player, new OpponentData());
+            }
+            this.scoreMap.put(player, 0);
+        }
+
+        System.out.println(scoreMap);
+        this.players = players;
+        this.playerNum = players.size();
+    }
+
     public void setPlayerNum(int playerNum) {
         this.playerNum = playerNum;
     }
@@ -102,5 +119,7 @@ public class Client {
         this.username = username;
         this.password = password;
     }
+
+
 
 }
