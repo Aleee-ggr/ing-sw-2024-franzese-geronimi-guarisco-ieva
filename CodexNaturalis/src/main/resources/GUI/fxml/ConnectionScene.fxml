@@ -15,7 +15,7 @@
    <children>
       <ImageView fitHeight="900.0" fitWidth="1600.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@Background.png" />
+            <Image url="@../images/Background.png" />
          </image>
       </ImageView>
       <TextField fx:id="serverIp" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="500.0" StackPane.alignment="CENTER">
