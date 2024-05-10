@@ -218,7 +218,7 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         return new ThreadMessage(
                 Status.REQUEST,
                 username,
-                "getVisibleCard",
+                "getVisibleCards",
                 null,
                 UUID.randomUUID()
         );
