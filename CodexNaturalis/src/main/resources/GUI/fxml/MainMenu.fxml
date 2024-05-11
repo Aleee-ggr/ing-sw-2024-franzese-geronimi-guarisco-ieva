@@ -17,7 +17,7 @@
    <children>
       <ImageView fitHeight="900.0" fitWidth="1600.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@Background2.png" />
+            <Image url="@../images/Background2.png" />
          </image>
       </ImageView>
       <Group StackPane.alignment="CENTER">
