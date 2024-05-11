@@ -19,7 +19,7 @@
             <Image url="@../images/Background.png" />
          </image>
       </ImageView>
-      <TextField fx:id="usernameFiled" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="500.0" StackPane.alignment="CENTER">
+      <TextField fx:id="usernameField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="500.0" StackPane.alignment="CENTER">
          <StackPane.margin>
             <Insets bottom="80.0" />
          </StackPane.margin>
