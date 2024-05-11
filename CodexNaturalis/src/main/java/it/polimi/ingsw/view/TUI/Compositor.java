@@ -36,8 +36,12 @@ public class Compositor {
     public Compositor(ClientInterface client) {
         this.client = client;
         miniBoard = new MiniBoard[client.getPlayerNum()-1];
-        for(int i = 0; i < miniBoard.length; i++){
-            miniBoard[i] = new MiniBoard(client.getPlayers().get(i), client);
+        for(int i = 0, y = 0; i < miniBoard.length; i++, y++){
+            if(client.getPlayers().get(y).equals(client.getUsername())){
+                i--;
+                continue;
+            }
+            miniBoard[i] = new MiniBoard(client.getPlayers().get(y), client);
         }
 
         this.resources = new ResourceView(client.getUsername());
