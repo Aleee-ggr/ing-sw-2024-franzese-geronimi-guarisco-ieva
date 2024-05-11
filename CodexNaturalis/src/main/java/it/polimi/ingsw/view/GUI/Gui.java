@@ -7,6 +7,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * This class is the entry point for the GUI.
+ */
 public class Gui extends Application {
     @Override
     public void start(Stage stage) throws IOException {

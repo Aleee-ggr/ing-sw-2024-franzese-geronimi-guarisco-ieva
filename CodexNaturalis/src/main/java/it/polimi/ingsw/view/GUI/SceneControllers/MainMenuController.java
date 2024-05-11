@@ -16,12 +16,21 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
+/**
+ * This class is the controller for the main menu scene in the GUI.
+ * It handles the user interactions and scene transitions.
+ */
 public class MainMenuController implements Initializable {
     private ClientInterface client;
 
     @FXML
     private VBox gameButtonsContainer;
 
+    /**
+     * Changes the scene to the create game scene when the corresponding button is clicked.
+     *
+     * @param event the action event that triggered the method
+     */
     @FXML
     protected void changeCreateGameScene(ActionEvent event){
         try {
@@ -34,6 +43,11 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**
+     * Changes the scene to the login scene.
+     *
+     * @param event the action event that triggered the method
+     */
     @FXML
     private void goBack(ActionEvent event) {
         try {
@@ -46,10 +60,21 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**
+     * Sets the client for the controller.
+     *
+     * @param client the client interface to set
+     */
     public void setClient(ClientInterface client) {
         this.client = client;
     }
 
+    /**
+     * Initializes the controller.
+     *
+     * @param location  The location used to resolve relative paths for the root object, or null if the location is not known.
+     * @param resources The resources used to localize the root object, or null if the root object was not localized.
+     */
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
         if (client != null) {

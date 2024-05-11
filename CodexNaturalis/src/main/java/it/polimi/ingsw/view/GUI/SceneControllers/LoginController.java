@@ -11,6 +11,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * This class is the controller for the login scene in the GUI.
+ * It handles the user interactions and scene transitions.
+ */
 public class LoginController {
     private ClientInterface client;
 
@@ -20,6 +24,12 @@ public class LoginController {
     @FXML
     private TextField passwordField;
 
+    /**
+     * Changes the scene to the main menu scene when the corresponding button is clicked.
+     * Sets the client credentials based on the entered username and password.
+     *
+     * @param event the action event that triggered the method
+     */
     @FXML
     protected void changeMainMenuScene(ActionEvent event) {
         client.setCredentials(usernameField.getText(), passwordField.getText());
@@ -36,6 +46,11 @@ public class LoginController {
         }
     }
 
+    /**
+     * Changes the scene to the connection scene.
+     *
+     * @param event the action event that triggered the method
+     */
     @FXML
     protected void goBack(ActionEvent event) {
         try {
@@ -48,6 +63,11 @@ public class LoginController {
         }
     }
 
+    /**
+     * Sets the client for the controller.
+     *
+     * @param client the client interface to set
+     */
     protected void setClient(ClientInterface client) {
         this.client = client;
     }

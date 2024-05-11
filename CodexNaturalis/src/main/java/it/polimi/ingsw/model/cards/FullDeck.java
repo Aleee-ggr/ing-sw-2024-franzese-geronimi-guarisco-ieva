@@ -11,6 +11,10 @@ import it.polimi.ingsw.model.objectives.Objective;
 import java.io.IOException;
 import java.nio.file.Path;
 
+/**
+ * The FullDeck class represents a deck that contains all the cards in the game.
+ * It provides static methods to access the full deck of different types of cards.
+ */
 public class FullDeck {
     private static final Path cardJsonPath = Path.of(GameConsts.cardJsonPath);
 
@@ -30,20 +34,38 @@ public class FullDeck {
         }
     }
 
-
-
+    /**
+     * Returns a copy of the full deck of gold cards.
+     *
+     * @return a copy of the full deck of gold cards
+     */
     public static Deck<GoldCard> getFullGoldDeck() {
         return new Deck<>(FullGoldDeck);
     }
 
+    /**
+     * Returns a copy of the full deck of standard cards.
+     *
+     * @return a copy of the full deck of standard cards
+     */
     public static Deck<StdCard> getFullStdDeck() {
         return new Deck<>(FullStdDeck);
     }
 
+    /**
+     * Returns a copy of the full deck of objective cards.
+     *
+     * @return a copy of the full deck of objective cards
+     */
     public static Deck<Objective> getFullObjDeck() {
         return new Deck<>(FullObjDeck);
     }
 
+    /**
+     * Returns a copy of the full deck of starting cards.
+     *
+     * @return a copy of the full deck of starting cards
+     */
     public static Deck<StartingCard> getFullStartingDeck() {
         return new Deck<>(FullStartingDeck);
     }

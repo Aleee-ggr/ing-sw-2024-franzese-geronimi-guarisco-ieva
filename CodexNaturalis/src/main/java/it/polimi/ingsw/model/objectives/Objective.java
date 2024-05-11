@@ -24,6 +24,9 @@ public class Objective {
     /**
      * Constructs a new Objective with the specified point calculator function.
      * @param pointCalculator The function to calculate points for the objective based on the player.
+     * @param id The unique identifier of the objective.
+     * @param type The type of the objective.
+     * @param requirements The requirements for the objective in JSON format.
      */
     public Objective(Function<Player, Integer> pointCalculator, int id, String type, JsonElement requirements) {
         this.pointCalculator = pointCalculator;
@@ -32,22 +35,43 @@ public class Objective {
         setPatternAndResources(type, requirements);
     }
 
+    /**
+     * Gets the unique identifier of the objective.
+     * @return The unique identifier of the objective.
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Gets the type of the objective.
+     * @return The type of the objective.
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * Gets the pattern associated with the objective.
+     * @return The pattern associated with the objective.
+     */
     public Resource[][] getPattern() {
         return pattern;
     }
 
+    /**
+     * Gets the resources associated with the objective.
+     * @return The resources associated with the objective.
+     */
     public Map<Resource, Integer> getResource() {
         return resources;
     }
 
+    /**
+     * Sets the pattern and resources for the objective based on the type and requirements.
+     * @param type The type of the objective.
+     * @param requirements The requirements for the objective in JSON format.
+     */
     public void setPatternAndResources(String type, JsonElement requirements) {
         switch (type) {
             case "pattern":

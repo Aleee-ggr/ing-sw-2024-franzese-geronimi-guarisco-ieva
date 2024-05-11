@@ -6,15 +6,21 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * This class is the controller for the game introduction scene in the GUI.
+ * It handles the user interactions and scene transitions.
+ */
 public class GameIntroductionController {
-    @FXML
-    private Label welcomeText;
 
+    /**
+     * Changes the scene to the connection scene when the corresponding button is clicked.
+     *
+     * @param event The action event triggered by the button click.
+     */
     @FXML
     protected void changeConnectionScene(ActionEvent event){
         try {
@@ -27,6 +33,11 @@ public class GameIntroductionController {
         }
     }
 
+    /**
+     * Exits the application when the corresponding button is clicked.
+     *
+     * @param event The action event triggered by the button click.
+     */
     @FXML
     private void exit(ActionEvent event) {
         Platform.exit();

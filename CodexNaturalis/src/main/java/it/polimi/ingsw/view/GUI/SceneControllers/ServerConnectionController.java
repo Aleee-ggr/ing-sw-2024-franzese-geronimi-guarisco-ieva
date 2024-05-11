@@ -12,6 +12,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * This class is the controller for the server connection scene in the GUI.
+ * It handles the user interactions and scene transitions.
+ */
 public class ServerConnectionController {
     @FXML
     TextField serverIp;
@@ -19,6 +23,12 @@ public class ServerConnectionController {
     @FXML
     TextField serverPort;
 
+    /**
+     * Changes the scene to the login scene when the corresponding button is clicked.
+     * Initializes the client with the server IP and port.
+     *
+     * @param event the action event that triggered the method
+     */
     @FXML
     protected void changeLoginScene(ActionEvent event) {
         ClientInterface client = new RmiClient(serverIp.getText(), Integer.parseInt(serverPort.getText()));
@@ -35,6 +45,11 @@ public class ServerConnectionController {
         }
     }
 
+    /**
+     * Changes the scene to the game introduction scene.
+     *
+     * @param event the action event that triggered the method
+     */
     @FXML
     protected void goBack(ActionEvent event) {
         try {
