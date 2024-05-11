@@ -147,25 +147,24 @@ public class PlayerBoard {
         board.put(coordinates, card);
         lastPlacedPosition = coordinates;
         lastPlacedCards.add(card);
-        Corner[] corners;
+        Corner[] c;
 
         if(card.isFrontSideUp()){
-            corners = card.getFrontCorners();
-            markNotCoverable(coordinates, corners);
-
-            if(card instanceof StartingCard){
+            c = card.getFrontCorners();
+            if(card.getClass() == StartingCard.class){
                 for (Resource r : ((StartingCard) card).getFrontResources()){
                     boardOwner.updateResourcesValue(r, GameConsts.numberOfResourcesPerCorner);
                 }
             }
+            markNotCoverable(coordinates, c);
         } else {
-            if (card instanceof StartingCard) {
-                corners = ((StartingCard) card).getBackCorners();
-                markNotCoverable(coordinates, corners);
+            if (card.getClass() == StartingCard.class) {
+                c = ((StartingCard) card).getBackCorners();
+                markNotCoverable(coordinates, c);
             } else {
                 try {
-                    corners = ((ColoredCard) card).getBackCorners();
-                    markNotCoverable(coordinates, corners);
+                    c = ((ColoredCard) card).getBackCorners();
+                    markNotCoverable(coordinates, c);
                 } catch (UnrecognisedCardException e) {
                     System.out.println("unexpected behaviour");
                 }

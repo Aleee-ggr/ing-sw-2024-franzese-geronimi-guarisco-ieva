@@ -61,7 +61,6 @@ public class Compositor {
             Map<Coordinates, Integer> convertedBoard = convertBoard(((Client)client).getOpponentData().get(miniBoard.getUsername()).getBoard());
             miniBoard.setBoard(convertedBoard);
         }
-        resources.setResourceCount(((Client)client).getPlayerData().getResources());
 
         for(int y = 0; y < MiniBoard.boardHeight; y++){
             for (MiniBoard miniBoard : miniBoard) {
