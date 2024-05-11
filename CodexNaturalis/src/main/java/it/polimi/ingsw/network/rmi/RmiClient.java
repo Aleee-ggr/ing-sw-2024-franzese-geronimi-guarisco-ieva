@@ -22,6 +22,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -75,13 +76,8 @@ public class RmiClient extends Client implements ClientInterface {
 
     @Override
     public boolean placeStartingCard(boolean frontSideUp) throws RemoteException{
-        boolean success =  remoteObject.setStartingCard(gameId, username, frontSideUp);
-        if (success) {
-            getPlayerData().setStartingCard(
-                    (StartingCard)getPlayerData().getStartingCard().setFrontSideUp(frontSideUp)
-            );
-        }
-        return success;
+        getPlayerData().setStartingCard((StartingCard) getPlayerData().getStartingCard().setFrontSideUp(frontSideUp));
+        return remoteObject.setStartingCard(gameId, username, frontSideUp);
     }
 
     @Override
@@ -289,6 +285,31 @@ public class RmiClient extends Client implements ClientInterface {
     }
 
     @Override
+    public boolean fetchPlayersPlacingOrder() throws RemoteException {
+        HashMap<String, ArrayList<Card>> placingOrderMap = new HashMap<>();
+
+        for(String player : players){
+            Deque<Integer> placingOrderId = remoteObject.getPlacingOrder(this.gameId, this.username, player);
+
+            if(placingOrderId == null){
+                return false;
+            }
+            ArrayList<Card> placingOrder = new ArrayList<>();
+
+            for(int id : placingOrderId){
+                placingOrder.add(Game.getCardByID(id));
+            }
+            placingOrderMap.put(player, placingOrder);
+        }
+
+        for(String player : players){
+            playerData.get(player).setOrder(placingOrderMap.get(player));
+        }
+
+        return true;
+    }
+
+    @Override
     public boolean fetchValidPlacements() throws RemoteException {
         ArrayList<Coordinates> validPlacements = remoteObject.getValidPlacements(this.gameId, this.username);
 
@@ -360,7 +381,7 @@ public class RmiClient extends Client implements ClientInterface {
             return false;
         }
 
-        ((PlayerData)playerData.get(username)).placeStartingCard(Game.getCardByID(startingCardId));
+        ((PlayerData)playerData.get(username)).setStartingCard((StartingCard) Game.getCardByID(startingCardId));
         return true;
     }
 

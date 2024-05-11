@@ -291,16 +291,19 @@ public record ThreadMessage(Status status, String player, String type, String[] 
     }
 
     /**
-     * Creates a ThreadMessage for requesting last placed cards.
+     * Creates a ThreadMessage for requesting an ArrayList of order of cards.
      * @param username The username of the player.
-     * @return A ThreadMessage requesting last placed cards.
+     * @param usernameRequiredData The username of the required data.
+     * @return A ThreadMessage requesting order of cards.
      */
-    public static ThreadMessage getLastPlacedCards(String username) {
+    public static ThreadMessage getPlacingOrder(String username, String usernameRequiredData) {
         return new ThreadMessage(
                 Status.REQUEST,
                 username,
-                "getLastPlacedCards",
-                null,
+                "getPlacingOrder",
+                new String[] {
+                        usernameRequiredData
+                },
                 UUID.randomUUID()
         );
     }
@@ -718,24 +721,24 @@ public record ThreadMessage(Status status, String player, String type, String[] 
     }
 
     /**
-     * Creates a ThreadMessage for a last placed cards response.
+     * Creates a ThreadMessage for a last Placing card order response.
      * @param username The username of the player.
-     * @param lastPlacedCards A Deque of last placed card IDs.
+     * @param order A Deque of card IDs.
      * @param messageUUID The UUID of the message.
-     * @return A ThreadMessage for a last placed cards response.
+     * @return A ThreadMessage for a last placed cards order response.
      */
-    public static ThreadMessage getLastPlacedCardsResponse(String username, Deque<Integer> lastPlacedCards, UUID messageUUID) {
-        String[] args = new String[lastPlacedCards.size()];
+    public static ThreadMessage getPlacingOrderResponse(String username, Deque<Integer> order, UUID messageUUID) {
+        String[] args = new String[order.size()];
         int index = 0;
 
-        for (Integer cardId : lastPlacedCards) {
+        for (Integer cardId : order) {
             args[index] = cardId.toString();
         }
 
         return new ThreadMessage(
                 Status.OK,
                 username,
-                "getLastPlacedCardsResponse",
+                "getPlacingOrderResponse",
                 args,
                 messageUUID
         );

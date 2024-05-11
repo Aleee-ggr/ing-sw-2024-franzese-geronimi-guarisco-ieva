@@ -168,6 +168,7 @@ public class TuiController {
             client.fetchClientHand();
             client.fetchCommonObjectives();
             client.fetchPlayersBoards();
+            client.fetchPlayersPlacingOrder();
             client.fetchPlayersResources();
             client.fetchScoreMap();
             client.fetchGameState();

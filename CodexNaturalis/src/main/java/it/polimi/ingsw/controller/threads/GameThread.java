@@ -291,8 +291,8 @@ public class GameThread extends Thread {
                         msg.args()[0],
                         msg.messageUUID());
                 break;
-            case "getLastPlacedCards":
-                controller.getLastPlacedCards(
+            case "getPlacingOrder":
+                controller.getPlacingOrder(
                         msg.player(),
                         msg.messageUUID());
                 break;

@@ -6,10 +6,7 @@ import it.polimi.ingsw.model.enums.Resource;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * The RmiServerInterface defines methods for interacting with a remote game server using RMI.
@@ -81,6 +78,8 @@ public interface RmiServerInterface extends Remote {
     boolean choosePersonalObjective(UUID game, String username, Integer objectiveId) throws RemoteException;
 
     ArrayList<Integer> getStartingObjectives(UUID game, String username) throws RemoteException;
+
+    Deque<Integer> getPlacingOrder(UUID game, String name, String nameRequiredData) throws RemoteException;
 
     boolean setStartingCard(UUID game, String username, boolean frontSideUp) throws RemoteException;
 

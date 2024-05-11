@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.client.ClientData;
 import it.polimi.ingsw.model.client.PlayerData;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
@@ -30,6 +31,7 @@ public interface ClientInterface {
     boolean fetchScoreMap() throws IOException;
     boolean fetchPlayersResources() throws IOException;
     boolean fetchPlayersBoards() throws IOException;
+    boolean fetchPlayersPlacingOrder() throws RemoteException;
     boolean fetchValidPlacements() throws IOException;
     boolean fetchClientHand() throws IOException;
     boolean fetchOpponentsHandColor() throws IOException;

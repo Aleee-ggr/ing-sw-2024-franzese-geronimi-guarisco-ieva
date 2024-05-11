@@ -250,9 +250,10 @@ public abstract class Server {
         }
     }
 
-    public static Deque<Integer> getLastPlacedCards(UUID game, String username) {
-        ThreadMessage message = ThreadMessage.getLastPlacedCards(
-                username
+    public static Deque<Integer> getPlacingOrderServer(UUID game, String username, String usernameRequiredData) {
+        ThreadMessage message = ThreadMessage.getPlacingOrder(
+                username,
+                usernameRequiredData
         );
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();

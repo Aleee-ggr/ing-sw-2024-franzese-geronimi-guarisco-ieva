@@ -15,6 +15,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -166,6 +167,11 @@ public class RmiServer extends Server implements RmiServerInterface {
     @Override
     public HashMap<Coordinates, Integer> getBoard(UUID game, String name, String nameRequiredData) throws RemoteException {
         return getBoardServer(game, name, nameRequiredData);
+    }
+
+    @Override
+    public Deque<Integer> getPlacingOrder(UUID game, String name, String nameRequiredData) throws RemoteException {
+        return getPlacingOrderServer(game, name, nameRequiredData);
     }
 
     @Override
