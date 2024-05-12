@@ -157,7 +157,12 @@ public class Player {
         this.board = new PlayerBoard(s, this);
     }
 
-
+    /**
+     * Method used to draw the Starting Card of the Player.<br/>
+     * It calls the draw method of the GameStartingDeck.
+     * @return the StartingCard drawn
+     * @see StartingCard
+     * */
     public StartingCard drawStartingCard() {
         s = game.getGameStartingDeck().draw();
         this.board = new PlayerBoard(s, this);

@@ -25,6 +25,12 @@ public class GameThread extends Thread {
     private GameState gameState = GameState.LOBBY;
     private final Map<String, Boolean> turnMap;
 
+    /**
+     * Constructor of GameThread
+     * @param messageQueue the queue of messages to be processed by the thread.
+     * @param turnMap the map of players and their turn status.
+     * @param maxPlayers the maximum number of players in the game.
+     * */
     public GameThread(BlockingQueue<ThreadMessage> messageQueue, Map<String, Boolean> turnMap, Integer maxPlayers) {
         this.messageQueue = messageQueue;
         this.maxPlayers = maxPlayers;
@@ -33,12 +39,19 @@ public class GameThread extends Thread {
     }
 
 
-
+    /**
+     * Run method of the thread, it manages the game loop.
+     * */
     @Override
     public void run() {
         gameLoop();
     }
 
+    /**
+     * GameLoop method, manages the game state and the game flow.
+     * It determines the game state and calls the appropriate method in GameThread.
+     * It is a loop that runs until the game is stopped.
+     * */
     public void gameLoop(){
         ThreadMessage msg;
         while(gameState != GameState.STOP){
@@ -64,7 +77,11 @@ public class GameThread extends Thread {
         }
     }
 
-    public void gameLobby(){ //to move in main loop in ClientApp
+    /**
+     * GameLobby method, manages the game lobby state.
+     * It waits for the game to be full and then changes the game state to SETUP.
+     * */
+    public void gameLobby(){
         ThreadMessage msg = getMessage();
         if(GameState.lobby.contains(msg.type())){
             respond(msg);
@@ -77,6 +94,10 @@ public class GameThread extends Thread {
         }
     }
 
+    /**
+     * Setup method, manages the game setup state.
+     * It waits for all players to choose their personal objectives and starting cards.
+     * */
     public void setup() {
         for(String currentPlayer : controller.getGame().getPlayers().stream().map(Player::getUsername).toList()){
             boolean objChosen = false;
@@ -108,6 +129,12 @@ public class GameThread extends Thread {
         controller.getGame().setGameState(GameState.MAIN);
     }
 
+    /**
+     * MainGame method, manages the main game state.
+     * It waits for all players to place a card and draw a card.
+     * It repeats until a player reaches the ending score or the cards are over.
+     * It calls the playerTurn method for each player.
+     * */
     public void mainGame(){
         for(Player player : controller.getGame().getPlayers()){
             this.currentPlayer = player.getUsername();
@@ -120,6 +147,12 @@ public class GameThread extends Thread {
         }
     }
 
+    /**
+     * PlayerTurn method, manages the player turn.
+     * It waits for the player to place a card and draw a card.
+     * @param playerName the name of the player whose turn it is.
+     * @return true if the player has reached the ending score, false otherwise.
+     * */
     public boolean playerTurn(String playerName){ //TODO: check is player can't place a card
         boolean draw = false;
         boolean place = false;
@@ -155,6 +188,10 @@ public class GameThread extends Thread {
         return (player.getScore()>= GameConsts.endingScore);
     }
 
+    /**
+     * EndGame method, manages the end game state.
+     * It calculates the final score of each player and sends it to the clients.
+     * */
     public void endGame() {
         for(String currentPlayer : controller.getGame().getPlayers().stream().map(Player::getUsername).toList()){
             this.currentPlayer = currentPlayer;
@@ -184,6 +221,11 @@ public class GameThread extends Thread {
         controller.getGame().setGameState(GameState.STOP);
     }
 
+    /**
+     * GetMessage method, gets the next message from the queue.
+     * It waits until a message with status REQUEST is available.
+     * @return the next message in the queue.
+     * */
     private ThreadMessage getMessage() {
         ThreadMessage msg;
         do {
@@ -193,6 +235,11 @@ public class GameThread extends Thread {
         return messageQueue.remove();
     }
 
+    /**
+     * Respond method, processes the message and calls the appropriate method in the controller.
+     * @param msg the message to be processed.
+     * @return the message itself.
+     * */
     private ThreadMessage respond(ThreadMessage msg) {
         switch (msg.type()) {
             case "create":

@@ -366,6 +366,11 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         );
     }
 
+    /**
+     * Creates a ThreadMessage for requesting the available games.
+     * @param username The username of the player.
+     * @return A ThreadMessage requesting the available games.
+     */
     public static ThreadMessage getAvailableGames(String username) {
         return new ThreadMessage(
                 Status.REQUEST,
@@ -471,6 +476,13 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         );
     }
 
+    /**
+     * Creates a ThreadMessage for a starting card response.
+     * @param username The username of the player.
+     * @param cardId The ID of the starting card.
+     * @param messageUUID The UUID of the message.
+     * @return A ThreadMessage for a starting card response.
+     */
     public static ThreadMessage getStartingCardResponse(String username, Integer cardId, UUID messageUUID) {
         return new ThreadMessage(
                 Status.OK,
@@ -769,6 +781,13 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         );
     }
 
+    /**
+     * Creates a ThreadMessage for a getAvailableGames response.
+     * @param username The username of the player.
+     * @param availableGames An ArrayList of available game UUIDs.
+     * @param messageUUID The UUID of the message.
+     * @return A ThreadMessage for a getAvailableGames response.
+     */
     public static ThreadMessage getAvailableGamesResponse(String username, ArrayList<UUID> availableGames, UUID messageUUID) {
         String[] args = new String[availableGames.size()];
 
