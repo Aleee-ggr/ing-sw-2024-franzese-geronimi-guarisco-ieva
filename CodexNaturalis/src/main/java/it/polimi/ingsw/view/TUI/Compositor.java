@@ -45,6 +45,8 @@ public class Compositor {
         }
 
         this.resources = new ResourceView(client.getUsername());
+        resources.setResourceCount(client.getPlayerData().getResources());
+        
         this.hand = new HandView(client);
         this.scoreBoard = new ScoreBoard(client);
         this.prompt = new Prompt(client.getUsername());

@@ -54,8 +54,8 @@ public class PlayerTest {
     @Test
     public void updateResourcesValue__CorrectResourcesAmount() {
         player.updateResourcesValue(Resource.FUNGI, 5);
-
-        Assert.assertEquals(5, player.getResources().get(Resource.FUNGI).intValue());
+        player.updateResourcesValue(Resource.FUNGI, 2);
+        Assert.assertEquals(7, player.getResources().get(Resource.FUNGI).intValue());
     }
 
     @Test

@@ -600,8 +600,8 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         String[] args = new String[playerResources.size()];
         int index = 0;
 
-        for (Map.Entry<Resource, Integer> entry : playerResources.entrySet()) {
-            args[index] = entry.getKey().toString() + ":" + entry.getValue().toString();
+        for (Resource r : playerResources.keySet()) {
+            args[index] = r.toString() + ":" + playerResources.get(r).toString();
             index++;
         }
 
