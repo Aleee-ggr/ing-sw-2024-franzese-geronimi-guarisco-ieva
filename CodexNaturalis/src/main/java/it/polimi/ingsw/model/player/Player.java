@@ -165,7 +165,6 @@ public class Player {
      * */
     public StartingCard drawStartingCard() {
         s = game.getGameStartingDeck().draw();
-        this.board = new PlayerBoard(s, this);
         return s;
     }
 

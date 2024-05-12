@@ -53,8 +53,11 @@ public class Board implements Component {
                     setLines(relativeCoordinates);
                     if (!card.isFrontSideUp()) {
                         setCorners(relativeCoordinates, starting.getBackCorners());
-                        setLines(relativeCoordinates);
                     }
+                    if(card.isFrontSideUp()){
+                        setCorners(relativeCoordinates, starting.getFrontCorners());
+                    }
+                    setLines(relativeCoordinates);
                     continue;
                 } 
                 if (card instanceof ColoredCard colored) {
