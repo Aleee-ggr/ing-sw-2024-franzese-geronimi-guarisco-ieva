@@ -171,6 +171,7 @@ public class TuiController {
         try {
             client.fetchClientHand();
             client.fetchCommonObjectives();
+            client.fetchValidPlacements();
             client.fetchPlayersBoards();
             client.fetchPlayersPlacingOrder();
             client.fetchPlayersResources();
