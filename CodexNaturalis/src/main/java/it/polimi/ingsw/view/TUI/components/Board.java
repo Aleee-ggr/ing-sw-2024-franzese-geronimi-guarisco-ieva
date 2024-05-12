@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.ColoredCard;
 import it.polimi.ingsw.model.cards.Corner;
 import it.polimi.ingsw.model.cards.StartingCard;
-import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.RotateBoard;
 
@@ -41,6 +40,7 @@ public class Board implements Component {
     }
     
     public void compute() {;
+        clear();
         List<Card> cardPlacementList = client.getPlayerData().getOrder();
         BiMap<Coordinates, Card> cardPlacementMap = client.getPlayerData().getBoard();
 
@@ -153,5 +153,13 @@ public class Board implements Component {
                 coordinates.x() < width &&
                 coordinates.y() < height
         );
+    }
+
+    private void clear() {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                board[y][x] = ' ';
+            }
+        }
     }
 }
