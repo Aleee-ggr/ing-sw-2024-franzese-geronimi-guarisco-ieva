@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.TUI.controller;
 
 import it.polimi.ingsw.controller.threads.GameState;
+import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.Compositor;
@@ -20,6 +21,7 @@ public class TuiController {
     PrintWriter out = new PrintWriter(System.out, true);
     private final ClientInterface client;
     Compositor compositor = null;
+    boolean placed = false;
 
     public TuiController(ClientInterface client) {
         this.client = client;
@@ -116,8 +118,10 @@ public class TuiController {
         waitUpdate();
         fetchData();
         compositor = new Compositor(client);
+        placed = false;
         while (client.getGameState() != GameState.STOP) {
-            out.println(compositor);
+            out.print(compositor);
+            out.flush();
             try {
                 String command = in.readLine();
                 handleCommand(command);
@@ -196,9 +200,16 @@ public class TuiController {
      */
     private void handleCommand(String command) {
         String[] cmd = command.split(" ");
+        int position, id;
         try {
             switch (cmd[0]) {
                 case "place":
+                    id = Integer.parseInt(cmd[1]) - 1;
+                    position = Integer.parseInt(cmd[2]);
+                    if (!placed) {
+                        place(id, position);
+                    }
+                    fetchData();
                     break;
                 case "view":
                     compositor.switchView(View.getView(cmd[1]));
@@ -206,19 +217,23 @@ public class TuiController {
                 case "switch":
                     break;
                 case "draw":
-                    client.drawCard(Integer.parseInt(cmd[1]));
+                    position = Integer.parseInt(cmd[1]) -1;
+                    if (placed) {
+                        client.drawCard(position);
+                    }
+                    fetchData();
                     break;
                 case "w":
-                    compositor.getBoard().moveCenter(1, 0);
+                    compositor.getBoard().moveCenter(0, 2);
                     break;
                 case "a":
-                    compositor.getBoard().moveCenter(0, -1);
+                    compositor.getBoard().moveCenter(-2, 0);
                     break;
                 case "s":
-                    compositor.getBoard().moveCenter(-1, 0);
+                    compositor.getBoard().moveCenter(0, -2);
                     break;
                 case "d":
-                    compositor.getBoard().moveCenter(0, 1);
+                    compositor.getBoard().moveCenter(2, 0);
                     break;
                 case "h", "help":
                     out.println("""
@@ -232,7 +247,7 @@ public class TuiController {
                     in.read();
                     break;
             }
-        } catch (IOException e) {throw new RuntimeException(e);}
+        } catch (IOException | NumberFormatException e) {throw new RuntimeException(e);}
     }
 
     private void clear() {
@@ -240,4 +255,13 @@ public class TuiController {
         out.flush();
     }
 
+    private void place(int card, int position) {
+        int id = client.getPlayerData().getClientHand().get(card).getId();
+        Coordinates coordinates = client.getPlayerData().getValidPlacements().get(position);
+        try {
+            client.placeCard(coordinates, id);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
