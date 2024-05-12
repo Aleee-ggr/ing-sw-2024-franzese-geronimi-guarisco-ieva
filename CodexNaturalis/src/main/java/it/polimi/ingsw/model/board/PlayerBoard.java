@@ -31,9 +31,7 @@ public class PlayerBoard {
      * @param firstCard first card played.
      */
     public PlayerBoard(Card firstCard, Player player) {
-        //this.board.put(new Coordinates(0, 0), firstCard);
         this.boardOwner = player;
-        //this.lastPlacedCards.add(firstCard);
         this.placeCard(firstCard, GameConsts.centralPoint);
     }
 
@@ -191,10 +189,10 @@ public class PlayerBoard {
         try {
             for (int i = 0; i < c.length; i++) {
                 switch (i) {
-                    case 0 -> handleCase(coordinates, c[i], 0, 1);
-                    case 1 -> handleCase(coordinates, c[i], 1, 0);
-                    case 2 -> handleCase(coordinates, c[i], 0, -1);
-                    case 3 -> handleCase(coordinates, c[i], -1, 0);
+                    case 0 -> handleCase(coordinates, c[i], -1, 0);
+                    case 1 -> handleCase(coordinates, c[i], 0, 1);
+                    case 2 -> handleCase(coordinates, c[i], 1, 0);
+                    case 3 -> handleCase(coordinates, c[i], 0, -1);
                 }
             }
         } catch (IndexOutOfBoundsException e) {
@@ -206,7 +204,7 @@ public class PlayerBoard {
      * Private Method handleCase, <br/>
      * called by {@link #markNotCoverable(Coordinates, Corner[]), markNotCoverable}.<br/>
      * Its functions are to:<br/>
-     * mark cells of the board as not Fillable<br/>
+     * mark cells of the board as not Fillable[deprecated]<br/>
      * add values to the player Resource hashmap <br/>
      * add Coordinates to the Set of validPlacements for cards.
      * @param coordinates Coordinates of the placed Card
@@ -218,13 +216,14 @@ public class PlayerBoard {
      * @see Corner
      */
     private void handleCase(Coordinates coordinates, Corner corner, int dX, int dY) {
-        if(corner.getCornerResource().equals(Resource.NONCOVERABLE)) {
-            board.put(coordinates.horizontal(dX).vertical(dY), notFillable);
+        if(corner.getCornerResource() == Resource.NONCOVERABLE || !corner.isCoverable()) {
+            return;
         } else {
-            if(!corner.getCornerResource().equals(Resource.NONE)) {
+            if(corner.getCornerResource() != Resource.NONE) {
                 boardOwner.updateResourcesValue(corner.getCornerResource(), GameConsts.numberOfResourcesPerCorner);
             }
             System.out.println(coordinates.x() + dX + " " + coordinates.y() + dY);
+            System.out.println("adding to valid placements" + coordinates.x() + dX + " " + coordinates.y() + dY);
             validPlacements.add(new Coordinates(coordinates.x() + dX, coordinates.y() + dY));
         }
     }
