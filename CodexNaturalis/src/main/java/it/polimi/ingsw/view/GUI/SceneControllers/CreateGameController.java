@@ -12,6 +12,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * This class represents the controller for the create game scene in the GUI.
+ * It handles user input for selecting the number of players and transitioning
+ * to the waiting room scene.
+ */
 public class CreateGameController {
     private ClientInterface client;
 
@@ -27,6 +32,10 @@ public class CreateGameController {
     @FXML
     private ToggleGroup numPlayers;
 
+    /**
+     * Handles the action when the user clicks on the button to change to the waiting room scene.
+     * @param event The action event triggered by the user.
+     */
     @FXML
     protected void changeWaitingRoomScene(ActionEvent event) {
         RadioButton selected = (RadioButton) numPlayers.getSelectedToggle();
@@ -47,6 +56,10 @@ public class CreateGameController {
         }
     }
 
+    /**
+     * Changes the scene back to the Main Menu when the user clicks "Back".
+     * @param event The ActionEvent triggered by the user's interaction.
+     */
     @FXML
     private void goBack(ActionEvent event) {
         try {
@@ -59,6 +72,10 @@ public class CreateGameController {
         }
     }
 
+    /**
+     * Sets the client for the controller.
+     * @param client the client interface to set
+     */
     public void setClient(ClientInterface client) {
         this.client = client;
     }
