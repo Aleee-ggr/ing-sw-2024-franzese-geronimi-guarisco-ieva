@@ -673,6 +673,7 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         int index = 0;
         for (Coordinates coordinates : validPlacements) {
             args[index] = coordinates.x() + "," + coordinates.y();
+            index++;
         }
 
         return new ThreadMessage(

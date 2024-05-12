@@ -31,10 +31,10 @@ public class PlayerBoard {
      * @param firstCard first card played.
      */
     public PlayerBoard(Card firstCard, Player player) {
-        this.board.put(new Coordinates(0, 0), firstCard);
+        //this.board.put(new Coordinates(0, 0), firstCard);
         this.boardOwner = player;
-        this.lastPlacedCards.add(firstCard);
-        this.lastPlacedPosition = GameConsts.centralPoint;
+        //this.lastPlacedCards.add(firstCard);
+        this.placeCard(firstCard, GameConsts.centralPoint);
     }
 
     /**
@@ -147,24 +147,29 @@ public class PlayerBoard {
         board.put(coordinates, card);
         lastPlacedPosition = coordinates;
         lastPlacedCards.add(card);
-        Corner[] c;
+        Corner[] corners;
 
         if(card.isFrontSideUp()){
-            c = card.getFrontCorners();
-            if(card.getClass() == StartingCard.class){
+            corners = card.getFrontCorners();
+
+            if(card instanceof StartingCard){
                 for (Resource r : ((StartingCard) card).getFrontResources()){
                     boardOwner.updateResourcesValue(r, GameConsts.numberOfResourcesPerCorner);
                 }
             }
-            markNotCoverable(coordinates, c);
-        } else {
-            if (card.getClass() == StartingCard.class) {
-                c = ((StartingCard) card).getBackCorners();
-                markNotCoverable(coordinates, c);
+
+            markNotCoverable(coordinates, corners);
+        }
+
+        if(!card.isFrontSideUp()){
+
+            if (card instanceof StartingCard) {
+                corners = ((StartingCard) card).getBackCorners();
+                markNotCoverable(coordinates, corners);
             } else {
                 try {
-                    c = ((ColoredCard) card).getBackCorners();
-                    markNotCoverable(coordinates, c);
+                    corners = ((ColoredCard) card).getBackCorners();
+                    markNotCoverable(coordinates, corners);
                 } catch (UnrecognisedCardException e) {
                     System.out.println("unexpected behaviour");
                 }
@@ -213,12 +218,13 @@ public class PlayerBoard {
      * @see Corner
      */
     private void handleCase(Coordinates coordinates, Corner corner, int dX, int dY) {
-        if(corner.getCornerResource() == Resource.NONCOVERABLE) {
+        if(corner.getCornerResource().equals(Resource.NONCOVERABLE)) {
             board.put(coordinates.horizontal(dX).vertical(dY), notFillable);
         } else {
-            if(corner.getCornerResource() != Resource.NONE) {
+            if(!corner.getCornerResource().equals(Resource.NONE)) {
                 boardOwner.updateResourcesValue(corner.getCornerResource(), GameConsts.numberOfResourcesPerCorner);
             }
+            System.out.println(coordinates.x() + dX + " " + coordinates.y() + dY);
             validPlacements.add(new Coordinates(coordinates.x() + dX, coordinates.y() + dY));
         }
     }
