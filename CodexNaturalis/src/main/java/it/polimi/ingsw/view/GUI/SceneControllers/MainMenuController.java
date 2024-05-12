@@ -34,8 +34,10 @@ public class MainMenuController implements Initializable {
     @FXML
     protected void changeCreateGameScene(ActionEvent event){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ConnectionScene.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/CreateGameScene.fxml"));
             Scene scene = new Scene(loader.load(), 1600, 900);
+            CreateGameController controller = loader.getController();
+            controller.setClient(client);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {
@@ -88,6 +90,20 @@ public class MainMenuController implements Initializable {
             for (UUID uuid : client.getAvailableGames()) {
                 System.out.println(uuid);
                 Button button = new Button(uuid.toString());
+                button.setOnAction(event -> {
+                    try {
+                        client.joinGame(uuid);
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/WaitingRoom.fxml"));
+                        WaitingRoomController controller = new WaitingRoomController();
+                        controller.setClient(client);
+                        loader.setController(controller);
+                        Scene scene = new Scene(loader.load(), 1600, 900);
+                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        stage.setScene(scene);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
                 gameButtonsContainer.getChildren().add(button);
             }
         }
