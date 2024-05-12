@@ -22,6 +22,10 @@ public class WaitingRoomController implements Initializable {
     @FXML
     private StackPane listofPlayers;
 
+    /**
+     * Changes the scene back to the Main Menu when the user clicks "Back".
+     * @param event The ActionEvent triggered by the user's interaction.
+     */
     @FXML
     protected void changeGameScene(ActionEvent event) {
         try {
@@ -37,10 +41,22 @@ public class WaitingRoomController implements Initializable {
         }
     }
 
+    /**
+     * Sets the client for the controller.
+     * @param client the client interface to set
+     */
     public void setClient(ClientInterface client) {
         this.client = client;
     }
 
+    /**
+     * Initializes the Waiting Room scene.
+     * Fetches the list of players from the server and displays them.
+     * @param location The location used to resolve relative paths for the root object,
+     *                 or null if the location is not known.
+     * @param resources The resources used to localize the root object,
+     *                  or null if the root object was not localized.
+     */
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
         if (client != null) {
@@ -60,6 +76,10 @@ public class WaitingRoomController implements Initializable {
         }
     }
 
+    /**
+     * Changes the scene back to the Main Menu.
+     * @param event The ActionEvent triggered by the user's interaction.
+     */
     @FXML
     private void goBack(ActionEvent event) {
         try {
