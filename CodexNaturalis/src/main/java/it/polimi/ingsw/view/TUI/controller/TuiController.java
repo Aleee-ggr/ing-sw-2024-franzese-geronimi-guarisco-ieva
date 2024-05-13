@@ -226,6 +226,7 @@ public class TuiController {
                     position = Integer.parseInt(cmd[1]) -1;
                     if (placed) {
                         client.drawCard(position);
+                        placed = false;
                     }
                     fetchData();
                     break;
