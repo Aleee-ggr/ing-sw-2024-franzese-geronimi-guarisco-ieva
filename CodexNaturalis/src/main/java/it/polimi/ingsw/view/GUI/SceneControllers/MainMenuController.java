@@ -86,7 +86,6 @@ public class MainMenuController implements Initializable {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
             for (UUID uuid : client.getAvailableGames()) {
                 System.out.println(uuid);
                 Button button = new Button(uuid.toString());

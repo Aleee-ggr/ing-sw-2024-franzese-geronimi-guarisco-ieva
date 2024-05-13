@@ -20,7 +20,8 @@
       </ImageView>
       <Group opacity="0.5" StackPane.alignment="CENTER">
          <children>
-            <StackPane fx:id="listOfPlayers" prefHeight="434.0" prefWidth="962.0" style="-fx-border-color: #432918; -fx-border-width: 4;" />
+            <StackPane fx:id="listOfPlayers" prefHeight="434.0" prefWidth="962.0" style="-fx-border-color: #432918; -fx-border-width: 4;">
+            </StackPane>
          </children>
          <StackPane.margin>
             <Insets bottom="50.0" />

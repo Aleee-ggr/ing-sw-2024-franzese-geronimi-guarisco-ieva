@@ -11,7 +11,7 @@
    <children>
       <ImageView fitHeight="900.0" fitWidth="1600.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@Background.png" />
+            <Image url="@../images/Background.png" />
          </image>
       </ImageView>
       <Label text="CHOOSE YOUR PERSONAL OBJECTIVE" textFill="#432918">
@@ -22,12 +22,12 @@
             <Insets bottom="250.0" />
          </StackPane.margin>
       </Label>
-      <ImageView fx:id="fistObjective" fitHeight="331.0" fitWidth="496.5" onMouseClicked="#changeChooseStarting" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_LEFT">
+      <ImageView fx:id="firstObjective" fitHeight="331.0" fitWidth="496.5" onMouseClicked="#changeChooseStarting" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_LEFT">
          <StackPane.margin>
             <Insets left="250.0" top="300.0" />
          </StackPane.margin>
       </ImageView>
-      <ImageView fx:id="seconObjective" fitHeight="331.0" fitWidth="496.5" onMouseClicked="#changeChooseStarting" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_RIGHT">
+      <ImageView fx:id="secondObjective" fitHeight="331.0" fitWidth="496.5" onMouseClicked="#changeChooseStarting" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_RIGHT">
          <StackPane.margin>
             <Insets right="250.0" top="300.0" />
          </StackPane.margin>
