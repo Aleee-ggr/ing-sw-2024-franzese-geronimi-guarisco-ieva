@@ -7,7 +7,8 @@ public class ColorTest {
     @Test
     public void testColor() {
         for (Resource resource : Resource.values()) {
-            System.out.println(resource.toColorBlock());
+            System.out.print(resource.toColorBlock());
         }
+        System.out.println();
     }
 }
