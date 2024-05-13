@@ -19,7 +19,7 @@ public class DeckView implements Component {
     private static final int contentWidth = hSpacing * 4 + CardBack.width * 4;
     private static final int contentHeight = vSpacing * 3 + CardBack.height * 2;
 
-    private static final int paddingLeft = (width - contentHeight - 2) / 2;
+    private static final int paddingLeft = (width - contentWidth - 2) / 2;
     private static final int paddingTop = (height - contentHeight - 4) / 2;
     private static final String header = "DRAW YOUR CARD";
 
@@ -76,17 +76,6 @@ public class DeckView implements Component {
                     .append("│\n");
         }
 
-        for (int i = 0; i < CardBack.height; i++) {
-            out.append(" ".repeat(paddingLeft))
-                    .append("│")
-                    .append(" ".repeat(hSpacing/2))
-                    .append(CardBack.resources.get(backs[0]).split("\n")[i])
-                    .append(" ".repeat(CardBack.width * 2 + hSpacing * 3))
-                    .append(CardBack.resources.get(backs[1]).split("\n")[i])
-                    .append(" ".repeat(hSpacing/2))
-                    .append("│\n");
-        }
-
         for (int i = 0; i < vSpacing; i++) {
             out.append(" ".repeat(paddingLeft))
                     .append("│")
@@ -94,6 +83,7 @@ public class DeckView implements Component {
                     .append("│\n");
         }
 
+        // Print Visible cards
         for (int i = 0; i < CardBack.height; i++) {
             out.append(" ".repeat(paddingLeft))
                     .append("│")
@@ -104,6 +94,18 @@ public class DeckView implements Component {
                     }
                     out.append(printCards[visibleCards.length - 1].toStringArray()[i]);
                     out.append(" ".repeat(hSpacing/2))
+                    .append("│\n");
+        }
+
+        // Print decks
+        for (int i = 0; i < CardBack.height; i++) {
+            out.append(" ".repeat(paddingLeft))
+                    .append("│")
+                    .append(" ".repeat(hSpacing/2))
+                    .append(CardBack.resources.get(backs[0]).split("\n")[i])
+                    .append(" ".repeat(CardBack.width * 2 + hSpacing * 3))
+                    .append(CardBack.resources.get(backs[1]).split("\n")[i])
+                    .append(" ".repeat(hSpacing/2))
                     .append("│\n");
         }
 
