@@ -751,6 +751,7 @@ public record ThreadMessage(Status status, String player, String type, String[] 
 
         for (Integer cardId : order) {
             args[index] = cardId.toString();
+            index++;
         }
 
         return new ThreadMessage(

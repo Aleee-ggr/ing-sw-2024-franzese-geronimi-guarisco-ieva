@@ -259,7 +259,6 @@ public abstract class Server {
 
         if (response.status() == Status.OK) {
             Deque<Integer> cards = new ArrayDeque<>();
-
             for (String arg : response.args()) {
                 cards.add(Integer.parseInt(arg));
             }
