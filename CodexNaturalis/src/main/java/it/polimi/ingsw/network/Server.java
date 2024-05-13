@@ -150,18 +150,17 @@ public abstract class Server {
 
         HashMap<String, Integer> scoreMap = new HashMap<>();
 
-        if (response.args() != null) {
+        if (response.status() == Status.OK) {
             for (String arg : response.args()) {
                 String[] parts = arg.split(":");
-                if (parts.length == 2) {
-                    String key = parts[0];
-                    Integer value = Integer.parseInt(parts[1]);
-                    scoreMap.put(key, value);
-                }
+                String key = parts[0];
+                Integer value = Integer.parseInt(parts[1]);
+                scoreMap.put(key, value);
             }
+            return scoreMap;
+        } else {
+            return null;
         }
-
-        return scoreMap;
     }
 
     public static ArrayList<Integer> getHandServer(UUID game, String username) {
