@@ -54,7 +54,7 @@ public class HandView implements Component{
                             .append(Resource.fromString(goldCard.getType()).toChar())
                             .append(": ")
                             .append(goldCard.getScore())
-                            .append(" ".repeat(panelWidth - "R: 0".length() - (Integer.toString(cardNum).length()) -1));
+                            .append(" ".repeat(panelWidth - " R: 0".length() - (Integer.toString(cardNum).length()) -1));
                 }
             } else {
                 out.append(" ".repeat(panelWidth - (Integer.toString(cardNum).length()) - 1));
