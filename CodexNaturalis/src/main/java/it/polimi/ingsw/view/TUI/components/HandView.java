@@ -8,6 +8,7 @@ import it.polimi.ingsw.view.TUI.components.printables.PrintCards;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class HandView implements Component{
@@ -65,8 +66,15 @@ public class HandView implements Component{
                         .append(" ".repeat(leftRightPadding))
                         .append("\n");
             }
-            out.append(" ".repeat(panelWidth))
-                    .append("\n");
+            if (card instanceof GoldCard goldCard) {
+                for (Map.Entry<Resource, Integer> e: goldCard.getRequirements().entrySet()) {
+                    out.append(" %c:%d".formatted(e.getKey().toChar(), e.getValue()));
+                }
+                out.append(" ".repeat(panelWidth - goldCard.getRequirements().size() * 4));
+            } else {
+                out.append(" ".repeat(panelWidth));
+            }
+            out.append("\n");
             cardNum++;
         }
         for (int i = 0; i < panelHeight - cardsToPrint.size() * (PrintCards.height + 2); i++) {
