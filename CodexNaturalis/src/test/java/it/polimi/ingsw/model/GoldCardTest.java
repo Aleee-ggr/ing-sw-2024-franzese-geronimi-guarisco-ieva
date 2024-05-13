@@ -26,7 +26,7 @@ public class GoldCardTest {
         requirements.put(Resource.FUNGI, 2);
         requirements.put(Resource.ANIMAL, 1);
 
-        GoldCard goldCard = new GoldCard(1, null, null, requirements, null);
+        GoldCard goldCard = new GoldCard(1, null, null, requirements, null, 0, null);
 
         Assert.assertTrue(goldCard.checkRequirements(player));
     }
@@ -37,7 +37,7 @@ public class GoldCardTest {
         requirements.put(Resource.FUNGI, 2);
         requirements.put(Resource.PLANT, 1);
 
-        GoldCard goldCard = new GoldCard(1, null, null, requirements, null);
+        GoldCard goldCard = new GoldCard(1, null, null, requirements, null, 0, null);
 
         Assert.assertFalse(goldCard.checkRequirements(player));
     }

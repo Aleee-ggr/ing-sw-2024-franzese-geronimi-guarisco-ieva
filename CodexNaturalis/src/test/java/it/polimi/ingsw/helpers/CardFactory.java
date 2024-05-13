@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.cards.StdCard;
 
 public abstract class CardFactory {
     public static GoldCard emptyGoldCard() {
-        return new GoldCard(-1, null, null, null, null);
+        return new GoldCard(-1, null, null, null, null, 0, null);
     }
 
     public static StdCard emptyStdCard() {

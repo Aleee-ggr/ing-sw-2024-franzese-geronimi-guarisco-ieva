@@ -15,7 +15,8 @@ import java.util.function.Function;
 public class GoldCard extends ColoredCard{
     private final ConcurrentHashMap<Resource, Integer> requirements;
     private final Function<Player, Integer> calculateScore;
-
+    private final int score;
+    private final String type;
     /**
      * Constructor for the GoldCard class.
      * @param id Unique identifier of the card.
@@ -25,12 +26,21 @@ public class GoldCard extends ColoredCard{
      * @param calculateScore Function to calculate the score based on the player.
      */
     public GoldCard(int id, Corner[] frontCorners, Resource backResource, Map<Resource, Integer> requirements,
-                    Function<Player, Integer> calculateScore) {
+                    Function<Player, Integer> calculateScore, int score, String type) {
         super(id, frontCorners, backResource);
         this.requirements = new ConcurrentHashMap<>(requirements);
         this.calculateScore = calculateScore;
+        this.score = score;
+        this.type = type;
     }
 
+    public int getScore() {
+        return score;
+    }
+
+    public String getType() {
+        return type;
+    }
     /**
      * Checks if the specified player meets the requirements to place this gold card.
      * Returns true if the player satisfies all resource requirements specified for this card,

@@ -1,10 +1,13 @@
 package it.polimi.ingsw.view.TUI.components;
 
 import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.cards.GoldCard;
+import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.components.printables.PrintCards;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class HandView implements Component{
@@ -12,7 +15,7 @@ public class HandView implements Component{
     public static final int panelWidth = 19;
 
     private final ClientInterface client;
-    private final ArrayList<PrintCards> cardsToPrint = new ArrayList<>();
+    private final List<Card> cardsToPrint = new ArrayList<>();
     private final String outputHand;
 
 
@@ -24,9 +27,7 @@ public class HandView implements Component{
     public HandView(ClientInterface client) {
         this.client = client;
         ArrayList<Card> intHand = client.getPlayerData().getClientHand();
-        for(Card card : intHand){
-            cardsToPrint.add(new PrintCards(card));
-        }
+        cardsToPrint.addAll(intHand);
         outputHand = setHand();
     }
 
@@ -35,12 +36,30 @@ public class HandView implements Component{
         int leftRightPadding = (panelWidth - PrintCards.width) / 2;
         Integer cardNum = 1;
 
-        for (PrintCards card : cardsToPrint) {
+        for (Card card : cardsToPrint) {
             out.append(cardNum)
-                    .append(".")
-                    .append(" ".repeat(panelWidth - (Integer.toString(cardNum).length()) - 1))
-                    .append("\n");
-            for (String line : card.toString().split("\n")) {
+                    .append(".");
+            if (card instanceof GoldCard goldCard) {
+                if (goldCard.getType().equals("cover")) {
+                    out.append(" cover: ")
+                            .append(goldCard.getScore())
+                            .append(" ".repeat(panelWidth - " cover: 0".length() - (Integer.toString(cardNum).length()) - 1));
+                } else if (goldCard.getType().equals("none")) {
+                    out.append(" ")
+                            .append(goldCard.getScore())
+                            .append(" ".repeat(panelWidth - " 0".length() - (Integer.toString(cardNum).length()) -1));
+                } else {
+                    out.append(" ")
+                            .append(Resource.fromString(goldCard.getType()).toChar())
+                            .append(": ")
+                            .append(goldCard.getScore())
+                            .append(" ".repeat(panelWidth - "R: 0".length() - (Integer.toString(cardNum).length()) -1));
+                }
+            } else {
+                out.append(" ".repeat(panelWidth - (Integer.toString(cardNum).length()) - 1));
+            }
+            out.append("\n");
+            for (String line : new PrintCards(card).toString().split("\n")) {
                 out.append(" ".repeat(leftRightPadding))
                         .append(line)
                         .append(" ".repeat(leftRightPadding))

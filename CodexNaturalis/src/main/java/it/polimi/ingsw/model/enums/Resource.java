@@ -22,4 +22,8 @@ public enum Resource {
             default -> ' ';
         };
     }
+
+    public static Resource fromString(String string) {
+        return Resource.valueOf(string.toUpperCase());
+    }
 }

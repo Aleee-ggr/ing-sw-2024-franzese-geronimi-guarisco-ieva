@@ -69,6 +69,8 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
             if (jpoints == null) {
                 throw new JsonFormatException("points: tag not found!");
             }
+            String type = jpoints.get("type").getAsString();
+            int points = jpoints.get("value").getAsInt();
             Function<Player, Integer> point_calculator = getPointCalculator(jpoints);
 
             JsonArray jcorners = card_obj.getAsJsonArray("corners");
@@ -78,7 +80,7 @@ public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
             Corner[] corners = getCorners(jcorners);
 
             deck.add(
-                    new GoldCard(id, corners, resource, card_requirements, point_calculator)
+                    new GoldCard(id, corners, resource, card_requirements, point_calculator, points, type)
             );
         }
         return new Deck<>(deck);

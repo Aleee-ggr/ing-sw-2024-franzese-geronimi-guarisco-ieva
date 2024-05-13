@@ -141,7 +141,7 @@ public abstract class Server {
         }
     }
 
-    public static HashMap<String, Integer> getScoreMapServer(UUID game, String username) {
+        public static HashMap<String, Integer> getScoreMapServer(UUID game, String username) {
         ThreadMessage message = ThreadMessage.getScoreMap(
                 username
         );
