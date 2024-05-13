@@ -118,15 +118,19 @@ public class TuiController {
         waitUpdate();
         fetchData();
         compositor = new Compositor(client);
+
+        out.print(compositor);
+        out.flush();
+
         placed = false;
         while (client.getGameState() != GameState.STOP) {
-            out.print(compositor);
-            out.flush();
             try {
                 String command = in.readLine();
                 handleCommand(command);
             } catch (IOException e) {throw new RuntimeException(e);}
             clear();
+            out.print(compositor);
+            out.flush();
             waitUpdate();
             fetchData();
         }
@@ -209,6 +213,7 @@ public class TuiController {
                     position = Integer.parseInt(cmd[2]);
                     if (!placed) {
                         place(id, position);
+                        placed = true;
                     }
                     fetchData();
                     break;

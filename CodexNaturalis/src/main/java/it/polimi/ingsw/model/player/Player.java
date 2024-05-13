@@ -10,9 +10,8 @@ import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -244,25 +243,38 @@ public class Player {
      *
      * @param playedCard   The card to be played.
      * @param coordinates  The coordinates where the card should be placed on the board.
+     *
+     * TODO remove covered resources
      */
     public void playCard(ColoredCard playedCard, Coordinates coordinates) throws RequirementsError {
-        if (playedCard instanceof GoldCard goldCard) {
-            if (goldCard.checkRequirements(this)) {
-                board.placeCard(goldCard, coordinates);
-                game.getGameBoard().updateScore(this, goldCard.getScore(this));
-                this.score = game.getGameBoard().getScore().get(this);
+        if (playedCard.isFrontSideUp()) {
+            for (Resource r : Arrays.stream(playedCard.getFrontCorners()).map(Corner::getCornerResource).toArray(Resource[]::new)){
+                playerResources.put(r, playerResources.get(r) + 1);
             }
-            else {
-                throw new RequirementsError();
-            }
-        } else {
-            StdCard stdCard = (StdCard) playedCard;
-            board.placeCard(stdCard, coordinates);
-            if (stdCard.isPoint()) {
-                game.getGameBoard().updateScore(this, 1);
-                this.score = game.getGameBoard().getScore().get(this);
+
+            if (playedCard instanceof GoldCard goldCard) {
+                if (goldCard.checkRequirements(this)) {
+                    board.placeCard(goldCard, coordinates);
+                    game.getGameBoard().updateScore(this, goldCard.getScore(this));
+                    this.score = game.getGameBoard().getScore().get(this);
+                }
+                else {
+                    throw new RequirementsError();
+                }
+            } else {
+                StdCard stdCard = (StdCard) playedCard;
+                board.placeCard(stdCard, coordinates);
+                if (stdCard.isPoint()) {
+                    game.getGameBoard().updateScore(this, 1);
+                    this.score = game.getGameBoard().getScore().get(this);
+                }
             }
         }
+
+        else {
+            playerResources.put(playedCard.getBackResource(), playerResources.get(playedCard.getBackResource()) + 1);
+        }
+
         for (int i = 0; i < GameConsts.firstHandDim; i++) {
             if (hand[i].equals(playedCard)) {
                 hand[i] = null;

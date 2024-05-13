@@ -89,7 +89,7 @@ public class Controller {
     public void placeCard(String username, Coordinates coordinates, Integer cardId, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
-            user.getPlayerBoard().placeCard(Game.getCardByID(cardId), coordinates);
+            user.playCard((ColoredCard) Game.getCardByID(cardId), coordinates);
         } catch (IndexOutOfBoundsException e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, "Invalid card placing index"));
         } catch (UnrecognisedCardException e) {
@@ -180,7 +180,9 @@ public class Controller {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
 
-            ColoredCard[] hand = user.getHand();
+            ColoredCard[] hand = Arrays.stream(user.getHand())
+                    .filter(Objects::nonNull)
+                    .toArray(ColoredCard[]::new);
             ArrayList<Integer> handIds = new ArrayList<>();
 
             for (ColoredCard card : hand) {
