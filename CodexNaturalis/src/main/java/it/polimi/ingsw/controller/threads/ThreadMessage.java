@@ -507,7 +507,12 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         int index = 0;
 
         for (Map.Entry<String, Integer> entry : scoreMap.entrySet()) {
-            args[index] = entry.getKey() + ":" + entry.getValue().toString();
+            args[index] = entry.getKey() + ":";
+            if (entry.getValue() == null) {
+                args[index] += "0";
+            } else {
+                args[index] += entry.getValue().toString();
+            }
             index++;
         }
 

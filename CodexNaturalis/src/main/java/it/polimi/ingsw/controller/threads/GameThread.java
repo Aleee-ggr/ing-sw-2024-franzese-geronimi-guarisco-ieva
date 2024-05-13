@@ -158,30 +158,44 @@ public class GameThread extends Thread {
         boolean place = false;
         while (!place){
             ThreadMessage msg = getMessage();
-            if(GameState.getters.contains(msg.type()) || msg.type().equals("place") && msg.player().equals(currentPlayer)){
+            if (msg.type().contains("get")){
                 respond(msg);
-            } else if(!msg.player().equals(currentPlayer)){
-                messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "not player's turn."));
-            } else {
-                messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "Invalid message for context: %s".formatted(msg.type())));
+                continue;
             }
-            if(msg.type().equals("place")){
+            if (msg.type().equals("place") && msg.player().equals(playerName)){
                 place = true;
+                respond(msg);
+                continue;
             }
+
+            messageQueue.add(
+                    ThreadMessage.genericError(
+                            msg.player(),
+                            msg.messageUUID(),
+                            "Invalid message for context PLACE: %s".formatted(msg.type())
+                    )
+            );
         }
 
         while (!draw && !controller.getGame().getGameBoard().areCardsOver()){
             ThreadMessage msg = getMessage();
-            if(msg.type().equals("draw") && msg.player().equals(currentPlayer)){
+            if (msg.type().contains("get")){
                 respond(msg);
-            } else if(!msg.player().equals(currentPlayer)){
-                messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "not player's turn."));
-            } else {
-                messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "Invalid message for context: %s".formatted(msg.type())));
+                continue;
             }
-            if(msg.type().equals("draw")){
+            if(msg.type().equals("draw")  && msg.player().equals(playerName)){
                 draw = true;
+                respond(msg);
+                continue;
             }
+
+            messageQueue.add(
+                    ThreadMessage.genericError(
+                            msg.player(),
+                            msg.messageUUID(),
+                            "Invalid message for context DRAW: %s".formatted(msg.type())
+                    )
+            );
         }
 
         Player player = controller.getGame().getPlayers().stream().filter(p -> p.getUsername().equals(playerName)).toList().getFirst();
