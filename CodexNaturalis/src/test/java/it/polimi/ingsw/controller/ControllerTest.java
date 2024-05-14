@@ -212,7 +212,8 @@ public class ControllerTest {
         controller.placeStartingCard(usernames[0], true, msgUUID);
         msgQueue.take();
 
-        controller.getPlacingOrder(usernames[0], msgUUID);
+        controller.getPlacingOrder(usernames[0], usernames[0], msgUUID);
+
         msg = msgQueue.take();
         assertEquals(Integer.toString(expectedId), msg.args()[0]);
     }
@@ -230,7 +231,7 @@ public class ControllerTest {
             controller.placeStartingCard(username, true, msgUUID);
             msgQueue.take();
 
-            controller.getPlacingOrder(usernames[0], msgUUID);
+            controller.getPlacingOrder(usernames[0], usernames[0], msgUUID);
             ThreadMessage msg = msgQueue.take();
             assertEquals(1, msg.args().length);
         }

@@ -355,6 +355,7 @@ public class GameThread extends Thread {
             case "getPlacingOrder":
                 controller.getPlacingOrder(
                         msg.player(),
+                        msg.args()[0],
                         msg.messageUUID());
                 break;
             case "getPlayers":

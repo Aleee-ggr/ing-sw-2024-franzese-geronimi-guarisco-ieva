@@ -350,9 +350,9 @@ public class Controller {
      * @param username the username of the player that requests the last placed cards.
      * @param messageId the unique identifier of the message.
      * */
-    public void getPlacingOrder(String username, UUID messageId){
+    public void getPlacingOrder(String username, String usernameRequiredData, UUID messageId) {
         try {
-            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(usernameRequiredData)).toArray()[0];
             Deque<Integer> cardIds = new ArrayDeque<>();
             for (Card card : user.getPlayerBoard().getLastPlacedCards()) {
                 cardIds.add(card.getId());
