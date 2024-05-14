@@ -34,7 +34,7 @@ public class GameThread extends Thread {
     public GameThread(BlockingQueue<ThreadMessage> messageQueue, Map<String, Boolean> turnMap, Integer maxPlayers) {
         this.messageQueue = messageQueue;
         this.maxPlayers = maxPlayers;
-        this.controller = new Controller(this, messageQueue, maxPlayers);
+        this.controller = new Controller(messageQueue, maxPlayers);
         this.turnMap = turnMap;
     }
 
