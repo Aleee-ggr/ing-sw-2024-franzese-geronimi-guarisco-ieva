@@ -22,6 +22,9 @@
          <StackPane.margin>
             <Insets bottom="80.0" />
          </StackPane.margin>
+         <font>
+            <Font name="Trattatello" size="35.0" />
+         </font>
       </TextField>
       <Label text="INSERT THE SERVER IP " textFill="#432918">
          <font>
@@ -35,6 +38,9 @@
          <StackPane.margin>
             <Insets top="300.0" />
          </StackPane.margin>
+         <font>
+            <Font name="Trattatello" size="35.0" />
+         </font>
       </TextField>
       <Label text="PORT" textFill="#432918">
          <font>
