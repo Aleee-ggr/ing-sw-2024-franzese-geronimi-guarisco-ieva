@@ -154,7 +154,6 @@ public interface ClientInterface {
     /**
      * Method to fetch all the players placing order from the server.
      * @return True if the players placing order was fetched successfully, false otherwise.
-     * @throws IOException If an I/O error occurs.
      */
     boolean fetchPlayersPlacingOrder() throws RemoteException;
 

@@ -65,7 +65,7 @@ public abstract class Server {
     }
 
     /**
-     * Check whether the given credentials are valid (size < 16 and username is not reused)
+     * Check whether the given credentials are valid (size less than 16 and username is not reused)
      * @param username the username of the player
      * @param password the password of the player
      * @return true if the given credentials are valid, false otherwise

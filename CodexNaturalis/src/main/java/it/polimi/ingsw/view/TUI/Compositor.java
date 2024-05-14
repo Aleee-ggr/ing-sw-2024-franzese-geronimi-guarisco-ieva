@@ -44,7 +44,6 @@ public class Compositor {
         }
 
         this.resources = new ResourceView(client.getUsername());
-        resources.setResourceCount(client.getPlayerData().getResources());
 
         this.hand = new HandView(client);
         this.scoreBoard = new ScoreBoard(client);
@@ -57,6 +56,7 @@ public class Compositor {
 
     public String updateView(){
         StringBuilder out = new StringBuilder();
+        resources.setResourceCount(client.getPlayerData().getResources());
 
         for (MiniBoard miniBoard : miniBoard) {
             Map<Coordinates, Integer> convertedBoard = convertBoard(((Client)client).getOpponentData().get(miniBoard.getUsername()).getBoard());
