@@ -212,9 +212,28 @@ public class ControllerTest {
         controller.placeStartingCard(usernames[0], true, msgUUID);
         msgQueue.take();
 
-        controller.getBoard(usernames[0], usernames[0], msgUUID);
+        controller.getPlacingOrder(usernames[0], msgUUID);
         msg = msgQueue.take();
-        assertEquals("0,0,%d".formatted(expectedId), msg.args()[0]);
+        assertEquals(Integer.toString(expectedId), msg.args()[0]);
+    }
+
+    @Test
+    public void testPlacingOrderStartingCardOnlyBothPlayers() throws InterruptedException {
+        String[] usernames = {"p1", "p2"};
+        fillGame(usernames);
+
+        UUID msgUUID = UUID.randomUUID();
+        for (String username : usernames) {
+            controller.getStartingCards(username, msgUUID);
+            msgQueue.take();
+
+            controller.placeStartingCard(username, true, msgUUID);
+            msgQueue.take();
+
+            controller.getPlacingOrder(usernames[0], msgUUID);
+            ThreadMessage msg = msgQueue.take();
+            assertEquals(1, msg.args().length);
+        }
     }
 
     private void fillGame(String[] usernames) throws InterruptedException {
