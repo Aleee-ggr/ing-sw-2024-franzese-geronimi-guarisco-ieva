@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -68,10 +69,11 @@ public class WaitingRoomController implements Initializable {
             ArrayList<String> playersList = client.getPlayers();
             for (String player : playersList) {
                 System.out.println(player);
-                Label playerLabel = new Label(player);
-                playerLabel.setStyle("-fx-font-weight: bold");
-                listofPlayers.getChildren().add(playerLabel);
             }*/
+
+            Label playerLabel = new Label(client.getUsername());
+            playerLabel.setStyle("-fx-font-weight: bold;" + "-fx-text-fill: #432918;" + "-fx-font-family: Trattatello;" + "-fx-font-size: 30px;");
+            listOfPlayers.getChildren().add(playerLabel);
 
             Task<Void> waitUpdateTask = new Task<>() {
                 @Override
