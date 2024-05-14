@@ -83,31 +83,12 @@ public class RmiServer extends Server implements RmiServerInterface {
 
     @Override
     public Integer drawCard(UUID game, String player, Integer position) throws RemoteException {
-        ThreadMessage message = ThreadMessage.draw(
-                player,
-                position
-        );
-
-        sendMessage(game, message);
-        ThreadMessage response = threadMessages.get(game).remove();
-
-        if (response.status() != Status.OK) {
-            return null;
-        }
-        return Integer.parseInt(response.args()[0]);
+        return drawCardServer(game, player, position);
     }
 
     @Override
     public boolean placeCard(UUID game, String player, Coordinates coordinates, Integer cardId) throws RemoteException {
-        ThreadMessage message = ThreadMessage.placeCard(
-                player,
-                coordinates,
-                cardId
-        );
-
-        sendMessage(game, message);
-
-        return threadMessages.get(game).remove().status() != Status.ERROR;
+        return placeCardServer(game, player, coordinates, cardId);
     }
 
     @Override

@@ -66,11 +66,14 @@ public class RmiClient extends Client implements ClientInterface {
      */
     @Override
     public void drawCard(int position) throws RemoteException {
-        int id = remoteObject.drawCard(this.gameId, username, position);
-        try{
-            ((PlayerData) playerData.get(username)).addToHand(Game.getCardByID(id));
-        } catch (HandFullException e ){
-            throw new RuntimeException(e);
+        Integer id = remoteObject.drawCard(this.gameId, username, position);
+
+        if (id != null) {
+            try {
+                ((PlayerData) playerData.get(username)).addToHand(Game.getCardByID(id));
+            } catch (HandFullException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -104,8 +107,10 @@ public class RmiClient extends Client implements ClientInterface {
             } catch (ElementNotInHand e) {
                 throw new RuntimeException(e);
             }
+
+            return true;
         }
-        return success;
+        return false;
     }
 
     /**

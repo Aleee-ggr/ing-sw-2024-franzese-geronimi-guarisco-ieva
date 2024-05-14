@@ -9,6 +9,7 @@ import it.polimi.ingsw.controller.threads.ThreadMessage;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.enums.Resource;
 
+import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -62,6 +63,34 @@ public abstract class Server {
         ThreadMessage response = threadMessages.get(game).remove();
 
         return response.status() != Status.ERROR;
+    }
+
+    public static Integer drawCardServer(UUID game, String player, Integer position) throws RemoteException {
+        ThreadMessage message = ThreadMessage.draw(
+                player,
+                position
+        );
+
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+
+        if (response.status() == Status.OK) {
+            return Integer.parseInt(response.args()[0]);
+        } else {
+            return null;
+        }
+    }
+
+    public static boolean placeCardServer(UUID game, String player, Coordinates coordinates, Integer cardId) throws RemoteException {
+        ThreadMessage message = ThreadMessage.placeCard(
+                player,
+                coordinates,
+                cardId
+        );
+
+        sendMessage(game, message);
+
+        return threadMessages.get(game).remove().status() != Status.ERROR;
     }
 
     /**
