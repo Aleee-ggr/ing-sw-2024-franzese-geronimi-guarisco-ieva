@@ -1,26 +1,25 @@
 package it.polimi.ingsw.view.GUI.SceneControllers;
 
 import it.polimi.ingsw.network.ClientInterface;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class WaitingRoomController implements Initializable {
     private ClientInterface client;
 
     @FXML
-    private StackPane listofPlayers;
+    private StackPane listOfPlayers;
 
     /**
      * Changes the scene back to the Main Menu when the user clicks "Back".
@@ -60,7 +59,7 @@ public class WaitingRoomController implements Initializable {
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
         if (client != null) {
-            try {
+           /* try {
                 client.fetchPlayers();
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -72,7 +71,37 @@ public class WaitingRoomController implements Initializable {
                 Label playerLabel = new Label(player);
                 playerLabel.setStyle("-fx-font-weight: bold");
                 listofPlayers.getChildren().add(playerLabel);
-            }
+            }*/
+
+            Task<Void> waitUpdateTask = new Task<>() {
+                @Override
+                protected Void call() throws Exception {
+                    client.waitUpdate();
+                    return null;
+                }
+            };
+
+            waitUpdateTask.setOnSucceeded(event -> {
+                try {
+                    client.fetchPlayers();
+                    client.fetchStartingObjectives();
+                    client.fetchStartingCard();
+                } catch (IOException e) {throw new RuntimeException(e);}
+
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseObjectiveScene.fxml"));
+                    ChooseObjectiveController controller = new ChooseObjectiveController();
+                    controller.setClient(client);
+                    loader.setController(controller);
+                    Scene scene = new Scene(loader.load(), 1600, 900);
+                    Stage stage = (Stage) listOfPlayers.getScene().getWindow();
+                    stage.setScene(scene);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+            new Thread(waitUpdateTask).start();
         }
     }
 
