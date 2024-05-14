@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.controller.threads.GameThread;
 import it.polimi.ingsw.controller.threads.ThreadMessage;
 import it.polimi.ingsw.helpers.exceptions.model.ExistingUsernameException;
@@ -9,6 +10,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.ColoredCard;
+import it.polimi.ingsw.model.cards.MockCard;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.model.player.Player;
@@ -316,6 +318,9 @@ public class Controller {
             HashMap<Coordinates, Card> board = user.getPlayerBoard().getBoard();
             HashMap<Coordinates, Integer> boardIds = new HashMap<>();
             for (Coordinates coordinate : board.keySet()) {
+                if(board.get(coordinate).getId() == GameConsts.notFillableId){
+                    continue;
+                }
                 boardIds.put(coordinate, board.get(coordinate).getId());
             }
             messageQueue.add(ThreadMessage.getBoardResponse(username, boardIds, messageId));

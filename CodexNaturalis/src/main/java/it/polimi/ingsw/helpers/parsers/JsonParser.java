@@ -99,7 +99,7 @@ public interface JsonParser<Class> {
         Corner[] front_corners = new Corner[4];
         for (int pos = 0; pos < 4; pos++) {
             if (corners.get(pos).getAsString().equals("NONCOVERABLE")) {
-                front_corners[pos] = new Corner(Resource.NONE, false);
+                front_corners[pos] = new Corner(Resource.NONCOVERABLE, false);
             }
             else {
                 front_corners[pos] = new Corner(getResource(corners.get(pos)), true);

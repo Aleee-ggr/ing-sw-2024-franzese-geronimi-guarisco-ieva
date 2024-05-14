@@ -141,10 +141,12 @@ public class PlayerBoard {
      * @see Coordinates
      */
     public void placeCard(Card card, Coordinates coordinates) throws IndexOutOfBoundsException, UnrecognisedCardException{
-
         board.put(coordinates, card);
+
         lastPlacedPosition = coordinates;
         lastPlacedCards.add(card);
+        validPlacements.remove(coordinates);
+
         Corner[] corners;
 
         if(card.isFrontSideUp()){
@@ -191,8 +193,8 @@ public class PlayerBoard {
                 switch (i) {
                     case 0 -> handleCase(coordinates, c[i], -1, 0);
                     case 1 -> handleCase(coordinates, c[i], 0, 1);
-                    case 2 -> handleCase(coordinates, c[i], 1, 0);
-                    case 3 -> handleCase(coordinates, c[i], 0, -1);
+                    case 2 -> handleCase(coordinates, c[i], 0, -1);
+                    case 3 -> handleCase(coordinates, c[i], 1, 0);
                 }
             }
         } catch (IndexOutOfBoundsException e) {
@@ -216,15 +218,22 @@ public class PlayerBoard {
      * @see Corner
      */
     private void handleCase(Coordinates coordinates, Corner corner, int dX, int dY) {
+        Coordinates c = new Coordinates(coordinates.x() + dX, coordinates.y() + dY);
         if(corner.getCornerResource() == Resource.NONCOVERABLE || !corner.isCoverable()) {
-            return;
+
+            if(!board.containsKey(c)){
+                board.put(coordinates.horizontal(dX).vertical(dY), notFillable);
+            }
+            validPlacements.remove(c);
+
         } else {
+
             if(corner.getCornerResource() != Resource.NONE) {
                 boardOwner.updateResourcesValue(corner.getCornerResource(), GameConsts.numberOfResourcesPerCorner);
             }
-            System.out.println(coordinates.x() + dX + " " + coordinates.y() + dY);
-            System.out.println("adding to valid placements" + coordinates.x() + dX + " " + coordinates.y() + dY);
-            validPlacements.add(new Coordinates(coordinates.x() + dX, coordinates.y() + dY));
+            if(!board.containsKey(c)){
+                validPlacements.add(c);
+            }
         }
     }
 }
