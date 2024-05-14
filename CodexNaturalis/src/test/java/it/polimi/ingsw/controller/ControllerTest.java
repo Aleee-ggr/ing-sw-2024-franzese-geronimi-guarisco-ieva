@@ -13,6 +13,7 @@ import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import static java.lang.Math.abs;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -108,7 +109,6 @@ public class ControllerTest {
     public void testDrawTwiceDifferentCard() throws InterruptedException {
         String[] usernames = {"p1", "p2"};
         fillGame(usernames);
-
         Set<Integer> drawnCards = new HashSet<>();
         int cardCount = 30;
         for (int i = 0; i < cardCount; i++) {
@@ -121,6 +121,60 @@ public class ControllerTest {
         assertEquals(cardCount, drawnCards.size());
     }
 
+    @Test
+    public void testGetStartingCard() throws InterruptedException {
+        String[] usernames = {"p1", "p2"};
+        fillGame(usernames);
+
+        UUID msgUUID = UUID.randomUUID();
+        controller.getStartingCards(usernames[0], msgUUID);
+        ThreadMessage msg = msgQueue.take();
+        int id = Integer.parseInt(msg.args()[0]);
+        assertTrue(81 <= id && id <= 86);
+    }
+
+    @Test
+    public void testPlaceStartingCard() throws InterruptedException {
+        String[] usernames = {"p1", "p2"};
+        fillGame(usernames);
+
+        UUID msgUUID = UUID.randomUUID();
+        controller.getStartingCards(usernames[0], msgUUID);
+        msgQueue.take();
+
+        msgUUID = UUID.randomUUID();
+        controller.placeStartingCard(usernames[0], true, msgUUID);
+        ThreadMessage msg = msgQueue.take();
+        assertEquals(Status.OK, msg.status());
+    }
+
+    @Test
+    public void testGetBoard() throws InterruptedException {
+        String[] usernames = {"p1", "p2"};
+        fillGame(usernames);
+
+        int expectedId;
+        UUID msgUUID = UUID.randomUUID();
+        controller.getStartingCards(usernames[0], msgUUID);
+        ThreadMessage msg = msgQueue.take();
+        expectedId = Integer.parseInt(msg.args()[0]);
+
+        msgUUID = UUID.randomUUID();
+        controller.placeStartingCard(usernames[0], false, msgUUID);
+        msgQueue.take();
+
+        msgUUID = UUID.randomUUID();
+        controller.getBoard(usernames[0], usernames[0], msgUUID);
+        msg = msgQueue.take();
+        String[] data = msg.args()[0].split(",");
+        int x = Integer.parseInt(data[0]);
+        int y = Integer.parseInt(data[1]);
+        int cardId = Integer.parseInt(data[2]);
+
+        assertEquals(0, x);
+        assertEquals(0, y);
+        assertEquals(expectedId, abs(cardId));
+    }
 
     private void fillGame(String[] usernames) throws InterruptedException {
         for (String username : usernames) {
