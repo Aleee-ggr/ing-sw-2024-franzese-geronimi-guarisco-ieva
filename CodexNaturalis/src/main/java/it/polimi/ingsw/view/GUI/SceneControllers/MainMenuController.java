@@ -89,6 +89,17 @@ public class MainMenuController implements Initializable {
             for (UUID uuid : client.getAvailableGames()) {
                 System.out.println(uuid);
                 Button button = new Button(uuid.toString());
+                button.setStyle("-fx-background-color: ffffff;" +
+                                "-fx-border-color: black;" +
+                                "-fx-border-width: 2;" +
+                                "-fx-border-style: solid;" +
+                                "-fx-pref-height: 100;" +
+                                "-fx-pref-width: 700;" +
+                                "-fx-text-fill: #432918;" +
+                                "-fx-font-family: Trattatello;" +
+                                "-fx-font-size: 30;" +
+                                "-fx-cursor: hand;"
+                );
                 button.setOnAction(event -> {
                     try {
                         client.joinGame(uuid);
