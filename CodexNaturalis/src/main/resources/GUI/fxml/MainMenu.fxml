@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.effect.Glow?>
-<?import javafx.scene.Group?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" style="-fx-background-color: efedd6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fitHeight="900.0" fitWidth="1600.0" pickOnBounds="true" preserveRatio="true">
@@ -21,9 +23,9 @@
       <Group StackPane.alignment="CENTER">
          <children>
             <ScrollPane fx:id="listOfGames" hbarPolicy="NEVER" nodeOrientation="LEFT_TO_RIGHT" opacity="0.5" pannable="true" prefHeight="434.0" prefWidth="962.0" style="-fx-border-color: #432918; -fx-border-width: 4;">
-              <content>
-                 <VBox fx:id="gameButtonsContainer" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
-              </content>
+               <content>
+                  <VBox fx:id="gameButtonsContainer" alignment="TOP_CENTER" minHeight="0.0" minWidth="0.0" prefHeight="425.0" prefWidth="953.0" />
+               </content>
             </ScrollPane>
          </children>
          <StackPane.margin>
