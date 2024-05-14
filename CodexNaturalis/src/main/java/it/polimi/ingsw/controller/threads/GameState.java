@@ -9,7 +9,8 @@ public enum GameState {
     ENDGAME,
     STOP;
     public static final ImmutableSet<String> lobby = ImmutableSet.of("join",
-                                                                     "getGameState");
+                                                                     "getGameState",
+                                                                    "getPlayers");
     public static final ImmutableSet<String> setup = ImmutableSet.of("join",
                                                                     "getHand",
                                                                     "getPlayers",

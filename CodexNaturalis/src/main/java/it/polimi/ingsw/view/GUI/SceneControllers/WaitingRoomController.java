@@ -9,18 +9,19 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class WaitingRoomController implements Initializable {
     private ClientInterface client;
 
     @FXML
-    private StackPane listOfPlayers;
+    private VBox listOfPlayers;
 
     /**
      * Changes the scene back to the Main Menu when the user clicks "Back".
@@ -60,7 +61,7 @@ public class WaitingRoomController implements Initializable {
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
         if (client != null) {
-           /* try {
+           try {
                 client.fetchPlayers();
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -68,12 +69,10 @@ public class WaitingRoomController implements Initializable {
 
             ArrayList<String> playersList = client.getPlayers();
             for (String player : playersList) {
-                System.out.println(player);
-            }*/
-
-            Label playerLabel = new Label(client.getUsername());
-            playerLabel.setStyle("-fx-font-weight: bold;" + "-fx-text-fill: #432918;" + "-fx-font-family: Trattatello;" + "-fx-font-size: 30px;");
-            listOfPlayers.getChildren().add(playerLabel);
+                Label playerLabel = new Label(player);
+                playerLabel.setStyle("-fx-font-weight: bold;" + "-fx-text-fill: #432918;" + "-fx-font-family: Trattatello;" + "-fx-font-size: 30px;");
+                listOfPlayers.getChildren().add(playerLabel);
+            }
 
             Task<Void> waitUpdateTask = new Task<>() {
                 @Override
