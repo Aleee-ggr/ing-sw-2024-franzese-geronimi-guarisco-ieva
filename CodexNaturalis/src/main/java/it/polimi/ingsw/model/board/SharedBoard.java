@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.model.player.Player;
 
 import java.util.Arrays;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -135,7 +134,13 @@ public class SharedBoard {
      */
     public ColoredCard drawVisible(int position) {
         if (visibleCards[position] != null) {
-            return visibleCards[position];
+            ColoredCard card = visibleCards[position];
+            if (position == 0 || position == 1) {
+                substituteCard(position, true);
+            } else if (position == 2 || position == 3) {
+                substituteCard(position, false);
+            }
+            return card;
         }
         return null;
     }
