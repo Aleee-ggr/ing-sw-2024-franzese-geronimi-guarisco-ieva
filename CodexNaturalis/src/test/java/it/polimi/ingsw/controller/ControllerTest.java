@@ -14,8 +14,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import static java.lang.Math.abs;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ControllerTest {
     private Controller controller;
@@ -129,7 +128,7 @@ public class ControllerTest {
         UUID msgUUID = UUID.randomUUID();
         controller.getStartingCards(usernames[0], msgUUID);
         ThreadMessage msg = msgQueue.take();
-        int id = Integer.parseInt(msg.args()[0]);
+        int id = abs(Integer.parseInt(msg.args()[0]));
         assertTrue(81 <= id && id <= 86);
     }
 
@@ -149,7 +148,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void testGetBoard() throws InterruptedException {
+    public void testGetBoardStartingCardOnly() throws InterruptedException {
         String[] usernames = {"p1", "p2"};
         fillGame(usernames);
 
@@ -157,7 +156,7 @@ public class ControllerTest {
         UUID msgUUID = UUID.randomUUID();
         controller.getStartingCards(usernames[0], msgUUID);
         ThreadMessage msg = msgQueue.take();
-        expectedId = Integer.parseInt(msg.args()[0]);
+        expectedId = abs(Integer.parseInt(msg.args()[0]));
 
         msgUUID = UUID.randomUUID();
         controller.placeStartingCard(usernames[0], false, msgUUID);
@@ -174,6 +173,48 @@ public class ControllerTest {
         assertEquals(0, x);
         assertEquals(0, y);
         assertEquals(expectedId, abs(cardId));
+    }
+
+    @Test
+    public void testGetBoardSharedDataStartingCardOnly() throws InterruptedException {
+        String[] usernames = {"p1", "p2"};
+        fillGame(usernames);
+
+        UUID msgUUID = UUID.randomUUID();
+        controller.getStartingCards(usernames[0], msgUUID);
+        msgQueue.take();
+
+        controller.placeStartingCard(usernames[0], false, msgUUID);
+        msgQueue.take();
+
+        controller.getBoard(usernames[0], usernames[0], msgUUID);
+        ThreadMessage msg = msgQueue.take();
+        String[] data_p1 = msg.args()[0].split(",");
+
+        controller.getBoard(usernames[1], usernames[0], msgUUID);
+        msg = msgQueue.take();
+        String[] data_p2 = msg.args()[0].split(",");
+
+        assertArrayEquals(data_p1, data_p2);
+    }
+
+    @Test
+    public void testPlacingOrderStartingCardOnly() throws InterruptedException {
+        String[] usernames = {"p1", "p2"};
+        fillGame(usernames);
+
+        int expectedId;
+        UUID msgUUID = UUID.randomUUID();
+        controller.getStartingCards(usernames[0], msgUUID);
+        ThreadMessage msg = msgQueue.take();
+        expectedId = abs(Integer.parseInt(msg.args()[0]));
+
+        controller.placeStartingCard(usernames[0], true, msgUUID);
+        msgQueue.take();
+
+        controller.getBoard(usernames[0], usernames[0], msgUUID);
+        msg = msgQueue.take();
+        assertEquals("0,0,%d".formatted(expectedId), msg.args()[0]);
     }
 
     private void fillGame(String[] usernames) throws InterruptedException {
