@@ -90,13 +90,10 @@ public class ControllerTest {
     @Test
     public void testStartingObjectivesUnique() throws InterruptedException {
         String[] usernames = {"p1", "p2"};
+        fillGame(usernames);
+
         Set<Integer> objectives = new HashSet<>(2 * GameConsts.objectiesToChooseFrom);
 
-        for (String username : usernames) {
-            UUID msgUUID = UUID.randomUUID();
-            controller.join(username, msgUUID);
-            msgQueue.take();
-        }
         for (String username : usernames) {
             UUID msgUUID = UUID.randomUUID();
             controller.getStartingObjectives(username, msgUUID);
@@ -105,5 +102,31 @@ public class ControllerTest {
             objectives.addAll(Arrays.stream(msg.args()).map(Integer::parseInt).toList());
         }
         assertEquals(2 * GameConsts.objectiesToChooseFrom, objectives.size());
+    }
+
+    @Test
+    public void testDrawTwiceDifferentCard() throws InterruptedException {
+        String[] usernames = {"p1", "p2"};
+        fillGame(usernames);
+
+        Set<Integer> drawnCards = new HashSet<>();
+        int cardCount = 30;
+        for (int i = 0; i < cardCount; i++) {
+            UUID msgUUID = UUID.randomUUID();
+            controller.draw(usernames[0], i % 6, msgUUID);
+            ThreadMessage msg = msgQueue.take();
+            drawnCards.add(Integer.parseInt(msg.args()[0]));
+        }
+
+        assertEquals(cardCount, drawnCards.size());
+    }
+
+
+    private void fillGame(String[] usernames) throws InterruptedException {
+        for (String username : usernames) {
+            UUID msgUUID = UUID.randomUUID();
+            controller.join(username, msgUUID);
+            msgQueue.take();
+        }
     }
 }
