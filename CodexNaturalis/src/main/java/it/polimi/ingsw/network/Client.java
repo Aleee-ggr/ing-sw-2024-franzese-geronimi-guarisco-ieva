@@ -135,6 +135,14 @@ public class Client {
     }
 
 
-
-
+    @Override
+    public String toString() {
+        StringBuilder out = new StringBuilder();
+        out.append("Username: " + this.username + "\n");
+        for (String p : players) {
+            out.append(p + ":\n");
+            out.append(playerData.get(p).toString());
+        }
+        return out.toString();
+    }
 }

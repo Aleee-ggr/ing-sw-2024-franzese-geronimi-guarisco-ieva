@@ -82,4 +82,14 @@ public abstract class ClientData {
         this.resources = resources;
     }
 
+    @Override
+    public String toString() {
+        return "board: " +
+                board.toString() +
+                "\norder: " +
+                order.toString() +
+                "\nresources: " +
+                resources;
+    }
+
 }
