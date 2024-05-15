@@ -1,5 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="server" type="Application" factoryName="Application">
+    <output_file path="server_log.nogit" is_save="true" />
     <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.App" />
     <module name="PSP11" />
     <option name="PROGRAM_PARAMETERS" value="server" />
