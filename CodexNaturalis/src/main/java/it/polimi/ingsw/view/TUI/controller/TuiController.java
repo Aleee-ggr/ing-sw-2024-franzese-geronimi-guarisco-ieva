@@ -9,10 +9,7 @@ import it.polimi.ingsw.view.TUI.components.StartingCardView;
 import it.polimi.ingsw.view.TUI.components.StartingObjectiveView;
 import it.polimi.ingsw.view.TUI.components.printables.ObjectiveCard;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -51,13 +48,13 @@ public class TuiController {
                 out.println("Select game to play (0 to create a new game)");
 
                 selected = select(0, client.getAvailableGames().size());
-                if (selected == 0) {
-                    createGame();
-                } else {
-                    UUID choice = client.getAvailableGames().get(selected - 1);
-                    client.joinGame(choice);
-                }
             } while (selected < 0);
+            if (selected == 0) {
+                createGame();
+            } else {
+                UUID choice = client.getAvailableGames().get(selected - 1);
+                client.joinGame(choice);
+            }
         } catch (IOException e) {throw new RuntimeException(e);}
     }
 
@@ -195,12 +192,15 @@ public class TuiController {
 
     /**
      * List of available commands:
-     *  - place [card] [position]: place the card in the given position
-     *  - view [deck|objectives|board]: show the selected element
-     *  - switch [player]: show the view from the given player side
-     *  - draw [int index]: draw the card at the given position
-     *  - w / a / s / d: move the view of the board
-     *  - h: show this list
+     * <ul>
+     *  <li> place [card] [position]: place the card in the given position</li>
+     *  <li> view [deck|objectives|board]: show the selected element </li>
+     *  <li> switch [player]: show the view from the given player side </li>
+     *  <li> draw [int index]: draw the card at the given position
+     *  0 to 3 are visible cards, 4 & 5 are respectively gold and std deck </li>
+     *  <li> w / a / s / d: move the view of the board</li>
+     *  <li> h: show this list </li>
+     *  </ul>
      * @param command the command to execute
      */
     private void handleCommand(String command) {
@@ -250,10 +250,11 @@ public class TuiController {
                               - place [card] [position]: place the card in the given position
                               - view [deck|objectives|board]: show the selected element
                               - switch [player]: show the view from the given player side
-                              - draw [int index]: draw the card at the given position
+                              - draw [int index]: draw the card at the given position, 0 to 3 are visible cards, 4 & 5 are respectively gold and std deck
                               - w / a / s / d: move the view of the board
-                              - h: show this list""");
-                    in.read();
+                              - h: show this list
+                              Press ENTER to continue""");
+                    in.readLine();
                     break;
             }
         } catch (IOException | NumberFormatException e) {throw new RuntimeException(e);}
