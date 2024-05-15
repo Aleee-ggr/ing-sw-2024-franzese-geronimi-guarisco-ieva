@@ -17,7 +17,7 @@ public class RmiTest {
     @BeforeClass
     public static void setup()  {
         try {
-            server = new RmiServer(9090);
+            server = new RmiServer(9091);
             Thread.sleep(2000);
         } catch (RemoteException | InterruptedException e) {
             throw new RuntimeException(e);
