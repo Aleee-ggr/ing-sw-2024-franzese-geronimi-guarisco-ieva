@@ -212,8 +212,10 @@ public class TuiController {
                     id = Integer.parseInt(cmd[1]) - 1;
                     position = Integer.parseInt(cmd[2]);
                     if (!placed) {
-                        place(id, position);
-                        placed = true;
+                        placed = place(id, position);
+                        if (!placed) {
+                            out.println("Invalid card or position");
+                        }
                     }
                     fetchData();
                     break;
@@ -262,11 +264,11 @@ public class TuiController {
         out.flush();
     }
 
-    private void place(int card, int position) {
+    private boolean place(int card, int position) {
         int id = client.getPlayerData().getClientHand().get(card).getId();
         Coordinates coordinates = client.getPlayerData().getValidPlacements().get(position);
         try {
-            client.placeCard(coordinates, id);
+            return client.placeCard(coordinates, id);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
