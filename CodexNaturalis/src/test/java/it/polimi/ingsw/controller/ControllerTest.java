@@ -263,16 +263,16 @@ public class ControllerTest {
                 .collect(Collectors.toCollection(ArrayList::new));
 
         if (res.removeFirst() != Resource.NONCOVERABLE) {
-            validCoordinates.add(new Coordinates(0, 1));
-        }
-        if (res.removeFirst() != Resource.NONCOVERABLE) {
             validCoordinates.add(new Coordinates(-1, 0));
         }
         if (res.removeFirst() != Resource.NONCOVERABLE) {
-            validCoordinates.add(new Coordinates(1, 0));
+            validCoordinates.add(new Coordinates(0, 1));
         }
         if (res.removeFirst() != Resource.NONCOVERABLE) {
             validCoordinates.add(new Coordinates(0, -1));
+        }
+        if (res.removeFirst() != Resource.NONCOVERABLE) {
+            validCoordinates.add(new Coordinates(1, 0));
         }
 
         for (String data : msg.args()) {
