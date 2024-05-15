@@ -388,7 +388,7 @@ public class GameThread extends Thread {
                 break;
             default:
                 messageQueue.add(
-                    new ThreadMessage(Status.ERROR, msg.player(), "unknown", null, msg.messageUUID())
+                    new ThreadMessage(Status.ERROR, msg.player(), "unknown", new String[] {msg.type()}, msg.messageUUID())
                 );
         }
         return msg;

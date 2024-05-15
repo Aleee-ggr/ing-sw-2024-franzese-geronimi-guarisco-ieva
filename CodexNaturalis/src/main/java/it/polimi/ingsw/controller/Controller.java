@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.controller.threads.ThreadMessage;
+import it.polimi.ingsw.helpers.exceptions.RequirementsError;
 import it.polimi.ingsw.helpers.exceptions.model.ExistingUsernameException;
 import it.polimi.ingsw.helpers.exceptions.model.TooManyPlayersException;
 import it.polimi.ingsw.helpers.exceptions.model.UnrecognisedCardException;
@@ -93,8 +94,11 @@ public class Controller {
             messageQueue.add(ThreadMessage.genericError(username, messageId, "Invalid card placing index"));
         } catch (UnrecognisedCardException e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, "Unrecognised card"));
-        } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+        } catch (RequirementsError e) {
+            messageQueue.add(ThreadMessage.genericError(username, messageId, "Requirement error"));
+        }
+        catch (Exception e) {
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getClass() + " " + Arrays.toString(e.getStackTrace())));
         }
         messageQueue.add(ThreadMessage.okResponse(username, messageId));
     }

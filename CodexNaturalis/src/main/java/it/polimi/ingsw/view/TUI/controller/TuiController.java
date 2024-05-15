@@ -184,7 +184,6 @@ public class TuiController {
             client.fetchGameState();
             client.fetchVisibleCardsAndDecks();
             client.fetchOpponentsHandColor();
-            client.fetchOpponentsHandColor();
         } catch (IOException e) {throw new RuntimeException(e);}
     }
 

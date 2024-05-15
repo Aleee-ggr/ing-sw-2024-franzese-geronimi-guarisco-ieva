@@ -822,7 +822,7 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         String[] args = new String[1];
         args[0] = gameState;
         return new ThreadMessage(
-                Status.REQUEST,
+                Status.OK,
                 username,
                 "getGameStateResponse",
                 args,
