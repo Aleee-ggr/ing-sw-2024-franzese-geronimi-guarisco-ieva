@@ -67,6 +67,24 @@ public class DeckTest {
     }
 
     @Test
+    public void peekFirstCard_FullDeck_FirstCardObject() {
+        stdDeckFull = FullDeck.getFullStdDeck();
+        goldDeckFull = FullDeck.getFullGoldDeck();
+
+        Assert.assertEquals(stdDeckFull.peekFirstCard(), stdDeckFull.getCards().getFirst());
+        Assert.assertEquals(goldDeckFull.peekFirstCard(), goldDeckFull.getCards().getFirst());
+    }
+
+    @Test
+    public void peekFirstCard_EmptyDeck_NullCardObject() {
+        stdDeck = DeckFactory.emptyStd();
+        goldDeck = DeckFactory.emptyGold();
+
+        Assert.assertNull(goldDeck.peekFirstCard());
+        Assert.assertNull(stdDeck.peekFirstCard());
+    }
+
+    @Test
     public void shuffle_FullDecks_NotEqualsDecks(){
         Deck<StdCard> stdDeckFull = FullDeck.getFullStdDeck();
         Deck<GoldCard> goldDeckFull = FullDeck.getFullGoldDeck();
