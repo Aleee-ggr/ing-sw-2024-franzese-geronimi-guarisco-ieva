@@ -159,6 +159,7 @@ public class PlayerBoard {
             }
 
             markNotCoverable(coordinates, corners);
+            removeResources(coordinates);
         }
 
         if(!card.isFrontSideUp()){
@@ -166,10 +167,12 @@ public class PlayerBoard {
             if (card instanceof StartingCard) {
                 corners = ((StartingCard) card).getBackCorners();
                 markNotCoverable(coordinates, corners);
+                removeResources(coordinates);
             } else {
                 try {
                     corners = ((ColoredCard) card).getBackCorners();
                     markNotCoverable(coordinates, corners);
+                    removeResources(coordinates);
                 } catch (UnrecognisedCardException e) {
                     System.out.println("unexpected behaviour");
                 }
@@ -233,6 +236,42 @@ public class PlayerBoard {
             }
             if(!board.containsKey(c)){
                 validPlacements.add(c);
+            }
+        }
+    }
+
+    private void removeResources(Coordinates placedCoordinates) {
+        Corner[] corners;
+        for(Coordinates c : placedCoordinates.getNeighbors()) {
+            if(!board.containsKey(c)){
+                continue;
+            }
+            if(board.get(c) instanceof MockCard){
+                continue;
+            }
+
+            if (board.get(c) instanceof ColoredCard) {
+                corners = board.get(c).isFrontSideUp() ? ((ColoredCard) board.get(c)).getFrontCorners() : ((ColoredCard) board.get(c)).getBackCorners();
+            } else if (board.get(c) instanceof StartingCard) {
+                corners = board.get(c).isFrontSideUp() ? ((StartingCard) board.get(c)).getFrontCorners() : ((StartingCard) board.get(c)).getBackCorners();
+            } else {
+                return;
+            }
+            removeCornerResource(placedCoordinates, c, corners);
+        }
+
+
+    }
+
+    private void removeCornerResource(Coordinates placedCoordinates, Coordinates c, Corner[] corners) {
+        if(board.containsKey(c)){
+            switch (c.x() - placedCoordinates.x()){
+                case -1 -> boardOwner.updateResourcesValue(corners[3].getCornerResource(), - GameConsts.numberOfResourcesPerCorner);
+                case 1 -> boardOwner.updateResourcesValue(corners[0].getCornerResource(), - GameConsts.numberOfResourcesPerCorner);
+            }
+            switch (c.y() - placedCoordinates.y()){
+                case -1 -> boardOwner.updateResourcesValue(corners[1].getCornerResource(), - GameConsts.numberOfResourcesPerCorner);
+                case 1 -> boardOwner.updateResourcesValue(corners[2].getCornerResource(), - GameConsts.numberOfResourcesPerCorner);
             }
         }
     }
