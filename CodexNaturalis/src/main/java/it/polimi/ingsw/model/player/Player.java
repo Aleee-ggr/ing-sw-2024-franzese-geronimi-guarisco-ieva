@@ -248,10 +248,6 @@ public class Player {
      */
     public void playCard(ColoredCard playedCard, Coordinates coordinates) throws RequirementsError {
         if (playedCard.isFrontSideUp()) {
-            for (Resource r : Arrays.stream(playedCard.getFrontCorners()).map(Corner::getCornerResource).toArray(Resource[]::new)){
-                playerResources.put(r, playerResources.get(r) + 1);
-            }
-
             if (playedCard instanceof GoldCard goldCard) {
                 if (goldCard.checkRequirements(this)) {
                     board.placeCard(goldCard, coordinates);
@@ -269,10 +265,8 @@ public class Player {
                     this.score = game.getGameBoard().getScore().get(this);
                 }
             }
-        }
-
-        else {
-            playerResources.put(playedCard.getBackResource(), playerResources.get(playedCard.getBackResource()) + 1);
+        } else {
+            board.placeCard(playedCard, coordinates);
         }
 
         for (int i = 0; i < GameConsts.firstHandDim; i++) {
