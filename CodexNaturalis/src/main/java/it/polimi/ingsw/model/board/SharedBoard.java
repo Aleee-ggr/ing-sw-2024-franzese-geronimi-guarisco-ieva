@@ -195,10 +195,10 @@ public class SharedBoard {
      */
     public Card draw(Integer position) {
         if (position == 4) {
-            return drawDeck(false);
+            return drawDeck(true);
         }
         if (position == 5) {
-            return drawDeck(true);
+            return drawDeck(false);
         }
         return drawVisible(position);
     }

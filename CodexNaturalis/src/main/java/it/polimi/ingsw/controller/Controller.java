@@ -86,11 +86,12 @@ public class Controller {
      * @param cardId the unique identifier of the card.
      * @param messageId the unique identifier of the message.
      * */
-    public void placeCard(String username, Coordinates coordinates, Integer cardId, UUID messageId) {
+    public boolean placeCard(String username, Coordinates coordinates, Integer cardId, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
             user.playCard((ColoredCard) Game.getCardByID(cardId), coordinates);
             messageQueue.add(ThreadMessage.okResponse(username, messageId));
+            return true;
         } catch (IndexOutOfBoundsException e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, "Invalid card placing index"));
         } catch (UnrecognisedCardException e) {
@@ -101,6 +102,7 @@ public class Controller {
         catch (Exception e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, e.getClass() + " " + Arrays.toString(e.getStackTrace())));
         }
+        return false;
     }
 
     /**
@@ -110,7 +112,7 @@ public class Controller {
     4 for the standard deck, 5 for the gold deck, 0-3 for the visible cards.
      * @param messageId the unique identifier of the message.
      * */
-    public void draw(String username, Integer index, UUID messageId) {
+    public boolean draw(String username, Integer index, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
             ColoredCard card;
@@ -123,9 +125,11 @@ public class Controller {
             }
             Integer cardId = card.getId();
             messageQueue.add(ThreadMessage.drawResponse(username, cardId, messageId));
+            return true;
         } catch (Exception e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
+        return false;
     }
 
     public void getPlayers(String username, UUID messageId) {

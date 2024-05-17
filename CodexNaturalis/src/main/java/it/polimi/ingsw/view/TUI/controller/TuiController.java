@@ -128,7 +128,6 @@ public class TuiController {
             clear();
             out.print(compositor);
             out.flush();
-            System.out.println(client);
             waitUpdate();
             fetchData();
         }

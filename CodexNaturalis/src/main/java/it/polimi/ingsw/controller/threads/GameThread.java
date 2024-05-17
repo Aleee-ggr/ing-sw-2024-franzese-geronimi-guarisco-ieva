@@ -163,8 +163,7 @@ public class GameThread extends Thread {
                 continue;
             }
             if (msg.type().equals("place") && msg.player().equals(playerName)){
-                place = true;
-                respond(msg);
+                place = respond(msg);
                 continue;
             }
 
@@ -184,8 +183,7 @@ public class GameThread extends Thread {
                 continue;
             }
             if(msg.type().equals("draw")  && msg.player().equals(playerName)){
-                draw = true;
-                respond(msg);
+                draw = respond(msg);
                 continue;
             }
 
@@ -254,7 +252,7 @@ public class GameThread extends Thread {
      * @param msg the message to be processed.
      * @return the message itself.
      * */
-    private ThreadMessage respond(ThreadMessage msg) {
+    private boolean respond(ThreadMessage msg) {
         switch (msg.type()) {
             case "create":
                 controller.createGame(
@@ -270,13 +268,12 @@ public class GameThread extends Thread {
                 );
                 break;
             case "place":
-                controller.placeCard(
+                return controller.placeCard(
                         msg.player(),
                         new Coordinates(Integer.valueOf(msg.args()[0]),Integer.valueOf(msg.args()[1])),
                         Integer.valueOf(msg.args()[2]),
                         msg.messageUUID()
                 );
-                break;
             case "update":
                 controller.update(
                         msg.player(),
@@ -285,12 +282,11 @@ public class GameThread extends Thread {
                 );
                 break;
             case "draw":
-                controller.draw(
+                return controller.draw(
                         msg.player(),
                         Arrays.stream(msg.args()).mapToInt(Integer::parseInt).findFirst().orElse(-1),
                         msg.messageUUID()
                 );
-                break;
             case "choosePersonalObjective":
                 controller.choosePersonalObjective(
                         msg.player(),
@@ -391,6 +387,6 @@ public class GameThread extends Thread {
                     new ThreadMessage(Status.ERROR, msg.player(), "unknown", new String[] {msg.type()}, msg.messageUUID())
                 );
         }
-        return msg;
+        return false;
     }
 }
