@@ -123,7 +123,6 @@ public class SharedBoard {
         if (!stdDeck.isEmpty()) {
             return stdDeck.draw();
         }
-        //TODO check whether the card exists
         return null;
     }
 

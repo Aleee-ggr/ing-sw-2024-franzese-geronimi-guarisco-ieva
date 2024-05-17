@@ -116,8 +116,6 @@ public class Compositor {
                     .append("\n");
         }
 
-        //TODO: finish when board is completed
-
         out.append(prompt.toString());
         return out.toString();
     }

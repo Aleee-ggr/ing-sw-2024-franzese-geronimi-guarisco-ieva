@@ -14,8 +14,8 @@ import java.util.Scanner;
  *
  */
 
-//TODO: add set username after refactor
-public class App 
+//TODO: add credentials
+public class App
 {
     public static void main( String[] args) throws RemoteException, ServerConnectionException {
         List<String> arguments = List.of(args);

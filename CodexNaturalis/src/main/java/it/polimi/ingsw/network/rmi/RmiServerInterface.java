@@ -93,16 +93,6 @@ public interface RmiServerInterface extends Remote {
     boolean join(UUID game, String name) throws RemoteException;
 
     /**
-     * Allows a player to choose a starting objective.
-     * @param game The UUID of the game.
-     * @param name The name of the player choosing the objective.
-     * @param objectiveId The ID of the chosen objective.
-     * @return True if the choice is successful, false otherwise.
-     * @throws RemoteException If an RMI error occurs.
-     */
-    boolean chooseStartingObjective(UUID game, String name, Integer objectiveId) throws RemoteException;
-
-    /**
      * Allows a player to post a chat message in the game.
      * @param game The UUID of the game.
      * @param name The name of the player posting the message.

@@ -223,7 +223,7 @@ public class Player {
      * @param drawnCard is a Card obj from the Card class
      * @see Card
      * */
-    private void toHand(ColoredCard drawnCard){ //TODO: error handling for overflowing hand
+    private void toHand(ColoredCard drawnCard){
         for(int i = 0; i < GameConsts.firstHandDim; i++){
             if (hand[i]==null){
                 hand[i]=drawnCard;
@@ -244,7 +244,6 @@ public class Player {
      * @param playedCard   The card to be played.
      * @param coordinates  The coordinates where the card should be placed on the board.
      *
-     * TODO remove covered resources
      */
     public void playCard(ColoredCard playedCard, Coordinates coordinates) throws RequirementsError {
         if (playedCard.isFrontSideUp()) {

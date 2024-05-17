@@ -52,7 +52,7 @@ public class PlayerTest {
     }*/
 
     @Test
-    public void updateResourcesValue__CorrectResourcesAmount() {
+    public void updateResourcesValue_CorrectResourcesAmount() {
         player.updateResourcesValue(Resource.FUNGI, 5);
         player.updateResourcesValue(Resource.FUNGI, 2);
         Assert.assertEquals(7, player.getResources().get(Resource.FUNGI).intValue());

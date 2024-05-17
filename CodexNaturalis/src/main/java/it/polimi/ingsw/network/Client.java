@@ -128,7 +128,6 @@ public class Client {
         return (PlayerData) playerData.get(username);
     }
 
-    //TODO: implementation at RMI/Socket level
     public void setCredentials(String username, String password) {
         this.username = username;
         this.password = password;

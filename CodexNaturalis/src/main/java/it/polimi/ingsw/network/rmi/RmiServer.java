@@ -189,17 +189,11 @@ public class RmiServer extends Server implements RmiServerInterface {
         return getAvailableGamesServer(username);
     }
 
-    //TODO: methods to implement
-
-    @Override
-    public boolean chooseStartingObjective(UUID game, String name, Integer objectiveId) throws RemoteException {
-        return false;
-    }
-
-    @Override
+    @Override     //TODO: implement chat
     public String postChat(UUID game, String name, String message) throws RemoteException {
         return "";
     }
+    
     @Override
     public boolean checkCredentials(String username, String password) {
         return isValidPlayer(username, password);

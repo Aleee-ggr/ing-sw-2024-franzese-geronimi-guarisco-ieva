@@ -116,7 +116,7 @@ public class GameThread extends Thread {
                     messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "Invalid message for context: %s".formatted(msg.type())));
                 }
 
-                if(msg.type().equals("choosePersonalObjective")){ //TODO: needs to check responses!
+                if(msg.type().equals("choosePersonalObjective")){
                     objChosen = true;
                 } else if(msg.type().equals("placeStartingCard")){
                     startChosen = true;
@@ -153,7 +153,7 @@ public class GameThread extends Thread {
      * @param playerName the name of the player whose turn it is.
      * @return true if the player has reached the ending score, false otherwise.
      * */
-    public boolean playerTurn(String playerName){ //TODO: check is player can't place a card
+    public boolean playerTurn(String playerName){
         boolean draw = false;
         boolean place = false;
         while (!place){

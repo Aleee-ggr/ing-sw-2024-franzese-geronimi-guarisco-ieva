@@ -6,7 +6,6 @@ import java.rmi.RemoteException;
 import java.util.Random;
 
 
-//TODO: add usernames after refactor
 public abstract class RmiClientFactory {
     private static int playerCount = 0;
 

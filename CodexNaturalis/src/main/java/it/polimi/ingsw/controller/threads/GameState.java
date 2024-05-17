@@ -40,7 +40,7 @@ public enum GameState {
                                                                     "getGameState");
     public static final ImmutableSet<String> endgame = main;
     public static final ImmutableSet<String> stop = ImmutableSet.of("update");
-    public static final ImmutableSet<String> getters = ImmutableSet.of("getHand", //TODO: check if this is all
+    public static final ImmutableSet<String> getters = ImmutableSet.of("getHand",
                                                                         "getStartingObjectives",
                                                                         "getPlayers",
                                                                         "getCommonObjectives",

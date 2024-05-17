@@ -263,7 +263,7 @@ public class RmiClient extends Client implements ClientInterface {
     }
 
     @Override
-    public boolean fetchPlayersBoards() throws RemoteException { //TODO: to check
+    public boolean fetchPlayersBoards() throws RemoteException {
         HashMap<String, HashMap<Coordinates, Integer>> playersBoardMap = new HashMap<>();
 
         for(String player : players){

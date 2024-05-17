@@ -21,7 +21,6 @@ import static java.lang.Math.abs;
  * @see SharedBoard
  * */
 public class Game {
-    static final HashSet<Player> playersConnected  = new HashSet<>(); //TODO: not the same username inter-game
     static final ConcurrentHashMap<Integer, Card> cardID = new ConcurrentHashMap<>() {{
         for (Card gold : FullDeck.getFullGoldDeck().getCards()) {
             put(gold.getId(), gold);
@@ -146,7 +145,7 @@ public class Game {
      * @throws ExistingUsernameException while there is already a player with the same username in game
      * the exceptions are managed by the caller.
      * */
-    public void addPlayer(String playerUsername) throws TooManyPlayersException, ExistingUsernameException{ /*TODO: the caller needs to manage these exception*/
+    public void addPlayer(String playerUsername) throws TooManyPlayersException, ExistingUsernameException{
         if(this.numPlayers >= maxPlayers) {
             throw new TooManyPlayersException("Too Many Players");
         }
@@ -181,7 +180,7 @@ public class Game {
      * Method used to manage the objectives of the game. <br/>
      * It shuffles the deck and draws the objectives to be placed in the SharedBoard.
      * */
-    public void manageObjectives(){ //TODO: try catch if there are obj in sharedboard
+    public void manageObjectives(){
         gameObjDeck.shuffle();
         Objective[] objectiveToAdd = new Objective[GameConsts.globalObjectives];
         for(int i = 0; i<GameConsts.globalObjectives; i++){
