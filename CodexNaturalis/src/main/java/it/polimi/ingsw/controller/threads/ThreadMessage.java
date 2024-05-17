@@ -170,7 +170,7 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         return new ThreadMessage(
                 Status.REQUEST,
                 username,
-                "getStartingObjectives",
+                "getCommonObjectives",
                 null,
                 UUID.randomUUID()
         );

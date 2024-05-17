@@ -73,6 +73,7 @@ public class Game {
     public Game(int maxPlayers) {
         resetBoard();
         this.maxPlayers = maxPlayers;
+        this.manageObjectives();
     }
 
     /**
