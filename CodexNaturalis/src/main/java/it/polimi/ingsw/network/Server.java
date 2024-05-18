@@ -82,7 +82,7 @@ public abstract class Server {
         }
     }
 
-    public static boolean placeCardServer(UUID game, String player, Coordinates coordinates, Integer cardId) throws RemoteException {
+    public static Boolean placeCardServer(UUID game, String player, Coordinates coordinates, Integer cardId) throws RemoteException {
         ThreadMessage message = ThreadMessage.placeCard(
                 player,
                 coordinates,

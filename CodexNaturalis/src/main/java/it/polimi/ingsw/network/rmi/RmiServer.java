@@ -88,7 +88,7 @@ public class RmiServer extends Server implements RmiServerInterface {
     }
 
     @Override
-    public boolean placeCard(UUID game, String player, Coordinates coordinates, Integer cardId) throws RemoteException {
+    public Boolean placeCard(UUID game, String player, Coordinates coordinates, Integer cardId) throws RemoteException {
         return placeCardServer(game, player, coordinates, cardId);
     }
 
@@ -97,6 +97,7 @@ public class RmiServer extends Server implements RmiServerInterface {
         return createGame(player_count);
     }
 
+    @Override
     public Integer getStartingCard(UUID game, String player) throws RemoteException {
         return getStartingCardServer(game, player);
     }
@@ -181,6 +182,7 @@ public class RmiServer extends Server implements RmiServerInterface {
         return joinGame(game, player);
     }
 
+    @Override
     public WaitState wait(UUID game, String player) throws RemoteException{
         return waitUpdate(game, player);
     }

@@ -21,7 +21,7 @@ public class SocketClientChoosePersonalObjectiveMessage extends GenericRequestMe
      * @param gameUUID The UUID of the game in which the objective is chosen.
      * @param objectiveID The ID of the chosen starting objective.
      */
-    public SocketClientChoosePersonalObjectiveMessage(String username, UUID gameUUID, Integer objectiveID) {
+    public SocketClientChoosePersonalObjectiveMessage(String username, Integer objectiveID, UUID gameUUID) {
         this.username = username;
         this.gameUUID = gameUUID;
         this.objectiveID = objectiveID;

@@ -42,7 +42,7 @@ public interface RmiServerInterface extends Remote {
      * @return true if the operation was successful, false otherwise
      * @throws RemoteException If an RMI error occurs.
      */
-    boolean placeCard(UUID game, String player, Coordinates coordinates, Integer cardID) throws RemoteException;
+    Boolean placeCard(UUID game, String player, Coordinates coordinates, Integer cardID) throws RemoteException;
 
     /**
      * Create a new game with the given capacity, returning the game uuid

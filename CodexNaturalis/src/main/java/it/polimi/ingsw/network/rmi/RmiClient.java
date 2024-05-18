@@ -60,61 +60,6 @@ public class RmiClient extends Client implements ClientInterface {
     }
 
     /**
-     * Draws a card from the server from the deck or the visible card specified
-     * by the position and adds it to the client's hand.
-     * @param position The index of the deck to draw from.
-     * @throws RemoteException If a remote communication error occurs.
-     */
-    @Override
-    public void drawCard(int position) throws RemoteException {
-        Integer id = remoteObject.drawCard(this.gameId, username, position);
-
-        if (id != null) {
-            try {
-                ((PlayerData) playerData.get(username)).addToHand(Game.getCardByID(id));
-            } catch (HandFullException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-    @Override
-    public boolean placeStartingCard(boolean frontSideUp) throws RemoteException{
-        getPlayerData().setStartingCard((StartingCard) getPlayerData().getStartingCard().setFrontSideUp(frontSideUp));
-        return remoteObject.setStartingCard(gameId, username, frontSideUp);
-    }
-
-    @Override
-    public boolean choosePersonalObjective(int objectiveId) throws RemoteException {
-        boolean success = remoteObject.choosePersonalObjective(this.gameId, username, objectiveId);
-        if (success) {
-            getPlayerData().setPersonalObjective(Game.getObjectiveByID(objectiveId));
-        }
-        return success;
-    }
-
-    /**
-     * Places a card from the client's hand onto the board at the specified coordinates.
-     * @param coordinates The coordinates on the board where the card will be placed.
-     * @param cardId The ID of the card to be placed.
-     * @throws RemoteException If a remote communication error occurs.
-     */
-    @Override
-    public boolean placeCard(Coordinates coordinates, int cardId) throws RemoteException {
-        boolean success = remoteObject.placeCard(this.gameId, username, coordinates, cardId);
-        if(success){
-            try {
-                ((PlayerData) playerData.get(username)).removeFromHand(Game.getCardByID(cardId));
-            } catch (ElementNotInHand e) {
-                throw new RuntimeException(e);
-            }
-
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Requests to create a new game with the specified number of players.
      * @param players The number of players for the new game.
      * @return The UUID of the newly created game.
@@ -122,9 +67,10 @@ public class RmiClient extends Client implements ClientInterface {
      */
     @Override
     public UUID newGame(int players) throws RemoteException {
-        UUID game = null;
-        game = remoteObject.newGame(players);
-        joinGame(game);
+        UUID game = remoteObject.newGame(players);
+        if(game != null){
+            joinGame(game);
+        }
         return game;
     }
 
@@ -140,6 +86,7 @@ public class RmiClient extends Client implements ClientInterface {
             return false;
         }
         boolean success = remoteObject.join(game, this.username);
+
         if (success) {
             this.setGameId(game);
         }
@@ -156,90 +103,66 @@ public class RmiClient extends Client implements ClientInterface {
         return false;
     }
 
+    /**
+     * Draws a card from the server from the deck or the visible card specified
+     * by the position and adds it to the client's hand.
+     * @param position The index of the deck to draw from.
+     * @throws RemoteException If a remote communication error occurs.
+     */
+    @Override
+    public void drawCard(int position) throws RemoteException {
+        drawCardClient(remoteObject.drawCard(this.gameId, username, position));
+    }
+
+    /**
+     * Places a card from the client's hand onto the board at the specified coordinates.
+     * @param coordinates The coordinates on the board where the card will be placed.
+     * @param cardId The ID of the card to be placed.
+     * @throws RemoteException If a remote communication error occurs.
+     */
+    @Override
+    public boolean placeCard(Coordinates coordinates, int cardId) throws RemoteException {
+        return placeCardClient(remoteObject.placeCard(this.gameId, username, coordinates, cardId), cardId);
+    }
+
+    @Override
+    public boolean placeStartingCard(boolean frontSideUp) throws RemoteException{
+        return placeStartingCardClient(frontSideUp, remoteObject.setStartingCard(gameId, username, frontSideUp));
+    }
+
+    @Override
+    public boolean choosePersonalObjective(int objectiveId) throws RemoteException {
+        return choosePersonalObjectiveClient(objectiveId , remoteObject.choosePersonalObjective(this.gameId, username, objectiveId));
+    }
+
     @Override
     public boolean fetchAvailableGames() throws RemoteException{
-        this.availableGames = remoteObject.getAvailableGames(username);
-        return availableGames != null && !availableGames.isEmpty();
+        return fetchAvailableGamesClient(remoteObject.getAvailableGames(username));
     }
 
     @Override
     public boolean fetchGameState() throws RemoteException {
-        GameState gameState = remoteObject.getGameState(this.gameId, this.username);
-        if (gameState == null){
-            return false;
-        }
-        this.gameState = gameState;
-        return true;
+        return fetchGameStateClient(remoteObject.getGameState(this.gameId, this.username));
     }
 
     @Override
     public boolean fetchPlayers() throws RemoteException {
-        ArrayList<String> players = remoteObject.getPlayers(this.gameId, this.username);
-        if (players == null){
-            return false;
-        }
-
-        createPlayerData(players);
-        return true;
+        return fetchPlayersClient(remoteObject.getPlayers(this.gameId, this.username));
     }
 
     @Override
     public boolean fetchCommonObjectives() throws RemoteException {
-        ArrayList<Integer> commonObjectivesId = remoteObject.getCommonObjectives(this.gameId, this.username);
-
-        if(commonObjectivesId == null) {
-            return false;
-        }
-
-        ArrayList<Objective> commonObjectivesList = new ArrayList<>();
-
-        for (Integer id : commonObjectivesId) {
-            commonObjectivesList.add(Game.getObjectiveByID(id));
-        }
-
-        ((PlayerData) playerData.get(username)).setGlobalObjectives(commonObjectivesList);
-        return true;
+        return fetchCommonObjectivesClient(remoteObject.getCommonObjectives(this.gameId, this.username));
     }
 
     @Override
     public boolean fetchVisibleCardsAndDecks() throws RemoteException {
-        ArrayList<Integer> visibleCards = remoteObject.getVisibleCards(this.gameId, this.username);
-        ArrayList<Integer> backSideDecks = remoteObject.getBackSideDecks(this.gameId, this.username);
-
-        if (visibleCards == null || backSideDecks == null) {
-            return false;
-        }
-
-        ArrayList<Card> visibleCardsList = new ArrayList<>();
-        ArrayList<Card> backSideDecksList = new ArrayList<>();
-
-        for (Integer id : visibleCards) {
-            visibleCardsList.add(Game.getCardByID(id));
-        }
-        for (Integer id : backSideDecks) {
-            backSideDecksList.add(Game.getCardByID(id));
-        }
-
-        this.visibleCards = visibleCardsList;
-        this.backSideDecks = backSideDecksList;
-        return true;
+        return fetchVisibleCardsAndDecksClient(remoteObject.getVisibleCards(this.gameId, this.username), remoteObject.getBackSideDecks(this.gameId, this.username));
     }
 
     @Override
     public boolean fetchScoreMap() throws RemoteException {
-        HashMap<String, Integer> scoreMap = remoteObject.getScoreMap(this.gameId, this.username);
-
-        if (scoreMap == null) {
-            return false;
-        }
-        for (String player : players) {
-            if (!scoreMap.containsKey(player)) {
-                scoreMap.put(player, 0);
-            }
-        }
-
-        this.scoreMap = scoreMap;
-        return true;
+        return fetchScoreMapClient(remoteObject.getScoreMap(this.gameId, this.username));
     }
 
     @Override
@@ -255,12 +178,7 @@ public class RmiClient extends Client implements ClientInterface {
 
             playersResourcesMap.put(player, playerResources);
         }
-
-        for(String player : players){
-            playerData.get(player).setResources(playersResourcesMap.get(player));
-        }
-
-        return true;
+        return fetchPlayersResourcesClient(playersResourcesMap);
     }
 
     @Override
@@ -277,17 +195,7 @@ public class RmiClient extends Client implements ClientInterface {
             playersBoardMap.put(player, playerBoardId);
         }
 
-        for(String player : players){
-            BiMap<Coordinates, Card> playerBoard = HashBiMap.create();
-
-            for(Coordinates c : playersBoardMap.get(player).keySet()){
-                playerBoard.put(c, Game.getCardByID(playersBoardMap.get(player).get(c)));
-            }
-
-            playerData.get(player).setBoard(playerBoard);
-        }
-
-        return true;
+        return fetchPlayersBoardsClient(playersBoardMap);
     }
 
     @Override
@@ -308,41 +216,17 @@ public class RmiClient extends Client implements ClientInterface {
             placingOrderMap.put(player, placingOrder);
         }
 
-        for(String player : players){
-            playerData.get(player).setOrder(placingOrderMap.get(player));
-        }
-
-        return true;
+        return fetchPlayersPlacingOrderClient(placingOrderMap);
     }
 
     @Override
     public boolean fetchValidPlacements() throws RemoteException {
-        ArrayList<Coordinates> validPlacements = remoteObject.getValidPlacements(this.gameId, this.username);
-
-        if (validPlacements == null) {
-            return false;
-        }
-
-        ((PlayerData) playerData.get(username)).setValidPlacements(validPlacements);
-        return true;
+        return fetchValidPlacementsClient(remoteObject.getValidPlacements(this.gameId, this.username));
     }
 
     @Override
     public boolean fetchClientHand() throws RemoteException {
-        ArrayList<Integer> handIds = remoteObject.getHand(this.gameId, this.username);
-
-        if(handIds == null){
-            return false;
-        }
-
-        ArrayList<Card> hand = new ArrayList<>();
-
-        for(int id : handIds){
-            hand.add(Game.getCardByID(id));
-        }
-
-        ((PlayerData) playerData.get(username)).setClientHand(hand);
-        return true;
+        return fetchClientHandClient(remoteObject.getHand(this.gameId, this.username));
     }
 
     @Override
@@ -364,31 +248,12 @@ public class RmiClient extends Client implements ClientInterface {
 
     @Override
     public boolean fetchStartingObjectives() throws RemoteException {
-        ArrayList<Integer> startingObjectives = remoteObject.getStartingObjectives(this.gameId, this.username);
-        if(startingObjectives == null){
-            return false;
-        }
-
-        ArrayList<Objective> startingObjectivesList = new ArrayList<>();
-        for(int id : startingObjectives){
-            startingObjectivesList.add(Game.getObjectiveByID(id));
-        }
-        System.out.println(username);
-        System.out.println(playerData.keySet());
-        getPlayerData().setStartingObjectives(startingObjectivesList);
-
-        return true;
+        return fetchStartingObjectivesClient(remoteObject.getStartingObjectives(this.gameId, this.username));
     }
 
     @Override
     public boolean fetchStartingCard() throws RemoteException {
-        Integer startingCardId = remoteObject.getStartingCard(this.gameId, this.username);
-        if(startingCardId == null){
-            return false;
-        }
-
-        ((PlayerData)playerData.get(username)).setStartingCard((StartingCard) Game.getCardByID(startingCardId));
-        return true;
+        return fetchStartingCardClient(remoteObject.getStartingCard(this.gameId, this.username));
     }
 
     /**
