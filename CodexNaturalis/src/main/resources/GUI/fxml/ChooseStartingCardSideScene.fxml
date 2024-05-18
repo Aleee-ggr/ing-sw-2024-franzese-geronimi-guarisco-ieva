@@ -11,7 +11,7 @@
    <children>
       <ImageView fitHeight="900.0" fitWidth="1600.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@Background.png" />
+            <Image url="@../images/Background.png" />
          </image>
       </ImageView>
       <Label text="CHOOSE THE SIDE YOU WANT TO PLACE" textFill="#432918">
