@@ -1,6 +1,9 @@
 package it.polimi.ingsw.view.GUI.SceneControllers;
 
 import it.polimi.ingsw.network.ClientInterface;
+import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -19,6 +23,7 @@ import java.util.ResourceBundle;
 
 public class WaitingRoomController implements Initializable {
     private ClientInterface client;
+    private Timeline fetchPlayersTimeline;
 
     @FXML
     private VBox listOfPlayers;
@@ -67,12 +72,7 @@ public class WaitingRoomController implements Initializable {
                 throw new RuntimeException(e);
             }
 
-            ArrayList<String> playersList = client.getPlayers();
-            for (String player : playersList) {
-                Label playerLabel = new Label(player);
-                playerLabel.setStyle("-fx-font-weight: bold;" + "-fx-text-fill: #432918;" + "-fx-font-family: Trattatello;" + "-fx-font-size: 30px;");
-                listOfPlayers.getChildren().add(playerLabel);
-            }
+            updatePlayersList();
 
             Task<Void> waitUpdateTask = new Task<>() {
                 @Override
@@ -83,26 +83,58 @@ public class WaitingRoomController implements Initializable {
             };
 
             waitUpdateTask.setOnSucceeded(event -> {
-                try {
-                    client.fetchPlayers();
-                    client.fetchStartingObjectives();
-                    client.fetchStartingCard();
-                } catch (IOException e) {throw new RuntimeException(e);}
-
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseObjectiveScene.fxml"));
-                    ChooseObjectiveController controller = new ChooseObjectiveController();
-                    controller.setClient(client);
-                    loader.setController(controller);
-                    Scene scene = new Scene(loader.load(), 1600, 900);
-                    Stage stage = (Stage) listOfPlayers.getScene().getWindow();
-                    stage.setScene(scene);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                if (fetchPlayersTimeline != null) {
+                    fetchPlayersTimeline.stop();
                 }
+
+                PauseTransition pause = new PauseTransition(Duration.seconds(5));
+                pause.setOnFinished(e -> {
+                    try {
+                        client.fetchPlayers();
+                        updatePlayersList();
+                        client.fetchStartingObjectives();
+                        client.fetchStartingCard();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseObjectiveScene.fxml"));
+                        ChooseObjectiveController controller = new ChooseObjectiveController();
+                        controller.setClient(client);
+                        loader.setController(controller);
+                        Scene scene = new Scene(loader.load(), 1600, 900);
+                        Stage stage = (Stage) listOfPlayers.getScene().getWindow();
+                        stage.setScene(scene);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                });
+                pause.play();
             });
 
             new Thread(waitUpdateTask).start();
+
+            Timeline fetchPlayersTimeline = new Timeline(new KeyFrame(Duration.seconds(5), event -> {
+                try {
+                    client.fetchPlayers();
+                    updatePlayersList();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }));
+            fetchPlayersTimeline.setCycleCount(Timeline.INDEFINITE);
+            fetchPlayersTimeline.play();
+        }
+    }
+
+    private void updatePlayersList() {
+        ArrayList<String> playersList = client.getPlayers();
+        listOfPlayers.getChildren().clear();
+        for (String player : playersList) {
+            Label playerLabel = new Label(player);
+            playerLabel.setStyle("-fx-font-weight: bold;" + "-fx-text-fill: #432918;" + "-fx-font-family: Trattatello;" + "-fx-font-size: 30px;");
+            listOfPlayers.getChildren().add(playerLabel);
         }
     }
 
