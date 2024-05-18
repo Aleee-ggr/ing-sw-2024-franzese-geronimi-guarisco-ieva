@@ -11,17 +11,13 @@ public class SharedUpdate {
         synchronized (lock) {
             update = true;
         }
-        try {
-            sleep(500);
-        } catch (InterruptedException ignored) {}
-        synchronized (lock) {
-            update = false;
-        }
     }
 
     public Boolean getUpdate() {
         synchronized (lock) {
-            return update;
+            boolean old = update;
+            update = false;
+            return old;
         }
     }
 }

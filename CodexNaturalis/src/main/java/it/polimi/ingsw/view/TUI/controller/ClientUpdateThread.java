@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.Compositor;
+import org.checkerframework.checker.units.qual.N;
 
 import java.io.IOException;
 
@@ -19,17 +20,21 @@ public class ClientUpdateThread extends Thread {
     @Override
     public void run() {
         boolean running;
-        WaitState state;
+        WaitState state = null, oldState;
         synchronized (client) {
             running = client.getGameState() != GameState.STOP;
         }
         while (running) {
             try {
+                oldState = state;
                 state = client.waitUpdate();
-                if (state != WaitState.WAIT) {
+                if (state == WaitState.UPDATE) {
                     fetchData();
                     updater.update();
-
+                }
+                if (oldState != WaitState.TURN && state == WaitState.TURN) {
+                    fetchData();
+                    updater.update();
                 }
                 sleep(500);
 

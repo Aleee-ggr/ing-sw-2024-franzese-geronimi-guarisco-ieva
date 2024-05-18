@@ -109,6 +109,10 @@ public class GameThread extends Thread {
 
             while(!objChosen || !startChosen){
                 ThreadMessage msg = getMessage();
+                if (msg.type().contains("get")){
+                    respond(msg);
+                    continue;
+                }
                 if(GameState.setup.contains(msg.type()) && msg.player().equals(currentPlayer)){
                     respond(msg);
                 } else if(!msg.player().equals(currentPlayer)){

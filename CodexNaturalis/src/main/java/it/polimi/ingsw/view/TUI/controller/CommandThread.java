@@ -35,6 +35,8 @@ public class CommandThread extends Thread {
             try {
                 String command = in.readLine();
                 handleCommand(command);
+                fetchData();
+                updater.update();
             } catch (IOException e) {throw new RuntimeException(e);}
             synchronized (client) {
                 running = client.getGameState() != GameState.STOP;
@@ -115,5 +117,20 @@ public class CommandThread extends Thread {
                     break;
             }
         } catch (IOException | NumberFormatException e) {throw new RuntimeException(e);}
+    }
+
+    private void fetchData() {
+        try {
+            client.fetchClientHand();
+            client.fetchCommonObjectives();
+            client.fetchValidPlacements();
+            client.fetchPlayersBoards();
+            client.fetchPlayersPlacingOrder();
+            client.fetchPlayersResources();
+            client.fetchScoreMap();
+            client.fetchGameState();
+            client.fetchVisibleCardsAndDecks();
+            client.fetchOpponentsHandColor();
+        } catch (IOException e) {throw new RuntimeException(e);}
     }
 }

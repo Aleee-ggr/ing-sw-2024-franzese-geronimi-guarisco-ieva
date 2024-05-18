@@ -112,25 +112,12 @@ public class TuiController {
 
     private void mainGame() {
         clear();
-        waitUpdate();
         fetchData();
         compositor = new Compositor(client);
-
-        out.print(compositor);
-        out.flush();
-
-        placed = false;
-        while (client.getGameState() != GameState.STOP) {
-            try {
-                String command = in.readLine();
-                handleCommand(command);
-            } catch (IOException e) {throw new RuntimeException(e);}
-            clear();
-            out.print(compositor);
-            out.flush();
-            waitUpdate();
-            fetchData();
-        }
+        SharedUpdate updater = new SharedUpdate();
+        new CommandThread(client, updater, compositor).start();
+        new ClientUpdateThread(client, updater).start();
+        new RenderThread(client, updater, compositor).start();
     }
 
     private int select(int min, int max) {
