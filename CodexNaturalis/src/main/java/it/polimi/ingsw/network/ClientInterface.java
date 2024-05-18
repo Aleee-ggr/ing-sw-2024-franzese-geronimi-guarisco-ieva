@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
@@ -53,7 +54,7 @@ public interface ClientInterface {
      * Method to wait for an update from the server.
      * @throws IOException If an I/O error occurs.
      */
-    void waitUpdate() throws IOException;
+    WaitState waitUpdate() throws IOException;
 
     /**
      * Method to send a chat message to the server.

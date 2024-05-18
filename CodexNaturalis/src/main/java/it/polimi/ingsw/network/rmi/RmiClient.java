@@ -3,6 +3,7 @@ package it.polimi.ingsw.network.rmi;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.helpers.exceptions.model.ElementNotInHand;
 import it.polimi.ingsw.helpers.exceptions.model.HandFullException;
@@ -395,8 +396,8 @@ public class RmiClient extends Client implements ClientInterface {
      * @throws RemoteException If a remote communication error occurs.
      */
     @Override
-    public void waitUpdate() throws RemoteException {
-        remoteObject.wait(this.gameId, this.username);
+    public WaitState waitUpdate() throws RemoteException {
+        return remoteObject.wait(this.gameId, this.username);
     }
 
     /**
