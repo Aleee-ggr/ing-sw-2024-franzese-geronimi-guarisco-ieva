@@ -2,6 +2,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.controller.Logger;
+import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.controller.threads.GameThread;
 import it.polimi.ingsw.controller.threads.Status;
@@ -25,7 +26,7 @@ public abstract class Server {
     protected static final Map<UUID, Integer> games = new ConcurrentHashMap<>(); // TODO: remove game while closed
     protected static final Map<String, String> players = new ConcurrentHashMap<>();
     protected static final Map<String, UUID> playerGame = new ConcurrentHashMap<>();
-    protected static final Map<UUID, Map<String, Boolean>> gameTurns = new ConcurrentHashMap<>();
+    protected static final Map<UUID, Map<String, WaitState>> gameTurns = new ConcurrentHashMap<>();
 
     /**
      * Creates a new game with the specified number of players and starts its thread.
@@ -55,7 +56,7 @@ public abstract class Server {
      * @return true if the player was successfully joined to the game, false otherwise
      */
     public static boolean joinGame(UUID game, String player){
-        gameTurns.get(game).put(player, false);
+        gameTurns.get(game).put(player, WaitState.WAIT);
         ThreadMessage message = ThreadMessage.join(
                 player
         );
@@ -451,7 +452,10 @@ public abstract class Server {
     }
 
     public static void waitUpdate(UUID game, String username) {
-        while(!gameTurns.get(game).get(username)) {
+        if (gameTurns.get(game).get(username) != WaitState.TURN) {
+            gameTurns.get(game).put(username, WaitState.WAIT);
+        }
+        while(gameTurns.get(game).get(username) == WaitState.WAIT) {
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {

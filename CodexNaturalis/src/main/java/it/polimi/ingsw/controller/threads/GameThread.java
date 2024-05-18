@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller.threads;
 
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.model.player.Player;
@@ -23,7 +24,7 @@ public class GameThread extends Thread {
     private final Controller controller;
     private String currentPlayer;
     private GameState gameState = GameState.LOBBY;
-    private final Map<String, Boolean> turnMap;
+    private final Map<String, WaitState> turnMap;
 
     /**
      * Constructor of GameThread
@@ -31,7 +32,7 @@ public class GameThread extends Thread {
      * @param turnMap the map of players and their turn status.
      * @param maxPlayers the maximum number of players in the game.
      * */
-    public GameThread(BlockingQueue<ThreadMessage> messageQueue, Map<String, Boolean> turnMap, Integer maxPlayers) {
+    public GameThread(BlockingQueue<ThreadMessage> messageQueue, Map<String, WaitState> turnMap, Integer maxPlayers) {
         this.messageQueue = messageQueue;
         this.maxPlayers = maxPlayers;
         this.controller = new Controller(messageQueue, maxPlayers);
@@ -104,7 +105,7 @@ public class GameThread extends Thread {
             boolean startChosen = false;
             this.currentPlayer = currentPlayer;
 
-            turnMap.put(currentPlayer, true);
+            turnMap.put(currentPlayer, WaitState.TURN);
 
             while(!objChosen || !startChosen){
                 ThreadMessage msg = getMessage();
@@ -123,7 +124,7 @@ public class GameThread extends Thread {
                 }
             }
             controller.getGame().getPlayers().stream().filter(p -> p.getUsername().equals(currentPlayer)).toList().getFirst().drawFirstHand();
-            turnMap.put(currentPlayer, false);
+            turnMap.put(currentPlayer, WaitState.WAIT);
         }
         gameState = GameState.MAIN;
         controller.getGame().setGameState(GameState.MAIN);
@@ -138,12 +139,12 @@ public class GameThread extends Thread {
     public void mainGame(){
         for(Player player : controller.getGame().getPlayers()){
             this.currentPlayer = player.getUsername();
-            turnMap.put(player.getUsername(), true);
+            turnMap.put(player.getUsername(), WaitState.TURN);
             if(playerTurn(player.getUsername()) || controller.getGame().getGameBoard().areCardsOver()){
                 gameState = GameState.ENDGAME;
                 controller.getGame().setGameState(GameState.ENDGAME);
             }
-            turnMap.put(player.getUsername(), false);
+            turnMap.put(player.getUsername(), WaitState.WAIT);
         }
     }
 
@@ -207,9 +208,9 @@ public class GameThread extends Thread {
     public void endGame() {
         for(String currentPlayer : controller.getGame().getPlayers().stream().map(Player::getUsername).toList()){
             this.currentPlayer = currentPlayer;
-            turnMap.put(currentPlayer, true);
+            turnMap.put(currentPlayer, WaitState.TURN);
             playerTurn(currentPlayer);
-            turnMap.put(currentPlayer, false);
+            turnMap.put(currentPlayer, WaitState.WAIT);
         }
 
         for(Player player : controller.getGame().getPlayers()) {
@@ -217,7 +218,7 @@ public class GameThread extends Thread {
                 controller.getGame().getGameBoard().updateScore(player, obj.getPoints(player));
             }
             controller.getGame().getGameBoard().updateScore(player, player.getHiddenObjective().getPoints(player));
-            turnMap.put(player.getUsername(), true);
+            turnMap.put(player.getUsername(), WaitState.TURN);
         }
 
         for(int i = 0; i < controller.getGame().getNumPlayers(); i++) {
