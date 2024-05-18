@@ -1,13 +1,16 @@
 package it.polimi.ingsw.network.messages.responses;
 
-public class WaitUpdateResponseMessage extends GenericResponseMessage{
-    private final boolean isYourTurn;
+import it.polimi.ingsw.controller.WaitState;
 
-    public WaitUpdateResponseMessage(boolean isYourTurn) {
-        this.isYourTurn = isYourTurn;
+public class WaitUpdateResponseMessage extends GenericResponseMessage{
+    private final WaitState waitState;
+
+    public WaitUpdateResponseMessage(WaitState waitState) {
+        this.waitState = waitState;
     }
 
-    public boolean isYourTurn() {
-        return isYourTurn;
+
+    public WaitState getWaitState() {
+        return waitState;
     }
 }

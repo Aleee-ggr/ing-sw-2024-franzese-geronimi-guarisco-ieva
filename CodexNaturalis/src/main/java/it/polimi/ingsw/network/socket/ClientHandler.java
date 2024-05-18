@@ -168,8 +168,8 @@ public class ClientHandler extends Thread {
 
         if (message instanceof SocketClientWaitUpdateMessage) {
             Server.waitUpdate(((SocketClientWaitUpdateMessage) message).getGameUUID(), message.getUsername());
-            WaitUpdateResponseMessage response = new WaitUpdateResponseMessage(true);
-            sendResponse(response);
+            //WaitUpdateResponseMessage response = new WaitUpdateResponseMessage(true);
+            //sendResponse(response);
         }
     }
 
