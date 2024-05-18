@@ -10,18 +10,18 @@ import java.util.UUID;
  * @see GenericRequestMessage
  * @author Samuele Franzese
  */
-public class SocketClientChooseStartingObjective extends GenericRequestMessage{
+public class SocketClientChoosePersonalObjectiveMessage extends GenericRequestMessage{
     private final UUID gameUUID;
     private final Integer objectiveID;
 
     /**
-     * Constructs a new SocketClientChooseStartingObjective message
+     * Constructs a new SocketClientChoosePersonalObjectiveMessage message
      * with the specified username, game UUID, and objective ID.
      * @param username The username of the client making the request.
      * @param gameUUID The UUID of the game in which the objective is chosen.
      * @param objectiveID The ID of the chosen starting objective.
      */
-    public SocketClientChooseStartingObjective(String username, UUID gameUUID, Integer objectiveID) {
+    public SocketClientChoosePersonalObjectiveMessage(String username, UUID gameUUID, Integer objectiveID) {
         this.username = username;
         this.gameUUID = gameUUID;
         this.objectiveID = objectiveID;

@@ -161,8 +161,8 @@ public class ClientHandler extends Thread {
             sendResponse(response);
         }
 
-        if (message instanceof SocketClientChooseStartingObjective) {
-            ChooseStartingObjectiveResponseMessage response = new ChooseStartingObjectiveResponseMessage(Server.choosePersonalObjectiveServer(((SocketClientChooseStartingObjective) message).getGameUUID(), message.getUsername(), ((SocketClientChooseStartingObjective) message).getObjectiveID()));
+        if (message instanceof SocketClientChoosePersonalObjectiveMessage) {
+            ChoosePersonalObjectiveResponseMessage response = new ChoosePersonalObjectiveResponseMessage(Server.choosePersonalObjectiveServer(((SocketClientChoosePersonalObjectiveMessage) message).getGameUUID(), message.getUsername(), ((SocketClientChoosePersonalObjectiveMessage) message).getObjectiveID()));
             sendResponse(response);
         }
 
