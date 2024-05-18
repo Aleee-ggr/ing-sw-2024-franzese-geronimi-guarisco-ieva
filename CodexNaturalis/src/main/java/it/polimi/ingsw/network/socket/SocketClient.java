@@ -1,13 +1,12 @@
 package it.polimi.ingsw.network.socket;
 
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
+import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.client.OpponentData;
-import it.polimi.ingsw.model.client.PlayerData;
+import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.network.messages.requests.*;
@@ -17,8 +16,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -35,20 +34,36 @@ public class SocketClient extends Client implements ClientInterface {
     private ObjectInputStream input;
     private ObjectOutputStream output;
 
+
+    //the following are attributes used as tmp values to store the response from the server ONLY!
+    private WaitState waitState;
+    private HashMap<String, HashMap<Coordinates, Integer>> playersBoardMap;
+    private HashMap<String, ArrayList<Card>> placingOrderMap;
+    private HashMap<String, HashMap<Resource, Integer>> playersResourcesMap;
+    private ArrayList<Integer> visibleCardsIds;
+    private ArrayList<Integer> visibleDecksIds;
+
     /**
      * Constructor for SocketClient.
+     *
      * @param serverAddress The address of the server.
-     * @param serverPort The port of the server.
+     * @param serverPort    The port of the server.
      */
     public SocketClient(String serverAddress, int serverPort) {
         super(serverAddress, serverPort);
-        startConnection(serverAddress, serverPort);
+
+        if (startConnection(serverAddress, serverPort)) {
+            System.out.println("Connected to the socket server.");
+        } else {
+            System.out.println("Error while connecting to the socket server.");
+        }
     }
 
     /**
      * Establishes a connection with the server.
+     *
      * @param serverAddress The address of the server.
-     * @param serverPort The port of the server.
+     * @param serverPort    The port of the server.
      */
     public boolean startConnection(String serverAddress, int serverPort) {
         try {
@@ -57,7 +72,7 @@ public class SocketClient extends Client implements ClientInterface {
             input = new ObjectInputStream(client.getInputStream());
 
             return true;
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Error with the connection:" + e.getMessage());
             return false;
         }
@@ -65,104 +80,28 @@ public class SocketClient extends Client implements ClientInterface {
 
     /**
      * Stops the connection with the server.
+     *
      * @throws IOException If an I/O error occurs while closing the connection.
      */
-    public void stopConnection() throws IOException{
+    public void stopConnection() throws IOException {
         output.writeObject(new SocketClientCloseConnection(username));
         input.close();
         output.close();
         client.close();
     }
 
-    /**
-     * Handles the server's response message.
-     */
-    public boolean handleResponse() throws IOException { //TODO: exception handling
-        GenericResponseMessage response;
-
-        do {
-            try {
-                response = (GenericResponseMessage) input.readObject();
-            } catch (ClassNotFoundException e) {
-                System.out.println("Error while reading the response from the server.");
-                throw new RuntimeException(e);
-            }
-        } while(response == null);
-
-
-        if (response instanceof CreateGameResponseMessage) {
-            UUID id = ((CreateGameResponseMessage) response).getGameUUID();
-            if(id == null){
-                return false;
-            }
-            setGameId(((CreateGameResponseMessage) response).getGameUUID());
-            return true;
-        }
-
-        //Sets the opponent HandColor.
-        if (response instanceof GetHandColorResponseMessage) {
-            OpponentData player = (OpponentData) playerData.get(((GetHandColorResponseMessage) response).getUsernameRequiredData());
-            if(player == null){
-                return false;
-            }
-            player.setHandColor(((GetHandColorResponseMessage) response).getHandColor());
-            return true;
-        }
-
-        //Sets the player (client) hand of cards.
-        if (response instanceof GetHandResponseMessage) {
-            ArrayList<Integer> handIds = ((GetHandResponseMessage) response).getHandIds();
-            ArrayList<Card> hand = new ArrayList<>();
-
-            for(int id : handIds){
-                hand.add(Game.getCardByID(id));
-            }
-
-            ((PlayerData)playerData.get(username)).setClientHand(hand);
-        }
-
-        //Sets the Board of a specified player.
-        if (response instanceof GetPlayerBoardResponseMessage) {
-            HashMap<Coordinates, Integer> playersBoardMap = ((GetPlayerBoardResponseMessage) response).getPlayerBoard();
-            BiMap<Coordinates, Card> playerBoard = HashBiMap.create();
-            String playerUsername = ((GetPlayerBoardResponseMessage) response).getUsernameRequiredData();
-
-            for(Coordinates c : playersBoardMap.keySet()){
-                playerBoard.put(c, Game.getCardByID(playersBoardMap.get(c)));
-            }
-
-            playerData.get(playerUsername).setBoard(playerBoard);
-        }
-
-        //Sets the player resources.
-        if (response instanceof GetPlayerResourcesResponseMessage) {
-            String playerUsername = ((GetPlayerResourcesResponseMessage) response).getUsernameRequiredData();
-            playerData.get(playerUsername).setResources(((GetPlayerResourcesResponseMessage) response).getPlayerResources());
-        }
-
-        //Sets the valid placements Coordinates of the Player.
-        if (response instanceof GetValidPlacementsResponseMessage) {
-            ((PlayerData)playerData.get(username)).setValidPlacements(((GetValidPlacementsResponseMessage) response).getValidPlacements());
-        }
-
-        if (response instanceof JoinGameResponseMessage) {
-            if (((JoinGameResponseMessage) response).isJoinedGame()) {
-                setGameId(((JoinGameResponseMessage) response).getGameUUID());
-            }
-        }
-        return false;
-    }
 
     /**
      * Sends the server the message to create a game.
+     *
      * @param numPlayers The number of players in the game.
-     * @throws IOException If an I/O error occurs while sending the message.
      * @return The UUID of the game created.
+     * @throws IOException If an I/O error occurs while sending the message.
      */
     @Override
     public UUID newGame(int numPlayers) throws IOException {
         output.writeObject(new SocketClientCreateGameMessage(numPlayers));
-        if(!handleResponse()){
+        if (!handleResponse()) {
             throw new IOException("Error while creating the game.");
         }
         return gameId;
@@ -170,24 +109,29 @@ public class SocketClient extends Client implements ClientInterface {
 
     /**
      * Sends the server the message to join a game.
+     *
      * @param gameUUID The UUID of the game to join.
-     * @throws IOException If an I/O error occurs while sending the message.
      * @return true if the player joined the game, false otherwise.
+     * @throws IOException If an I/O error occurs while sending the message.
      */
     @Override
     public boolean joinGame(UUID gameUUID) throws IOException {
+        if (username == null && password == null) {
+            System.out.println("Please login first");
+            return false;
+        }
         output.writeObject(new SocketClientJoinGameMessage(username, gameUUID));
         return handleResponse();
     }
 
 
-    //TODO: there isn't any response message for checking credentials
     /**
      * Checks the validity of player credentials.
+     *
      * @param username The username of the player.
      * @param password The password of the player.
-     * @throws IOException If an I/O error occurs while sending the message.
      * @return true if the credentials are valid, false otherwise.
+     * @throws IOException If an I/O error occurs while sending the message.
      */
     @Override
     public boolean checkCredentials(String username, String password) throws IOException {
@@ -195,11 +139,13 @@ public class SocketClient extends Client implements ClientInterface {
         return handleResponse();
     }
 
-    //TODO: not implemented in handleResponse();
     @Override
-    public void waitUpdate() throws IOException {
+    public WaitState waitUpdate() throws IOException {
         output.writeObject(new SocketClientWaitUpdateMessage(username, gameId));
-        handleResponse();
+        if (!handleResponse()) {
+            throw new RuntimeException("Error waitState.");
+        }
+        return waitState;
     }
 
     //TODO: not implemented -> there is no socket message for this
@@ -208,9 +154,9 @@ public class SocketClient extends Client implements ClientInterface {
 
     }
 
-    //TODO: not implemented in handleResponse();
     /**
      * Sends a message to draw a card from a specified position.
+     *
      * @param position The position of the card to draw.
      * @throws IOException If an I/O error occurs while sending the message.
      */
@@ -220,81 +166,75 @@ public class SocketClient extends Client implements ClientInterface {
         handleResponse();
     }
 
-    //TODO: no implementation
     @Override
-    public boolean placeCard(Coordinates coordinates, int CardId) throws IOException {
-        return false;
+    public boolean placeCard(Coordinates coordinates, int cardId) throws IOException {
+        output.writeObject(new SocketClientPlaceCardMessage(username, coordinates, cardId, gameId));
+        return placeCardClient(handleResponse(), cardId);
     }
 
-    //TODO: no implementation
     @Override
     public boolean placeStartingCard(boolean frontSideUp) throws IOException {
-        return false;
+        output.writeObject(new SocketClientPlaceStartingCardMessage(username, frontSideUp, gameId));
+        return placeStartingCardClient(frontSideUp, handleResponse());
     }
 
-    //TODO: no implementation
     @Override
     public boolean choosePersonalObjective(int objectiveId) throws IOException {
-        return false;
+        output.writeObject(new SocketClientChoosePersonalObjectiveMessage(username, objectiveId, gameId));
+        return choosePersonalObjectiveClient(objectiveId, handleResponse());
     }
 
-    //TODO: not implemented -> there is no socket message for this
     @Override
     public boolean fetchAvailableGames() throws IOException {
-        return false;
+        output.writeObject(new SocketClientFetchAvailableGamesMessage(username));
+        return handleResponse();
     }
 
-    //TODO: not implemented -> there is no socket message for this
     @Override
     public boolean fetchGameState() throws IOException {
-        return false;
+        output.writeObject(new SocketClientFetchAvailableGamesMessage(username));
+        return handleResponse();
     }
 
-    //TODO: not implemented in handleResponse();
-    /**
-     * Sends a request message to the server to retrieve the list of players in the game.
-     * @throws IOException if there is an error during communication with the server.
-     */
     @Override
     public boolean fetchPlayers() throws IOException {
         output.writeObject(new SocketClientGetPlayersMessage(username, gameId));
         return handleResponse();
     }
 
-    //TODO: not implemented in handleResponse();
     @Override
     public boolean fetchCommonObjectives() throws IOException {
         output.writeObject(new SocketClientGetCommonObjectivesMessage(username, gameId));
         return handleResponse();
     }
 
-    //TODO: not implemented in handleResponse();
     @Override
     public boolean fetchStartingCard() throws IOException {
         output.writeObject(new SocketClientGetStartingCardMessage(username, gameId));
         return handleResponse();
     }
 
-    //TODO: no implementation
     @Override
     public boolean fetchStartingObjectives() throws IOException {
-        return false;
+        output.writeObject(new SocketClientGetStartingObjectivesMessage(username, gameId));
+        return handleResponse();
     }
 
     /**
      * Sends a message to get all the opponents hand color.
+     *
      * @throws IOException If an I/O error occurs while sending the message.
      */
     @Override
     public boolean fetchOpponentsHandColor() throws IOException {
-        for(String player : players){
-            if(player.equals(username)){
+        for (String player : players) {
+            if (player.equals(username)) {
                 continue;
             }
 
             output.writeObject(new SocketClientGetHandColorMessage(username, this.gameId, player));
 
-            if(!handleResponse()){
+            if (!handleResponse()) {
                 return false;
             }
         }
@@ -303,6 +243,7 @@ public class SocketClient extends Client implements ClientInterface {
 
     /**
      * Sends a message to get the Player hand.
+     *
      * @throws IOException If an I/O error occurs while sending the message.
      */
     @Override
@@ -319,55 +260,241 @@ public class SocketClient extends Client implements ClientInterface {
 
     @Override
     public boolean fetchPlayersBoards() throws IOException {
-        for(String player : players){
+        playersBoardMap = new HashMap<>();
+        for (String player : players) {
             output.writeObject(new SocketClientGetPlayerBoard(username, this.gameId, player));
 
-            if(!handleResponse()){
+            if (!handleResponse()) {
                 return false;
             }
         }
-        return true;
+        return fetchPlayersBoardsClient(playersBoardMap);
     }
 
-    //TODO: not implemented
     @Override
-    public boolean fetchPlayersPlacingOrder() throws RemoteException {
-        return false;
+    public boolean fetchPlayersPlacingOrder() throws IOException {
+        placingOrderMap = new HashMap<>();
+        for (String player : players) {
+            output.writeObject(new SocketClientGetPlacingOrderMessage(username, this.gameId, player));
+
+            if (!handleResponse()) {
+                return false;
+            }
+        }
+        return fetchPlayersPlacingOrderClient(placingOrderMap);
     }
 
     @Override
     public boolean fetchPlayersResources() throws IOException {
-        for(String player : players){
+        playersResourcesMap = new HashMap<>();
+        for (String player : players) {
             output.writeObject(new SocketClientGetPlayerResourcesMessage(username, this.gameId, player));
 
-            if(!handleResponse()){
+            if (!handleResponse()) {
                 return false;
             }
         }
-        return true;
+        return fetchPlayersResourcesClient(playersResourcesMap);
     }
 
-    //TODO: not implemented in handleResponse();
-    /**
-     * Sends a message to get the score map.
-     * @throws IOException If an I/O error occurs while sending the message.
-     */
     @Override
     public boolean fetchScoreMap() throws IOException {
         output.writeObject(new SocketClientGetScoreMapMessage(username));
         return handleResponse();
     }
 
-    //TODO: not implemented in handleResponse();
     @Override
     public boolean fetchVisibleCardsAndDecks() throws IOException {
+
         output.writeObject(new SocketClientGetVisibleCardsMessage(username, this.gameId));
-        if(!handleResponse()){
+        if (!handleResponse()) {
             return false;
         }
-        output.writeObject(new SocketClientGetBackSideDecksMessage(username, this.gameId));
 
-        return handleResponse();
+        output.writeObject(new SocketClientGetBackSideDecksMessage(username, this.gameId));
+        if (!handleResponse()) {
+            return false;
+        }
+        return fetchVisibleCardsAndDecksClient(visibleCardsIds, visibleDecksIds);
+    }
+
+
+    /**
+     * Handles the server's response message.
+     */
+    public boolean handleResponse() throws IOException {
+        GenericResponseMessage response;
+
+        do {
+            try {
+                response = (GenericResponseMessage) input.readObject();
+            } catch (ClassNotFoundException e) {
+                System.out.println("Error while reading the response from the server.");
+                throw new RuntimeException(e);
+            }
+        } while (response == null);
+
+
+        switch (response) {
+
+            //Create Game + call to join.
+            case CreateGameResponseMessage createGameResponseMessage -> {
+                UUID id = createGameResponseMessage.getGameUUID();
+                if (id == null) {
+                    return false;
+                }
+                joinGame(id);
+                return true;
+            }
+
+            //join game and set the gameId.
+            case JoinGameResponseMessage joinGameResponseMessage -> {
+                if (joinGameResponseMessage.isJoinedGame()) {
+                    setGameId(joinGameResponseMessage.getGameUUID());
+                }
+                return joinGameResponseMessage.isJoinedGame();
+            }
+
+            //checkCredentials
+            case ValidateCredentialsResponseMessage validateCredentialsResponseMessage -> {
+                return validateCredentialsResponseMessage.isValid();
+            }
+
+            //wait
+            case WaitUpdateResponseMessage waitUpdateResponseMessage -> {
+                waitState = waitUpdateResponseMessage.getWaitState();
+                return waitState != null;
+            }
+
+            //drawCard
+            case DrawCardResponseMessage drawCardResponseMessage -> {
+                return drawCardClient(drawCardResponseMessage.getCardID());
+            }
+
+            //placeCard
+            case PlaceCardResponseMessage placeCardResponseMessage -> {
+                return placeCardResponseMessage.isPlaced();
+            }
+
+            //placeStartingCard
+            case PlaceStartingCardResponseMessage placeStartingCardResponseMessage -> {
+                return placeStartingCardResponseMessage.isPlaced();
+            }
+
+            //choosePersonalObjective
+            case ChoosePersonalObjectiveResponseMessage choosePersonalObjectiveResponseMessage -> {
+                return choosePersonalObjectiveResponseMessage.isCorrect();
+            }
+
+            //fetchAvailableGames
+            case FetchAvailableGamesResponseMessage fetchAvailableGamesResponseMessage -> {
+                return fetchAvailableGamesClient(fetchAvailableGamesResponseMessage.getAvailableGames());
+            }
+
+            //fetchGameState
+            case FetchGameStateResponseMessage fetchGameStateResponseMessage -> {
+                return fetchGameStateClient(fetchGameStateResponseMessage.getGameState());
+            }
+
+            //fetchPlayers
+            case GetPlayersResponseMessage getPlayersResponseMessage -> {
+                return fetchPlayersClient(getPlayersResponseMessage.getPlayers());
+            }
+
+            //fetchCommonObjectives
+            case GetCommonObjectivesResponseMessage getCommonObjectivesResponseMessage -> {
+                return fetchCommonObjectivesClient(getCommonObjectivesResponseMessage.getCommonObjectives());
+            }
+
+            //fetchStartingCard
+            case GetStartingCardResponseMessage getStartingCardResponseMessage -> {
+                return fetchStartingCardClient(getStartingCardResponseMessage.getStartingCardId());
+            }
+
+            //fetchStartingObjectives
+            case GetStartingObjectivesResponseMessage getStartingObjectivesResponseMessage -> {
+                return fetchStartingObjectivesClient(getStartingObjectivesResponseMessage.getStartingObjectives());
+            }
+
+            //fetchOpponentsHandColor
+            case GetHandColorResponseMessage getHandColorResponseMessage -> {
+                String player = getHandColorResponseMessage.getUsernameRequiredData();
+                ArrayList<Resource> handColor = getHandColorResponseMessage.getHandColor();
+                if (handColor == null) {
+                    return false;
+                }
+
+                ((OpponentData) playerData.get(player)).setHandColor(handColor);
+
+                return true;
+            }
+
+            //fetchClientHand
+            case GetHandResponseMessage getHandResponseMessage -> {
+                return fetchClientHandClient(getHandResponseMessage.getHandIds());
+            }
+
+            //fetchValidPlacements
+            case GetValidPlacementsResponseMessage getValidPlacementsResponseMessage -> {
+                return fetchValidPlacementsClient(getValidPlacementsResponseMessage.getValidPlacements());
+            }
+
+            //fetchPlayersBoards
+            case GetPlayerBoardResponseMessage getPlayerBoardResponseMessage -> {
+                HashMap<Coordinates, Integer> playerBoardId = getPlayerBoardResponseMessage.getPlayerBoard();
+
+                if (playerBoardId == null) {
+                    return false;
+                }
+                playersBoardMap.put(getPlayerBoardResponseMessage.getUsernameRequiredData(), playerBoardId);
+                return true;
+            }
+
+            //fetchPlayersPlacingOrder
+            case GetPlacingOrderResponseMessage getPlacingOrderResponseMessage -> {
+                Deque<Integer> placingOrderId = getPlacingOrderResponseMessage.getPlacingOrder();
+                if (placingOrderId == null) {
+                    return false;
+                }
+                ArrayList<Card> placingOrder = new ArrayList<>();
+
+                for (int id : placingOrderId) {
+                    placingOrder.add(Game.getCardByID(id));
+                }
+                placingOrderMap.put(getPlacingOrderResponseMessage.getUsernameRequiredData(), placingOrder);
+                return true;
+            }
+
+            //fetchPlayersResources
+            case GetPlayerResourcesResponseMessage getPlayerResourcesResponseMessage -> {
+                HashMap<Resource, Integer> playerResources = getPlayerResourcesResponseMessage.getPlayerResources();
+                if (playerResources == null) {
+                    return false;
+                }
+                playersResourcesMap.put(getPlayerResourcesResponseMessage.getUsernameRequiredData(), playerResources);
+                return true;
+            }
+
+            //fetchScoreMap
+            case GetScoreMapResponseMessage getScoreMapResponseMessage -> {
+                return fetchScoreMapClient(getScoreMapResponseMessage.getScoreMap());
+            }
+
+            //fetchVisibleCards
+            case GetVisibleCardsResponseMessage getVisibleCardsResponseMessage -> {
+                visibleCardsIds = getVisibleCardsResponseMessage.getVisibleCards();
+                return visibleCardsIds != null;
+            }
+
+            case GetBackSideDecksResponseMessage getBackSideDecksResponseMessage -> {
+                visibleDecksIds = getBackSideDecksResponseMessage.getBackSideDecks();
+                return visibleDecksIds != null;
+            }
+
+            default -> {
+                return false;
+            }
+        }
     }
 
 }

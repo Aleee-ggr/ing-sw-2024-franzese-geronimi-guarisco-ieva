@@ -20,7 +20,7 @@ public class SocketServer extends Server {
         try {
             server = new ServerSocket(port);
             System.out.println("Started server on port " + port);
-            new Thread(this::acceptConnection).start();
+            acceptConnection();
         } catch (IOException e) {
             e.printStackTrace();
         }

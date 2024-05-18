@@ -6,7 +6,7 @@ public class SocketClientPlaceStartingCardMessage extends GenericRequestMessage{
     private final UUID gameUUID;
     private final boolean frontSideUp;
 
-    public SocketClientPlaceStartingCardMessage(String username, UUID gameUUID, boolean frontSideUp) {
+    public SocketClientPlaceStartingCardMessage(String username, boolean frontSideUp, UUID gameUUID) {
         this.username = username;
         this.gameUUID = gameUUID;
         this.frontSideUp = frontSideUp;

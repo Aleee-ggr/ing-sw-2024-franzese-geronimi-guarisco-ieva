@@ -18,6 +18,7 @@ import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientInterface;
 
+import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -199,7 +200,7 @@ public class RmiClient extends Client implements ClientInterface {
     }
 
     @Override
-    public boolean fetchPlayersPlacingOrder() throws RemoteException {
+    public boolean fetchPlayersPlacingOrder() throws IOException {
         HashMap<String, ArrayList<Card>> placingOrderMap = new HashMap<>();
 
         for(String player : players){
