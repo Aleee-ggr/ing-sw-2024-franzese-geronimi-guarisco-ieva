@@ -17,7 +17,7 @@ public class SocketTest {
         server = new SocketServer(9092);
     }
 
-    /*@AfterClass
+    @AfterClass
     public static void tearDown() {
         server.stopServer();
     }
