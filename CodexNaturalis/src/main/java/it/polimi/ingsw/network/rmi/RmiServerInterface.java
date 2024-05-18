@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.rmi;
 
+import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.enums.Resource;
@@ -102,7 +103,7 @@ public interface RmiServerInterface extends Remote {
      */
     String postChat(UUID game, String name, String message) throws RemoteException;
 
-    void wait(UUID game, String name) throws RemoteException;
+    WaitState wait(UUID game, String name) throws RemoteException;
 
     /**
      * Check whether the given credentials are valid (size less than 16 and username is not reused)

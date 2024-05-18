@@ -165,6 +165,13 @@ public class GameThread extends Thread {
             }
             if (msg.type().equals("place") && msg.player().equals(playerName)){
                 place = respond(msg);
+                if (place) {
+                    for (Player player : controller.getGame().getPlayers()) {
+                        if (!player.getUsername().equals(currentPlayer)) {
+                            turnMap.put(player.getUsername(), WaitState.UPDATE);
+                        }
+                    }
+                }
                 continue;
             }
 
@@ -185,6 +192,13 @@ public class GameThread extends Thread {
             }
             if(msg.type().equals("draw")  && msg.player().equals(playerName)){
                 draw = respond(msg);
+                if (draw) {
+                    for (Player player : controller.getGame().getPlayers()) {
+                        if (!player.getUsername().equals(currentPlayer)) {
+                            turnMap.put(player.getUsername(), WaitState.UPDATE);
+                        }
+                    }
+                }
                 continue;
             }
 

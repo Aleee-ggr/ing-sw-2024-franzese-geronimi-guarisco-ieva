@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.rmi;
 
+import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.controller.threads.Status;
 import it.polimi.ingsw.controller.threads.ThreadMessage;
@@ -180,8 +181,8 @@ public class RmiServer extends Server implements RmiServerInterface {
         return joinGame(game, player);
     }
 
-    public void wait(UUID game, String player) throws RemoteException{
-        waitUpdate(game, player);
+    public WaitState wait(UUID game, String player) throws RemoteException{
+        return waitUpdate(game, player);
     }
 
     @Override

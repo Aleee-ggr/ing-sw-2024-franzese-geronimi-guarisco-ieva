@@ -451,7 +451,7 @@ public abstract class Server {
         }
     }
 
-    public static void waitUpdate(UUID game, String username) {
+    public static WaitState waitUpdate(UUID game, String username) {
         if (gameTurns.get(game).get(username) != WaitState.TURN) {
             gameTurns.get(game).put(username, WaitState.WAIT);
         }
@@ -462,6 +462,8 @@ public abstract class Server {
                 throw new RuntimeException(e);
             }
         }
+
+        return gameTurns.get(game).get(username);
     }
 }
 
