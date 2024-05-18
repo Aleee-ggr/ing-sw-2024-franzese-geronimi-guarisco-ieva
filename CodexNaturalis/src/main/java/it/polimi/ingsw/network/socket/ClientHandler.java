@@ -74,14 +74,8 @@ public class ClientHandler extends Thread {
 
         if (message instanceof SocketClientCreateGameMessage) {
             UUID id = Server.createGame(((SocketClientCreateGameMessage) message).getNumPlayers());
-            ThreadMessage threadMessage = ThreadMessage.join(message.getUsername());
-            Server.sendMessage(id, threadMessage);
-            ThreadMessage response = threadMessages.get(id).remove();
-
-            if (response.status() == Status.OK) {
-                CreateGameResponseMessage responseMessage = new CreateGameResponseMessage(id);
-                sendResponse(responseMessage);
-            }
+            CreateGameResponseMessage responseMessage = new CreateGameResponseMessage(id);
+            sendResponse(responseMessage);
             return;
         }
 
@@ -114,6 +108,8 @@ public class ClientHandler extends Thread {
                     message.getUsername(),
                     ((SocketValidateCredentialsMessage) message).getPassword()
             );
+            ValidateCredentialsResponseMessage response = new ValidateCredentialsResponseMessage(message.getUsername(), ((SocketValidateCredentialsMessage) message).getPassword(), isValid);
+            sendResponse(response);
         }
 
         if (message instanceof SocketClientGetHandColorMessage) {

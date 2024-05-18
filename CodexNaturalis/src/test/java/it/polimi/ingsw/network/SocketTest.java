@@ -39,6 +39,7 @@ public class SocketTest {
         SocketClient client = new SocketClient( "localhost", 9092);
 
         try {
+            client.checkCredentials("player1", "password");
             client.newGame( 3);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -46,6 +47,7 @@ public class SocketTest {
 
         Thread.sleep(1000);
         Assert.assertNotNull(client.gameId);
+
 
         try {
             client.stopConnection();

@@ -357,7 +357,12 @@ public class SocketClient extends Client implements ClientInterface {
 
             //checkCredentials
             case ValidateCredentialsResponseMessage validateCredentialsResponseMessage -> {
-                return validateCredentialsResponseMessage.isValid();
+                if (validateCredentialsResponseMessage.isValid()){
+                    this.username = validateCredentialsResponseMessage.getUsername();
+                    this.password = validateCredentialsResponseMessage.getPassword();
+                    return true;
+                }
+                return false;
             }
 
             //wait
