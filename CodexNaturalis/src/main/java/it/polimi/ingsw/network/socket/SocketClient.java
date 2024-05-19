@@ -299,7 +299,7 @@ public class SocketClient extends Client implements ClientInterface {
 
     @Override
     public boolean fetchScoreMap() throws IOException {
-        output.writeObject(new SocketClientGetScoreMapMessage(username));
+        output.writeObject(new SocketClientGetScoreMapMessage(username, this.gameId));
         return handleResponse();
     }
 

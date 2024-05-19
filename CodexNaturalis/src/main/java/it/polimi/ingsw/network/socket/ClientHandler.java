@@ -71,102 +71,238 @@ public class ClientHandler extends Thread {
      * @throws IOException if an I/O error occurs while sending responses
      */
     private void handleMessage(GenericRequestMessage message) throws IOException {
+        GenericResponseMessage responseMessage = null;
+        switch (message) {
 
-        if (message instanceof SocketClientCreateGameMessage) {
-            UUID id = Server.createGame(((SocketClientCreateGameMessage) message).getNumPlayers());
-            CreateGameResponseMessage responseMessage = new CreateGameResponseMessage(id);
-            sendResponse(responseMessage);
-            return;
-        }
+            case SocketClientCreateGameMessage socketClientCreateGameMessage -> {
+                UUID id = Server.createGame(socketClientCreateGameMessage.getNumPlayers());
+                responseMessage = new CreateGameResponseMessage(id);
+            }
 
-        if (message instanceof SocketClientJoinGameMessage) {
-            JoinGameResponseMessage responseMessage = new JoinGameResponseMessage(((SocketClientJoinGameMessage) message).getGameUUID(), Server.joinGame(((SocketClientJoinGameMessage) message).getGameUUID(), message.getUsername()));
-            sendResponse(responseMessage);
-            return;
-        }
+            case SocketClientJoinGameMessage socketClientJoinGameMessage -> {
+                responseMessage = new JoinGameResponseMessage(
+                        socketClientJoinGameMessage.getGameUUID(),
+                        Server.joinGame(
+                                socketClientJoinGameMessage.getGameUUID(),
+                                message.getUsername()
+                        )
+                );
+            }
 
-        if (message instanceof SocketClientPlaceCardMessage) {
-            ThreadMessage threadMessage = ThreadMessage.placeCard(
-                    message.getUsername(),
-                    ((SocketClientPlaceCardMessage) message).getCoordinates(),
-                    ((SocketClientPlaceCardMessage) message).getCardId()
-            );
-            return;
-        }
+            case SocketValidateCredentialsMessage socketValidateCredentialsMessage -> {
+                responseMessage = new ValidateCredentialsResponseMessage(
+                        socketValidateCredentialsMessage.getUsername(),
+                        socketValidateCredentialsMessage.getPassword(),
+                        Server.isValidPlayer(
+                                socketValidateCredentialsMessage.getUsername(),
+                                socketValidateCredentialsMessage.getPassword()
+                        )
+                );
+            }
 
-        if (message instanceof SocketClientDrawCardMessage) {
-            ThreadMessage threadMessage = ThreadMessage.draw(
-                    message.getUsername(),
-                    ((SocketClientDrawCardMessage) message).getPosition()
-            );
-            Server.sendMessage(((SocketClientDrawCardMessage) message).getGameUUID(), threadMessage);
-            return;
-        }
+            case SocketClientWaitUpdateMessage socketClientWaitUpdateMessage -> {
+                responseMessage = new WaitUpdateResponseMessage(
+                        Server.waitUpdate(
+                                socketClientWaitUpdateMessage.getGameUUID(),
+                                socketClientWaitUpdateMessage.getUsername()
+                        )
+                );
+            }
 
-        if (message instanceof SocketValidateCredentialsMessage) {
-            boolean isValid = Server.isValidPlayer(
-                    message.getUsername(),
-                    ((SocketValidateCredentialsMessage) message).getPassword()
-            );
-            ValidateCredentialsResponseMessage response = new ValidateCredentialsResponseMessage(message.getUsername(), ((SocketValidateCredentialsMessage) message).getPassword(), isValid);
-            sendResponse(response);
-        }
+            //TODO: implementation of chat
+            case SocketClientPostChatMessage socketClientPostChatMessage -> {
+                return;
+            }
 
-        if (message instanceof SocketClientGetHandColorMessage) {
-            GetHandColorResponseMessage response = new GetHandColorResponseMessage(Server.getHandColorServer(((SocketClientGetHandColorMessage) message).getGameUUID(), message.getUsername(), ((SocketClientGetHandColorMessage) message).getUsernameRequiredData()), ((SocketClientGetHandColorMessage) message).getUsernameRequiredData());
-            sendResponse(response);
-        }
+            case SocketClientDrawCardMessage socketClientDrawCardMessage -> {
+                responseMessage = new DrawCardResponseMessage(
+                        Server.drawCardServer(
+                                socketClientDrawCardMessage.getGameUUID(),
+                                socketClientDrawCardMessage.getUsername(),
+                                socketClientDrawCardMessage.getPosition()
+                        )
+                );
+            }
 
-        if (message instanceof SocketClientGetBackSideDecksMessage) {
-            GetBackSideDecksResponseMessage response = new GetBackSideDecksResponseMessage(Server.getBackSideDecksServer(((SocketClientGetBackSideDecksMessage) message).getGameUUID(), message.getUsername()));
-            sendResponse(response);
-        }
+            case SocketClientPlaceCardMessage socketClientPlaceCardMessage -> {
+                responseMessage = new PlaceCardResponseMessage(
+                        Server.placeCardServer(
+                                socketClientPlaceCardMessage.getGameUUID(),
+                                socketClientPlaceCardMessage.getUsername(),
+                                socketClientPlaceCardMessage.getCoordinates(),
+                                socketClientPlaceCardMessage.getCardId()
+                        )
+                );
+            }
 
-        if (message instanceof SocketClientGetCommonObjectivesMessage) {
-            GetCommonObjectivesResponseMessage response = new GetCommonObjectivesResponseMessage(Server.getCommonObjectivesServer(((SocketClientGetCommonObjectivesMessage) message).getGameUUID(), message.getUsername()));
-            sendResponse(response);
-        }
+            case SocketClientPlaceStartingCardMessage socketClientPlaceStartingCardMessage -> {
+                responseMessage = new PlaceStartingCardResponseMessage(
+                        Server.setStartingCardServer(
+                                socketClientPlaceStartingCardMessage.getGameUUID(),
+                                socketClientPlaceStartingCardMessage.getUsername(),
+                                socketClientPlaceStartingCardMessage.isFrontSideUp()
+                        )
+                );
+            }
 
-        if (message instanceof SocketClientGetHandMessage) {
-            GetHandResponseMessage response = new GetHandResponseMessage(Server.getHandServer(((SocketClientGetHandMessage) message).getGameUUID(), message.getUsername()));
-            sendResponse(response);
-        }
+            case SocketClientChoosePersonalObjectiveMessage socketClientChoosePersonalObjectiveMessage -> {
+                responseMessage = new ChoosePersonalObjectiveResponseMessage(
+                        Server.choosePersonalObjectiveServer(
+                                socketClientChoosePersonalObjectiveMessage.getGameUUID(),
+                                socketClientChoosePersonalObjectiveMessage.getUsername(),
+                                socketClientChoosePersonalObjectiveMessage.getObjectiveID()
+                        )
+                );
+            }
 
-        if (message instanceof SocketClientGetPlayerBoard) {
-            GetPlayerBoardResponseMessage response = new GetPlayerBoardResponseMessage(Server.getBoardServer(((SocketClientGetPlayerBoard) message).getGameUUID(), message.getUsername(), ((SocketClientGetPlayerBoard) message).getUsernameRequiredData()), ((SocketClientGetPlayerBoard) message).getUsernameRequiredData());
-            sendResponse(response);
-        }
+            case SocketClientFetchAvailableGamesMessage socketClientFetchAvailableGamesMessage -> {
+                responseMessage = new FetchAvailableGamesResponseMessage(
+                        Server.getAvailableGamesServer(
+                                socketClientFetchAvailableGamesMessage.getUsername()
+                        )
+                );
+            }
 
-        if (message instanceof SocketClientGetPlayerResourcesMessage) {
-            GetPlayerResourcesResponseMessage response = new GetPlayerResourcesResponseMessage(Server.getPlayerResourcesServer(((SocketClientGetPlayerResourcesMessage) message).getGameUUID(), message.getUsername(), ((SocketClientGetPlayerResourcesMessage) message).getUsernameRequiredData()), ((SocketClientGetPlayerResourcesMessage) message).getUsernameRequiredData());
-            sendResponse(response);
-        }
+            case SocketClientFetchGameStateMessage socketClientFetchGameStateMessage -> {
+                responseMessage = new FetchGameStateResponseMessage(
+                        Server.getGameStateServer(
+                                socketClientFetchGameStateMessage.getGameUUID(),
+                                socketClientFetchGameStateMessage.getUsername()
+                        )
+                );
+            }
 
-        if (message instanceof SocketClientGetValidPlacementsMessage) {
-            GetValidPlacementsResponseMessage response = new GetValidPlacementsResponseMessage(Server.getValidPlacementsServer(((SocketClientGetValidPlacementsMessage) message).getGameUUID(), message.getUsername()));
-            sendResponse(response);
-        }
+            case SocketClientGetPlayersMessage socketClientGetPlayersMessage -> {
+                responseMessage = new GetPlayersResponseMessage(
+                        Server.getPlayersServer(
+                                socketClientGetPlayersMessage.getGameUUID(),
+                                socketClientGetPlayersMessage.getUsername()
+                        )
+                );
+            }
 
-        if (message instanceof SocketClientGetVisibleCardsMessage) {
-            GetVisibleCardsResponseMessage response = new GetVisibleCardsResponseMessage(Server.getVisibleCardsServer(((SocketClientGetVisibleCardsMessage) message).getGameUUID(), message.getUsername()));
-            sendResponse(response);
-        }
+            case SocketClientGetCommonObjectivesMessage socketClientGetCommonObjectivesMessage -> {
+                responseMessage = new GetCommonObjectivesResponseMessage(
+                        Server.getCommonObjectivesServer(
+                                socketClientGetCommonObjectivesMessage.getGameUUID(),
+                                socketClientGetCommonObjectivesMessage.getUsername()
+                        )
+                );
+            }
 
-        if (message instanceof SocketClientGetStartingObjectivesMessage) {
-            GetStartingObjectivesResponseMessage response = new GetStartingObjectivesResponseMessage(Server.getStartingObjectivesServer(((SocketClientGetStartingObjectivesMessage) message).getGameUUID(), message.getUsername()));
-            sendResponse(response);
-        }
+            case SocketClientGetVisibleCardsMessage socketClientGetVisibleCardsMessage -> {
+                responseMessage = new GetVisibleCardsResponseMessage(
+                        Server.getVisibleCardsServer(
+                                socketClientGetVisibleCardsMessage.getGameUUID(),
+                                socketClientGetVisibleCardsMessage.getUsername()
+                        )
+                );
+            }
 
-        if (message instanceof SocketClientChoosePersonalObjectiveMessage) {
-            ChoosePersonalObjectiveResponseMessage response = new ChoosePersonalObjectiveResponseMessage(Server.choosePersonalObjectiveServer(((SocketClientChoosePersonalObjectiveMessage) message).getGameUUID(), message.getUsername(), ((SocketClientChoosePersonalObjectiveMessage) message).getObjectiveID()));
-            sendResponse(response);
-        }
+            case SocketClientGetBackSideDecksMessage socketClientGetBackSideDecksMessage -> {
+                responseMessage = new GetBackSideDecksResponseMessage(
+                        Server.getBackSideDecksServer(
+                                socketClientGetBackSideDecksMessage.getGameUUID(),
+                                socketClientGetBackSideDecksMessage.getUsername()
+                        )
+                );
+            }
 
-        if (message instanceof SocketClientWaitUpdateMessage) {
-            Server.waitUpdate(((SocketClientWaitUpdateMessage) message).getGameUUID(), message.getUsername());
-            //WaitUpdateResponseMessage response = new WaitUpdateResponseMessage(true);
-            //sendResponse(response);
+            case SocketClientGetScoreMapMessage socketClientGetScoreMapMessage -> {
+                responseMessage = new GetScoreMapResponseMessage(
+                        Server.getScoreMapServer(
+                                socketClientGetScoreMapMessage.getGameUUID(),
+                                socketClientGetScoreMapMessage.getUsername()
+                        )
+                );
+            }
+
+            case SocketClientGetPlayerResourcesMessage socketClientGetPlayerResourcesMessage -> {
+                responseMessage = new GetPlayerResourcesResponseMessage(
+                        Server.getPlayerResourcesServer(
+                                socketClientGetPlayerResourcesMessage.getGameUUID(),
+                                socketClientGetPlayerResourcesMessage.getUsername(),
+                                socketClientGetPlayerResourcesMessage.getUsernameRequiredData()
+                        ),
+                        socketClientGetPlayerResourcesMessage.getUsernameRequiredData()
+                );
+            }
+
+            case SocketClientGetPlayerBoard socketClientGetPlayerBoard -> {
+                responseMessage = new GetPlayerBoardResponseMessage(
+                        Server.getBoardServer(
+                                socketClientGetPlayerBoard.getGameUUID(),
+                                socketClientGetPlayerBoard.getUsername(),
+                                socketClientGetPlayerBoard.getUsernameRequiredData()
+                        ),
+                        socketClientGetPlayerBoard.getUsernameRequiredData()
+                );
+            }
+
+            case SocketClientGetPlacingOrderMessage socketClientGetPlacingOrderMessage -> {
+                responseMessage = new GetPlacingOrderResponseMessage(
+                        Server.getPlacingOrderServer(
+                                socketClientGetPlacingOrderMessage.getGameUUID(),
+                                socketClientGetPlacingOrderMessage.getUsername(),
+                                socketClientGetPlacingOrderMessage.getUsernameRequiredData()
+                        ),
+                        socketClientGetPlacingOrderMessage.getUsernameRequiredData()
+                );
+            }
+
+            case SocketClientGetValidPlacementsMessage socketClientGetValidPlacementsMessage -> {
+                responseMessage = new GetValidPlacementsResponseMessage(
+                        Server.getValidPlacementsServer(
+                                socketClientGetValidPlacementsMessage.getGameUUID(),
+                                socketClientGetValidPlacementsMessage.getUsername()
+                        )
+                );
+            }
+
+            case SocketClientGetHandMessage socketClientGetHandMessage -> {
+                responseMessage = new GetHandResponseMessage(
+                        Server.getHandServer(
+                                socketClientGetHandMessage.getGameUUID(),
+                                socketClientGetHandMessage.getUsername()
+                        )
+                );
+            }
+
+            case SocketClientGetHandColorMessage socketClientGetHandColorMessage -> {
+                responseMessage = new GetHandColorResponseMessage(
+                        Server.getHandColorServer(
+                                socketClientGetHandColorMessage.getGameUUID(),
+                                socketClientGetHandColorMessage.getUsername(),
+                                socketClientGetHandColorMessage.getUsernameRequiredData()
+                        ),
+                        socketClientGetHandColorMessage.getUsernameRequiredData()
+                );
+            }
+
+            case SocketClientGetStartingObjectivesMessage socketClientGetStartingObjectivesMessage -> {
+                responseMessage = new GetStartingObjectivesResponseMessage(
+                        Server.getStartingObjectivesServer(
+                                socketClientGetStartingObjectivesMessage.getGameUUID(),
+                                socketClientGetStartingObjectivesMessage.getUsername()
+                        )
+                );
+            }
+
+            case SocketClientGetStartingCardMessage socketClientGetStartingCardMessage -> {
+                responseMessage = new GetStartingCardResponseMessage(
+                        Server.getStartingCardServer(
+                                socketClientGetStartingCardMessage.getGameUUID(),
+                                socketClientGetStartingCardMessage.getUsername()
+                        )
+                );
+            }
+
+            default -> {
+                return;
+            }
+
         }
+        sendResponse(responseMessage);
     }
 
     /**
