@@ -10,6 +10,8 @@ import it.polimi.ingsw.view.TUI.components.StartingObjectiveView;
 import it.polimi.ingsw.view.TUI.components.printables.ObjectiveCard;
 
 import java.io.*;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -32,6 +34,7 @@ public class TuiController {
         lobby();
         setup();
         mainGame();
+        endGame();
     }
 
     private void selectGame() {
@@ -117,7 +120,33 @@ public class TuiController {
         SharedUpdate updater = new SharedUpdate();
         new CommandThread(client, updater, compositor).start();
         new ClientUpdateThread(client, updater).start();
-        new RenderThread(client, updater, compositor).start();
+        Thread t = new RenderThread(client, updater, compositor);
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void endGame() {
+        try {
+            client.fetchScoreMap();
+            List<Map.Entry<String, Integer>> entryList =  client.getScoreMap().entrySet().stream()
+                    .sorted((e1, e2) -> e2.getValue() - e1.getValue())
+                    .toList();
+
+            for (int i = 0; i < entryList.size(); i++) {
+                out.print(i + 1);
+                out.print(": ");
+                out.print(entryList.get(i).getKey());
+                out.print(": ");
+                out.println(entryList.get(i).getValue());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     private int select(int min, int max) {
@@ -176,88 +205,9 @@ public class TuiController {
         } catch (IOException e) {throw new RuntimeException(e);}
     }
 
-    /**
-     * List of available commands:
-     * <ul>
-     *  <li> place [card] [position]: place the card in the given position</li>
-     *  <li> view [deck|objectives|board]: show the selected element </li>
-     *  <li> switch [player]: show the view from the given player side </li>
-     *  <li> draw [int index]: draw the card at the given position
-     *  0 to 3 are visible cards, 4 & 5 are respectively gold and std deck </li>
-     *  <li> w / a / s / d: move the view of the board</li>
-     *  <li> h: show this list </li>
-     *  </ul>
-     * @param command the command to execute
-     */
-    private void handleCommand(String command) {
-        String[] cmd = command.split(" ");
-        int position, id;
-        try {
-            switch (cmd[0]) {
-                case "place":
-                    id = Integer.parseInt(cmd[1]) - 1;
-                    position = Integer.parseInt(cmd[2]);
-                    if (!placed) {
-                        placed = place(id, position);
-                        if (!placed) {
-                            out.println("Invalid card or position");
-                        }
-                    }
-                    fetchData();
-                    break;
-                case "view":
-                    compositor.switchView(View.getView(cmd[1]));
-                    break;
-                case "switch":
-                    break;
-                case "draw":
-                    position = Integer.parseInt(cmd[1]) -1;
-                    if (placed) {
-                        client.drawCard(position);
-                        placed = false;
-                    }
-                    fetchData();
-                    break;
-                case "w":
-                    compositor.getBoard().moveCenter(0, 2);
-                    break;
-                case "a":
-                    compositor.getBoard().moveCenter(-2, 0);
-                    break;
-                case "s":
-                    compositor.getBoard().moveCenter(0, -2);
-                    break;
-                case "d":
-                    compositor.getBoard().moveCenter(2, 0);
-                    break;
-                case "h", "help":
-                    out.println("""
-                            List of available commands:
-                              - place [card] [position]: place the card in the given position
-                              - view [deck|objectives|board]: show the selected element
-                              - switch [player]: show the view from the given player side
-                              - draw [int index]: draw the card at the given position, 0 to 3 are visible cards, 4 & 5 are respectively gold and std deck
-                              - w / a / s / d: move the view of the board
-                              - h: show this list
-                              Press ENTER to continue""");
-                    in.readLine();
-                    break;
-            }
-        } catch (IOException | NumberFormatException e) {throw new RuntimeException(e);}
-    }
 
     private void clear() {
         out.print("\033[H\033[2J");
         out.flush();
-    }
-
-    private boolean place(int card, int position) {
-        int id = client.getPlayerData().getClientHand().get(card).getId();
-        Coordinates coordinates = client.getPlayerData().getValidPlacements().get(position);
-        try {
-            return client.placeCard(coordinates, id);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

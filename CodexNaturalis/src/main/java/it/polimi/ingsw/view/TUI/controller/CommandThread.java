@@ -45,6 +45,7 @@ public class CommandThread extends Thread {
     }
 
     private boolean place(int card, int position) {
+        //TODO add inverse placement
         int id = client.getPlayerData().getClientHand().get(card).getId();
         Coordinates coordinates = client.getPlayerData().getValidPlacements().get(position);
         try {
