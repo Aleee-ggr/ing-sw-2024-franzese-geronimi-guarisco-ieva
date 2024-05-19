@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.GUI.SceneControllers;
 
 import it.polimi.ingsw.network.ClientInterface;
-import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.concurrent.Task;
@@ -115,7 +114,7 @@ public class WaitingRoomController implements Initializable {
 
             new Thread(waitUpdateTask).start();
 
-            Timeline fetchPlayersTimeline = new Timeline(new KeyFrame(Duration.seconds(5), event -> {
+            /*Timeline fetchPlayersTimeline = new Timeline(new KeyFrame(Duration.seconds(5), event -> {
                 try {
                     client.fetchPlayers();
                     updatePlayersList();
@@ -124,7 +123,7 @@ public class WaitingRoomController implements Initializable {
                 }
             }));
             fetchPlayersTimeline.setCycleCount(Timeline.INDEFINITE);
-            fetchPlayersTimeline.play();
+            fetchPlayersTimeline.play();*/
         }
     }
 
