@@ -1,7 +1,5 @@
 package it.polimi.ingsw.view.TUI.controller;
 
-import it.polimi.ingsw.controller.threads.GameState;
-import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.Compositor;
@@ -20,7 +18,6 @@ public class TuiController {
     PrintWriter out = new PrintWriter(System.out, true);
     private final ClientInterface client;
     Compositor compositor = null;
-    boolean placed = false;
 
     public TuiController(ClientInterface client) {
         this.client = client;

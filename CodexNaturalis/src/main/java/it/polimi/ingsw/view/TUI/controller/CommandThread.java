@@ -10,6 +10,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import static java.lang.Math.abs;
+
 public class CommandThread extends Thread {
     private final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     private final ClientInterface client;
@@ -45,8 +47,12 @@ public class CommandThread extends Thread {
     }
 
     private boolean place(int card, int position) {
-        //TODO add inverse placement
-        int id = client.getPlayerData().getClientHand().get(card).getId();
+        int id = 1;
+        if (card < 0) {
+            id = -1;
+            card = abs(card) - 2;
+        }
+        id *= client.getPlayerData().getClientHand().get(card).getId();
         Coordinates coordinates = client.getPlayerData().getValidPlacements().get(position);
         try {
             return client.placeCard(coordinates, id);
