@@ -21,7 +21,6 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.UUID;
 
-//TODO: lots of methods are not implemented
 
 /**
  * The SocketClient class represents a client that uses sockets for network communication.
@@ -324,6 +323,7 @@ public class SocketClient extends Client implements ClientInterface {
      */
     public boolean handleResponse() throws IOException {
         GenericResponseMessage response;
+        output.flush();
 
         do {
             try {
@@ -497,7 +497,7 @@ public class SocketClient extends Client implements ClientInterface {
             }
 
             default -> {
-                return false;
+                throw new RuntimeException("Error while handling the response from the server.");
             }
         }
     }

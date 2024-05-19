@@ -71,6 +71,7 @@ public class ClientHandler extends Thread {
      * @throws IOException if an I/O error occurs while sending responses
      */
     private void handleMessage(GenericRequestMessage message) throws IOException {
+        output.flush();
         GenericResponseMessage responseMessage = null;
         switch (message) {
 
@@ -298,7 +299,7 @@ public class ClientHandler extends Thread {
             }
 
             default -> {
-                return;
+                throw new RuntimeException("Invalid message type");
             }
 
         }
@@ -309,9 +310,8 @@ public class ClientHandler extends Thread {
      * Sends a response message back to the client.
      *
      * @param response the response message to be sent
-     * @throws IOException if an I/O error occurs while sending the response
      */
-    private void sendResponse(GenericResponseMessage response) throws IOException {
+    private void sendResponse(GenericResponseMessage response) {
         try {
             output.writeObject(response);
         } catch (IOException e) {
