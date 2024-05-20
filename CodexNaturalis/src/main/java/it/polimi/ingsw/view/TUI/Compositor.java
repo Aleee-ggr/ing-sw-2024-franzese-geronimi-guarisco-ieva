@@ -65,12 +65,12 @@ public class Compositor {
 
         for(int y = 0; y < MiniBoard.boardHeight; y++){
             for (MiniBoard miniBoard : miniBoard) {
-                out.append(miniBoard.toStringArray()[y])
+                out.append(miniBoard.toStringArrayColor()[y])
                         .append('┃');
             }
             out.append(chat.toStringArray()[y])
                     .append('┃');
-            out.append(resources.toStringArray()[y]);
+            out.append(resources.toStringArrayColor()[y]);
             out.append('\n');
         }
 
@@ -103,16 +103,16 @@ public class Compositor {
 
         int y;
         for(y = 0; y < HandView.panelHeight; y++){
-            out.append(hand.toStringArray()[y])
+            out.append(hand.toStringArrayColor()[y])
                     .append("┃")
-                    .append(mainComponent.get(view).toStringArray()[y])
+                    .append(mainComponent.get(view).toStringArrayColor()[y])
                     .append("\n");
         }
 
         for(int of_y = 0; of_y < ScoreBoard.scoreHeight; of_y++) {
             out.append(scoreBoard.toStringArray()[of_y])
                     .append("┃")
-                    .append(mainComponent.get(view).toStringArray()[y + of_y])
+                    .append(mainComponent.get(view).toStringArrayColor()[y + of_y])
                     .append("\n");
         }
 

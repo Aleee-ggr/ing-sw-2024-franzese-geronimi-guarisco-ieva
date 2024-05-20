@@ -12,13 +12,15 @@ public enum Resource {
 
     public char toChar() {
         return switch (this) {
-            case FUNGI -> 'F';
-            case PLANT -> 'P';
-            case ANIMAL -> 'A';
-            case INSECT -> 'I';
-            case INKWELL -> 'K';
-            case QUILL -> 'Q';
-            case MANUSCRIPT -> 'M';
+            case FUNGI -> 'ଚ';
+            case PLANT -> '♣';
+            case ANIMAL -> '♞';
+            case INSECT -> 'Ӝ';
+            case INKWELL -> '⚱';
+            case QUILL -> '✎';
+            case MANUSCRIPT -> '✉';
+            case NONE -> '⎕';
+            case NONCOVERABLE -> '╳';
             default -> ' ';
         };
     }
@@ -36,6 +38,7 @@ public enum Resource {
             case 'K' -> INKWELL;
             case 'Q' -> QUILL;
             case 'M' -> MANUSCRIPT;
+            case 'N' -> NONCOVERABLE;
             default -> NONE;
         };
     }
@@ -49,6 +52,7 @@ public enum Resource {
             case INKWELL -> "\u001b[1;30m█\u001b[0m";
             case QUILL -> "\u001b[1;37m█\u001b[0m";
             case MANUSCRIPT -> "\u001b[1;33m█\u001b[0m";
+            case NONCOVERABLE -> "╳";
             default -> " ";
         };
     }

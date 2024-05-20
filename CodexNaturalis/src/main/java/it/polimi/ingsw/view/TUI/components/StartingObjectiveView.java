@@ -77,9 +77,9 @@ public class StartingObjectiveView implements Component{
             out.append(" ".repeat(marginSide))
                     .append("│")
                     .append(" ".repeat(cardSpacing/2))
-                    .append(objectives[0].toStringArray()[i])
+                    .append(objectives[0].toStringArrayColor()[i])
                     .append(" ".repeat(cardSpacing))
-                    .append(objectives[1].toStringArray()[i])
+                    .append(objectives[1].toStringArrayColor()[i])
                     .append(" ".repeat(cardSpacing/2))
                     .append("│\n");
         }

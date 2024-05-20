@@ -69,9 +69,9 @@ public class StartingCardView implements Component{
             out.append(" ".repeat(marginSide))
                     .append("│")
                     .append(" ".repeat(cardSpacing/2))
-                    .append(new PrintCards(startingCard.setFrontSideUp(true)).toStringArray()[i])
+                    .append(new PrintCards(startingCard.setFrontSideUp(true)).toStringArrayColor()[i])
                     .append(" ".repeat(cardSpacing))
-                    .append(new PrintCards(startingCard.setFrontSideUp(false)).toStringArray()[i])
+                    .append(new PrintCards(startingCard.setFrontSideUp(false)).toStringArrayColor()[i])
                     .append(" ".repeat(cardSpacing/2))
                     .append("│\n");
         }

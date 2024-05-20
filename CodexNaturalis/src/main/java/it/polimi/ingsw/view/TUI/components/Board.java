@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.ColoredCard;
 import it.polimi.ingsw.model.cards.Corner;
 import it.polimi.ingsw.model.cards.StartingCard;
+import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.RotateBoard;
 
@@ -43,39 +44,31 @@ public class Board implements Component {
         clear();
         List<Card> cardPlacementList = client.getPlayerData().getOrder();
         BiMap<Coordinates, Card> cardPlacementMap = client.getPlayerData().getBoard();
+        Character[][] drawnCard;
 
         for (Card card: cardPlacementList) {
             Coordinates current = cardPlacementMap.inverse().get(card);
             Coordinates relativeCoordinates  = getOffsetCoordinates(current);
             if (isInView(relativeCoordinates)) {
                 if (card instanceof StartingCard starting) {
-                    board[relativeCoordinates.y()][relativeCoordinates.x()] = 'S';
-                    setLines(relativeCoordinates);
                     if (!card.isFrontSideUp()) {
-                        setCorners(relativeCoordinates, starting.getBackCorners());
+                        drawnCard = drawCard(starting.getBackCorners(), starting.getFrontResources().getFirst()); //TODO: fix this (multiple resources)
+                    } else {
+                        drawnCard = drawCard(starting.getFrontCorners(), starting.getFrontResources().getFirst());
                     }
-                    if(card.isFrontSideUp()){
-                        setCorners(relativeCoordinates, starting.getFrontCorners());
-                    }
-                    setLines(relativeCoordinates);
-                    continue;
-                } 
-                if (card instanceof ColoredCard colored) {
-                    board[relativeCoordinates.y()][relativeCoordinates.x()] = colored.getBackResource().toChar();
+                } else if (card instanceof ColoredCard colored) {
                     if (!card.isFrontSideUp()) {
-                        for (Coordinates neighbor : relativeCoordinates.getNeighbors()) {
-                            board[neighbor.y()][neighbor.x()] = 'N';
-                        }
-                        continue;
+                        drawnCard = drawCard(colored.getBackCorners(), colored.getBackResource());
+                    } else {
+                        drawnCard = drawCard(colored.getFrontCorners(), colored.getBackResource());
                     }
-
-                    setCorners(relativeCoordinates, colored.getFrontCorners());
-                    setLines(relativeCoordinates);
-
-                    continue;
+                } else {
+                    throw new RuntimeException("Unknown card type");
                 }
 
-                throw new RuntimeException("Unknown card type");
+                for(int y = -1; y < 2; y++) {
+                    System.arraycopy(drawnCard[y + 1], 0, board[relativeCoordinates.y() + y], relativeCoordinates.x() + -3, 7);
+                }
             }
 
         }
@@ -85,7 +78,17 @@ public class Board implements Component {
         for (int i = 0; i< validPosition.size(); i++) {
             Coordinates relativeCoordinates = getOffsetCoordinates(validPosition.get(i));
             if (isInView(relativeCoordinates)) {
-                board[relativeCoordinates.y()][relativeCoordinates.x()] = Integer.toHexString(i).toCharArray()[0];
+
+                String number = String.valueOf(i);
+                String paddedString;
+                if (number.length() == 1) {
+                    paddedString = " " + number + " ";
+                } else {
+                    paddedString = String.format("%3s", number);
+                }
+                for (int x = -1; x < 2; x++) {
+                    board[relativeCoordinates.y()][relativeCoordinates.x()+x] = paddedString.charAt(x+1);
+                }
             }
         }
     }
@@ -100,6 +103,7 @@ public class Board implements Component {
             }
             sb.append('\n');
         }
+
         return sb.toString();
     }
     private void setLines(Coordinates c){
@@ -112,6 +116,34 @@ public class Board implements Component {
                 board[neighbor.y()][neighbor.x()] = '━';
             }
         }
+    }
+
+    private Character[][] drawCard(Corner[] corners, Resource resource) {
+        String cardBuilder = corners[0].getCornerResource().toChar() +
+                    "▔▔▔▔▔" +
+                    corners[1].getCornerResource().toChar() +
+                    "\n" +
+                    "▏" +
+                    "     " +
+                    "▕" +
+                    "\n" +
+                    corners[2].getCornerResource().toChar() +
+                    "▁▁▁▁▁" +
+                    corners[3].getCornerResource().toChar() +
+                    "\n";
+
+
+        String[] lines = cardBuilder.split("\n");
+
+        Character[][] characterMatrix = new Character[lines.length][lines[0].length()];
+
+        for (int i = 0; i < lines.length; i++) {
+            for (int j = 0; j < lines[i].length(); j++) {
+                characterMatrix[i][j] = lines[i].charAt(j);
+            }
+        }
+
+        return characterMatrix;
     }
 
     private void setCorners(Coordinates c, Corner[] corners) {
@@ -137,7 +169,7 @@ public class Board implements Component {
 
     private Coordinates doubleCoordinates(Coordinates coordinates) {
         return new Coordinates(
-                coordinates.x() * 2,
+                coordinates.x() * 6,
                 coordinates.y() * 2
         );
     }
