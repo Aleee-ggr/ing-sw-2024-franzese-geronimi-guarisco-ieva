@@ -27,6 +27,7 @@ public class TuiController {
     }
 
     public void start() {
+        login();
         selectGame();
         lobby();
         setup();
@@ -34,7 +35,25 @@ public class TuiController {
         endGame();
     }
 
-    private void selectGame() {
+    private void login() {
+        try {
+            boolean valid = false;
+            do{
+                out.println("Insert username: ");
+                String username = in.readLine();
+                out.println("Insert password: ");
+                String password = in.readLine();
+
+                valid = client.checkCredentials(
+                        username,
+                        password
+                );
+            } while (!valid);
+
+        } catch (IOException e) {throw new RuntimeException(e);}
+    }
+
+    private void selectGame() { //TODO: change game selection for duplicate users
         try {
             client.fetchAvailableGames();
             int selected;

@@ -108,7 +108,7 @@ public abstract class Server {
             players.put(username, password);
             return true;
         }
-        return players.get(username).equals(password);
+        return false;
     }
 
     /**
