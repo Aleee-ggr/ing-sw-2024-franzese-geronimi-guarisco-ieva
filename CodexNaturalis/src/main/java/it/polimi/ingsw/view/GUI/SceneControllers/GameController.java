@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.RotateBoard;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -270,5 +271,21 @@ public class GameController implements Initializable {
             throw new RuntimeException(e);
         }
 
+    }
+
+    @FXML
+    private void changeObjectivesScene(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ObjectivesScene.fxml"));
+            ObjectivesController controller = new ObjectivesController();
+            controller.setClient(client);
+            loader.setController(controller);
+            Scene scene = null;
+            scene = new Scene(loader.load(), 1600, 900);
+            Stage stage = (Stage) board.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

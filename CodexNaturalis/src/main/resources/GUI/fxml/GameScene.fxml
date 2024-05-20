@@ -1,15 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
 
 <StackPane alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" style="-fx-background-color: efedd6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
     <children>
+        <Button mnemonicParsing="false" onAction="#changeObjectivesScene" prefHeight="100.0" prefWidth="200.0" text="OBJECTIVES" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_RIGHT">
+            <font>
+                <Font name="Trattatello" size="30.0" />
+            </font>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+            <effect>
+                <Glow />
+            </effect>
+            <StackPane.margin>
+                <Insets bottom="100.0" right="130.0" />
+            </StackPane.margin>
+        </Button>
         <ImageView fx:id="firstHandCard" fitHeight="151.5" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_LEFT">
             <StackPane.margin>
                 <Insets bottom="50.0" left="100.0" />
