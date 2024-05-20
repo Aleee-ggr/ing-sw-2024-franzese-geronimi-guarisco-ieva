@@ -78,7 +78,7 @@ public class CommandThread extends Thread {
         String[] cmd = command.split(" ");
         int position, id;
         try {
-            switch (cmd[0]) {
+            switch (cmd[0].toLowerCase()) {
                 case "place":
                     id = Integer.parseInt(cmd[1]) - 1;
                     position = Integer.parseInt(cmd[2]);
@@ -122,6 +122,9 @@ public class CommandThread extends Thread {
                               Press ENTER to continue""");
                     in.readLine();
                     break;
+                default:
+                    System.out.println("Unknown command\nPress ENTER to continue");
+                    in.readLine();
             }
         } catch (IOException | NumberFormatException e) {throw new RuntimeException(e);}
     }
