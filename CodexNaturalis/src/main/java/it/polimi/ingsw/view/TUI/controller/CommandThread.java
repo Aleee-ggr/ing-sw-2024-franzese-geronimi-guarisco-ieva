@@ -57,7 +57,7 @@ public class CommandThread extends Thread {
         try {
             return client.placeCard(coordinates, id);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return false;
         }
     }
 
@@ -80,15 +80,24 @@ public class CommandThread extends Thread {
         try {
             switch (cmd[0].toLowerCase()) {
                 case "place":
-                    id = Integer.parseInt(cmd[1]) - 1;
-                    position = Integer.parseInt(cmd[2]);
+                    try {
+                        id = Integer.parseInt(cmd[1]) - 1;
+                        position = Integer.parseInt(cmd[2]);
+                    } catch (Exception e) {
+                        defaultCommand();
+                        break;
+                    }
                     if (!placed) {
                         placed = place(id, position);
                     }
                     break;
                 case "view":
-                    compositor.switchView(View.getView(cmd[1]));
-                    break;
+                    try {
+                        compositor.switchView(View.getView(cmd[1]));
+                    } catch(IllegalStateException e){
+                        defaultCommand();
+                    }
+                        break;
                 case "switch":
                     break;
                 case "draw":
@@ -123,11 +132,21 @@ public class CommandThread extends Thread {
                     in.readLine();
                     break;
                 default:
-                    System.out.println("Unknown command\nPress ENTER to continue");
-                    in.readLine();
+                    defaultCommand();
             }
         } catch (IOException | NumberFormatException e) {throw new RuntimeException(e);}
     }
+
+    private void defaultCommand() {
+        System.out.println("Unknown command\nPress ENTER to continue");
+        try {
+            in.readLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 
     private void fetchData() {
         try {

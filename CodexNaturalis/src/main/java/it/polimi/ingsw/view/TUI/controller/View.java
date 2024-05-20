@@ -5,7 +5,7 @@ public enum View {
     DECK,
     OBJECTIVES;
 
-    public static View getView(String view) {
+    public static View getView(String view) throws IllegalStateException {
         return switch (view.trim().toUpperCase()) {
             case "BOARD"->BOARD;
             case "DECK"->DECK;
