@@ -69,6 +69,7 @@ public class SocketClient extends Client implements ClientInterface {
             client = new Socket(serverAddress, serverPort);
             output = new ObjectOutputStream(client.getOutputStream());
             input = new ObjectInputStream(client.getInputStream());
+            client.setTcpNoDelay(true);
 
             return true;
         } catch (IOException e) {
