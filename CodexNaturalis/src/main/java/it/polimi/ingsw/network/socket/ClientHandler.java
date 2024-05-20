@@ -34,6 +34,7 @@ public class ClientHandler extends Thread {
      */
     public ClientHandler(Socket socket, Map<UUID, BlockingQueue<ThreadMessage>> threadMessages) throws IOException {
         this.socket = socket;
+        socket.setTcpNoDelay(true);
         this.input = new ObjectInputStream(socket.getInputStream());
         this.output = new ObjectOutputStream(socket.getOutputStream());
         this.threadMessages = threadMessages;
