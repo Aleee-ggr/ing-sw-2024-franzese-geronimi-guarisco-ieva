@@ -11,8 +11,10 @@ import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -30,8 +32,7 @@ public class GameController implements Initializable {
     private Coordinates center;
     private final Map<Coordinates, StackPane> validPlacementPanes = new HashMap<>();
     private List<Card> placedCards;
-
-
+    private static final double ZOOM_FACTOR = 1.1;
 
     private ImageView selectedHandCard = null;
 
@@ -50,8 +51,20 @@ public class GameController implements Initializable {
     @FXML
     ImageView plateau;
 
+    @FXML
+    ScrollPane scrollPane;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        scrollPane.addEventFilter(ScrollEvent.ANY, event -> {
+            if (event.isControlDown()) {
+                double zoomFactor = (event.getDeltaY() > 0) ? ZOOM_FACTOR : 1 / ZOOM_FACTOR;
+                board.setScaleX(board.getScaleX() * zoomFactor);
+                board.setScaleY(board.getScaleY() * zoomFactor);
+                event.consume();
+            }
+        });
+
         fetchData();
         calculateBoardCenterCoordinates();
         setPlateau();
