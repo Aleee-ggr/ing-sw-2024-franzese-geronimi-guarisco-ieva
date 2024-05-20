@@ -86,9 +86,11 @@ public class GameController implements Initializable {
             GridPane.setHalignment(stackPane, HPos.CENTER);
             GridPane.setValignment(stackPane, VPos.CENTER);
         } else {
-            for (Coordinates coordinates : playerData.getBoard().keySet()) {
-                int id = playerData.getBoard().get(coordinates).getId();
+            for (Card card: playerData.getOrder()) {
+                Coordinates coordinates = playerData.getBoard().inverse().get(card);
+                int id = card.getId();
                 String pathSide = null;
+
                 if (id > 0) {
                     pathSide = String.format("GUI/images/cards.nogit/front/%03d.png", id);
                 } else {
