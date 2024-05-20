@@ -29,20 +29,6 @@
             <Insets bottom="50.0" />
          </StackPane.margin>
       </Group>
-      <Button fx:id="startButton" mnemonicParsing="false" onAction="#changeGameScene" prefHeight="100.0" prefWidth="200.0" text="START" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_RIGHT">
-         <font>
-            <Font name="Trattatello" size="30.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-         <effect>
-            <Glow />
-         </effect>
-         <StackPane.margin>
-            <Insets bottom="100.0" right="130.0" />
-         </StackPane.margin>
-      </Button>
       <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" prefHeight="100.0" prefWidth="200.0" text="BACK" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_LEFT">
          <font>
             <Font name="Trattatello" size="30.0" />
