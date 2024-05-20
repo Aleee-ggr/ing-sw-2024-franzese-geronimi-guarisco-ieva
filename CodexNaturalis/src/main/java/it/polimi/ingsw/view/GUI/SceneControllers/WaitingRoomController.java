@@ -86,7 +86,7 @@ public class WaitingRoomController implements Initializable {
                     fetchPlayersTimeline.stop();
                 }
 
-                PauseTransition pause = new PauseTransition(Duration.seconds(5));
+                PauseTransition pause = new PauseTransition(Duration.seconds(2));
                 pause.setOnFinished(e -> {
                     try {
                         client.fetchPlayers();

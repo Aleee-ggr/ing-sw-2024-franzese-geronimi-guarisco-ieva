@@ -76,8 +76,8 @@ public class GameController implements Initializable {
             }
             ImageView image = new ImageView(pathSide);
             //image.setId(String.valueOf(i));
-            image.setFitHeight(67.3);
-            image.setFitWidth(100);
+            image.setFitHeight(100.95);
+            image.setFitWidth(150);
             image.preserveRatioProperty();
 
             StackPane stackPane = new StackPane(image);
@@ -96,8 +96,8 @@ public class GameController implements Initializable {
                 }
                 ImageView image = new ImageView(pathSide);
                 //image.setId(String.valueOf(i));
-                image.setFitHeight(67.3);
-                image.setFitWidth(100);
+                image.setFitHeight(100.95);
+                image.setFitWidth(150);
                 image.preserveRatioProperty();
 
                 StackPane stackPane = new StackPane(image);
@@ -198,8 +198,8 @@ public class GameController implements Initializable {
 
             ImageView imageView = new ImageView();
             imageView.setId(String.valueOf(i));
-            imageView.setFitHeight(67.3);
-            imageView.setFitWidth(100);
+            imageView.setFitHeight(100.95);
+            imageView.setFitWidth(150);
             imageView.preserveRatioProperty();
 
             StackPane stackPane = new StackPane(imageView);
