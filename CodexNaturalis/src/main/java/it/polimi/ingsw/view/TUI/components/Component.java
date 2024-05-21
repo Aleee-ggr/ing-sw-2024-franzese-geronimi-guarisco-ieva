@@ -11,7 +11,6 @@ public interface Component {
         for(Resource r: Resource.values()) {
             s = s.replaceAll(Character.toString(r.toChar()), r.toColorBlock());
         }
-        System.out.println(s);
         return s.split("\n");
     }
 }

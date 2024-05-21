@@ -98,7 +98,7 @@ public class PrintCards implements Component {
         } else if(inCard instanceof StartingCard){
             if(!((StartingCard)inCard).isFrontSideUp()){
                 out.append("    ")
-                        .append("s")
+                        .append("❖")
                         .append("    ");
             } else {
                 int resourceNum = ((StartingCard)inCard).getFrontResources().size();
