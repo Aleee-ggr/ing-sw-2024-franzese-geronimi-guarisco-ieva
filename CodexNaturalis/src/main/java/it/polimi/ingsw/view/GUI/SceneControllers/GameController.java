@@ -223,6 +223,7 @@ public class GameController implements Initializable {
 
             stackPane.setOnMouseClicked(event -> {
                 int selectedCardId;
+                boolean placed = false;
 
                 if (selectedHandCard != null) {
                     if (selectedHandCard == firstHandCard) {
@@ -233,19 +234,21 @@ public class GameController implements Initializable {
                         selectedCardId = playerData.getClientHand().getLast().getId();
                     }
 
-                    String imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", selectedCardId);
-                    Image cardImage = new Image(imagePath);
-
-                    imageView.setImage(cardImage);
-                    stackPane.setStyle("");
-
                     try {
-                        client.placeCard(playerData.getValidPlacements().get(Integer.parseInt(imageView.getId())), selectedCardId);
+                        placed = client.placeCard(playerData.getValidPlacements().get(Integer.parseInt(imageView.getId())), selectedCardId);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    if (placed) {
+                        String imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", selectedCardId);
+                        Image cardImage = new Image(imagePath);
+
+                        imageView.setImage(cardImage);
+                        stackPane.setStyle("");
                         selectedHandCard = null;
                         validPlacementPanes.remove(boardCoordinates);
                         changeDrawCardScene();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
                     }
                 }
             });
