@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.RotateBoard;
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +20,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -246,7 +248,11 @@ public class GameController implements Initializable {
                         stackPane.setStyle("");
                         selectedHandCard = null;
                         validPlacementPanes.remove(boardCoordinates);
-                        changeDrawCardScene();
+
+                        PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
+                        pause.setOnFinished(e -> {changeDrawCardScene();});
+                        pause.play();
+
                     }
                 }
             });
@@ -258,6 +264,7 @@ public class GameController implements Initializable {
         }
     }
 
+    @FXML
     private void changeDrawCardScene() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/DrawCardScene.fxml"));
@@ -271,7 +278,22 @@ public class GameController implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    @FXML
+    private void changeScoreScene(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ScoreScene.fxml"));
+            ScoreController controller = new ScoreController();
+            controller.setClient(client);
+            loader.setController(controller);
+            Scene scene = null;
+            scene = new Scene(loader.load(), 1600, 900);
+            Stage stage = (Stage) board.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
