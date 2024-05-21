@@ -95,7 +95,7 @@ public class ControllerTest {
         String[] usernames = {"p1", "p2"};
         fillGame(usernames);
 
-        Set<Integer> objectives = new HashSet<>(2 * GameConsts.objectiesToChooseFrom);
+        Set<Integer> objectives = new HashSet<>(2 * GameConsts.objectivesToChooseFrom);
 
         for (String username : usernames) {
             UUID msgUUID = UUID.randomUUID();
@@ -104,7 +104,7 @@ public class ControllerTest {
             assertEquals(Status.OK, msg.status());
             objectives.addAll(Arrays.stream(msg.args()).map(Integer::parseInt).toList());
         }
-        assertEquals(2 * GameConsts.objectiesToChooseFrom, objectives.size());
+        assertEquals(2 * GameConsts.objectivesToChooseFrom, objectives.size());
     }
 
     @Test

@@ -10,17 +10,27 @@ import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.cards.StartingCard;
 import it.polimi.ingsw.model.enums.Resource;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class StartingParser implements JsonParser<Deck<StartingCard>> {
     private String json;
 
     @Override
     public StartingParser readFile(Path path) throws IOException {
-        json = Files.readString(path);
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(
+                        Objects.requireNonNull(this.getClass().getResourceAsStream(path.toString()))
+                )
+        );
+
+        json = reader.lines().collect(Collectors.joining(System.lineSeparator()));
         return this;
     }
 

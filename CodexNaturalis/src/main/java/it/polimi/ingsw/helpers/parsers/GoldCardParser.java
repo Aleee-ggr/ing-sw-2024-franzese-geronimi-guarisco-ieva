@@ -14,20 +14,31 @@ import it.polimi.ingsw.model.cards.GoldCard;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.player.Player;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class GoldCardParser implements JsonParser<Deck<GoldCard>> {
     private String json;
     
     @Override
     public GoldCardParser readFile(Path path) throws IOException {
-        json = Files.readString(path);
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(
+                        Objects.requireNonNull(this.getClass().getResourceAsStream(path.toString()))
+                )
+        );
+
+        json = reader.lines().collect(Collectors.joining(System.lineSeparator()));
         return this;
     }
 

@@ -10,7 +10,6 @@ import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -125,8 +124,8 @@ public class Player {
      * @see Objective
      */
     public void setStartingObjectives() {
-        startingObjectives = new Objective[GameConsts.objectiesToChooseFrom];
-        for(int i = 0; i < GameConsts.objectiesToChooseFrom; i++){
+        startingObjectives = new Objective[GameConsts.objectivesToChooseFrom];
+        for(int i = 0; i < GameConsts.objectivesToChooseFrom; i++){
             startingObjectives[i] = game.getGameObjDeck().draw();
         }
     }

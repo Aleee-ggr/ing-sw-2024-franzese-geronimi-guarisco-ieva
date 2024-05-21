@@ -33,7 +33,7 @@ public class StartingObjectiveView implements Component{
         cardHeight = ObjectiveCard.height;
         cardWidth = ObjectiveCard.width;
 
-        contentWidth = ((GameConsts.objectiesToChooseFrom) * cardWidth) + (cardSpacing) + 4;
+        contentWidth = ((GameConsts.objectivesToChooseFrom) * cardWidth) + (cardSpacing) + 4;
         marginSide = (width - contentWidth) / 2;
 
         contentHeight = 5 + cardHeight;
