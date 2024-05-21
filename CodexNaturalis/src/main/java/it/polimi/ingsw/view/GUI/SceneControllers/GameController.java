@@ -34,6 +34,8 @@ public class GameController implements Initializable {
     private final Map<Coordinates, StackPane> validPlacementPanes = new HashMap<>();
     private List<Card> placedCards;
     private static final double ZOOM_FACTOR = 1.1;
+    private static final double MIN_SCALE = 0.3;
+    private static final double MAX_SCALE = 3.0;
 
     private ImageView selectedHandCard = null;
 
@@ -57,8 +59,14 @@ public class GameController implements Initializable {
         scrollPane.addEventFilter(ScrollEvent.ANY, event -> {
             if (event.isControlDown()) {
                 double zoomFactor = (event.getDeltaY() > 0) ? ZOOM_FACTOR : 1 / ZOOM_FACTOR;
-                board.setScaleX(board.getScaleX() * zoomFactor);
-                board.setScaleY(board.getScaleY() * zoomFactor);
+                double newScaleX = board.getScaleX() * zoomFactor;
+                double newScaleY = board.getScaleY() * zoomFactor;
+                
+                if (newScaleX >= MIN_SCALE && newScaleX <= MAX_SCALE && newScaleY >= MIN_SCALE && newScaleY <= MAX_SCALE) {
+                    board.setScaleX(newScaleX);
+                    board.setScaleY(newScaleY);
+                }
+
                 event.consume();
             }
         });
