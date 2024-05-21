@@ -14,6 +14,31 @@
 
 <StackPane alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" style="-fx-background-color: efedd6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
     <children>
+        <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="125.0" prefWidth="200.0" style="-fx-border-width: 4; -fx-border-color: #432918;" StackPane.alignment="BOTTOM_LEFT">
+            <children>
+                <ImageView fx:id="firstHandCard" fitHeight="151.5" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_LEFT">
+                    <StackPane.margin>
+                        <Insets bottom="25.0" left="25.0" />
+                    </StackPane.margin>
+                </ImageView>
+                <ImageView fx:id="secondHandCard" fitHeight="151.5" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_LEFT">
+                    <StackPane.margin>
+                        <Insets bottom="25.0" left="350.0" />
+                    </StackPane.margin>
+                </ImageView>
+                <ImageView fx:id="thirdHandCard" fitHeight="151.5" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_LEFT">
+                    <StackPane.margin>
+                        <Insets bottom="25.0" left="700.0" right="25.0" />
+                    </StackPane.margin>
+                </ImageView>
+            </children>
+            <StackPane.margin>
+                <Insets bottom="15.0" left="50.0" />
+            </StackPane.margin>
+            <padding>
+                <Insets top="25.0" />
+            </padding>
+        </StackPane>
         <Button mnemonicParsing="false" onAction="#changeObjectivesScene" prefHeight="100.0" prefWidth="200.0" text="OBJECTIVES" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_RIGHT">
             <font>
                 <Font name="Trattatello" size="30.0" />
@@ -28,22 +53,9 @@
                 <Insets bottom="100.0" right="130.0" />
             </StackPane.margin>
         </Button>
-        <ImageView fx:id="firstHandCard" fitHeight="151.5" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_LEFT">
-            <StackPane.margin>
-                <Insets bottom="50.0" left="100.0" />
-            </StackPane.margin>
-        </ImageView>
-        <ImageView fx:id="secondHandCard" fitHeight="151.5" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_LEFT">
-            <StackPane.margin>
-                <Insets bottom="50.0" left="400.0" />
-            </StackPane.margin>
-        </ImageView>
-        <ImageView fx:id="thirdHandCard" fitHeight="151.5" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_LEFT">
             <StackPane.margin>
                 <Insets bottom="50.0" left="700.0" />
             </StackPane.margin>
-        </ImageView>
-        <ImageView fx:id="plateau" fitHeight="450.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_RIGHT">
             <StackPane.margin>
                 <Insets right="50.0" top="100.0" />
             </StackPane.margin>
