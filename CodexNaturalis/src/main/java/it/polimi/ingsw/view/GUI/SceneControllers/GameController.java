@@ -50,9 +50,6 @@ public class GameController implements Initializable {
     ImageView thirdHandCard;
 
     @FXML
-    ImageView plateau;
-
-    @FXML
     ScrollPane scrollPane;
 
     @Override
@@ -68,7 +65,6 @@ public class GameController implements Initializable {
 
         fetchData();
         calculateBoardCenterCoordinates();
-        setPlateau();
         setHand();
 
         System.out.println(playerData.getValidPlacements());
@@ -160,12 +156,6 @@ public class GameController implements Initializable {
         String imagePathThird = String.format("GUI/images/cards.nogit/front/%03d.png", thirdHandCardId);
         Image imageThird = new Image(imagePathThird);
         thirdHandCard.setImage(imageThird);
-    }
-
-    private void setPlateau() {
-        String path = "GUI/images/score.nogit/plateau.png";
-        Image image = new Image(path);
-        plateau.setImage(image);
     }
 
     public void setClient(ClientInterface client) {
