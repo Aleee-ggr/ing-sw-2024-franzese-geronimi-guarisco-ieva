@@ -54,6 +54,9 @@ public class MainMenuController implements Initializable {
     private void goBack(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/LoginScene.fxml"));
+            LoginController controller = new LoginController();
+            controller.setClient(client);
+            loader.setController(controller);
             Scene scene = new Scene(loader.load(), 1600, 900);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
@@ -86,9 +89,10 @@ public class MainMenuController implements Initializable {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+            int i = 0;
             for (UUID uuid : client.getAvailableGames()) {
-                System.out.println(uuid);
-                Button button = new Button(uuid.toString());
+                i++;
+                Button button = new Button("Game " + i + ": " + uuid.toString());
                 button.setStyle("-fx-background-color: ffffff;" +
                                 "-fx-border-color: black;" +
                                 "-fx-border-width: 2;" +

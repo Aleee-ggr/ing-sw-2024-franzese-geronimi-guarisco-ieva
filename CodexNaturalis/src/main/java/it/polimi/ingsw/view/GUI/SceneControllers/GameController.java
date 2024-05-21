@@ -63,7 +63,7 @@ public class GameController implements Initializable {
                 double zoomFactor = (event.getDeltaY() > 0) ? ZOOM_FACTOR : 1 / ZOOM_FACTOR;
                 double newScaleX = board.getScaleX() * zoomFactor;
                 double newScaleY = board.getScaleY() * zoomFactor;
-                
+
                 if (newScaleX >= MIN_SCALE && newScaleX <= MAX_SCALE && newScaleY >= MIN_SCALE && newScaleY <= MAX_SCALE) {
                     board.setScaleX(newScaleX);
                     board.setScaleY(newScaleY);
