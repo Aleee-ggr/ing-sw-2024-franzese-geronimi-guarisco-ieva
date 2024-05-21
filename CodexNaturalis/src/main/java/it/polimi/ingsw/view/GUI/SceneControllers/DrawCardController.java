@@ -80,12 +80,14 @@ public class DrawCardController implements Initializable {
             }
         }
 
-        goldCard1.setOnMouseClicked(event -> drawCard(0));
-        goldCard2.setOnMouseClicked(event -> drawCard(1));
-        stdCard1.setOnMouseClicked(event -> drawCard(2));
-        stdCard2.setOnMouseClicked(event -> drawCard(3));
-        stdDeck.setOnMouseClicked(event -> drawCard(4));
-        goldDeck.setOnMouseClicked(event -> drawCard(5));
+        if (playerData.getClientHand().size() != 3) {
+            goldCard1.setOnMouseClicked(event -> drawCard(0));
+            goldCard2.setOnMouseClicked(event -> drawCard(1));
+            stdCard1.setOnMouseClicked(event -> drawCard(2));
+            stdCard2.setOnMouseClicked(event -> drawCard(3));
+            stdDeck.setOnMouseClicked(event -> drawCard(4));
+            goldDeck.setOnMouseClicked(event -> drawCard(5));
+        }
 
     }
 
