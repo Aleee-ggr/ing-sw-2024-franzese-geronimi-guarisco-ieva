@@ -130,9 +130,9 @@ public class Board implements Component {
 
         if(card instanceof StartingCard){ //TODO: needs refactor
             if(!((StartingCard)card).isFrontSideUp()){
-                cardBuilder.append(" ")
+                cardBuilder.append("  ")
                         .append("❖")
-                        .append(" ");
+                        .append("  ");
             } else {
                 int resourceNum = ((StartingCard) card).getFrontResources().size();
                 switch (resourceNum) {
