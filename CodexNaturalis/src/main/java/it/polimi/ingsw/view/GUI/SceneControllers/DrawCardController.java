@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.GUI.SceneControllers;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.network.ClientInterface;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -94,6 +95,22 @@ public class DrawCardController implements Initializable {
     private void drawCard(int position) {
         try {
             client.drawCard(position);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/GameScene.fxml"));
+            GameController controller = new GameController();
+            controller.setClient(client);
+            loader.setController(controller);
+            Scene scene = null;
+            scene = new Scene(loader.load(), 1600, 900);
+            Stage stage = (Stage) goldDeck.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void goBack(ActionEvent event) {
+        try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/GameScene.fxml"));
             GameController controller = new GameController();
             controller.setClient(client);
