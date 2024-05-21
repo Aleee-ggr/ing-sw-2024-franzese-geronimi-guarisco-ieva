@@ -50,16 +50,37 @@
                 <Glow />
             </effect>
             <StackPane.margin>
-                <Insets bottom="100.0" right="130.0" />
+                <Insets bottom="175.0" right="100.0" />
             </StackPane.margin>
         </Button>
+        <Button mnemonicParsing="false" onAction="#changeScoreScene" prefHeight="100.0" prefWidth="200.0" text="SCORE" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_RIGHT">
+            <font>
+                <Font name="Trattatello" size="30.0" />
+            </font>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+            <effect>
+                <Glow />
+            </effect>
             <StackPane.margin>
-                <Insets bottom="50.0" left="700.0" />
+                <Insets bottom="50.0" right="100.0" />
             </StackPane.margin>
+        </Button>
+        <Button mnemonicParsing="false" onAction="#changeDrawCardScene" prefHeight="100.0" prefWidth="200.0" text="DECKS" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_RIGHT">
+            <font>
+                <Font name="Trattatello" size="30.0" />
+            </font>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+            <effect>
+                <Glow />
+            </effect>
             <StackPane.margin>
-                <Insets right="50.0" top="100.0" />
+                <Insets bottom="300.0" right="100.0" />
             </StackPane.margin>
-        </ImageView>
+        </Button>
         <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" hvalue="0.5" maxHeight="-Infinity" maxWidth="-Infinity" pannable="true" prefHeight="605.0" prefWidth="1150.0" vbarPolicy="NEVER" vvalue="0.5">
             <StackPane.margin>
                 <Insets left="50.0" top="50.0" />
