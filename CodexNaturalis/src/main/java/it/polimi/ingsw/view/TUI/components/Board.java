@@ -52,15 +52,15 @@ public class Board implements Component {
             if (isInView(relativeCoordinates)) {
                 if (card instanceof StartingCard starting) {
                     if (!card.isFrontSideUp()) {
-                        drawnCard = drawCard(starting.getBackCorners(), starting.getFrontResources().getFirst()); //TODO: fix this (multiple resources)
+                        drawnCard = drawCard(starting.getBackCorners(), starting.getFrontResources().getFirst(), card); //TODO: fix this (multiple resources)
                     } else {
-                        drawnCard = drawCard(starting.getFrontCorners(), starting.getFrontResources().getFirst());
+                        drawnCard = drawCard(starting.getFrontCorners(), starting.getFrontResources().getFirst(), card);
                     }
                 } else if (card instanceof ColoredCard colored) {
                     if (!card.isFrontSideUp()) {
-                        drawnCard = drawCard(colored.getBackCorners(), colored.getBackResource());
+                        drawnCard = drawCard(colored.getBackCorners(), colored.getBackResource(), card);
                     } else {
-                        drawnCard = drawCard(colored.getFrontCorners(), colored.getBackResource());
+                        drawnCard = drawCard(colored.getFrontCorners(), colored.getBackResource(), card);
                     }
                 } else {
                     throw new RuntimeException("Unknown card type");
@@ -118,22 +118,68 @@ public class Board implements Component {
         }
     }
 
-    private Character[][] drawCard(Corner[] corners, Resource resource) {
-        String cardBuilder = corners[0].getCornerResource().toChar() +
-                    "▔▔▔▔▔" +
-                    corners[1].getCornerResource().toChar() +
-                    "\n" +
-                    "▏" +
-                    "     " +
-                    "▕" +
-                    "\n" +
-                    corners[2].getCornerResource().toChar() +
-                    "▁▁▁▁▁" +
-                    corners[3].getCornerResource().toChar() +
-                    "\n";
+    private Character[][] drawCard(Corner[] corners, Resource resource, Card card) {
+        StringBuilder cardBuilder = new StringBuilder();
+
+        cardBuilder.append(corners[0].getCornerResource().toChar())
+                .append("▔▔▔▔▔")
+                .append(corners[1].getCornerResource().toChar())
+                .append("\n");
+
+        cardBuilder.append("▏");
+
+        if(card instanceof StartingCard){ //TODO: needs refactor
+            if(!((StartingCard)card).isFrontSideUp()){
+                cardBuilder.append(" ")
+                        .append("❖")
+                        .append(" ");
+            } else {
+                int resourceNum = ((StartingCard) card).getFrontResources().size();
+                switch (resourceNum) {
+                    case 1:
+                        cardBuilder.append("  ")
+                                .append(((StartingCard) card).getFrontResources().getFirst().toChar())
+                                .append("  ");
+                        break;
+                    case 2:
+                        cardBuilder.append(" ")
+                                .append(((StartingCard) card).getFrontResources().getFirst().toChar())
+                                .append(" ")
+                                .append(((StartingCard) card).getFrontResources().getLast().toChar())
+                                .append(" ");
+                        break;
+                    case 3:
+                        cardBuilder.append(" ")
+                                .append(((StartingCard) card).getFrontResources().getFirst().toChar())
+                                .append(((StartingCard) card).getFrontResources().get(1).toChar())
+                                .append(((StartingCard) card).getFrontResources().getLast().toChar())
+                                .append(" ");
+                        break;
+                    default:
+                        throw new RuntimeException("Invalid number of resources");
+                }
+            }
+        } else if (card instanceof ColoredCard) {
+            if (card.isFrontSideUp()) {
+                cardBuilder.append("  ")
+                        .append(((ColoredCard) card).getBackResource().toCharCenter())
+                        .append("  ");
+            } else {
+                cardBuilder.append("  ")
+                        .append(((ColoredCard) card).getBackResource().toChar())
+                        .append("  ");
+            }
+        }
+
+        cardBuilder.append("▕")
+                .append("\n");
+        cardBuilder.append(corners[2].getCornerResource().toChar())
+                .append("▁▁▁▁▁")
+                .append(corners[3].getCornerResource().toChar())
+                .append("\n");
 
 
-        String[] lines = cardBuilder.split("\n");
+        String[] lines = cardBuilder.toString().split("\n");
 
         Character[][] characterMatrix = new Character[lines.length][lines[0].length()];
 

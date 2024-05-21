@@ -25,6 +25,16 @@ public enum Resource {
         };
     }
 
+    public char toCharCenter(){
+        return switch (this){
+            case FUNGI -> 'Ѓ';
+            case PLANT -> 'Ῥ';
+            case ANIMAL -> 'Ἁ';
+            case INSECT -> 'Ῐ';
+            default -> ' ';
+        };
+    }
+
     public static Resource fromString(String string) {
         return Resource.valueOf(string.toUpperCase());
     }
@@ -44,15 +54,27 @@ public enum Resource {
     }
 
     public String toColorBlock() {
+        return toColorChar('█');
+    }
+
+
+    public String toColorChar(Character character){
         return switch (this) {
-            case FUNGI -> "\u001b[1;31m█\u001b[0m";
-            case PLANT -> "\u001b[1;32m█\u001b[0m";
-            case ANIMAL -> "\u001b[1;36m█\u001b[0m";
-            case INSECT -> "\u001b[1;35m█\u001b[0m";
-            case INKWELL -> "\u001b[1;30m█\u001b[0m";
-            case QUILL -> "\u001b[1;37m█\u001b[0m";
-            case MANUSCRIPT -> "\u001b[1;33m█\u001b[0m";
+            case FUNGI -> "\u001b[1;31m%c\u001b[0m".formatted(character);
+            case PLANT -> "\u001b[1;32m%c\u001b[0m".formatted(character);
+            case ANIMAL -> "\u001b[1;36m%c\u001b[0m".formatted(character);
+            case INSECT -> "\u001b[1;35m%c\u001b[0m".formatted(character);
+            case INKWELL -> "\u001b[1;30m%c\u001b[0m".formatted(character);
+            case QUILL -> "\u001b[1;37m%c\u001b[0m".formatted(character);
+            case MANUSCRIPT -> "\u001b[1;33m%c\u001b[0m".formatted(character);
             case NONCOVERABLE -> "╳";
+            default -> " ";
+        };
+    }
+
+    public String toColorCenter(){
+        return switch (this) {
+            case FUNGI, PLANT, ANIMAL, INSECT ->  toColorChar('◆');
             default -> " ";
         };
     }

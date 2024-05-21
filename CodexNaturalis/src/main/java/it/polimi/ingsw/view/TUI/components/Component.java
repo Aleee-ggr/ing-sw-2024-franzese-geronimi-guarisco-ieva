@@ -9,6 +9,7 @@ public interface Component {
     default String[] toStringArrayColor() {
         String s = this.toString();
         for(Resource r: Resource.values()) {
+            s = s.replaceAll(Character.toString(r.toCharCenter()), r.toColorCenter());
             s = s.replaceAll(Character.toString(r.toChar()), r.toColorBlock());
         }
         return s.split("\n");
