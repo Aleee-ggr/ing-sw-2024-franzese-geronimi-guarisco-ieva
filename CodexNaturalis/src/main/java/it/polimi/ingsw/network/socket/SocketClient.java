@@ -30,9 +30,12 @@ import java.util.UUID;
 public class SocketClient extends Client implements ClientInterface {
 
     private Socket client;
+    private Socket waitUpdateSocket;
     private ObjectInputStream input;
     private ObjectOutputStream output;
 
+    private ObjectInputStream waitInput;
+    private ObjectOutputStream waitOutput;
 
     //the following are attributes used as tmp values to store the response from the server ONLY!
     private WaitState waitState;
@@ -64,12 +67,19 @@ public class SocketClient extends Client implements ClientInterface {
      * @param serverAddress The address of the server.
      * @param serverPort    The port of the server.
      */
-    public boolean startConnection(String serverAddress, int serverPort) {
+    public synchronized boolean startConnection(String serverAddress, int serverPort) {
         try {
             client = new Socket(serverAddress, serverPort);
+            waitUpdateSocket = new Socket(serverAddress, serverPort);
+
             output = new ObjectOutputStream(client.getOutputStream());
             input = new ObjectInputStream(client.getInputStream());
+
+            waitOutput = new ObjectOutputStream(waitUpdateSocket.getOutputStream());
+            waitInput = new ObjectInputStream(waitUpdateSocket.getInputStream());
+
             client.setTcpNoDelay(true);
+            waitUpdateSocket.setTcpNoDelay(true);
 
             return true;
         } catch (IOException e) {
@@ -83,11 +93,14 @@ public class SocketClient extends Client implements ClientInterface {
      *
      * @throws IOException If an I/O error occurs while closing the connection.
      */
-    public void stopConnection() throws IOException {
+    public synchronized void stopConnection() throws IOException {
         output.writeObject(new SocketClientCloseConnection(username));
         input.close();
         output.close();
+        waitInput.close();
+        waitOutput.close();
         client.close();
+        waitUpdateSocket.close();
     }
 
 
@@ -99,7 +112,7 @@ public class SocketClient extends Client implements ClientInterface {
      * @throws IOException If an I/O error occurs while sending the message.
      */
     @Override
-    public UUID newGame(int numPlayers) throws IOException {
+    public synchronized UUID newGame(int numPlayers) throws IOException {
         output.writeObject(new SocketClientCreateGameMessage(numPlayers));
         if (!handleResponse()) {
             throw new IOException("Error while creating the game.");
@@ -115,7 +128,7 @@ public class SocketClient extends Client implements ClientInterface {
      * @throws IOException If an I/O error occurs while sending the message.
      */
     @Override
-    public boolean joinGame(UUID gameUUID) throws IOException {
+    public synchronized boolean joinGame(UUID gameUUID) throws IOException {
         if (username == null && password == null) {
             System.out.println("Please login first");
             return false;
@@ -134,23 +147,29 @@ public class SocketClient extends Client implements ClientInterface {
      * @throws IOException If an I/O error occurs while sending the message.
      */
     @Override
-    public boolean checkCredentials(String username, String password) throws IOException {
+    public synchronized boolean checkCredentials(String username, String password) throws IOException {
         output.writeObject(new SocketValidateCredentialsMessage(username, password));
         return handleResponse();
     }
 
     @Override
-    public WaitState waitUpdate() throws IOException {
-        output.writeObject(new SocketClientWaitUpdateMessage(username, gameId));
-        if (!handleResponse()) {
-            throw new RuntimeException("Error waitState.");
-        }
-        return waitState;
+    public  WaitState waitUpdate() throws IOException {
+        waitOutput.writeObject(new SocketClientWaitUpdateMessage(username, gameId));
+        WaitUpdateResponseMessage message;
+        do {
+            try {
+                message = (WaitUpdateResponseMessage) waitInput.readObject();
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        } while (message == null);
+
+        return message.getWaitState();
     }
 
     //TODO: not implemented -> there is no socket message for this
     @Override
-    public void postChat(String message) throws IOException {
+    public synchronized void postChat(String message) throws IOException {
 
     }
 
@@ -161,61 +180,61 @@ public class SocketClient extends Client implements ClientInterface {
      * @throws IOException If an I/O error occurs while sending the message.
      */
     @Override
-    public void drawCard(int position) throws IOException {
+    public synchronized void drawCard(int position) throws IOException {
         output.writeObject(new SocketClientDrawCardMessage(username, position, gameId));
         handleResponse();
     }
 
     @Override
-    public boolean placeCard(Coordinates coordinates, int cardId) throws IOException {
+    public synchronized boolean placeCard(Coordinates coordinates, int cardId) throws IOException {
         output.writeObject(new SocketClientPlaceCardMessage(username, coordinates, cardId, gameId));
         return placeCardClient(handleResponse(), cardId);
     }
 
     @Override
-    public boolean placeStartingCard(boolean frontSideUp) throws IOException {
+    public synchronized boolean placeStartingCard(boolean frontSideUp) throws IOException {
         output.writeObject(new SocketClientPlaceStartingCardMessage(username, frontSideUp, gameId));
         return placeStartingCardClient(frontSideUp, handleResponse());
     }
 
     @Override
-    public boolean choosePersonalObjective(int objectiveId) throws IOException {
+    public synchronized boolean choosePersonalObjective(int objectiveId) throws IOException {
         output.writeObject(new SocketClientChoosePersonalObjectiveMessage(username, objectiveId, gameId));
         return choosePersonalObjectiveClient(objectiveId, handleResponse());
     }
 
     @Override
-    public boolean fetchAvailableGames() throws IOException {
+    public synchronized boolean fetchAvailableGames() throws IOException {
         output.writeObject(new SocketClientFetchAvailableGamesMessage(username));
         return handleResponse();
     }
 
     @Override
-    public boolean fetchGameState() throws IOException {
+    public synchronized boolean fetchGameState() throws IOException {
         output.writeObject(new SocketClientFetchAvailableGamesMessage(username));
         return handleResponse();
     }
 
     @Override
-    public boolean fetchPlayers() throws IOException {
+    public synchronized boolean fetchPlayers() throws IOException {
         output.writeObject(new SocketClientGetPlayersMessage(username, gameId));
         return handleResponse();
     }
 
     @Override
-    public boolean fetchCommonObjectives() throws IOException {
+    public synchronized boolean fetchCommonObjectives() throws IOException {
         output.writeObject(new SocketClientGetCommonObjectivesMessage(username, gameId));
         return handleResponse();
     }
 
     @Override
-    public boolean fetchStartingCard() throws IOException {
+    public synchronized boolean fetchStartingCard() throws IOException {
         output.writeObject(new SocketClientGetStartingCardMessage(username, gameId));
         return handleResponse();
     }
 
     @Override
-    public boolean fetchStartingObjectives() throws IOException {
+    public synchronized boolean fetchStartingObjectives() throws IOException {
         output.writeObject(new SocketClientGetStartingObjectivesMessage(username, gameId));
         return handleResponse();
     }
@@ -226,7 +245,7 @@ public class SocketClient extends Client implements ClientInterface {
      * @throws IOException If an I/O error occurs while sending the message.
      */
     @Override
-    public boolean fetchOpponentsHandColor() throws IOException {
+    public synchronized boolean fetchOpponentsHandColor() throws IOException {
         for (String player : players) {
             if (player.equals(username)) {
                 continue;
@@ -247,19 +266,19 @@ public class SocketClient extends Client implements ClientInterface {
      * @throws IOException If an I/O error occurs while sending the message.
      */
     @Override
-    public boolean fetchClientHand() throws IOException {
+    public synchronized boolean fetchClientHand() throws IOException {
         output.writeObject(new SocketClientGetHandMessage(username, this.gameId));
         return handleResponse();
     }
 
     @Override
-    public boolean fetchValidPlacements() throws IOException {
+    public synchronized boolean fetchValidPlacements() throws IOException {
         output.writeObject(new SocketClientGetValidPlacementsMessage(username, this.gameId));
         return handleResponse();
     }
 
     @Override
-    public boolean fetchPlayersBoards() throws IOException {
+    public synchronized boolean fetchPlayersBoards() throws IOException {
         playersBoardMap = new HashMap<>();
         for (String player : players) {
             output.writeObject(new SocketClientGetPlayerBoard(username, this.gameId, player));
@@ -272,7 +291,7 @@ public class SocketClient extends Client implements ClientInterface {
     }
 
     @Override
-    public boolean fetchPlayersPlacingOrder() throws IOException {
+    public synchronized boolean fetchPlayersPlacingOrder() throws IOException {
         placingOrderMap = new HashMap<>();
         for (String player : players) {
             output.writeObject(new SocketClientGetPlacingOrderMessage(username, this.gameId, player));
@@ -285,7 +304,7 @@ public class SocketClient extends Client implements ClientInterface {
     }
 
     @Override
-    public boolean fetchPlayersResources() throws IOException {
+    public synchronized boolean fetchPlayersResources() throws IOException {
         playersResourcesMap = new HashMap<>();
         for (String player : players) {
             output.writeObject(new SocketClientGetPlayerResourcesMessage(username, this.gameId, player));
@@ -298,13 +317,13 @@ public class SocketClient extends Client implements ClientInterface {
     }
 
     @Override
-    public boolean fetchScoreMap() throws IOException {
+    public synchronized boolean fetchScoreMap() throws IOException {
         output.writeObject(new SocketClientGetScoreMapMessage(username, this.gameId));
         return handleResponse();
     }
 
     @Override
-    public boolean fetchVisibleCardsAndDecks() throws IOException {
+    public synchronized boolean fetchVisibleCardsAndDecks() throws IOException {
 
         output.writeObject(new SocketClientGetVisibleCardsMessage(username, this.gameId));
         if (!handleResponse()) {
@@ -322,7 +341,7 @@ public class SocketClient extends Client implements ClientInterface {
     /**
      * Handles the server's response message.
      */
-    public boolean handleResponse() throws IOException {
+    public synchronized boolean handleResponse() throws IOException {
         GenericResponseMessage response;
         output.flush();
 
