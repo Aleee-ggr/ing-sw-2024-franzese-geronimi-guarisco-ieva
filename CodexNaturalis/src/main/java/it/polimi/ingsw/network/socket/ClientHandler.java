@@ -304,7 +304,9 @@ public class ClientHandler extends Thread {
             }
 
         }
+
         sendResponse(responseMessage);
+        System.out.println("Message sent: " + responseMessage);
     }
 
     /**

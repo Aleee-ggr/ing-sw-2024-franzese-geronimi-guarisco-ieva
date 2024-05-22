@@ -345,6 +345,9 @@ public class Controller {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(usernameRequiredData)).toArray()[0];
             ArrayList<Resource> handColors = new ArrayList<>();
             for (ColoredCard c : user.getHand()) {
+                if(c == null){
+                    continue;
+                }
                 handColors.add(c.getBackResource());
             }
             messageQueue.add(ThreadMessage.getHandColorResponse(username, handColors, messageId));
