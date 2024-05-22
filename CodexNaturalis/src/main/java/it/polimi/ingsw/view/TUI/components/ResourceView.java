@@ -45,9 +45,9 @@ public class ResourceView implements Component {
             out.append(" ")
                     .append(res.toChar())
                     .append(" ")
+                    .append(String.format("%2d ",resourceCount.get(res)))
                     .append("੦".repeat(min(65, resourceCount.get(res))))
                     .append(" ".repeat(min(1, resourceCount.get(res))))
-                    .append(resourceCount.get(res))
                     .append("\n");
         }
         return out.toString();

@@ -63,10 +63,11 @@ public class HandView implements Component{
                         .append("\n");
             }
             if (card instanceof GoldCard goldCard) {
+                out.append(" ");
                 for (Map.Entry<Resource, Integer> e: goldCard.getRequirements().entrySet()) {
                     out.append(" %c:%d".formatted(e.getKey().toChar(), e.getValue()));
                 }
-                out.append(" ".repeat(panelWidth - goldCard.getRequirements().size() * 4));
+                out.append(" ".repeat(panelWidth - goldCard.getRequirements().size() * 4 -1));
             } else {
                 out.append(" ".repeat(panelWidth));
             }

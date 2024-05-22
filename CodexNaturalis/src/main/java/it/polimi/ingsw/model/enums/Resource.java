@@ -62,7 +62,7 @@ public enum Resource {
         return switch (this) {
             case FUNGI -> "\u001b[1;31m%c\u001b[0m".formatted(character);
             case PLANT -> "\u001b[1;32m%c\u001b[0m".formatted(character);
-            case ANIMAL -> "\u001b[1;36m%c\u001b[0m".formatted(character);
+            case ANIMAL -> "\u001b[1;34m%c\u001b[0m".formatted(character);
             case INSECT -> "\u001b[1;35m%c\u001b[0m".formatted(character);
             case INKWELL -> "\u001b[1;30m%c\u001b[0m".formatted(character);
             case QUILL -> "\u001b[1;37m%c\u001b[0m".formatted(character);
