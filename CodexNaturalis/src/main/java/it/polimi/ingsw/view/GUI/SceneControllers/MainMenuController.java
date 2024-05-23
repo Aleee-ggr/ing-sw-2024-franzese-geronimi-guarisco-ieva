@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view.GUI.SceneControllers;
 
 import it.polimi.ingsw.network.ClientInterface;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -22,6 +25,7 @@ import java.util.UUID;
  */
 public class MainMenuController implements Initializable {
     private ClientInterface client;
+    private Timeline fetchGamesTimeline;
 
     @FXML
     private VBox gameButtonsContainer;
@@ -32,7 +36,7 @@ public class MainMenuController implements Initializable {
      * @param event the action event that triggered the method
      */
     @FXML
-    protected void changeCreateGameScene(ActionEvent event){
+    protected void changeCreateGameScene(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/CreateGameScene.fxml"));
             Scene scene = new Scene(loader.load(), 1600, 900);
@@ -83,44 +87,69 @@ public class MainMenuController implements Initializable {
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
         if (client != null) {
-            System.out.println("Client connected");
-            try {
-                client.fetchAvailableGames();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            int i = 0;
-            for (UUID uuid : client.getAvailableGames()) {
-                i++;
-                Button button = new Button("Game " + i + ": " + uuid.toString());
-                button.setStyle("-fx-background-color: ffffff;" +
-                                "-fx-border-color: black;" +
-                                "-fx-border-width: 2;" +
-                                "-fx-border-style: solid;" +
-                                "-fx-pref-height: 100;" +
-                                "-fx-pref-width: 700;" +
-                                "-fx-text-fill: #432918;" +
-                                "-fx-font-family: Trattatello;" +
-                                "-fx-font-size: 30;" +
-                                "-fx-cursor: hand;"
-                );
-                button.setOnAction(event -> {
-                    try {
-                        client.joinGame(uuid);
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/WaitingRoom.fxml"));
-                        WaitingRoomController controller = new WaitingRoomController();
-                        controller.setClient(client);
-                        loader.setController(controller);
-                        Scene scene = new Scene(loader.load(), 1600, 900);
-                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                        stage.setScene(scene);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-                gameButtonsContainer.getChildren().add(button);
-            }
+            fetchGamesPeriodically();
         }
         System.out.println("MainMenuController initialized");
+    }
+
+    private void fetchGamesPeriodically() {
+        try {
+            client.fetchAvailableGames();
+            updateGameButtons();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        fetchGamesTimeline = new Timeline(new KeyFrame(Duration.seconds(5), event -> {
+            try {
+                client.fetchAvailableGames();
+                updateGameButtons();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }));
+        fetchGamesTimeline.setCycleCount(Timeline.INDEFINITE);
+        fetchGamesTimeline.play();
+    }
+
+    private void updateGameButtons() {
+        gameButtonsContainer.getChildren().clear();
+        int i = 0;
+        for (UUID uuid : client.getAvailableGames()) {
+            i++;
+            Button button = new Button("Game " + i + ": " + uuid.toString());
+            button.setStyle("-fx-background-color: ffffff;" +
+                    "-fx-border-color: black;" +
+                    "-fx-border-width: 2;" +
+                    "-fx-border-style: solid;" +
+                    "-fx-pref-height: 100;" +
+                    "-fx-pref-width: 700;" +
+                    "-fx-text-fill: #432918;" +
+                    "-fx-font-family: Trattatello;" +
+                    "-fx-font-size: 30;" +
+                    "-fx-cursor: hand;"
+            );
+            button.setOnAction(event -> {
+                try {
+                    client.joinGame(uuid);
+                    stopFetchingGames();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/WaitingRoom.fxml"));
+                    WaitingRoomController controller = new WaitingRoomController();
+                    controller.setClient(client);
+                    loader.setController(controller);
+                    Scene scene = new Scene(loader.load(), 1600, 900);
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    stage.setScene(scene);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            gameButtonsContainer.getChildren().add(button);
+        }
+    }
+
+    private void stopFetchingGames() {
+        if (fetchGamesTimeline != null) {
+            fetchGamesTimeline.stop();
+        }
     }
 }
