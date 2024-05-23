@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.GUI.SceneControllers;
 
 import it.polimi.ingsw.network.ClientInterface;
+import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.concurrent.Task;
@@ -65,65 +66,72 @@ public class WaitingRoomController implements Initializable {
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
         if (client != null) {
-           try {
+            fetchPlayersPeriodically();
+            waitForUpdate();
+        }
+    }
+
+    private void fetchPlayersPeriodically() {
+        try {
+            client.fetchPlayers();
+            updatePlayersList();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        fetchPlayersTimeline = new Timeline(new KeyFrame(Duration.seconds(5), event -> {
+            try {
                 client.fetchPlayers();
+                updatePlayersList();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
+            }
+        }));
+        fetchPlayersTimeline.setCycleCount(Timeline.INDEFINITE);
+        fetchPlayersTimeline.play();
+    }
+
+    private void waitForUpdate() {
+        Task<Void> waitUpdateTask = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                client.waitUpdate();
+                return null;
+            }
+        };
+
+        waitUpdateTask.setOnSucceeded(event -> {
+            if (fetchPlayersTimeline != null) {
+                fetchPlayersTimeline.stop();
             }
 
-            updatePlayersList();
-
-            Task<Void> waitUpdateTask = new Task<>() {
-                @Override
-                protected Void call() throws Exception {
-                    client.waitUpdate();
-                    return null;
-                }
-            };
-
-            waitUpdateTask.setOnSucceeded(event -> {
-                if (fetchPlayersTimeline != null) {
-                    fetchPlayersTimeline.stop();
-                }
-
-                PauseTransition pause = new PauseTransition(Duration.seconds(2));
-                pause.setOnFinished(e -> {
-                    try {
-                        client.fetchPlayers();
-                        updatePlayersList();
-                        client.fetchStartingObjectives();
-                        client.fetchStartingCard();
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseObjectiveScene.fxml"));
-                        ChooseObjectiveController controller = new ChooseObjectiveController();
-                        controller.setClient(client);
-                        loader.setController(controller);
-                        Scene scene = new Scene(loader.load(), 1600, 900);
-                        Stage stage = (Stage) listOfPlayers.getScene().getWindow();
-                        stage.setScene(scene);
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                });
-                pause.play();
-            });
-
-            new Thread(waitUpdateTask).start();
-
-            /*Timeline fetchPlayersTimeline = new Timeline(new KeyFrame(Duration.seconds(5), event -> {
+            PauseTransition pause = new PauseTransition(Duration.seconds(2));
+            pause.setOnFinished(e -> {
                 try {
-                    client.fetchPlayers();
-                    updatePlayersList();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    stopFetchingPlayers();
+                    client.fetchStartingObjectives();
+                    client.fetchStartingCard();
+                    changeToChooseObjectiveScene();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
                 }
-            }));
-            fetchPlayersTimeline.setCycleCount(Timeline.INDEFINITE);
-            fetchPlayersTimeline.play();*/
+            });
+            pause.play();
+        });
+
+        new Thread(waitUpdateTask).start();
+    }
+
+    private void changeToChooseObjectiveScene() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseObjectiveScene.fxml"));
+            ChooseObjectiveController controller = new ChooseObjectiveController();
+            controller.setClient(client);
+            loader.setController(controller);
+            Scene scene = new Scene(loader.load(), 1600, 900);
+            Stage stage = (Stage) listOfPlayers.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -132,7 +140,7 @@ public class WaitingRoomController implements Initializable {
         listOfPlayers.getChildren().clear();
         for (String player : playersList) {
             Label playerLabel = new Label(player);
-            playerLabel.setStyle("-fx-font-weight: bold;" + "-fx-text-fill: #432918;" + "-fx-font-family: Trattatello;" + "-fx-font-size: 30px;");
+            playerLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #432918; -fx-font-family: Trattatello; -fx-font-size: 30px;");
             listOfPlayers.getChildren().add(playerLabel);
         }
     }
@@ -144,6 +152,7 @@ public class WaitingRoomController implements Initializable {
     @FXML
     private void goBack(ActionEvent event) {
         try {
+            stopFetchingPlayers();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/MainMenu.fxml"));
             Scene scene = new Scene(loader.load(), 1600, 900);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -153,4 +162,9 @@ public class WaitingRoomController implements Initializable {
         }
     }
 
+    private void stopFetchingPlayers() {
+        if (fetchPlayersTimeline != null) {
+            fetchPlayersTimeline.stop();
+        }
+    }
 }
