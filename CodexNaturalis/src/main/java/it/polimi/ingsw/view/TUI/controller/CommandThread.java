@@ -29,7 +29,6 @@ public class CommandThread extends Thread {
     @Override
     public void run() {
         boolean running;
-        WaitState state;
         synchronized (client) {
             running = client.getGameState() != GameState.STOP;
         }
@@ -89,6 +88,10 @@ public class CommandThread extends Thread {
                     }
                     if (!placed) {
                         placed = place(id, position);
+                        fetchData();
+                        updater.update();
+                        sleep(1000);
+                        compositor.switchView(View.DECK);
                     }
                     break;
                 case "view":
@@ -134,7 +137,7 @@ public class CommandThread extends Thread {
                 default:
                     defaultCommand();
             }
-        } catch (IOException | NumberFormatException e) {throw new RuntimeException(e);}
+        } catch (IOException | NumberFormatException | InterruptedException e) {throw new RuntimeException(e);}
     }
 
     private void defaultCommand() {
