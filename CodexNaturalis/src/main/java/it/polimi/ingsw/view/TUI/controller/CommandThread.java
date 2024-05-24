@@ -76,6 +76,7 @@ public class CommandThread extends Thread {
     private void handleCommand(String command) {
         String[] cmd = command.split(" ");
         int position, id;
+        int offset;
         try {
             switch (cmd[0].toLowerCase()) {
                 case "place":
@@ -115,16 +116,32 @@ public class CommandThread extends Thread {
                     }
                     break;
                 case "w":
-                    compositor.getBoard().moveCenter(0, 2);
+                    offset = 1;
+                    if (cmd.length == 2) {
+                        offset = getOffset(cmd[1]);
+                    }
+                    compositor.getBoard().moveCenter(0, 2 * offset);
                     break;
                 case "a":
-                    compositor.getBoard().moveCenter(-2, 0);
+                    offset = 1;
+                    if (cmd.length == 2) {
+                        offset = getOffset(cmd[1]);
+                    }
+                    compositor.getBoard().moveCenter(4 * offset, 0);
                     break;
                 case "s":
-                    compositor.getBoard().moveCenter(0, -2);
+                    offset = 1;
+                    if (cmd.length == 2) {
+                        offset = getOffset(cmd[1]);
+                    }
+                    compositor.getBoard().moveCenter(0, -2 * offset);
                     break;
                 case "d":
-                    compositor.getBoard().moveCenter(2, 0);
+                    offset = 1;
+                    if (cmd.length == 2) {
+                        offset = getOffset(cmd[1]);
+                    }
+                    compositor.getBoard().moveCenter(-2 * offset, 0);
                     break;
                 case "h", "help":
                     System.out.println("""
@@ -153,6 +170,11 @@ public class CommandThread extends Thread {
         }
     }
 
+    private static int getOffset(String arg) {
+        try {
+            return Integer.parseInt(arg);
+        } catch (NumberFormatException ignored) {return 0;}
+    }
 
 
     private void fetchData() {
