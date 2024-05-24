@@ -126,6 +126,10 @@ public class Compositor {
         topBar.setMessage(message);
     }
 
+    public void addToChat(String message) {
+        chat.add(message);
+    }
+
     private ObjectiveView createObjectiveView(ClientInterface client){
         PlayerData clientData = client.getPlayerData();
         ObjectiveCard personal = new ObjectiveCard(clientData.getPersonalObjective());

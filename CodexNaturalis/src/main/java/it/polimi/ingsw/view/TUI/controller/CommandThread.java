@@ -9,6 +9,7 @@ import it.polimi.ingsw.view.TUI.Compositor;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 import static java.lang.Math.abs;
 
@@ -105,6 +106,8 @@ public class CommandThread extends Thread {
                         defaultCommand();
                     }
                         break;
+                case "chat":
+                    postChat(Arrays.copyOfRange(cmd, 1, cmd.length));
                 case "switch":
                     break;
                 case "draw":
@@ -176,6 +179,17 @@ public class CommandThread extends Thread {
         } catch (NumberFormatException ignored) {return 0;}
     }
 
+    private void postChat(String[] message) {
+        String msg = String.join(" ", message);
+
+        msg = client.getUsername() + ": " + msg;
+        compositor.addToChat(msg);
+        try {
+            client.postChat(msg);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private void fetchData() {
         try {
