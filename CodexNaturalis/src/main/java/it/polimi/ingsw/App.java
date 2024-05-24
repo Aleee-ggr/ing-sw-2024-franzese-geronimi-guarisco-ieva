@@ -22,8 +22,8 @@ public class App
     public static void main( String[] args) throws RemoteException, ServerConnectionException {
         List<String> arguments = List.of(args);
         if (arguments.contains("server")) {
-            new RmiServer(9090);
-            new SocketServer(6969);
+            new RmiServer(9000);
+            new SocketServer(7000);
         }
         if (arguments.contains("client")) {
             System.out.print("insert connection mode\n1) socket\n2) RMI\n");
@@ -43,14 +43,14 @@ public class App
                     System.setProperty("java.socket.server.hostname", serverAddress);
                     SocketClient clientSocket = new SocketClient(
                             serverAddress,
-                            6969);
+                            8000);
                     new TuiController(clientSocket).start();
                     break;
                 case 2:
                     System.setProperty("java.rmi.server.hostname", serverAddress);
                     RmiClient clientRmi = new RmiClient(
                             serverAddress,
-                            9090);
+                            9000);
                     new TuiController(clientRmi).start();
                     break;
                 default:
