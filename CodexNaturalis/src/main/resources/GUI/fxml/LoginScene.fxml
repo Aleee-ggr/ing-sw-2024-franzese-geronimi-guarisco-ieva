@@ -11,6 +11,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" style="-fx-background-color: efedd6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.SceneControllers.LoginController">
    <children>
@@ -79,5 +80,21 @@
             <Font name="Trattatello" size="35.0" />
          </font>
       </PasswordField>
+      <Text fx:id="loginError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="LOGIN ERROR" visible="false" StackPane.alignment="BOTTOM_CENTER">
+         <StackPane.margin>
+            <Insets bottom="150.0" />
+         </StackPane.margin>
+         <font>
+            <Font name="Trattatello" size="30.0" />
+         </font>
+      </Text>
+      <Text id="loginError" fx:id="loginErrorMessage" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="The username is already in use!" visible="false" StackPane.alignment="BOTTOM_CENTER">
+         <font>
+            <Font name="Trattatello" size="30.0" />
+         </font>
+         <StackPane.margin>
+            <Insets bottom="110.0" />
+         </StackPane.margin>
+      </Text>
    </children>
 </StackPane>
