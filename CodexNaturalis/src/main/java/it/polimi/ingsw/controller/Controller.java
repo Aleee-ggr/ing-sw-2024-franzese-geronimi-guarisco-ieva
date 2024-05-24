@@ -89,7 +89,12 @@ public class Controller {
     public boolean placeCard(String username, Coordinates coordinates, Integer cardId, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
-            user.playCard((ColoredCard) Game.getCardByID(cardId), coordinates);
+            ColoredCard card = (ColoredCard) Game.getCardByID(cardId);
+            if (cardId < 0) {
+                card.setFrontSideUp(false);
+            }
+
+            user.playCard(card, coordinates);
             messageQueue.add(ThreadMessage.okResponse(username, messageId));
             return true;
         } catch (IndexOutOfBoundsException e) {
@@ -327,6 +332,7 @@ public class Controller {
                     continue;
                 }
                 boardIds.put(coordinate, board.get(coordinate).getId());
+
             }
             messageQueue.add(ThreadMessage.getBoardResponse(username, boardIds, messageId));
         } catch (Exception e) {

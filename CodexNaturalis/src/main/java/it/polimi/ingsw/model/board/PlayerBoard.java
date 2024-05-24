@@ -173,6 +173,7 @@ public class PlayerBoard {
                     corners = ((ColoredCard) card).getBackCorners();
                     markNotCoverable(coordinates, corners);
                     removeResources(coordinates);
+                    boardOwner.updateResourcesValue(((ColoredCard) card).getBackResource(), GameConsts.numberOfResourcesPerCorner);
                 } catch (UnrecognisedCardException e) {
                     System.out.println("unexpected behaviour");
                 }
