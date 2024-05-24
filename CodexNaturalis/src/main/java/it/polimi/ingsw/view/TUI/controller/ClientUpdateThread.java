@@ -36,6 +36,7 @@ public class ClientUpdateThread extends Thread {
                 if (oldState != WaitState.TURN && state == WaitState.TURN) {
                     fetchData();
                     compositor.switchView(View.BOARD);
+                    compositor.setTopBar("Your Turn: Place a Card!");
                     updater.update();
                 }
                 sleep(500);

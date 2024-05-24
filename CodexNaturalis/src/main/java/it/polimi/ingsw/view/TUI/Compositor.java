@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Compositor {
-    private static final int screenWidth = 166;
-    private static final int screenHeight = 39;
+    public static final int screenWidth = 166;
+    public static final int screenHeight = 39;
 
     private final ClientInterface client;
     private final MiniBoard[] miniBoard;
@@ -24,6 +24,7 @@ public class Compositor {
     private final HandView hand;
     private final ScoreBoard scoreBoard;
     private final Prompt prompt;
+    private final TopBar topBar = new TopBar();
     private Map<View, Component> mainComponent = new HashMap<>();
     private View view = View.BOARD;
 
@@ -56,6 +57,7 @@ public class Compositor {
 
     public String updateView(){
         StringBuilder out = new StringBuilder();
+        out.append(topBar).append("\n");
         resources.setResourceCount(client.getPlayerData().getResources());
 
         for (MiniBoard miniBoard : miniBoard) {
@@ -118,6 +120,10 @@ public class Compositor {
 
         out.append(prompt.toString());
         return out.toString();
+    }
+
+    public void setTopBar(String message) {
+        topBar.setMessage(message);
     }
 
     private ObjectiveView createObjectiveView(ClientInterface client){

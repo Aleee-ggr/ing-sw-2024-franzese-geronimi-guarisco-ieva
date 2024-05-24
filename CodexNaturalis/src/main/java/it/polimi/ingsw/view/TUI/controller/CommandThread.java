@@ -88,10 +88,13 @@ public class CommandThread extends Thread {
                     }
                     if (!placed) {
                         placed = place(id, position);
-                        fetchData();
-                        updater.update();
-                        sleep(1000);
-                        compositor.switchView(View.DECK);
+                        if (placed) {
+                            fetchData();
+                            updater.update();
+                            sleep(1000);
+                            compositor.setTopBar("Your Turn: Draw a Card!");
+                            compositor.switchView(View.DECK);
+                        }
                     }
                     break;
                 case "view":
@@ -108,6 +111,7 @@ public class CommandThread extends Thread {
                     if (placed) {
                         client.drawCard(position);
                         placed = false;
+                        compositor.setTopBar("Waiting for your Turn...");
                     }
                     break;
                 case "w":
