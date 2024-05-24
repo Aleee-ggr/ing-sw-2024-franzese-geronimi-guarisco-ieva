@@ -54,7 +54,11 @@ public class Game {
      * @return the card corresponding to the id
      */
     public static Card getCardByID(Integer id) {
-        return cardID.get(abs(id));
+        Card card = cardID.get(abs(id));
+        if (id < 0) {
+            card.setFrontSideUp(false);
+        }
+        return card;
     }
 
     /**

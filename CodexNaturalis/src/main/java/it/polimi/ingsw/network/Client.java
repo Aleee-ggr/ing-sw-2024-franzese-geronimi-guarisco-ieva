@@ -123,7 +123,6 @@ public class Client {
             this.scoreMap.put(player, 0);
         }
 
-        System.out.println(scoreMap);
         this.players = players;
         this.playerNum = players.size();
     }

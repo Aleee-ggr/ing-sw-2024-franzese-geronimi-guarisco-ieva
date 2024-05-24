@@ -36,7 +36,6 @@ public class ObjectiveView implements Component {
 
         contentHeight = 5 + cardHeight;
         marginTop = (height - contentHeight) / 2;
-        System.out.println(marginTop);
     }
     
     public static int getWidth() {

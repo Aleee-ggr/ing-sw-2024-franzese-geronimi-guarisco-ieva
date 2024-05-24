@@ -12,6 +12,7 @@ import it.polimi.ingsw.view.TUI.RotateBoard;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class Board implements Component {
@@ -119,64 +120,82 @@ public class Board implements Component {
     }
 
     private Character[][] drawCard(Corner[] corners, Resource resource, Card card) {
+
         StringBuilder cardBuilder = new StringBuilder();
 
-        cardBuilder.append(corners[0].getCornerResource().toChar())
-                .append("▔▔▔▔▔")
-                .append(corners[1].getCornerResource().toChar())
-                .append("\n");
-
-        cardBuilder.append("▏");
-
-        if(card instanceof StartingCard){ //TODO: needs refactor
-            if(!((StartingCard)card).isFrontSideUp()){
-                cardBuilder.append("  ")
-                        .append("❖")
-                        .append("  ");
-            } else {
-                int resourceNum = ((StartingCard) card).getFrontResources().size();
-                switch (resourceNum) {
-                    case 1:
-                        cardBuilder.append("  ")
-                                .append(((StartingCard) card).getFrontResources().getFirst().toChar())
-                                .append("  ");
-                        break;
-                    case 2:
-                        cardBuilder.append(" ")
-                                .append(((StartingCard) card).getFrontResources().getFirst().toChar())
-                                .append(" ")
-                                .append(((StartingCard) card).getFrontResources().getLast().toChar())
-                                .append(" ");
-                        break;
-                    case 3:
-                        cardBuilder.append(" ")
-                                .append(((StartingCard) card).getFrontResources().getFirst().toChar())
-                                .append(((StartingCard) card).getFrontResources().get(1).toChar())
-                                .append(((StartingCard) card).getFrontResources().getLast().toChar())
-                                .append(" ");
-                        break;
-                    default:
-                        throw new RuntimeException("Invalid number of resources");
-                }
-            }
-        } else if (card instanceof ColoredCard) {
-            if (card.isFrontSideUp()) {
-                cardBuilder.append("  ")
-                        .append(((ColoredCard) card).getBackResource().toCharCenter())
-                        .append("  ");
-            } else {
-                cardBuilder.append("  ")
-                        .append(((ColoredCard) card).getBackResource().toChar())
-                        .append("  ");
-            }
+        if (!card.isFrontSideUp() && card instanceof ColoredCard coloredCard) {
+            cardBuilder.append(Resource.NONE.toChar())
+                    .append("▔▔▔▔▔")
+                    .append(Resource.NONE.toChar())
+                    .append("\n")
+                    .append("▏")
+                    .append("  ")
+                    .append(coloredCard.getBackResource().toChar())
+                    .append("  ")
+                    .append("▕\n")
+                    .append(Resource.NONE.toChar())
+                    .append("▁▁▁▁▁")
+                    .append(Resource.NONE.toChar());
         }
 
-        cardBuilder.append("▕")
-                .append("\n");
-        cardBuilder.append(corners[2].getCornerResource().toChar())
-                .append("▁▁▁▁▁")
-                .append(corners[3].getCornerResource().toChar())
-                .append("\n");
+        else {
+            cardBuilder.append(corners[0].getCornerResource().toChar())
+                    .append("▔▔▔▔▔")
+                    .append(corners[1].getCornerResource().toChar())
+                    .append("\n");
+
+            cardBuilder.append("▏");
+
+            if (card instanceof StartingCard) { //TODO: needs refactor
+                if (!((StartingCard) card).isFrontSideUp()) {
+                    cardBuilder.append("  ")
+                            .append("❖")
+                            .append("  ");
+                } else {
+                    int resourceNum = ((StartingCard) card).getFrontResources().size();
+                    switch (resourceNum) {
+                        case 1:
+                            cardBuilder.append("  ")
+                                    .append(((StartingCard) card).getFrontResources().getFirst().toChar())
+                                    .append("  ");
+                            break;
+                        case 2:
+                            cardBuilder.append(" ")
+                                    .append(((StartingCard) card).getFrontResources().getFirst().toChar())
+                                    .append(" ")
+                                    .append(((StartingCard) card).getFrontResources().getLast().toChar())
+                                    .append(" ");
+                            break;
+                        case 3:
+                            cardBuilder.append(" ")
+                                    .append(((StartingCard) card).getFrontResources().getFirst().toChar())
+                                    .append(((StartingCard) card).getFrontResources().get(1).toChar())
+                                    .append(((StartingCard) card).getFrontResources().getLast().toChar())
+                                    .append(" ");
+                            break;
+                        default:
+                            throw new RuntimeException("Invalid number of resources");
+                    }
+                }
+            } else if (card instanceof ColoredCard) {
+                if (card.isFrontSideUp()) {
+                    cardBuilder.append("  ")
+                            .append(((ColoredCard) card).getBackResource().toCharCenter())
+                            .append("  ");
+                } else {
+                    cardBuilder.append("  ")
+                            .append(((ColoredCard) card).getBackResource().toChar())
+                            .append("  ");
+                }
+            }
+
+            cardBuilder.append("▕")
+                    .append("\n");
+            cardBuilder.append(corners[2].getCornerResource().toChar())
+                    .append("▁▁▁▁▁")
+                    .append(corners[3].getCornerResource().toChar())
+                    .append("\n");
+        }
 
 
         String[] lines = cardBuilder.toString().split("\n");
