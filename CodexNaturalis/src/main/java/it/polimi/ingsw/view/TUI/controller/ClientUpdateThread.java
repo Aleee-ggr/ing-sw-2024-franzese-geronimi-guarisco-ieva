@@ -11,10 +11,11 @@ import java.io.IOException;
 public class ClientUpdateThread extends Thread {
     private final ClientInterface client;
     private final SharedUpdate updater;
-
-    public ClientUpdateThread(ClientInterface client, SharedUpdate updater) {
+    private final Compositor compositor;
+    public ClientUpdateThread(ClientInterface client, SharedUpdate updater, Compositor compositor) {
         this.client = client;
         this.updater = updater;
+        this.compositor = compositor;
     }
 
     @Override
@@ -34,6 +35,7 @@ public class ClientUpdateThread extends Thread {
                 }
                 if (oldState != WaitState.TURN && state == WaitState.TURN) {
                     fetchData();
+                    compositor.switchView(View.BOARD);
                     updater.update();
                 }
                 sleep(500);

@@ -135,7 +135,7 @@ public class TuiController {
         compositor = new Compositor(client);
         SharedUpdate updater = new SharedUpdate();
         new CommandThread(client, updater, compositor).start();
-        new ClientUpdateThread(client, updater).start();
+        new ClientUpdateThread(client, updater, compositor).start();
         Thread t = new RenderThread(client, updater, compositor);
         t.start();
         try {
