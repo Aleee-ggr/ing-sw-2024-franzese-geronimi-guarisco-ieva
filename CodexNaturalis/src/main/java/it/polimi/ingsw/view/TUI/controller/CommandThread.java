@@ -68,7 +68,7 @@ public class CommandThread extends Thread {
      *  <li> switch [player]: show the view from the given player side </li>
      *  <li> draw [int index]: draw the card at the given position
      *  0 to 3 are visible cards, 4 & 5 are respectively gold and std deck </li>
-     *  <li> w / a / s / d: move the view of the board</li>
+     *  <li> w / a / s / d [int distance]: move the view of the board for the given distance</li>
      *  <li> h: show this list </li>
      *  </ul>
      * @param command the command to execute
@@ -150,7 +150,7 @@ public class CommandThread extends Thread {
                               - view [deck|objectives|board]: show the selected element
                               - switch [player]: show the view from the given player side
                               - draw [int index]: draw the card at the given position, 0 to 3 are visible cards, 4 & 5 are respectively gold and std deck
-                              - w / a / s / d: move the view of the board
+                              - w / a / s / d [int distance]: move the view of the board for the given distance
                               - h: show this list
                               Press ENTER to continue""");
                     in.readLine();
