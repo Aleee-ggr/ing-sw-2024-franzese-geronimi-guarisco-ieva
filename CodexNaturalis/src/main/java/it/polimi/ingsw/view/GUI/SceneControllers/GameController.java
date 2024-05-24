@@ -16,7 +16,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -200,6 +203,39 @@ public class GameController implements Initializable {
         thirdHandCard.setOnMouseClicked(event -> {
             selectedHandCard = thirdHandCard;
         });
+
+        firstHandCard.setOnDragDetected(event -> {
+            selectedHandCard = firstHandCard;
+            //firstHandCard.startDragAndDrop(TransferMode.MOVE).setContent(clipboardContent("first"));
+            Dragboard db = firstHandCard.startDragAndDrop(TransferMode.MOVE);
+            db.setContent(clipboardContent("first"));
+            db.setDragView(firstHandCard.getImage());
+            event.consume();
+        });
+
+        secondHandCard.setOnDragDetected(event -> {
+            selectedHandCard = secondHandCard;
+            //secondHandCard.startDragAndDrop(TransferMode.MOVE).setContent(clipboardContent("second"));
+            Dragboard db = secondHandCard.startDragAndDrop(TransferMode.MOVE);
+            db.setContent(clipboardContent("second"));
+            db.setDragView(secondHandCard.getImage());
+            event.consume();
+        });
+
+        thirdHandCard.setOnDragDetected(event -> {
+            selectedHandCard = thirdHandCard;
+            //thirdHandCard.startDragAndDrop(TransferMode.MOVE).setContent(clipboardContent("third"));
+            Dragboard db = thirdHandCard.startDragAndDrop(TransferMode.MOVE);
+            db.setContent(clipboardContent("third"));
+            db.setDragView(thirdHandCard.getImage());
+            event.consume();
+        });
+    }
+
+    private ClipboardContent clipboardContent(String text) {
+        ClipboardContent clipboardContent = new ClipboardContent();
+        clipboardContent.putString(text);
+        return clipboardContent;
     }
 
     private void setupValidPlacements() {
@@ -243,7 +279,6 @@ public class GameController implements Initializable {
                     if (placed) {
                         String imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", selectedCardId);
                         Image cardImage = new Image(imagePath);
-
                         imageView.setImage(cardImage);
                         stackPane.setStyle("");
                         selectedHandCard = null;
@@ -255,6 +290,49 @@ public class GameController implements Initializable {
 
                     }
                 }
+            });
+
+            stackPane.setOnDragOver(event -> {
+                if (event.getGestureSource() != stackPane && event.getDragboard().hasString()) {
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                event.consume();
+            });
+
+            stackPane.setOnDragDropped(event -> {
+                boolean placed = false;
+                int selectedCardId;
+
+                if (selectedHandCard == firstHandCard) {
+                    selectedCardId = playerData.getClientHand().getFirst().getId();
+                } else if (selectedHandCard == secondHandCard) {
+                    selectedCardId = playerData.getClientHand().get(1).getId();
+                } else {
+                    selectedCardId = playerData.getClientHand().getLast().getId();
+                }
+
+                try {
+                    placed = client.placeCard(playerData.getValidPlacements().get(Integer.parseInt(imageView.getId())), selectedCardId);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                if (placed) {
+                    String imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", selectedCardId);
+                    Image cardImage = new Image(imagePath);
+
+                    imageView.setImage(cardImage);
+                    stackPane.setStyle("");
+                    selectedHandCard = null;
+                    validPlacementPanes.remove(boardCoordinates);
+
+                    PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
+                    pause.setOnFinished(e -> { changeDrawCardScene(); });
+                    pause.play();
+                }
+
+                event.setDropCompleted(placed);
+                event.consume();
             });
 
             board.add(stackPane, boardCoordinates.x(), boardCoordinates.y());
