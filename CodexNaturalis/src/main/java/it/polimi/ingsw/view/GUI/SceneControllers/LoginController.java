@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -24,6 +25,12 @@ public class LoginController {
     @FXML
     private TextField passwordField;
 
+    @FXML
+    private Text loginError;
+
+    @FXML
+    private Text loginErrorMessage;
+
     /**
      * Changes the scene to the main menu scene when the corresponding button is clicked.
      * Sets the client credentials based on the entered username and password.
@@ -32,17 +39,28 @@ public class LoginController {
      */
     @FXML
     protected void changeMainMenuScene(ActionEvent event) {
-        client.setCredentials(usernameField.getText(), passwordField.getText());
+        boolean valid = false;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/MainMenu.fxml"));
-            MainMenuController controller = new MainMenuController();
-            controller.setClient(client);
-            loader.setController(controller);
-            Scene scene = new Scene(loader.load(), 1600, 900);
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
+            valid = client.checkCredentials(usernameField.getText(), passwordField.getText());
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        if (valid) {
+            client.setCredentials(usernameField.getText(), passwordField.getText());
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/MainMenu.fxml"));
+                MainMenuController controller = new MainMenuController();
+                controller.setClient(client);
+                loader.setController(controller);
+                Scene scene = new Scene(loader.load(), 1600, 900);
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(scene);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            loginError.setVisible(true);
+            loginErrorMessage.setVisible(true);
         }
     }
 
@@ -72,3 +90,4 @@ public class LoginController {
         this.client = client;
     }
 }
+
