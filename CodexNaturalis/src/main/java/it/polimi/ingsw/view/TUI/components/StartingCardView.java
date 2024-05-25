@@ -26,8 +26,8 @@ public class StartingCardView implements Component{
 
     public StartingCardView(StartingCard startingCard) {
         this.startingCard = startingCard;
-        cardHeight = ObjectiveCard.height;
-        cardWidth = ObjectiveCard.width;
+        cardHeight = PrintCards.height;
+        cardWidth = PrintCards.width;
 
         contentWidth = ((GameConsts.objectivesToChooseFrom) * cardWidth) + (cardSpacing) + 4;
         marginSide = (width - contentWidth) / 2;
@@ -65,7 +65,7 @@ public class StartingCardView implements Component{
                 .append(" ".repeat((contentWidth - 4) / 2))
                 .append("│")
                 .append("\n");
-        for (int i = 0; i < cardHeight; i++) {
+        for (int i = 1; i < cardHeight; i++) {
             out.append(" ".repeat(marginSide))
                     .append("│")
                     .append(" ".repeat(cardSpacing/2))
@@ -76,10 +76,6 @@ public class StartingCardView implements Component{
                     .append("│\n");
         }
         out.append(" ".repeat(marginSide))
-                .append("│")
-                .append(" ".repeat(contentWidth))
-                .append("│\n")
-                .append(" ".repeat(marginSide))
                 .append("╰")
                 .append("─".repeat(contentWidth))
                 .append("╯")

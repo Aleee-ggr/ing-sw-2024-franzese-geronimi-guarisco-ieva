@@ -36,52 +36,33 @@ public class HandView implements Component{
         for (Card card : cardsToPrint) {
             out.append(cardNum)
                     .append(".");
-            if (card instanceof GoldCard goldCard) {
-                if (goldCard.getType().equals("cover")) {
-                    out.append(" cover: ")
-                            .append(goldCard.getScore())
-                            .append(" ".repeat(panelWidth - " cover: 0".length() - (Integer.toString(cardNum).length()) - 1));
-                } else if (goldCard.getType().equals("none")) {
-                    out.append(" ")
-                            .append(goldCard.getScore())
-                            .append(" ".repeat(panelWidth - " 0".length() - (Integer.toString(cardNum).length()) -1));
-                } else {
-                    out.append(" ")
-                            .append(Resource.fromString(goldCard.getType()).toChar())
-                            .append(": ")
-                            .append(goldCard.getScore())
-                            .append(" ".repeat(panelWidth - " R: 0".length() - (Integer.toString(cardNum).length()) -1));
-                }
-            } else {
-                out.append(" ".repeat(panelWidth - (Integer.toString(cardNum).length()) - 1));
-            }
-            out.append("\n");
+            boolean firstLine = true;
+
             for (String line : new PrintCards(card).toString().split("\n")) {
-                out.append(" ".repeat(leftRightPadding))
-                        .append(line)
+
+                if(firstLine){
+                    out.append(line)
                         .append(" ".repeat(leftRightPadding))
                         .append("\n");
-            }
-            if (card instanceof GoldCard goldCard) {
-                out.append(" ");
-                for (Map.Entry<Resource, Integer> e: goldCard.getRequirements().entrySet()) {
-                    out.append(" %c:%d".formatted(e.getKey().toChar(), e.getValue()));
+                    firstLine = false;
+                } else {
+                    out.append(" ".repeat(leftRightPadding))
+                            .append(line)
+                            .append(" ".repeat(leftRightPadding))
+                            .append("\n");
                 }
-                out.append(" ".repeat(panelWidth - goldCard.getRequirements().size() * 4 -1));
-            } else {
-                out.append(" ".repeat(panelWidth));
             }
-            out.append("\n");
+
             cardNum++;
         }
 
         for (int i = 0; i < cardsToPrint.size() - GameConsts.firstHandDim; i++) {
-            for (int j = 0; j < CardBack.height + 2; j++) {
+            for (int j = 0; j < PrintCards.height; j++) {
                 out.append(" ".repeat(panelWidth))
                         .append("\n");
             }
         }
-        for (int i = 0; i < panelHeight - cardsToPrint.size() * (PrintCards.height + 2); i++) {
+        for (int i = 0; i < panelHeight - cardsToPrint.size() * (PrintCards.height); i++) {
             out.append(" ".repeat(panelWidth))
                     .append("\n");
         }

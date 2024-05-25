@@ -23,7 +23,7 @@ public class App
         List<String> arguments = List.of(args);
         if (arguments.contains("server")) {
             new RmiServer(9000);
-            new SocketServer(7000);
+            new SocketServer(8000);
         }
         if (arguments.contains("client")) {
             System.out.print("insert connection mode\n1) socket\n2) RMI\n");
