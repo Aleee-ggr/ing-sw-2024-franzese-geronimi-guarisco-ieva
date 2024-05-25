@@ -121,7 +121,7 @@ public class DeckView implements Component {
                 out.append(" ".repeat(hSpacing/2));
             }
 
-            out.append(CardBack.resources.get(backs[0]).split("\n")[i]);
+            out.append(CardBack.resourcesGold.get(backs[0]).split("\n")[i]);
 
             if(i == 0){
                 out.append(" ".repeat(CardBack.width * 2 + hSpacing * 3 - 2))
