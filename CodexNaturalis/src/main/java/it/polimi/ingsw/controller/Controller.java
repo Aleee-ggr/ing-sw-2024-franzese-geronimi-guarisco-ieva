@@ -122,9 +122,9 @@ public class Controller {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
             ColoredCard card;
             if (index == 4) {
-                card = user.drawDecks(false);
-            } else if (index == 5) {
                 card = user.drawDecks(true);
+            } else if (index == 5) {
+                card = user.drawDecks(false);
             } else {
                 card = user.drawVisible(index);
             }

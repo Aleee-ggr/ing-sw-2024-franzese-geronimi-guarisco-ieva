@@ -86,27 +86,53 @@ public class DeckView implements Component {
         // Print Visible cards
         for (int i = 0; i < CardBack.height; i++) {
             out.append(" ".repeat(paddingLeft))
-                    .append("│")
-                    .append(" ".repeat(hSpacing/2));
-                    for (int j = 0; j < visibleCards.length - 1; j++) {
-                        out.append(printCards[j].toStringArray()[i])
-                                .append(" ".repeat(hSpacing));
-                    }
-                    out.append(printCards[visibleCards.length - 1].toStringArray()[i]);
-                    out.append(" ".repeat(hSpacing/2))
-                    .append("│\n");
+                    .append("│");
+
+            if(i == 0){
+                out.append("1.");
+            } else {
+                out.append(" ".repeat(hSpacing/2));
+            }
+
+            for (int j = 0; j < visibleCards.length - 1; j++) {
+                if(i==0){
+                    out.append(printCards[j].toStringArray()[i])
+                            .append(" ".repeat(hSpacing-2))
+                            .append(j+2)
+                            .append(".");
+                } else {
+                    out.append(printCards[j].toStringArray()[i])
+                            .append(" ".repeat(hSpacing));
+                }
+            }
+            out.append(printCards[visibleCards.length - 1].toStringArray()[i]);
+            out.append(" ".repeat(hSpacing/2))
+            .append("│\n");
         }
 
         // Print decks
         for (int i = 0; i < CardBack.height; i++) {
             out.append(" ".repeat(paddingLeft))
-                    .append("│")
-                    .append(" ".repeat(hSpacing/2))
-                    .append(CardBack.resources.get(backs[0]).split("\n")[i])
-                    .append(" ".repeat(CardBack.width * 2 + hSpacing * 3))
-                    .append(CardBack.resources.get(backs[1]).split("\n")[i])
-                    .append(" ".repeat(hSpacing/2))
-                    .append("│\n");
+                    .append("│");
+
+            if(i == 0){
+                out.append("5.");
+            } else {
+                out.append(" ".repeat(hSpacing/2));
+            }
+
+            out.append(CardBack.resources.get(backs[0]).split("\n")[i]);
+
+            if(i == 0){
+                out.append(" ".repeat(CardBack.width * 2 + hSpacing * 3 - 2))
+                        .append("6.");
+            } else {
+                out.append(" ".repeat(CardBack.width * 2 + hSpacing * 3));
+            }
+
+            out.append(CardBack.resources.get(backs[1]).split("\n")[i])
+                .append(" ".repeat(hSpacing/2))
+                .append("│\n");
         }
 
         for (int i = 0; i < vSpacing; i++) {
