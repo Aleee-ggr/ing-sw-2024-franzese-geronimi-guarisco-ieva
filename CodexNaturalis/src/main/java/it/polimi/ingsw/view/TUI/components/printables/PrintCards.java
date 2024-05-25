@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.view.TUI.components.Component;
 
 public class PrintCards implements Component {
+    public static final String ANSI_GOLD = "\u001B[38;5;220m";
+    public static final String ANSI_RESET = "\u001B[0m";
+
     private final String cardString;
     public final static int width = 15;
     public final static int height = 5;
@@ -87,9 +90,9 @@ public class PrintCards implements Component {
 
         if(inCard instanceof GoldCard){
             GoldCard card = (GoldCard)inCard;
-            out.append("   ┃")
+            out.append(ANSI_GOLD + "   ┃" + ANSI_RESET)
                     .append(card.getBackResource().toChar())
-                    .append("┃   ");
+                    .append(ANSI_GOLD + "┃   " + ANSI_RESET);
         } else if(inCard instanceof StdCard){
             StdCard card = (StdCard)inCard;
             out.append("    ")
