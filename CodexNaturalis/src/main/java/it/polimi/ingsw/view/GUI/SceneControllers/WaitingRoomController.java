@@ -154,6 +154,9 @@ public class WaitingRoomController implements Initializable {
         try {
             stopFetchingPlayers();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/MainMenu.fxml"));
+            MainMenuController controller = new MainMenuController();
+            controller.setClient(client);
+            loader.setController(controller);
             Scene scene = new Scene(loader.load(), 1600, 900);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
