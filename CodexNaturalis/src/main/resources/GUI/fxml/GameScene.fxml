@@ -5,85 +5,29 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.effect.Glow?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<StackPane alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" style="-fx-background-color: efedd6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="125.0" prefWidth="200.0" style="-fx-border-width: 4; -fx-border-color: #432918;" StackPane.alignment="BOTTOM_LEFT">
-            <children>
-                <ImageView fx:id="firstHandCard" fitHeight="151.5" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_LEFT">
-                    <StackPane.margin>
-                        <Insets bottom="25.0" left="25.0" />
-                    </StackPane.margin>
-                </ImageView>
-                <ImageView fx:id="secondHandCard" fitHeight="151.5" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_LEFT">
-                    <StackPane.margin>
-                        <Insets bottom="25.0" left="350.0" />
-                    </StackPane.margin>
-                </ImageView>
-                <ImageView fx:id="thirdHandCard" fitHeight="151.5" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_LEFT">
-                    <StackPane.margin>
-                        <Insets bottom="25.0" left="700.0" right="25.0" />
-                    </StackPane.margin>
-                </ImageView>
-            </children>
+      <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true">
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+         <image>
+            <Image url="@../images/board.jpeg" />
+         </image>
+      </ImageView>
+        <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" hvalue="0.5" maxHeight="-Infinity" maxWidth="-Infinity" pannable="true" prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: transparent; -fx-background: transparent;" vbarPolicy="NEVER" vvalue="0.5">
             <StackPane.margin>
-                <Insets bottom="15.0" left="50.0" />
-            </StackPane.margin>
-            <padding>
-                <Insets top="25.0" />
-            </padding>
-        </StackPane>
-        <Button mnemonicParsing="false" onAction="#changeObjectivesScene" prefHeight="100.0" prefWidth="200.0" text="OBJECTIVES" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_RIGHT">
-            <font>
-                <Font name="Trattatello" size="30.0" />
-            </font>
-            <cursor>
-                <Cursor fx:constant="HAND" />
-            </cursor>
-            <effect>
-                <Glow />
-            </effect>
-            <StackPane.margin>
-                <Insets bottom="175.0" right="100.0" />
-            </StackPane.margin>
-        </Button>
-        <Button mnemonicParsing="false" onAction="#changeScoreScene" prefHeight="100.0" prefWidth="200.0" text="SCORE" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_RIGHT">
-            <font>
-                <Font name="Trattatello" size="30.0" />
-            </font>
-            <cursor>
-                <Cursor fx:constant="HAND" />
-            </cursor>
-            <effect>
-                <Glow />
-            </effect>
-            <StackPane.margin>
-                <Insets bottom="50.0" right="100.0" />
-            </StackPane.margin>
-        </Button>
-        <Button mnemonicParsing="false" onAction="#changeDrawCardScene" prefHeight="100.0" prefWidth="200.0" text="DECKS" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_RIGHT">
-            <font>
-                <Font name="Trattatello" size="30.0" />
-            </font>
-            <cursor>
-                <Cursor fx:constant="HAND" />
-            </cursor>
-            <effect>
-                <Glow />
-            </effect>
-            <StackPane.margin>
-                <Insets bottom="300.0" right="100.0" />
-            </StackPane.margin>
-        </Button>
-        <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" hvalue="0.5" maxHeight="-Infinity" maxWidth="-Infinity" pannable="true" prefHeight="605.0" prefWidth="1150.0" vbarPolicy="NEVER" vvalue="0.5">
-            <StackPane.margin>
-                <Insets left="50.0" top="50.0" />
+                <Insets />
             </StackPane.margin>
             <content>
                 <GridPane fx:id="board" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1965.0" prefWidth="3855.0">
@@ -160,5 +104,197 @@
                 </GridPane>
             </content>
         </ScrollPane>
+        <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="125.0" prefWidth="900.0" style="-fx-border-width: 4; -fx-border-color: #432918; -fx-background-color: white;" StackPane.alignment="BOTTOM_CENTER">
+            <children>
+                <ImageView fx:id="firstHandCard" fitHeight="151.5" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_LEFT">
+                    <StackPane.margin>
+                        <Insets bottom="25.0" left="25.0" />
+                    </StackPane.margin>
+                </ImageView>
+                <ImageView fx:id="secondHandCard" fitHeight="151.5" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_CENTER">
+                    <StackPane.margin>
+                        <Insets bottom="25.0" />
+                    </StackPane.margin>
+                </ImageView>
+                <ImageView fx:id="thirdHandCard" fitHeight="151.5" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_RIGHT">
+                    <StackPane.margin>
+                        <Insets bottom="25.0" right="25.0" />
+                    </StackPane.margin>
+                </ImageView>
+            </children>
+            <StackPane.margin>
+                <Insets bottom="15.0" />
+            </StackPane.margin>
+            <padding>
+                <Insets top="25.0" />
+            </padding>
+        </StackPane>
+      <Button mnemonicParsing="false" onAction="#changeMiniBoardScene" prefHeight="0.0" prefWidth="200.0" style="-fx-rotate: -90;" text="BOARDS" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_RIGHT">
+         <font>
+            <Font name="Trattatello" size="30.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <effect>
+            <Glow />
+         </effect>
+         <StackPane.margin>
+            <Insets bottom="700.0" right="-60.0" />
+         </StackPane.margin>
+      </Button>
+        <Button mnemonicParsing="false" onAction="#changeDrawCardScene" prefHeight="0.0" prefWidth="200.0" style="-fx-rotate: -90;" text="DECKS" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_RIGHT">
+            <font>
+                <Font name="Trattatello" size="30.0" />
+            </font>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+            <effect>
+                <Glow />
+            </effect>
+            <StackPane.margin>
+                <Insets bottom="500.0" right="-60.0" />
+            </StackPane.margin>
+        </Button>
+        <Button mnemonicParsing="false" onAction="#changeObjectivesScene" prefHeight="0.0" prefWidth="200.0" style="-fx-rotate: -90;" text="OBJECTIVES" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_RIGHT">
+            <font>
+                <Font name="Trattatello" size="30.0" />
+            </font>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+            <effect>
+                <Glow />
+            </effect>
+            <StackPane.margin>
+                <Insets bottom="300.0" right="-60.0" />
+            </StackPane.margin>
+        </Button>
+        <Button mnemonicParsing="false" onAction="#changeScoreScene" prefHeight="0.0" prefWidth="200.0" style="-fx-rotate: -90;" text="SCORE" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_RIGHT">
+            <font>
+                <Font name="Trattatello" size="30.0" />
+            </font>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+            <effect>
+                <Glow />
+            </effect>
+            <StackPane.margin>
+                <Insets bottom="100.0" right="-60.0" />
+            </StackPane.margin>
+        </Button>
+      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="300.0" style="-fx-background-color: dad6a6;">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="RESOURCES" StackPane.alignment="TOP_CENTER">
+               <StackPane.margin>
+                  <Insets top="15.0" />
+               </StackPane.margin>
+               <font>
+                  <Font name="Trattatello" size="13.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_LEFT">
+               <StackPane.margin>
+                  <Insets left="25.0" top="50.0" />
+               </StackPane.margin>
+               <image>
+                  <Image url="@../images/game_resources.nogit/fungi.jpg" />
+               </image>
+            </ImageView>
+            <Text fx:id="fungiCount" strokeType="OUTSIDE" strokeWidth="0.0" StackPane.alignment="TOP_LEFT">
+               <StackPane.margin>
+                  <Insets left="90.0" top="65.0" />
+               </StackPane.margin>
+            </Text>
+            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_RIGHT">
+               <StackPane.margin>
+                  <Insets right="25.0" top="50.0" />
+               </StackPane.margin>
+               <image>
+                  <Image url="@../images/game_resources.nogit/plant.jpg" />
+               </image>
+            </ImageView>
+            <Text fx:id="plantCount" strokeType="OUTSIDE" strokeWidth="0.0" StackPane.alignment="TOP_RIGHT">
+               <StackPane.margin>
+                  <Insets right="90.0" top="65.0" />
+               </StackPane.margin>
+            </Text>
+            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_LEFT">
+               <StackPane.margin>
+                  <Insets left="30.0" top="125.0" />
+               </StackPane.margin>
+               <image>
+                  <Image url="@../images/game_resources.nogit/animal.jpg" />
+               </image>
+            </ImageView>
+            <Text fx:id="animalCount" strokeType="OUTSIDE" strokeWidth="0.0" StackPane.alignment="TOP_LEFT">
+               <StackPane.margin>
+                  <Insets left="90.0" top="140.0" />
+               </StackPane.margin>
+            </Text>
+            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_RIGHT">
+               <image>
+                  <Image url="@../images/game_resources.nogit/insect.jpg" />
+               </image>
+               <StackPane.margin>
+                  <Insets right="25.0" top="125.0" />
+               </StackPane.margin>
+            </ImageView>
+            <Text fx:id="insectCount" strokeType="OUTSIDE" strokeWidth="0.0" StackPane.alignment="TOP_RIGHT">
+               <StackPane.margin>
+                  <Insets right="90.0" top="140.0" />
+               </StackPane.margin>
+            </Text>
+            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_RIGHT">
+               <image>
+                  <Image url="@../images/game_resources.nogit/quill.jpg" />
+               </image>
+               <StackPane.margin>
+                  <Insets bottom="50.0" right="25.0" />
+               </StackPane.margin>
+            </ImageView>
+            <Text fx:id="manuscriptCount" strokeType="OUTSIDE" strokeWidth="0.0" StackPane.alignment="BOTTOM_LEFT">
+               <StackPane.margin>
+                  <Insets bottom="15.0" left="35.0" />
+               </StackPane.margin>
+            </Text>
+            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_CENTER">
+               <image>
+                  <Image url="@../images/game_resources.nogit/inkwell.jpg" />
+               </image>
+               <StackPane.margin>
+                  <Insets bottom="50.0" />
+               </StackPane.margin>
+            </ImageView>
+            <Text fx:id="inkwellCount" strokeType="OUTSIDE" strokeWidth="0.0" StackPane.alignment="BOTTOM_CENTER">
+               <StackPane.margin>
+                  <Insets bottom="15.0" />
+               </StackPane.margin>
+            </Text>
+            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_LEFT">
+               <image>
+                  <Image url="@../images/game_resources.nogit/manuscript.jpg" />
+               </image>
+               <StackPane.margin>
+                  <Insets bottom="50.0" left="25.0" />
+               </StackPane.margin>
+            </ImageView>
+            <Text fx:id="quillCount" strokeType="OUTSIDE" strokeWidth="0.0" StackPane.alignment="BOTTOM_RIGHT">
+               <StackPane.margin>
+                  <Insets bottom="15.0" right="40.0" />
+               </StackPane.margin>
+            </Text>
+         </children>
+         <StackPane.margin>
+            <Insets left="25.0" top="25.0" />
+         </StackPane.margin>
+      </StackPane>
+      <VBox fx:id="tabContainer" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1080.0" prefWidth="350.0">
+         <children>
+            <StackPane fx:id="tabPane" prefHeight="1080.0" prefWidth="350.0" />
+         </children>
+      </VBox>
     </children>
 </StackPane>
