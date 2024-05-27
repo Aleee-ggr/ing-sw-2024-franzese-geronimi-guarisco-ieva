@@ -2,14 +2,11 @@ package it.polimi.ingsw.view.GUI.SceneControllers;
 
 import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.network.ClientInterface;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
+import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 import java.net.URL;
@@ -18,6 +15,9 @@ import java.util.ResourceBundle;
 public class ObjectivesController implements Initializable {
     private ClientInterface client;
     private PlayerData playerData;
+
+    @FXML
+    StackPane tabPane;
 
     @FXML
     private ImageView personalObjective;
@@ -49,24 +49,9 @@ public class ObjectivesController implements Initializable {
         personalObjective.setImage(image);
     }
 
-    @FXML
-    private void goBack(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/GameScene.fxml"));
-            GameController controller = new GameController();
-            controller.setClient(client);
-            loader.setController(controller);
-            Scene scene = null;
-            scene = new Scene(loader.load(), 1600, 900);
-            Stage stage = (Stage) personalObjective.getScene().getWindow();
-            stage.setScene(scene);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void setClient(ClientInterface client) {
         this.client = client;
         this.playerData = client.getPlayerData();
     }
 }
+

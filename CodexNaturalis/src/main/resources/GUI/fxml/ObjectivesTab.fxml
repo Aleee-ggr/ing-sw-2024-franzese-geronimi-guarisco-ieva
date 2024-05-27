@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<StackPane fx:id="tabPane" prefHeight="1080.0" prefWidth="350.0" style="-fx-background-color: efedd6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="OBJECTIVES" StackPane.alignment="TOP_CENTER">
+         <font>
+            <Font name="Trattatello" size="20.0" />
+         </font>
+         <StackPane.margin>
+            <Insets top="35.0" />
+         </StackPane.margin>
+      </Text>
+      <Button fx:id="closeButton1" mnemonicParsing="false" onAction="#closeTab" text="CLOSE" StackPane.alignment="TOP_RIGHT">
+         <font>
+            <Font name="Trattatello" size="13.0" />
+         </font>
+         <StackPane.margin>
+            <Insets right="25.0" top="25.0" />
+         </StackPane.margin>
+      </Button>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="COMMON" StackPane.alignment="TOP_CENTER">
+         <font>
+            <Font name="Trattatello" size="20.0" />
+         </font>
+         <StackPane.margin>
+            <Insets top="125.0" />
+         </StackPane.margin>
+      </Text>
+      <ImageView fx:id="commonObjective1" fitHeight="196.95" fitWidth="292.5" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER">
+         <StackPane.margin>
+            <Insets top="175.0" />
+         </StackPane.margin>
+      </ImageView>
+      <ImageView fx:id="commonObjective2" fitHeight="196.95" fitWidth="292.5" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER">
+         <StackPane.margin>
+            <Insets top="430.0" />
+         </StackPane.margin>
+      </ImageView>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="PERSONAL" StackPane.alignment="BOTTOM_CENTER">
+         <font>
+            <Font name="Trattatello" size="20.0" />
+         </font>
+         <StackPane.margin>
+            <Insets bottom="285.0" />
+         </StackPane.margin>
+      </Text>
+      <ImageView fx:id="personalObjective" fitHeight="196.95" fitWidth="292.5" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_CENTER">
+         <StackPane.margin>
+            <Insets bottom="75.0" />
+         </StackPane.margin>
+      </ImageView>
+   </children>
+</StackPane>
