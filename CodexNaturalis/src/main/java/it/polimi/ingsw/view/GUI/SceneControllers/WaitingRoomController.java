@@ -157,7 +157,7 @@ public class WaitingRoomController implements Initializable {
             MainMenuController controller = new MainMenuController();
             controller.setClient(client);
             loader.setController(controller);
-            Scene scene = new Scene(loader.load(), 1600, 900);
+            Scene scene = new Scene(loader.load(), 1920, 1080);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {

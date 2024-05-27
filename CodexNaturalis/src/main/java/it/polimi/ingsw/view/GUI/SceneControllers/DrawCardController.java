@@ -100,7 +100,7 @@ public class DrawCardController implements Initializable {
             controller.setClient(client);
             loader.setController(controller);
             Scene scene = null;
-            scene = new Scene(loader.load(), 1600, 900);
+            scene = new Scene(loader.load(), 1920, 1080);
             Stage stage = (Stage) goldDeck.getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {
@@ -116,7 +116,7 @@ public class DrawCardController implements Initializable {
             controller.setClient(client);
             loader.setController(controller);
             Scene scene = null;
-            scene = new Scene(loader.load(), 1600, 900);
+            scene = new Scene(loader.load(), 1920, 1080);
             Stage stage = (Stage) goldDeck.getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {
