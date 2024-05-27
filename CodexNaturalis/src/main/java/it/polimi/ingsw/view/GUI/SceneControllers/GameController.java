@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.GUI.SceneControllers;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.client.PlayerData;
+import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.RotateBoard;
 import javafx.animation.PauseTransition;
@@ -22,13 +23,13 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -37,7 +38,6 @@ public class GameController implements Initializable {
     private PlayerData playerData;
     private Coordinates center;
     private final Map<Coordinates, StackPane> validPlacementPanes = new HashMap<>();
-    private List<Card> placedCards;
     private static final double ZOOM_FACTOR = 1.1;
     private static final double MIN_SCALE = 0.3;
     private static final double MAX_SCALE = 3.0;
@@ -59,6 +59,27 @@ public class GameController implements Initializable {
     @FXML
     ScrollPane scrollPane;
 
+    @FXML
+    Text fungiCount;
+
+    @FXML
+    Text animalCount;
+
+    @FXML
+    Text insectCount;
+
+    @FXML
+    Text plantCount;
+
+    @FXML
+    Text manuscriptCount;
+
+    @FXML
+    Text inkwellCount;
+
+    @FXML
+    Text quillCount;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         scrollPane.addEventFilter(ScrollEvent.ANY, event -> {
@@ -77,6 +98,7 @@ public class GameController implements Initializable {
         });
 
         fetchData();
+        setupResources();
         calculateBoardCenterCoordinates();
         setHand();
 
@@ -135,6 +157,23 @@ public class GameController implements Initializable {
 
         setupValidPlacements();
         setupHandCardClickHandlers();
+    }
+
+    private void setupResources() {
+        Map<Resource, Text> resourceText = new HashMap<>();
+        resourceText.put(Resource.FUNGI, fungiCount);
+        resourceText.put(Resource.ANIMAL, animalCount);
+        resourceText.put(Resource.PLANT, plantCount);
+        resourceText.put(Resource.INSECT, insectCount);
+        resourceText.put(Resource.QUILL, quillCount);
+        resourceText.put(Resource.INKWELL, inkwellCount);
+        resourceText.put(Resource.MANUSCRIPT, manuscriptCount);
+
+        for (Map.Entry<Resource, Integer> entry : playerData.getResources().entrySet()) {
+            if (entry.getKey() != Resource.NONE && entry.getKey() != Resource.NONCOVERABLE) {
+                resourceText.get(entry.getKey()).setText(String.valueOf(entry.getValue()));
+            }
+        }
     }
 
     private void fetchData() {
@@ -284,8 +323,10 @@ public class GameController implements Initializable {
                         selectedHandCard = null;
                         validPlacementPanes.remove(boardCoordinates);
 
+                        fetchData();
+                        setupResources();
                         PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
-                        pause.setOnFinished(e -> {changeDrawCardScene();});
+                        pause.setOnFinished(e -> changeDrawCardScene());
                         pause.play();
 
                     }
@@ -390,3 +431,4 @@ public class GameController implements Initializable {
         }
     }
 }
+
