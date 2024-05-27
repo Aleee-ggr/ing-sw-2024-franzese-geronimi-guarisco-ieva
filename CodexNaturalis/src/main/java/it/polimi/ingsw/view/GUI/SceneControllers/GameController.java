@@ -23,6 +23,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -60,6 +61,12 @@ public class GameController implements Initializable {
     ScrollPane scrollPane;
 
     @FXML
+    VBox tabContainer;
+
+    @FXML
+    StackPane tabPane;
+
+    @FXML
     Text fungiCount;
 
     @FXML
@@ -82,6 +89,7 @@ public class GameController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        tabContainer.setVisible(false);
         scrollPane.addEventFilter(ScrollEvent.ANY, event -> {
             if (event.isControlDown()) {
                 double zoomFactor = (event.getDeltaY() > 0) ? ZOOM_FACTOR : 1 / ZOOM_FACTOR;
@@ -426,6 +434,16 @@ public class GameController implements Initializable {
             scene = new Scene(loader.load(), 1920, 1080);
             Stage stage = (Stage) board.getScene().getWindow();
             stage.setScene(scene);
+    @FXML
+    private void changeMiniBoardScene(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/MiniBoardTab.fxml"));
+            MiniBoardController controller = new MiniBoardController();
+            controller.setClient(client);
+            loader.setController(controller);
+            StackPane miniBoardPane = loader.load();
+            tabPane.getChildren().setAll(miniBoardPane);
+            tabContainer.setVisible(true);
         } catch (IOException e) {
             e.printStackTrace();
         }
