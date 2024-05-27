@@ -426,14 +426,18 @@ public class GameController implements Initializable {
     @FXML
     private void changeObjectivesScene(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ObjectivesScene.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ObjectivesTab.fxml"));
             ObjectivesController controller = new ObjectivesController();
             controller.setClient(client);
             loader.setController(controller);
-            Scene scene = null;
-            scene = new Scene(loader.load(), 1920, 1080);
-            Stage stage = (Stage) board.getScene().getWindow();
-            stage.setScene(scene);
+            StackPane objectivesPane = loader.load();
+            tabPane.getChildren().setAll(objectivesPane);
+            tabContainer.setVisible(true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     private void changeMiniBoardScene(ActionEvent event) {
         try {
