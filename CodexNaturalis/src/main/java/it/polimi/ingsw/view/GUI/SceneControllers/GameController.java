@@ -410,14 +410,13 @@ public class GameController implements Initializable {
     @FXML
     private void changeScoreScene(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ScoreScene.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ScoreTab.fxml"));
             ScoreController controller = new ScoreController();
             controller.setClient(client);
             loader.setController(controller);
-            Scene scene = null;
-            scene = new Scene(loader.load(), 1920, 1080);
-            Stage stage = (Stage) board.getScene().getWindow();
-            stage.setScene(scene);
+            StackPane scorePane = loader.load();
+            tabPane.getChildren().setAll(scorePane);
+            tabContainer.setVisible(true);
         } catch (IOException e) {
             e.printStackTrace();
         }
