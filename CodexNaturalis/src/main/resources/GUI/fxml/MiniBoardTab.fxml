@@ -10,12 +10,21 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <StackPane fx:id="tabPane" prefHeight="1080.0" prefWidth="350.0" style="-fx-background-color: efedd6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="OPPONENTS' BOARDS" StackPane.alignment="TOP_CENTER">
+         <StackPane.margin>
+            <Insets top="20.0" />
+         </StackPane.margin>
+         <font>
+            <Font name="Trattatello" size="20.0" />
+         </font>
+      </Text>
       <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeTab" text="CLOSE" StackPane.alignment="TOP_RIGHT">
          <StackPane.margin>
-            <Insets right="25.0" top="25.0" />
+            <Insets right="15.0" top="15.0" />
          </StackPane.margin>
          <font>
             <Font name="Trattatello" size="13.0" />
@@ -25,7 +34,7 @@
             <Image url="@../images/board.jpeg" />
          </image>
          <StackPane.margin>
-            <Insets top="100.0" />
+            <Insets top="75.0" />
          </StackPane.margin>
       </ImageView>
       <ScrollPane fx:id="scrollPane1" hbarPolicy="NEVER" hvalue="0.5" maxHeight="-Infinity" maxWidth="-Infinity" pannable="true" prefHeight="300.0" prefWidth="300.0" style="-fx-background-color: transparent; -fx-background: transparent;" vbarPolicy="NEVER" vvalue="0.5" StackPane.alignment="TOP_CENTER">
@@ -104,7 +113,7 @@
             </GridPane>
          </content>
          <StackPane.margin>
-            <Insets top="100.0" />
+            <Insets top="75.0" />
          </StackPane.margin>
       </ScrollPane>
       <ImageView fitHeight="300.0" fitWidth="300.0" pickOnBounds="true" StackPane.alignment="TOP_CENTER">
@@ -194,15 +203,15 @@
             <Insets top="420.0" />
          </StackPane.margin>
       </ScrollPane>
-      <ImageView fitHeight="300.0" fitWidth="300.0" pickOnBounds="true" StackPane.alignment="TOP_CENTER">
+      <ImageView fitHeight="300.0" fitWidth="300.0" pickOnBounds="true" StackPane.alignment="BOTTOM_CENTER">
          <image>
             <Image url="@../images/board.jpeg" />
          </image>
          <StackPane.margin>
-            <Insets top="740.0" />
+            <Insets bottom="15.0" />
          </StackPane.margin>
       </ImageView>
-      <ScrollPane fx:id="scrollPane3" hbarPolicy="NEVER" hvalue="0.5" maxHeight="-Infinity" maxWidth="-Infinity" pannable="true" prefHeight="300.0" prefWidth="300.0" style="-fx-background-color: transparent; -fx-background: transparent;" vbarPolicy="NEVER" vvalue="0.5" StackPane.alignment="TOP_CENTER">
+      <ScrollPane fx:id="scrollPane3" hbarPolicy="NEVER" hvalue="0.5" maxHeight="-Infinity" maxWidth="-Infinity" pannable="true" prefHeight="300.0" prefWidth="300.0" style="-fx-background-color: transparent; -fx-background: transparent;" vbarPolicy="NEVER" vvalue="0.5" StackPane.alignment="BOTTOM_CENTER">
          <content>
             <GridPane fx:id="board3" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="982.5" prefWidth="1927.5">
                <columnConstraints>
@@ -278,7 +287,7 @@
             </GridPane>
          </content>
          <StackPane.margin>
-            <Insets top="740.0" />
+            <Insets bottom="15.0" />
          </StackPane.margin>
       </ScrollPane>
    </children>
