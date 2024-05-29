@@ -27,6 +27,7 @@ public abstract class Server {
     protected static final Map<String, String> players = new ConcurrentHashMap<>();
     protected static final Map<String, UUID> playerGame = new ConcurrentHashMap<>();
     protected static final Map<UUID, Map<String, WaitState>> gameTurns = new ConcurrentHashMap<>();
+    protected static final Map<UUID, ArrayList<String>> chat = new ConcurrentHashMap<>();
 
     /**
      * Creates a new game with the specified number of players and starts its thread.
@@ -464,6 +465,15 @@ public abstract class Server {
         }
 
         return gameTurns.get(game).get(username);
+    }
+
+    public static ArrayList<String> fetchChatServer(UUID game) {
+        return chat.get(game);
+    }
+
+    public static void postChatServer(UUID game, String username, String message) {
+        chat.computeIfAbsent(game, k -> new ArrayList<>());
+        chat.get(game).add(username + ": " + message);
     }
 }
 
