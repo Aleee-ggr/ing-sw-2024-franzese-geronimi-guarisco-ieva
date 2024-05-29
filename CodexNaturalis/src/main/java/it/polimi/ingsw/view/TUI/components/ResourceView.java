@@ -10,7 +10,7 @@ import static java.lang.Math.min;
 public class ResourceView implements Component {
     public static final int width = 73;
     private Map<Resource, Integer> resourceCount;
-    private final String username;
+    private String username;
 
     public ResourceView(String username) {
         this.username = username;
@@ -23,12 +23,12 @@ public class ResourceView implements Component {
         }
     }
 
-    public void setResourceCount(Map<Resource, Integer> resourceCount) {
-        this.resourceCount =new HashMap<>(resourceCount);
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setResource(Resource resource, Integer count) {
-        this.resourceCount.put(resource, count);
+    public void setResourceCount(Map<Resource, Integer> resourceCount) {
+        this.resourceCount =new HashMap<>(resourceCount);
     }
 
     @Override

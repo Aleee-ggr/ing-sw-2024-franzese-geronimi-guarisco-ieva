@@ -25,10 +25,17 @@ public class Board implements Component {
 
     private final ClientInterface client;
 
+    private String currentPlayer;
+
 
     public Board(ClientInterface client) {
         this.client = client;
+        currentPlayer = client.getUsername();
         this.center = new Coordinates(0, 0);
+    }
+
+    public void setCurrentPlayer(String currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 
     public void setCenter(Coordinates center) {
@@ -43,8 +50,8 @@ public class Board implements Component {
     
     public void compute() {;
         clear();
-        List<Card> cardPlacementList = client.getPlayerData().getOrder();
-        BiMap<Coordinates, Card> cardPlacementMap = client.getPlayerData().getBoard();
+        List<Card> cardPlacementList = client.getOpponentData().get(currentPlayer).getOrder();
+        BiMap<Coordinates, Card> cardPlacementMap = client.getOpponentData().get(currentPlayer).getBoard();
         Character[][] drawnCard;
 
         for (Card card: cardPlacementList) {

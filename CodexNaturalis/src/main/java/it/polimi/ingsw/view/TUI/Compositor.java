@@ -27,6 +27,7 @@ public class Compositor {
     private final TopBar topBar = new TopBar();
     private Map<View, Component> mainComponent = new HashMap<>();
     private View view = View.BOARD;
+    private String viewPlayer;
 
     @Override
     public String toString() {
@@ -35,6 +36,7 @@ public class Compositor {
 
     public Compositor(ClientInterface client) {
         this.client = client;
+        this.viewPlayer = client.getUsername();
         miniBoard = new MiniBoard[client.getPlayerNum()-1];
         for(int i = 0, y = 0; i < miniBoard.length; i++, y++){
             if(client.getPlayers().get(y).equals(client.getUsername())){
@@ -53,6 +55,15 @@ public class Compositor {
         mainComponent.put(View.BOARD,  new Board(client));
         mainComponent.put(View.OBJECTIVES, createObjectiveView(client));
         mainComponent.put(View.DECK, new DeckView(client));
+    }
+
+    public void setViewPlayer(String player) {
+        this.viewPlayer = player;
+        resources.setUsername(player);
+        hand.setCurrentPlayer(player);
+        Board board = (Board) mainComponent.get(View.BOARD);
+        board.setCurrentPlayer(player);
+
     }
 
     public String updateView(){
