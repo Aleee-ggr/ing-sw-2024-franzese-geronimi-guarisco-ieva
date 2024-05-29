@@ -109,8 +109,11 @@ public class CommandThread extends Thread {
                 case "chat":
                     postChat(Arrays.copyOfRange(cmd, 1, cmd.length));
                 case "switch":
-                    compositor.setViewPlayer(cmd[1]);
-                    updater.update();
+                    if (client.getPlayers().contains(cmd[1])) {
+                        compositor.setViewPlayer(cmd[1]);
+                    } else {
+                        defaultCommand();
+                    }
                     break;
                 case "draw":
                     position = Integer.parseInt(cmd[1]) -1;
