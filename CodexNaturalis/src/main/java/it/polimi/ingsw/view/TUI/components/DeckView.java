@@ -17,7 +17,7 @@ public class DeckView implements Component {
     private static final int hSpacing = 4;
     private static final int vSpacing = 1;
     private static final int contentWidth = hSpacing * 4 + CardBack.width * 4;
-    private static final int contentHeight = vSpacing * 3 + CardBack.height * 2;
+    private static final int contentHeight = vSpacing * 3 + CardBack.height + PrintCards.height;
 
     private static final int paddingLeft = (width - contentWidth - 2) / 2;
     private static final int paddingTop = (height - contentHeight - 4) / 2;
@@ -69,12 +69,6 @@ public class DeckView implements Component {
                 .append("├")
                 .append("─".repeat(contentWidth))
                 .append("┤\n");
-        for (int i = 0; i < vSpacing; i++) {
-            out.append(" ".repeat(paddingLeft))
-                    .append("│")
-                    .append(" ".repeat(contentWidth))
-                    .append("│\n");
-        }
 
         for (int i = 0; i < vSpacing; i++) {
             out.append(" ".repeat(paddingLeft))
@@ -82,9 +76,10 @@ public class DeckView implements Component {
                     .append(" ".repeat(contentWidth))
                     .append("│\n");
         }
+
 
         // Print Visible cards
-        for (int i = 0; i < CardBack.height; i++) {
+        for (int i = 0; i < PrintCards.height; i++) {
             out.append(" ".repeat(paddingLeft))
                     .append("│");
 

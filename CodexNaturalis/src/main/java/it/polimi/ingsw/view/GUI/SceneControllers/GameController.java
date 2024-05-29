@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.GUI.SceneControllers;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.client.PlayerData;
+import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.RotateBoard;
 import javafx.animation.PauseTransition;
@@ -22,13 +23,14 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -37,7 +39,6 @@ public class GameController implements Initializable {
     private PlayerData playerData;
     private Coordinates center;
     private final Map<Coordinates, StackPane> validPlacementPanes = new HashMap<>();
-    private List<Card> placedCards;
     private static final double ZOOM_FACTOR = 1.1;
     private static final double MIN_SCALE = 0.3;
     private static final double MAX_SCALE = 3.0;
@@ -59,8 +60,36 @@ public class GameController implements Initializable {
     @FXML
     ScrollPane scrollPane;
 
+    @FXML
+    VBox tabContainer;
+
+    @FXML
+    StackPane tabPane;
+
+    @FXML
+    Text fungiCount;
+
+    @FXML
+    Text animalCount;
+
+    @FXML
+    Text insectCount;
+
+    @FXML
+    Text plantCount;
+
+    @FXML
+    Text manuscriptCount;
+
+    @FXML
+    Text inkwellCount;
+
+    @FXML
+    Text quillCount;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        tabContainer.setVisible(false);
         scrollPane.addEventFilter(ScrollEvent.ANY, event -> {
             if (event.isControlDown()) {
                 double zoomFactor = (event.getDeltaY() > 0) ? ZOOM_FACTOR : 1 / ZOOM_FACTOR;
@@ -77,6 +106,7 @@ public class GameController implements Initializable {
         });
 
         fetchData();
+        setupResources();
         calculateBoardCenterCoordinates();
         setHand();
 
@@ -135,6 +165,23 @@ public class GameController implements Initializable {
 
         setupValidPlacements();
         setupHandCardClickHandlers();
+    }
+
+    private void setupResources() {
+        Map<Resource, Text> resourceText = new HashMap<>();
+        resourceText.put(Resource.FUNGI, fungiCount);
+        resourceText.put(Resource.ANIMAL, animalCount);
+        resourceText.put(Resource.PLANT, plantCount);
+        resourceText.put(Resource.INSECT, insectCount);
+        resourceText.put(Resource.QUILL, quillCount);
+        resourceText.put(Resource.INKWELL, inkwellCount);
+        resourceText.put(Resource.MANUSCRIPT, manuscriptCount);
+
+        for (Map.Entry<Resource, Integer> entry : playerData.getResources().entrySet()) {
+            if (entry.getKey() != Resource.NONE && entry.getKey() != Resource.NONCOVERABLE) {
+                resourceText.get(entry.getKey()).setText(String.valueOf(entry.getValue()));
+            }
+        }
     }
 
     private void fetchData() {
@@ -284,8 +331,10 @@ public class GameController implements Initializable {
                         selectedHandCard = null;
                         validPlacementPanes.remove(boardCoordinates);
 
+                        fetchData();
+                        setupResources();
                         PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
-                        pause.setOnFinished(e -> {changeDrawCardScene();});
+                        pause.setOnFinished(e -> changeDrawCardScene());
                         pause.play();
 
                     }
@@ -350,7 +399,7 @@ public class GameController implements Initializable {
             controller.setClient(client);
             loader.setController(controller);
             Scene scene = null;
-            scene = new Scene(loader.load(), 1600, 900);
+            scene = new Scene(loader.load(), 1920, 1080);
             Stage stage = (Stage) board.getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {
@@ -361,14 +410,13 @@ public class GameController implements Initializable {
     @FXML
     private void changeScoreScene(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ScoreScene.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ScoreTab.fxml"));
             ScoreController controller = new ScoreController();
             controller.setClient(client);
             loader.setController(controller);
-            Scene scene = null;
-            scene = new Scene(loader.load(), 1600, 900);
-            Stage stage = (Stage) board.getScene().getWindow();
-            stage.setScene(scene);
+            StackPane scorePane = loader.load();
+            tabPane.getChildren().setAll(scorePane);
+            tabContainer.setVisible(true);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -377,16 +425,31 @@ public class GameController implements Initializable {
     @FXML
     private void changeObjectivesScene(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ObjectivesScene.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ObjectivesTab.fxml"));
             ObjectivesController controller = new ObjectivesController();
             controller.setClient(client);
             loader.setController(controller);
-            Scene scene = null;
-            scene = new Scene(loader.load(), 1600, 900);
-            Stage stage = (Stage) board.getScene().getWindow();
-            stage.setScene(scene);
+            StackPane objectivesPane = loader.load();
+            tabPane.getChildren().setAll(objectivesPane);
+            tabContainer.setVisible(true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void changeMiniBoardScene(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/MiniBoardTab.fxml"));
+            MiniBoardController controller = new MiniBoardController();
+            controller.setClient(client);
+            loader.setController(controller);
+            StackPane miniBoardPane = loader.load();
+            tabPane.getChildren().setAll(miniBoardPane);
+            tabContainer.setVisible(true);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 }
+

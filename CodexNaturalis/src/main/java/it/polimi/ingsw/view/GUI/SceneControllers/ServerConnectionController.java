@@ -35,7 +35,7 @@ public class ServerConnectionController {
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/LoginScene.fxml"));
-            Scene scene = new Scene(loader.load(), 1600, 900);
+            Scene scene = new Scene(loader.load(), 1920, 1080);
             LoginController loginController = loader.getController();
             loginController.setClient(client);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -54,7 +54,7 @@ public class ServerConnectionController {
     protected void goBack(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/GameIntroduction.fxml"));
-            Scene scene = new Scene(loader.load(), 1600, 900);
+            Scene scene = new Scene(loader.load(), 1920, 1080);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {

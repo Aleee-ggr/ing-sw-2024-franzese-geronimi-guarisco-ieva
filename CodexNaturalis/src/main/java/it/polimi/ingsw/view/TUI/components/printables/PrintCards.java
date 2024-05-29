@@ -3,7 +3,10 @@ package it.polimi.ingsw.view.TUI.components.printables;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.view.TUI.components.Component;
+
+import java.util.Map;
 
 public class PrintCards implements Component {
     public static final String ANSI_GOLD = "\u001B[38;5;220m";
@@ -11,7 +14,7 @@ public class PrintCards implements Component {
 
     private final String cardString;
     public final static int width = 15;
-    public final static int height = 5;
+    public final static int height = 7;
 
     public PrintCards(Card card) {
         cardString = setCard(card);
@@ -48,6 +51,31 @@ public class PrintCards implements Component {
         }
         
 
+        if (inCard instanceof GoldCard goldCard){
+            if (goldCard.getType().equals("cover")) {
+                out.append("  cover: ")
+                        .append(goldCard.getScore())
+                        .append(" ".repeat(width - "  cover: 0".length()));
+            } else if (goldCard.getType().equals("none")) {
+                out.append("  points: ")
+                        .append(goldCard.getScore())
+                        .append(" ".repeat(width - "  points: 0".length()));
+            } else {
+                out.append(" ")
+                        .append(Resource.fromString(goldCard.getType()).toChar())
+                        .append(": ")
+                        .append(goldCard.getScore())
+                        .append(" ".repeat(width - "R: 0".length()-1));
+            }
+
+        } else if(inCard instanceof StdCard && ((StdCard) inCard).isPoint()){
+            out.append("  point: 1")
+                    .append(" ".repeat(width - "  point: 1".length()));
+        } else {
+            out.append(" ".repeat(width));
+        }
+
+        out.append("\n");
 
         //first and second row
         if(corners[0].isCoverable() && corners[1].isCoverable()){
@@ -169,21 +197,39 @@ public class PrintCards implements Component {
 
         //fifth row
         if(corners[2].isCoverable() && corners[3].isCoverable()){
-            out.append("┗━┻━━━━━━━━━┻━┛");
+            out.append("┗━┻━━━━━━━━━┻━┛\n");
         } else if (corners[2].isCoverable() && !corners[3].isCoverable()){
-            out.append("┗━┻━━━━━━━━━━━┛");
+            out.append("┗━┻━━━━━━━━━━━┛\n");
         } else if (!corners[2].isCoverable() && corners[3].isCoverable()){
-            out.append("┗━━━━━━━━━━━┻━┛");
+            out.append("┗━━━━━━━━━━━┻━┛\n");
         } else {
-            out.append("┗━━━━━━━━━━━━━┛");
+            out.append("┗━━━━━━━━━━━━━┛\n");
         }
+
+        //gold resources
+        if (inCard instanceof GoldCard goldCard) {
+            int x = 0;
+            for (Map.Entry<Resource, Integer> e: goldCard.getRequirements().entrySet()) {
+                out.append("%c:%d".formatted(e.getKey().toChar(), e.getValue()));
+
+                if(x < width/4){
+                    out.append(" ");
+                    x++;
+                }
+
+            }
+            out.append(" ".repeat(width - goldCard.getRequirements().size() * 4 + 1));
+        } else {
+            out.append(" ".repeat(width));
+        }
+        out.append("\n");
 
         return out.toString();
     }
 
 
     public static void main(String[] args) {
-        Card ncard = Game.getCardByID(86);
+        Card ncard = Game.getCardByID(50);
         ncard.setFrontSideUp(true);
         PrintCards print = new PrintCards(ncard);
         System.out.print(print);

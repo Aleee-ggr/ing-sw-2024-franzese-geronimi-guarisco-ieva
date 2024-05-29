@@ -15,7 +15,7 @@ public class Gui extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Gui.class.getResource("/GUI/fxml/GameIntroduction.fxml"));
         System.out.println(fxmlLoader.getLocation());
-        Scene scene = new Scene(fxmlLoader.load(), 1600, 900);
+        Scene scene = new Scene(fxmlLoader.load(), 1920, 1080);
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
