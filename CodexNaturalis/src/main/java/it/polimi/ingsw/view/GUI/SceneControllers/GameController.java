@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
@@ -22,6 +23,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -47,15 +49,6 @@ public class GameController implements Initializable {
 
     @FXML
     GridPane board;
-
-    @FXML
-    ImageView firstHandCard;
-
-    @FXML
-    ImageView secondHandCard;
-
-    @FXML
-    ImageView thirdHandCard;
 
     @FXML
     ScrollPane scrollPane;
@@ -86,6 +79,9 @@ public class GameController implements Initializable {
 
     @FXML
     Text quillCount;
+
+    @FXML
+    HBox handContainer;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -121,14 +117,13 @@ public class GameController implements Initializable {
 
         if (playerData.getBoard().isEmpty()) {
             int startingCard = playerData.getStartingCard().getId();
-            String pathSide = null;
+            String pathSide;
             if (startingCard > 0) {
                 pathSide = String.format("GUI/images/cards.nogit/front/%03d.png", startingCard);
             } else {
                 pathSide = String.format("GUI/images/cards.nogit/back/%03d.png", -startingCard);
             }
             ImageView image = new ImageView(pathSide);
-            //image.setId(String.valueOf(i));
             image.setFitHeight(100.95);
             image.setFitWidth(150);
             image.preserveRatioProperty();
@@ -142,7 +137,7 @@ public class GameController implements Initializable {
             for (Card card: playerData.getOrder()) {
                 Coordinates coordinates = playerData.getBoard().inverse().get(card);
                 int id = card.getId();
-                String pathSide = null;
+                String pathSide;
 
                 if (id > 0) {
                     pathSide = String.format("GUI/images/cards.nogit/front/%03d.png", id);
@@ -150,7 +145,6 @@ public class GameController implements Initializable {
                     pathSide = String.format("GUI/images/cards.nogit/back/%03d.png", -id);
                 }
                 ImageView image = new ImageView(pathSide);
-                //image.setId(String.valueOf(i));
                 image.setFitHeight(100.95);
                 image.setFitWidth(150);
                 image.preserveRatioProperty();
@@ -164,7 +158,6 @@ public class GameController implements Initializable {
         }
 
         setupValidPlacements();
-        setupHandCardClickHandlers();
     }
 
     private void setupResources() {
@@ -202,20 +195,39 @@ public class GameController implements Initializable {
     }
 
     private void setHand() {
-        int firstHandCardId = playerData.getClientHand().get(0).getId();
-        String imagePathFirst = String.format("GUI/images/cards.nogit/front/%03d.png", firstHandCardId);
-        Image imageFirst = new Image(imagePathFirst);
-        firstHandCard.setImage(imageFirst);
+        handContainer.getChildren().clear();
+        int size = playerData.getClientHand().size();
+        int i = 0;
+        for (Card card: playerData.getClientHand()) {
+            int id = card.getId();
+            i++;
+            String imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", id);
+            ImageView image = new ImageView(imagePath);
+            image.setFitHeight(151.5);
+            image.setFitWidth(225);
+            image.preserveRatioProperty();
+            image.setId(String.valueOf(id));
 
-        int secondHandCardId = playerData.getClientHand().get(1).getId();
-        String imagePathSecond = String.format("GUI/images/cards.nogit/front/%03d.png", secondHandCardId);
-        Image imageSecond = new Image(imagePathSecond);
-        secondHandCard.setImage(imageSecond);
+            if(size != i) {
+                HBox.setMargin(image, new Insets(0, 25, 25, 0));
+            } else {
+                HBox.setMargin(image, new Insets(0, 0, 25, 0));
+            }
 
-        int thirdHandCardId = playerData.getClientHand().get(2).getId();
-        String imagePathThird = String.format("GUI/images/cards.nogit/front/%03d.png", thirdHandCardId);
-        Image imageThird = new Image(imagePathThird);
-        thirdHandCard.setImage(imageThird);
+            handContainer.getChildren().add(image);
+
+            image.setOnMouseClicked(mouseEvent -> {
+                selectedHandCard = image;
+            });
+
+            image.setOnDragDetected(event -> {
+                selectedHandCard = image;
+                Dragboard db = image.startDragAndDrop(TransferMode.MOVE);
+                db.setContent(clipboardContent(String.valueOf(id)));
+                db.setDragView(image.getImage());
+                event.consume();
+            });
+        }
     }
 
     public void setClient(ClientInterface client) {
@@ -236,47 +248,6 @@ public class GameController implements Initializable {
                 board.getColumnCount() / 2,
                 board.getRowCount() / 2
         );
-    }
-
-    private void setupHandCardClickHandlers() {
-        firstHandCard.setOnMouseClicked(event -> {
-            selectedHandCard = firstHandCard;
-        });
-
-        secondHandCard.setOnMouseClicked(event -> {
-            selectedHandCard = secondHandCard;
-        });
-
-        thirdHandCard.setOnMouseClicked(event -> {
-            selectedHandCard = thirdHandCard;
-        });
-
-        firstHandCard.setOnDragDetected(event -> {
-            selectedHandCard = firstHandCard;
-            //firstHandCard.startDragAndDrop(TransferMode.MOVE).setContent(clipboardContent("first"));
-            Dragboard db = firstHandCard.startDragAndDrop(TransferMode.MOVE);
-            db.setContent(clipboardContent("first"));
-            db.setDragView(firstHandCard.getImage());
-            event.consume();
-        });
-
-        secondHandCard.setOnDragDetected(event -> {
-            selectedHandCard = secondHandCard;
-            //secondHandCard.startDragAndDrop(TransferMode.MOVE).setContent(clipboardContent("second"));
-            Dragboard db = secondHandCard.startDragAndDrop(TransferMode.MOVE);
-            db.setContent(clipboardContent("second"));
-            db.setDragView(secondHandCard.getImage());
-            event.consume();
-        });
-
-        thirdHandCard.setOnDragDetected(event -> {
-            selectedHandCard = thirdHandCard;
-            //thirdHandCard.startDragAndDrop(TransferMode.MOVE).setContent(clipboardContent("third"));
-            Dragboard db = thirdHandCard.startDragAndDrop(TransferMode.MOVE);
-            db.setContent(clipboardContent("third"));
-            db.setDragView(thirdHandCard.getImage());
-            event.consume();
-        });
     }
 
     private ClipboardContent clipboardContent(String text) {
@@ -305,40 +276,7 @@ public class GameController implements Initializable {
             stackPane.setStyle("-fx-border-color: #432918; -fx-border-width: 4;");
 
             stackPane.setOnMouseClicked(event -> {
-                int selectedCardId;
-                boolean placed = false;
-
-                if (selectedHandCard != null) {
-                    if (selectedHandCard == firstHandCard) {
-                        selectedCardId = playerData.getClientHand().getFirst().getId();
-                    } else if (selectedHandCard == secondHandCard) {
-                        selectedCardId = playerData.getClientHand().get(1).getId();
-                    } else {
-                        selectedCardId = playerData.getClientHand().getLast().getId();
-                    }
-
-                    try {
-                        placed = client.placeCard(playerData.getValidPlacements().get(Integer.parseInt(imageView.getId())), selectedCardId);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                    if (placed) {
-                        String imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", selectedCardId);
-                        Image cardImage = new Image(imagePath);
-                        imageView.setImage(cardImage);
-                        stackPane.setStyle("");
-                        selectedHandCard = null;
-                        validPlacementPanes.remove(boardCoordinates);
-
-                        fetchData();
-                        setupResources();
-                        PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
-                        pause.setOnFinished(e -> changeDrawCardScene());
-                        pause.play();
-
-                    }
-                }
+                placeCard(stackPane, imageView, boardCoordinates);
             });
 
             stackPane.setOnDragOver(event -> {
@@ -349,36 +287,9 @@ public class GameController implements Initializable {
             });
 
             stackPane.setOnDragDropped(event -> {
-                boolean placed = false;
-                int selectedCardId;
+                boolean placed;
 
-                if (selectedHandCard == firstHandCard) {
-                    selectedCardId = playerData.getClientHand().getFirst().getId();
-                } else if (selectedHandCard == secondHandCard) {
-                    selectedCardId = playerData.getClientHand().get(1).getId();
-                } else {
-                    selectedCardId = playerData.getClientHand().getLast().getId();
-                }
-
-                try {
-                    placed = client.placeCard(playerData.getValidPlacements().get(Integer.parseInt(imageView.getId())), selectedCardId);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-
-                if (placed) {
-                    String imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", selectedCardId);
-                    Image cardImage = new Image(imagePath);
-
-                    imageView.setImage(cardImage);
-                    stackPane.setStyle("");
-                    selectedHandCard = null;
-                    validPlacementPanes.remove(boardCoordinates);
-
-                    PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
-                    pause.setOnFinished(e -> { changeDrawCardScene(); });
-                    pause.play();
-                }
+                placed = placeCard(stackPane, imageView, boardCoordinates);
 
                 event.setDropCompleted(placed);
                 event.consume();
@@ -450,6 +361,36 @@ public class GameController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private boolean placeCard(StackPane stackPane, ImageView imageView, Coordinates boardCoordinates) {
+        boolean placed;
+        try {
+            placed = client.placeCard(playerData.getValidPlacements().get(Integer.parseInt(imageView.getId())), Integer.parseInt(selectedHandCard.getId()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (placed) {
+            String imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", Integer.parseInt(selectedHandCard.getId()));
+            Image cardImage = new Image(imagePath);
+
+            imageView.setImage(cardImage);
+            stackPane.setStyle("");
+            selectedHandCard = null;
+            validPlacementPanes.remove(boardCoordinates);
+
+            fetchData();
+            setupResources();
+            setHand();
+
+            PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
+            pause.setOnFinished(e -> { changeDrawCardScene(); });
+            pause.play();
+        }
+
+        return placed;
     }
 }
 
