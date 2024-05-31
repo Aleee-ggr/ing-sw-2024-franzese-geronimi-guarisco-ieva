@@ -257,6 +257,12 @@ public class RmiClient extends Client implements ClientInterface {
         return fetchStartingCardClient(remoteObject.getStartingCard(this.gameId, this.username));
     }
 
+    @Override
+    public boolean fetchChat() throws RemoteException {
+        this.chat = remoteObject.fetchChat(this.gameId);
+        return this.chat != null;
+    }
+
     /**
      * Waits for an update from the server.
      * @throws RemoteException If a remote communication error occurs.

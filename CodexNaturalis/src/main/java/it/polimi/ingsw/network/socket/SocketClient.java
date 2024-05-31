@@ -234,6 +234,11 @@ public class SocketClient extends Client implements ClientInterface {
     }
 
     @Override
+    public boolean fetchChat() {
+        return false; //TODO implement chat fetch
+    }
+
+    @Override
     public synchronized boolean fetchStartingObjectives() throws IOException {
         output.writeObject(new SocketClientGetStartingObjectivesMessage(username, gameId));
         return handleResponse();

@@ -45,6 +45,7 @@ public class Client {
 
     protected ArrayList<Card> visibleCards;
     protected ArrayList<Card> backSideDecks;
+    protected ArrayList<String> chat;
 
 
     /**
@@ -353,5 +354,7 @@ public class Client {
         return true;
     }
 
-
+    public ArrayList<String> getChat() {
+        return this.chat;
+    }
 }

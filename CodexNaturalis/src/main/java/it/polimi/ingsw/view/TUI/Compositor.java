@@ -19,7 +19,7 @@ public class Compositor {
 
     private final ClientInterface client;
     private final MiniBoard[] miniBoard;
-    private final Chat chat = new Chat();
+    private final Chat chat;
     private final ResourceView resources;
     private final HandView hand;
     private final ScoreBoard scoreBoard;
@@ -36,6 +36,7 @@ public class Compositor {
 
     public Compositor(ClientInterface client) {
         this.client = client;
+        this.chat = new Chat(client);
         this.viewPlayer = client.getUsername();
         miniBoard = new MiniBoard[client.getPlayerNum()-1];
         for(int i = 0, y = 0; i < miniBoard.length; i++, y++){
@@ -135,10 +136,6 @@ public class Compositor {
 
     public void setTopBar(String message) {
         topBar.setMessage(message);
-    }
-
-    public void addToChat(String message) {
-        chat.add(message);
     }
 
     private ObjectiveView createObjectiveView(ClientInterface client){

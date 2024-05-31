@@ -30,6 +30,10 @@ public class FixedSizeList<T> implements Iterable<T> {
         return size;
     }
 
+    public void clear() {
+        list.clear();
+    }
+
     @Override
     public Iterator<T> iterator() {
         return list.iterator();

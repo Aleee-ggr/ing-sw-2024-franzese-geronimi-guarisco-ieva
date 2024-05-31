@@ -197,6 +197,11 @@ public class RmiServer extends Server implements RmiServerInterface {
         postChatServer(game, name, message);
         return ""; //TODO change return type
     }
+
+    @Override
+    public ArrayList<String> fetchChat(UUID game) throws RemoteException {
+        return fetchChatServer(game);
+    }
     
     @Override
     public boolean checkCredentials(String username, String password) {

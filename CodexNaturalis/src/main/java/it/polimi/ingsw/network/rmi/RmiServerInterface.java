@@ -115,4 +115,6 @@ public interface RmiServerInterface extends Remote {
     boolean checkCredentials(String username, String password) throws RemoteException;
 
     ArrayList<UUID> getAvailableGames(String username) throws RemoteException;
+
+    ArrayList<String> fetchChat(UUID game) throws RemoteException;
 }

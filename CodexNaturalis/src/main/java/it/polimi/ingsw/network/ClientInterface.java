@@ -264,4 +264,15 @@ public interface ClientInterface {
      * @param password The password of the client.
      */
     void setCredentials(String username, String password);
+
+    /**
+     * Fetch the chat logs from the server
+     * @return whether the fetch was successful
+     */
+    boolean fetchChat() throws IOException;
+
+    /**
+     * @return a list containing the chat messages saved in the client
+     */
+    ArrayList<String> getChat();
 }

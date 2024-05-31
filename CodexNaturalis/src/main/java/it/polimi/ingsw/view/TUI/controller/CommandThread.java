@@ -118,6 +118,7 @@ public class CommandThread extends Thread {
                     else {
                         defaultCommand();
                     }
+                    break;
                 case "switch":
                     if (cmd.length == 2 && client.getPlayers().contains(cmd[1])) {
                         compositor.setViewPlayer(cmd[1]);
@@ -180,7 +181,10 @@ public class CommandThread extends Thread {
                 default:
                     defaultCommand();
             }
-        } catch (IOException | NumberFormatException | InterruptedException e) {throw new RuntimeException(e);}
+        } catch (IOException | NumberFormatException | InterruptedException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
     private void defaultCommand() {
@@ -188,7 +192,8 @@ public class CommandThread extends Thread {
         try {
             in.readLine();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            System.exit(1);
         }
     }
 
@@ -200,13 +205,11 @@ public class CommandThread extends Thread {
 
     private void postChat(String[] message) {
         String msg = String.join(" ", message);
-
-        msg = client.getUsername() + ": " + msg;
-        compositor.addToChat(msg);
         try {
             client.postChat(msg);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            System.exit(1);
         }
     }
 
@@ -222,6 +225,10 @@ public class CommandThread extends Thread {
             client.fetchGameState();
             client.fetchVisibleCardsAndDecks();
             client.fetchOpponentsHandColor();
-        } catch (IOException e) {throw new RuntimeException(e);}
+            client.fetchChat();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 }
