@@ -69,7 +69,7 @@ public class Compositor {
     public String updateView(){
         StringBuilder out = new StringBuilder();
         out.append(topBar).append("\n");
-        resources.setResourceCount(client.getPlayerData().getResources());
+        resources.setResourceCount(client.getOpponentData().get(viewPlayer).getResources());
 
         for (MiniBoard miniBoard : miniBoard) {
             Map<Coordinates, Integer> convertedBoard = convertBoard(((Client)client).getOpponentData().get(miniBoard.getUsername()).getBoard());

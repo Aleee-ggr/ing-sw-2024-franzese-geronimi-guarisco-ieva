@@ -116,11 +116,15 @@ public class CommandThread extends Thread {
                     }
                     break;
                 case "draw":
-                    position = Integer.parseInt(cmd[1]) -1;
-                    if (placed) {
-                        client.drawCard(position);
-                        placed = false;
-                        compositor.setTopBar("Waiting for your Turn...");
+                    if (cmd.length == 2) {
+                        position = Integer.parseInt(cmd[1]) - 1;
+                        if (placed) {
+                            client.drawCard(position);
+                            placed = false;
+                            compositor.setTopBar("Waiting for your Turn...");
+                        }
+                    } else {
+                        defaultCommand();
                     }
                     break;
                 case "w":
