@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.GUI.SceneControllers;
 
 import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.network.ClientInterface;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
@@ -52,6 +53,11 @@ public class ObjectivesController implements Initializable {
     public void setClient(ClientInterface client) {
         this.client = client;
         this.playerData = client.getPlayerData();
+    }
+
+    @FXML
+    private void closeTab(ActionEvent event) {
+        tabPane.getParent().getParent().setVisible(false);
     }
 }
 
