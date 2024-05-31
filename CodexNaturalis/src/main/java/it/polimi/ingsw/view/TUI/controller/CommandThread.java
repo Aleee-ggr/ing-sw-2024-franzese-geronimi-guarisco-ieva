@@ -81,22 +81,27 @@ public class CommandThread extends Thread {
         try {
             switch (cmd[0].toLowerCase()) {
                 case "place":
-                    try {
-                        id = Integer.parseInt(cmd[1]) - 1;
-                        position = Integer.parseInt(cmd[2]);
-                    } catch (Exception e) {
-                        defaultCommand();
-                        break;
-                    }
-                    if (!placed) {
-                        placed = place(id, position);
-                        if (placed) {
-                            fetchData();
-                            updater.update();
-                            sleep(1000);
-                            compositor.setTopBar("Your Turn: Draw a Card!");
-                            compositor.switchView(View.DECK);
+                    if (cmd.length == 3) {
+                        try {
+                            id = Integer.parseInt(cmd[1]) - 1;
+                            position = Integer.parseInt(cmd[2]);
+                        } catch (Exception e) {
+                            defaultCommand();
+                            break;
                         }
+                        if (!placed) {
+                            placed = place(id, position);
+                            if (placed) {
+                                fetchData();
+                                updater.update();
+                                sleep(1000);
+                                compositor.setTopBar("Your Turn: Draw a Card!");
+                                compositor.switchView(View.DECK);
+                            }
+                        }
+                    }
+                    else {
+                        defaultCommand();
                     }
                     break;
                 case "view":
@@ -107,9 +112,14 @@ public class CommandThread extends Thread {
                     }
                         break;
                 case "chat":
-                    postChat(Arrays.copyOfRange(cmd, 1, cmd.length));
+                    if (cmd.length > 1) {
+                        postChat(Arrays.copyOfRange(cmd, 1, cmd.length));
+                    }
+                    else {
+                        defaultCommand();
+                    }
                 case "switch":
-                    if (client.getPlayers().contains(cmd[1])) {
+                    if (cmd.length == 2 && client.getPlayers().contains(cmd[1])) {
                         compositor.setViewPlayer(cmd[1]);
                     } else {
                         defaultCommand();
