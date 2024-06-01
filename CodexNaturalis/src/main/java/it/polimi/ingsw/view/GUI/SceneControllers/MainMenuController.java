@@ -11,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -39,7 +40,7 @@ public class MainMenuController implements Initializable {
     protected void changeCreateGameScene(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/CreateGameScene.fxml"));
-            Scene scene = new Scene(loader.load(), 1920, 1080);
+            Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
             CreateGameController controller = loader.getController();
             controller.setClient(client);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -61,7 +62,7 @@ public class MainMenuController implements Initializable {
             LoginController controller = new LoginController();
             controller.setClient(client);
             loader.setController(controller);
-            Scene scene = new Scene(loader.load(), 1920, 1080);
+            Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {
@@ -136,7 +137,7 @@ public class MainMenuController implements Initializable {
                     WaitingRoomController controller = new WaitingRoomController();
                     controller.setClient(client);
                     loader.setController(controller);
-                    Scene scene = new Scene(loader.load(), 1920, 1080);
+                    Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
                     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                     stage.setScene(scene);
                 } catch (IOException e) {

@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -100,7 +101,7 @@ public class DrawCardController implements Initializable {
             controller.setClient(client);
             loader.setController(controller);
             Scene scene = null;
-            scene = new Scene(loader.load(), 1920, 1080);
+            scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
             Stage stage = (Stage) goldDeck.getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {
@@ -116,7 +117,7 @@ public class DrawCardController implements Initializable {
             controller.setClient(client);
             loader.setController(controller);
             Scene scene = null;
-            scene = new Scene(loader.load(), 1920, 1080);
+            scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
             Stage stage = (Stage) goldDeck.getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {

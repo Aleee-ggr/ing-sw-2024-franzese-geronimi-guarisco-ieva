@@ -13,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -39,7 +40,7 @@ public class WaitingRoomController implements Initializable {
             MainMenuController controller = new MainMenuController();
             controller.setClient(client);
             loader.setController(controller);
-            Scene scene = new Scene(loader.load(), 1600, 900);
+            Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {
@@ -127,7 +128,7 @@ public class WaitingRoomController implements Initializable {
             ChooseObjectiveController controller = new ChooseObjectiveController();
             controller.setClient(client);
             loader.setController(controller);
-            Scene scene = new Scene(loader.load(), 1920, 1080);
+            Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
             Stage stage = (Stage) listOfPlayers.getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException ex) {
@@ -157,7 +158,7 @@ public class WaitingRoomController implements Initializable {
             MainMenuController controller = new MainMenuController();
             controller.setClient(client);
             loader.setController(controller);
-            Scene scene = new Scene(loader.load(), 1920, 1080);
+            Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {

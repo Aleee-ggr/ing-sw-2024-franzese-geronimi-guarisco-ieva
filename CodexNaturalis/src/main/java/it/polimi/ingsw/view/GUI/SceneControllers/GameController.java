@@ -27,6 +27,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -328,7 +329,7 @@ public class GameController implements Initializable {
             controller.setClient(client);
             loader.setController(controller);
             Scene scene = null;
-            scene = new Scene(loader.load(), 1920, 1080);
+            scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
             Stage stage = (Stage) board.getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {

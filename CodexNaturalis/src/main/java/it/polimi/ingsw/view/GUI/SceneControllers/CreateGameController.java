@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -47,7 +48,7 @@ public class CreateGameController {
                 WaitingRoomController controller = new WaitingRoomController();
                 controller.setClient(client);
                 loader.setController(controller);
-                Scene scene = new Scene(loader.load(), 1920, 1080);
+                Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setScene(scene);
             } catch (IOException e) {
@@ -67,7 +68,7 @@ public class CreateGameController {
             MainMenuController controller = new MainMenuController();
             controller.setClient(client);
             loader.setController(controller);
-            Scene scene = new Scene(loader.load(), 1920, 1080);
+            Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {
