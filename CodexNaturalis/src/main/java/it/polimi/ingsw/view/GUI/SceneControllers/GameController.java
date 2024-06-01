@@ -40,6 +40,7 @@ public class GameController implements Initializable {
     private ClientInterface client;
     private PlayerData playerData;
     private Coordinates center;
+    private boolean frontSide = true;
     private final Map<Coordinates, StackPane> validPlacementPanes = new HashMap<>();
     private static final double ZOOM_FACTOR = 1.1;
     private static final double MIN_SCALE = 0.3;
@@ -83,8 +84,16 @@ public class GameController implements Initializable {
     @FXML
     HBox handContainer;
 
+    @FXML
+    StackPane root;
+
+    @FXML
+    ImageView backgroundImage;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        backgroundImage.fitWidthProperty().bind(root.widthProperty());
+        backgroundImage.fitHeightProperty().bind(root.heightProperty());
         tabContainer.setVisible(false);
         scrollPane.addEventFilter(ScrollEvent.ANY, event -> {
             if (event.isControlDown()) {
@@ -104,7 +113,7 @@ public class GameController implements Initializable {
         fetchData();
         setupResources();
         calculateBoardCenterCoordinates();
-        setHand();
+        setHand(frontSide);
 
         System.out.println(playerData.getValidPlacements());
 
@@ -194,19 +203,28 @@ public class GameController implements Initializable {
         }
     }
 
-    private void setHand() {
+    private void setHand(boolean frontSide) {
+        String imagePath;
         handContainer.getChildren().clear();
         int size = playerData.getClientHand().size();
         int i = 0;
         for (Card card: playerData.getClientHand()) {
             int id = card.getId();
             i++;
-            String imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", id);
+            if (frontSide) {
+                imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", id);
+            } else {
+                imagePath = String.format("GUI/images/cards.nogit/back/%03d.png", id);
+            }
             ImageView image = new ImageView(imagePath);
             image.setFitHeight(151.5);
             image.setFitWidth(225);
             image.preserveRatioProperty();
-            image.setId(String.valueOf(id));
+            if (frontSide) {
+                image.setId(String.valueOf(id));
+            } else {
+                image.setId(String.valueOf(-id));
+            }
 
             if(size != i) {
                 HBox.setMargin(image, new Insets(0, 25, 25, 0));
@@ -366,6 +384,7 @@ public class GameController implements Initializable {
     @FXML
     private boolean placeCard(StackPane stackPane, ImageView imageView, Coordinates boardCoordinates) {
         boolean placed;
+        String imagePath;
         try {
             placed = client.placeCard(playerData.getValidPlacements().get(Integer.parseInt(imageView.getId())), Integer.parseInt(selectedHandCard.getId()));
         } catch (IOException e) {
@@ -373,7 +392,11 @@ public class GameController implements Initializable {
         }
 
         if (placed) {
-            String imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", Integer.parseInt(selectedHandCard.getId()));
+            if (Integer.parseInt(selectedHandCard.getId()) > 0) {
+                imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", Integer.parseInt(selectedHandCard.getId()));
+            } else {
+                imagePath = String.format("GUI/images/cards.nogit/back/%03d.png", -Integer.parseInt(selectedHandCard.getId()));
+            }
             Image cardImage = new Image(imagePath);
 
             imageView.setImage(cardImage);
@@ -383,7 +406,7 @@ public class GameController implements Initializable {
 
             fetchData();
             setupResources();
-            setHand();
+            setHand(frontSide);
 
             PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
             pause.setOnFinished(e -> { changeDrawCardScene(); });
@@ -392,5 +415,15 @@ public class GameController implements Initializable {
 
         return placed;
     }
-}
 
+    @FXML
+    private void flipCards(ActionEvent event) {
+        if (frontSide) {
+            setHand(false);
+            frontSide = false;
+        } else {
+            setHand(true);
+            frontSide = true;
+        }
+    }
+}
