@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -20,6 +21,12 @@ import java.util.ResourceBundle;
 public class DrawCardController implements Initializable {
     private ClientInterface client;
     private PlayerData playerData;
+
+    @FXML
+    StackPane root;
+
+    @FXML
+    ImageView backgroundImage;
 
     @FXML
     private ImageView goldDeck;
@@ -46,6 +53,8 @@ public class DrawCardController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        backgroundImage.fitWidthProperty().bind(root.widthProperty());
+        backgroundImage.fitHeightProperty().bind(root.heightProperty());
         try {
             client.fetchVisibleCardsAndDecks();
         } catch (IOException e) {

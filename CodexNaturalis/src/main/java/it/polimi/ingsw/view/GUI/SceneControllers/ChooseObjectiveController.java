@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -20,6 +21,12 @@ import java.util.ResourceBundle;
 public class ChooseObjectiveController implements Initializable {
     private ClientInterface client;
     private PlayerData playerData;
+
+    @FXML
+    StackPane root;
+
+    @FXML
+    ImageView backgroundImage;
 
     @FXML
     private ImageView firstObjective;
@@ -34,6 +41,8 @@ public class ChooseObjectiveController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        backgroundImage.fitWidthProperty().bind(root.widthProperty());
+        backgroundImage.fitHeightProperty().bind(root.heightProperty());
         int firstObjectiveId = playerData.getStartingObjectives().getFirst().getId();
         String imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", firstObjectiveId);
         System.out.println(imagePath);

@@ -10,6 +10,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -27,6 +29,12 @@ import java.util.UUID;
 public class MainMenuController implements Initializable {
     private ClientInterface client;
     private Timeline fetchGamesTimeline;
+
+    @FXML
+    StackPane root;
+
+    @FXML
+    ImageView backgroundImage;
 
     @FXML
     private VBox gameButtonsContainer;
@@ -87,6 +95,8 @@ public class MainMenuController implements Initializable {
      */
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
+        backgroundImage.fitWidthProperty().bind(root.widthProperty());
+        backgroundImage.fitHeightProperty().bind(root.heightProperty());
         if (client != null) {
             fetchGamesPeriodically();
         }

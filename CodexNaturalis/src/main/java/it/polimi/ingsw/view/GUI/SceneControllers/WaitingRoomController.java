@@ -12,6 +12,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -25,6 +27,12 @@ import java.util.ResourceBundle;
 public class WaitingRoomController implements Initializable {
     private ClientInterface client;
     private Timeline fetchPlayersTimeline;
+
+    @FXML
+    StackPane root;
+
+    @FXML
+    ImageView backgroundImage;
 
     @FXML
     private VBox listOfPlayers;
@@ -66,6 +74,8 @@ public class WaitingRoomController implements Initializable {
      */
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
+        backgroundImage.fitWidthProperty().bind(root.widthProperty());
+        backgroundImage.fitHeightProperty().bind(root.heightProperty());
         if (client != null) {
             fetchPlayersPeriodically();
             waitForUpdate();
