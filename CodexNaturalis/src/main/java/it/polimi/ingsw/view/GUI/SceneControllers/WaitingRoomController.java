@@ -111,6 +111,13 @@ public class WaitingRoomController implements Initializable {
         };
 
         waitUpdateTask.setOnSucceeded(event -> {
+            try {
+                client.fetchPlayers();
+                updatePlayersList();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             if (fetchPlayersTimeline != null) {
                 fetchPlayersTimeline.stop();
             }

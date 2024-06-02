@@ -105,13 +105,24 @@
                 </GridPane>
             </content>
         </ScrollPane>
-      <HBox fx:id="handContainer" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="150.0" prefWidth="900.0" style="-fx-background-color: white; -fx-border-color: #432918; -fx-border-width: 4;" StackPane.alignment="BOTTOM_CENTER">
-         <StackPane.margin>
-            <Insets bottom="15.0" />
-         </StackPane.margin>
-         <padding>
-            <Insets top="25.0" />
-         </padding>
+      <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="1260.0" spacing="30.0" StackPane.alignment="BOTTOM_CENTER">
+         <children>
+            <HBox fx:id="handContainer" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="225.0" prefWidth="800.0" spacing="25.0" style="-fx-background-color: white; -fx-border-color: #432918; -fx-border-width: 4;" />
+            <Button mnemonicParsing="false" onAction="#flipCards" prefHeight="0.0" prefWidth="200.0" text="FLIP" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS">
+               <font>
+                  <Font name="Trattatello" size="30.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <effect>
+                  <Glow />
+               </effect>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Button>
+         </children>
       </HBox>
       <Button mnemonicParsing="false" onAction="#changeMiniBoardScene" prefHeight="0.0" prefWidth="200.0" style="-fx-rotate: -90;" text="BOARDS" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_RIGHT">
          <font>
@@ -169,20 +180,6 @@
                 <Insets bottom="100.0" right="-60.0" />
             </StackPane.margin>
         </Button>
-      <Button mnemonicParsing="false" onAction="#flipCards" prefHeight="0.0" prefWidth="200.0" text="FLIP" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_RIGHT">
-         <font>
-            <Font name="Trattatello" size="30.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-         <effect>
-            <Glow />
-         </effect>
-         <StackPane.margin>
-            <Insets bottom="55.0" right="300.0" />
-         </StackPane.margin>
-      </Button>
       <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="300.0" style="-fx-background-color: dad6a6;">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="RESOURCES" StackPane.alignment="TOP_CENTER">

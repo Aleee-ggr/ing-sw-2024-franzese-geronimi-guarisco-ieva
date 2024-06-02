@@ -12,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
-import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
@@ -116,6 +115,7 @@ public class GameController implements Initializable {
         calculateBoardCenterCoordinates();
         setHand(frontSide);
 
+        System.out.println(client.getOpponentData());
         System.out.println(playerData.getValidPlacements());
 
         for (Coordinates coordinates : playerData.getValidPlacements()) {
@@ -227,12 +227,6 @@ public class GameController implements Initializable {
                 image.setId(String.valueOf(-id));
             }
 
-            if(size != i) {
-                HBox.setMargin(image, new Insets(0, 25, 25, 0));
-            } else {
-                HBox.setMargin(image, new Insets(0, 0, 25, 0));
-            }
-
             handContainer.getChildren().add(image);
 
             image.setOnMouseClicked(mouseEvent -> {
@@ -340,13 +334,17 @@ public class GameController implements Initializable {
     @FXML
     private void changeScoreScene(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ScoreTab.fxml"));
-            ScoreController controller = new ScoreController();
-            controller.setClient(client);
-            loader.setController(controller);
-            StackPane scorePane = loader.load();
-            tabPane.getChildren().setAll(scorePane);
-            tabContainer.setVisible(true);
+            if (!tabContainer.isVisible()) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ScoreTab.fxml"));
+                ScoreController controller = new ScoreController();
+                controller.setClient(client);
+                loader.setController(controller);
+                StackPane scorePane = loader.load();
+                tabPane.getChildren().setAll(scorePane);
+                tabContainer.setVisible(true);
+            } else {
+                tabContainer.setVisible(false);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -355,13 +353,17 @@ public class GameController implements Initializable {
     @FXML
     private void changeObjectivesScene(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ObjectivesTab.fxml"));
-            ObjectivesController controller = new ObjectivesController();
-            controller.setClient(client);
-            loader.setController(controller);
-            StackPane objectivesPane = loader.load();
-            tabPane.getChildren().setAll(objectivesPane);
-            tabContainer.setVisible(true);
+            if (!tabContainer.isVisible()) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ObjectivesTab.fxml"));
+                ObjectivesController controller = new ObjectivesController();
+                controller.setClient(client);
+                loader.setController(controller);
+                StackPane objectivesPane = loader.load();
+                tabPane.getChildren().setAll(objectivesPane);
+                tabContainer.setVisible(true);
+            } else {
+                tabContainer.setVisible(false);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -370,13 +372,18 @@ public class GameController implements Initializable {
     @FXML
     private void changeMiniBoardScene(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/MiniBoardTab.fxml"));
-            MiniBoardController controller = new MiniBoardController();
-            controller.setClient(client);
-            loader.setController(controller);
-            StackPane miniBoardPane = loader.load();
-            tabPane.getChildren().setAll(miniBoardPane);
-            tabContainer.setVisible(true);
+            if (!tabContainer.isVisible()) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/MiniBoardTab.fxml"));
+                MiniBoardController controller = new MiniBoardController();
+                controller.setClient(client);
+                loader.setController(controller);
+                StackPane miniBoardPane = loader.load();
+                tabPane.getChildren().setAll(miniBoardPane);
+                tabContainer.setVisible(true);
+            } else {
+                tabContainer.setVisible(false);
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
