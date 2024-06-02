@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.socket;
 
 
+import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
@@ -31,11 +32,16 @@ public class SocketClient extends Client implements ClientInterface {
 
     private Socket client;
     private Socket waitUpdateSocket;
+    private Socket heartbeatSocket;
+
     private ObjectInputStream input;
     private ObjectOutputStream output;
 
     private ObjectInputStream waitInput;
     private ObjectOutputStream waitOutput;
+
+    private ObjectInputStream heartbeatInput;
+    private ObjectOutputStream heartbeatOutput;
 
     //the following are attributes used as tmp values to store the response from the server ONLY!
     private WaitState waitState;
@@ -71,6 +77,7 @@ public class SocketClient extends Client implements ClientInterface {
         try {
             client = new Socket(serverAddress, serverPort);
             waitUpdateSocket = new Socket(serverAddress, serverPort);
+            heartbeatSocket = new Socket(serverAddress, serverPort);
 
             output = new ObjectOutputStream(client.getOutputStream());
             input = new ObjectInputStream(client.getInputStream());
@@ -78,8 +85,22 @@ public class SocketClient extends Client implements ClientInterface {
             waitOutput = new ObjectOutputStream(waitUpdateSocket.getOutputStream());
             waitInput = new ObjectInputStream(waitUpdateSocket.getInputStream());
 
+            heartbeatOutput = new ObjectOutputStream(heartbeatSocket.getOutputStream());
+            heartbeatInput = new ObjectInputStream(heartbeatSocket.getInputStream());
+
             client.setTcpNoDelay(true);
             waitUpdateSocket.setTcpNoDelay(true);
+
+            new Thread(() -> {
+                while (true) {
+                    try {
+                        Thread.sleep(GameConsts.heartbeatInterval);
+                        pingServer();
+                    } catch (IOException | InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }).start();
 
             return true;
         } catch (IOException e) {
@@ -137,19 +158,16 @@ public class SocketClient extends Client implements ClientInterface {
         return handleResponse();
     }
 
-
-    /**
-     * Checks the validity of player credentials.
-     *
-     * @param username The username of the player.
-     * @param password The password of the player.
-     * @return true if the credentials are valid, false otherwise.
-     * @throws IOException If an I/O error occurs while sending the message.
-     */
-    @Override
-    public synchronized boolean checkCredentials(String username, String password) throws IOException {
-        output.writeObject(new SocketValidateCredentialsMessage(username, password));
-        return handleResponse();
+    public void pingServer() throws IOException {
+        heartbeatOutput.writeObject(new SocketClientHeartbeatMessage(username, gameId));
+        GenericResponseMessage message;
+        do {
+            try {
+                message = (GenericResponseMessage) heartbeatInput.readObject();
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        } while (message == null);
     }
 
     @Override
@@ -165,6 +183,20 @@ public class SocketClient extends Client implements ClientInterface {
         } while (message == null);
 
         return message.getWaitState();
+    }
+
+    /**
+     * Checks the validity of player credentials.
+     *
+     * @param username The username of the player.
+     * @param password The password of the player.
+     * @return true if the credentials are valid, false otherwise.
+     * @throws IOException If an I/O error occurs while sending the message.
+     */
+    @Override
+    public synchronized boolean checkCredentials(String username, String password) throws IOException {
+        output.writeObject(new SocketValidateCredentialsMessage(username, password));
+        return handleResponse();
     }
 
     //TODO: not implemented -> there is no socket message for this

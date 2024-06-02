@@ -1,5 +1,7 @@
 package it.polimi.ingsw.network;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.controller.Logger;
 import it.polimi.ingsw.controller.WaitState;
@@ -7,6 +9,7 @@ import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.controller.threads.GameThread;
 import it.polimi.ingsw.controller.threads.Status;
 import it.polimi.ingsw.controller.threads.ThreadMessage;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.enums.Resource;
 
@@ -15,6 +18,7 @@ import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * The abstract class Server serves as a base class for server implementations.
@@ -25,9 +29,36 @@ public abstract class Server {
     protected static final Map<UUID, BlockingQueue<ThreadMessage>> threadMessages = new ConcurrentHashMap<>();
     protected static final Map<UUID, Integer> games = new ConcurrentHashMap<>(); // TODO: remove game while closed
     protected static final Map<String, String> players = new ConcurrentHashMap<>();
+    protected static final Map<String, AtomicInteger> playerStatus = new ConcurrentHashMap<>();
     protected static final Map<String, UUID> playerGame = new ConcurrentHashMap<>();
     protected static final Map<UUID, Map<String, WaitState>> gameTurns = new ConcurrentHashMap<>();
     protected static final Map<UUID, ArrayList<String>> chat = new ConcurrentHashMap<>();
+
+    static{
+        new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(GameConsts.heartbeatInterval);
+
+                    if(playerStatus.isEmpty()){
+                        continue;
+                    }
+
+                    for (Map.Entry<String, AtomicInteger> entry : playerStatus.entrySet()) {
+                        entry.getValue().incrementAndGet();
+                    }
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }).start();
+    }
+
+
+    public static boolean isOffline(String username) {
+        return playerStatus.get(username).get() > GameConsts.disconnectionThreshold;
+    }
+
 
     /**
      * Creates a new game with the specified number of players and starts its thread.
@@ -107,6 +138,7 @@ public abstract class Server {
         }
         if (!players.containsKey(username)) {
             players.put(username, password);
+            playerStatus.put(username, new AtomicInteger(0));
             return true;
         }
         return false;
@@ -465,6 +497,10 @@ public abstract class Server {
         }
 
         return gameTurns.get(game).get(username);
+    }
+
+    public static void heartbeatServer(UUID game, String username) {
+        playerStatus.get(username).set(0);
     }
 
     public static ArrayList<String> fetchChatServer(UUID game) {

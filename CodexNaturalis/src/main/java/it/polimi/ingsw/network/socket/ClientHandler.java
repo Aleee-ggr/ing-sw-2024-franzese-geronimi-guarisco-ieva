@@ -76,6 +76,11 @@ public class ClientHandler extends Thread {
         GenericResponseMessage responseMessage = null;
         switch (message) {
 
+            case SocketClientHeartbeatMessage socketClientHeartbeatMessage -> {
+                Server.heartbeatServer(socketClientHeartbeatMessage.getGameUUID(), socketClientHeartbeatMessage.getUsername());
+                responseMessage = new HeartbeatResponseMessage(socketClientHeartbeatMessage.getGameUUID());
+            }
+
             case SocketClientCreateGameMessage socketClientCreateGameMessage -> {
                 UUID id = Server.createGame(socketClientCreateGameMessage.getNumPlayers());
                 responseMessage = new CreateGameResponseMessage(id);
