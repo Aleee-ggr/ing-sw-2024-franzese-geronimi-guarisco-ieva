@@ -48,9 +48,10 @@ public class MainMenuController implements Initializable {
     protected void changeCreateGameScene(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/CreateGameScene.fxml"));
-            Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
-            CreateGameController controller = loader.getController();
+            CreateGameController controller = new CreateGameController();
             controller.setClient(client);
+            loader.setController(controller);
+            Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {
