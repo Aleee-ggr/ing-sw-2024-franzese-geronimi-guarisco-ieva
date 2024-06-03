@@ -283,12 +283,13 @@ public class GameThread extends Thread {
 
     private void disconnectionHandler(Boolean firstParam, Boolean secondParam){
         System.out.printf("Player %s is offline%n", currentPlayer);
+        Player user = controller.getGame().getPlayers().stream().filter(p -> p.getUsername().equals(currentPlayer)).toList().getFirst();
+
         switch (gameState){
             case SETUP:
                 turnMap.put(currentPlayer, WaitState.TURN);
                 Random rand = new Random();
 
-                Player user = controller.getGame().getPlayers().stream().filter(p -> p.getUsername().equals(currentPlayer)).toList().getFirst();
 
                 if(!firstParam){ //if the player has not chosen the personal objective
                     int index = rand.nextInt()%2;
@@ -314,7 +315,7 @@ public class GameThread extends Thread {
                 if(!firstParam){ //if the player has not placed the card
                     return;
                 } else if(!secondParam){ //if the player has not drawn the card
-                    //TODO: gestisco caso in cui ha piazzato ma non pescato
+                    //TODO: draw a card for the player
                 }
                 break;
             case ENDGAME:

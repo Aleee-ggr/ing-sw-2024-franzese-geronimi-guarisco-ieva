@@ -131,6 +131,9 @@ public class Controller {
             Integer cardId = card.getId();
             messageQueue.add(ThreadMessage.drawResponse(username, cardId, messageId));
             return true;
+        } catch (NullPointerException e){
+          messageQueue.add(ThreadMessage.genericError(username, messageId, "No card to draw"));
+
         } catch (Exception e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
