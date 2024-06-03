@@ -197,6 +197,15 @@ public class ClientHandler extends Thread {
                 );
             }
 
+            case SocketClientFetchPersonalObjectiveMessage socketClientFetchPersonalObjectiveMessage -> {
+                responseMessage = new FetchPersonalObjectiveResponseMessage(
+                      Server.getPersonalObjectiveServer(
+                              socketClientFetchPersonalObjectiveMessage.getUsername(),
+                              socketClientFetchPersonalObjectiveMessage.getGameUUID()
+                      )
+                );
+            }
+
             case SocketClientGetVisibleCardsMessage socketClientGetVisibleCardsMessage -> {
                 responseMessage = new GetVisibleCardsResponseMessage(
                         Server.getVisibleCardsServer(

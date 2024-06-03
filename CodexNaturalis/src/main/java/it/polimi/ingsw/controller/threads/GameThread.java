@@ -4,13 +4,15 @@ import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.model.board.Coordinates;
+import it.polimi.ingsw.model.cards.StartingCard;
 import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.network.Server;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
+
+import static java.lang.Math.abs;
 
 /**
  * GameThread Class, used to manage the thread-side logic for the controller.
@@ -108,7 +110,14 @@ public class GameThread extends Thread {
             turnMap.put(currentPlayer, WaitState.TURN);
 
             while(!objChosen || !startChosen){
+
                 ThreadMessage msg = getMessage();
+
+                if(Server.isOffline(currentPlayer)){
+                    disconnectionHandler(objChosen, startChosen);
+                    break;
+                }
+
                 if (msg.type().contains("get")){
                     respond(msg);
                     continue;
@@ -161,12 +170,25 @@ public class GameThread extends Thread {
     public boolean playerTurn(String playerName){
         boolean draw = false;
         boolean place = false;
+
+        if(Server.isOffline(currentPlayer)){
+            disconnectionHandler(draw, place);
+            return false;
+        }
+
         while (!place){
             ThreadMessage msg = getMessage();
-            if (msg.type().contains("get")){
+
+            if(msg == null){
+                disconnectionHandler(draw, place);
+                return false;
+            }
+
+            if (msg.type().contains("get") || msg.type().contains("join")){
                 respond(msg);
                 continue;
             }
+
             if (msg.type().equals("place") && msg.player().equals(playerName)){
                 place = respond(msg);
                 if (place) {
@@ -190,10 +212,17 @@ public class GameThread extends Thread {
 
         while (!draw && !controller.getGame().getGameBoard().areCardsOver()){
             ThreadMessage msg = getMessage();
-            if (msg.type().contains("get")){
+
+            if(msg == null){
+                disconnectionHandler(draw, place);
+                return false;
+            }
+
+            if (msg.type().contains("get") || msg.type().contains("join")){
                 respond(msg);
                 continue;
             }
+
             if(msg.type().equals("draw")  && msg.player().equals(playerName)){
                 draw = respond(msg);
                 if (draw) {
@@ -252,6 +281,47 @@ public class GameThread extends Thread {
         controller.getGame().setGameState(GameState.STOP);
     }
 
+    private void disconnectionHandler(Boolean firstParam, Boolean secondParam){
+        System.out.printf("Player %s is offline%n", currentPlayer);
+        switch (gameState){
+            case SETUP:
+                turnMap.put(currentPlayer, WaitState.TURN);
+                Random rand = new Random();
+
+                Player user = controller.getGame().getPlayers().stream().filter(p -> p.getUsername().equals(currentPlayer)).toList().getFirst();
+
+                if(!firstParam){ //if the player has not chosen the personal objective
+                    int index = rand.nextInt()%2;
+
+                    if(user.getStartingObjectives().isEmpty()){
+                        user.setStartingObjectives();
+                    }
+
+                    ArrayList<Objective> startingObjectives = user.getStartingObjectives();
+                    user.choosePersonalObjective(startingObjectives.get(abs(index)).getId());
+                }
+
+                if(!secondParam){
+                    if(user.getDrawnStartingCard() == null){
+                        user.drawStartingCard();
+                    }
+                    user.setFirstCard(rand.nextBoolean());
+                }
+
+                break;
+            case MAIN:
+                turnMap.put(currentPlayer, WaitState.TURN);
+                if(!firstParam){ //if the player has not placed the card
+                    return;
+                } else if(!secondParam){ //if the player has not drawn the card
+                    //TODO: gestisco caso in cui ha piazzato ma non pescato
+                }
+                break;
+            case ENDGAME:
+                break;
+        }
+    }
+
     /**
      * GetMessage method, gets the next message from the queue.
      * It waits until a message with status REQUEST is available.
@@ -261,7 +331,11 @@ public class GameThread extends Thread {
         ThreadMessage msg;
         do {
             msg = messageQueue.peek();
-        } while (msg == null || msg.status() != Status.REQUEST);
+        } while ((msg == null || msg.status() != Status.REQUEST) && !Server.isOffline(currentPlayer));
+
+        if(Server.isOffline(currentPlayer)){
+            return null;
+        }
 
         return messageQueue.remove();
     }
@@ -326,6 +400,11 @@ public class GameThread extends Thread {
                 break;
             case "getCommonObjectives":
                 controller.getCommonObjectives(
+                        msg.player(),
+                        msg.messageUUID());
+                break;
+            case "getPersonalObjective":
+                controller.getPersonalObjective(
                         msg.player(),
                         msg.messageUUID());
                 break;

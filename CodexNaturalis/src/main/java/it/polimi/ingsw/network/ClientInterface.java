@@ -124,6 +124,13 @@ public interface ClientInterface {
     boolean fetchCommonObjectives() throws IOException;
 
     /**
+     * Method to fetch the personal objectives from the server.
+     * @return True if the objective was fetched successfully, false otherwise.
+     * @throws IOException If an I/O error occurs.
+     */
+    boolean fetchPersonalObjective() throws IOException;
+
+    /**
      * Method to fetch the visible cards and decks from the server.
      * It's used to form a drawing view for the Player.
      * @return True if the visible cards and decks were fetched successfully, false otherwise.

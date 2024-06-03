@@ -228,6 +228,21 @@ public class Controller {
     }
 
     /**
+     * Controller Method to get the personal objective.
+     * @param username the username of the player that requests the common objectives.
+     * @param messageId the unique identifier of the message.
+     * */
+    public void getPersonalObjective(String username, UUID messageId) {
+        try {
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
+
+            messageQueue.add(ThreadMessage.getPersonalObjectiveResponse(username, user.getHiddenObjective().getId(), messageId));
+        } catch (Exception e) {
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+        }
+    }
+
+    /**
      * Controller Method to get the starting objectives to chose from.
      * @param username the username of the player that gets the objectives.
      * @param messageId the unique identifier of the message.

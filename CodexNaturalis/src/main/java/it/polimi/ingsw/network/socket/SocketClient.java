@@ -91,17 +91,6 @@ public class SocketClient extends Client implements ClientInterface {
             client.setTcpNoDelay(true);
             waitUpdateSocket.setTcpNoDelay(true);
 
-            new Thread(() -> {
-                while (true) {
-                    try {
-                        Thread.sleep(GameConsts.heartbeatInterval);
-                        pingServer();
-                    } catch (IOException | InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }).start();
-
             return true;
         } catch (IOException e) {
             System.out.println("Error with the connection:" + e.getMessage());
@@ -155,7 +144,22 @@ public class SocketClient extends Client implements ClientInterface {
             return false;
         }
         output.writeObject(new SocketClientJoinGameMessage(username, gameUUID));
-        return handleResponse();
+        boolean response = handleResponse();
+
+        if(response){
+            new Thread(() -> {
+                while (true) {
+                    try {
+                        Thread.sleep(GameConsts.heartbeatInterval);
+                        pingServer();
+                    } catch (IOException | InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }).start();
+        }
+
+        return response;
     }
 
     public void pingServer() throws IOException {
@@ -243,7 +247,7 @@ public class SocketClient extends Client implements ClientInterface {
 
     @Override
     public synchronized boolean fetchGameState() throws IOException {
-        output.writeObject(new SocketClientFetchAvailableGamesMessage(username));
+        output.writeObject(new SocketClientFetchGameStateMessage(username, gameId));
         return handleResponse();
     }
 
@@ -256,6 +260,12 @@ public class SocketClient extends Client implements ClientInterface {
     @Override
     public synchronized boolean fetchCommonObjectives() throws IOException {
         output.writeObject(new SocketClientGetCommonObjectivesMessage(username, gameId));
+        return handleResponse();
+    }
+
+    @Override
+    public boolean fetchPersonalObjective() throws IOException {
+        output.writeObject(new SocketClientFetchPersonalObjectiveMessage(username, gameId));
         return handleResponse();
     }
 
@@ -466,6 +476,11 @@ public class SocketClient extends Client implements ClientInterface {
             //fetchCommonObjectives
             case GetCommonObjectivesResponseMessage getCommonObjectivesResponseMessage -> {
                 return fetchCommonObjectivesClient(getCommonObjectivesResponseMessage.getCommonObjectives());
+            }
+
+            //fetchCommonObjectives
+            case FetchPersonalObjectiveResponseMessage fetchPersonalObjectiveResponseMessage -> {
+                return fetchPersonalObjectiveClient(fetchPersonalObjectiveResponseMessage.getPersonalObjective());
             }
 
             //fetchStartingCard

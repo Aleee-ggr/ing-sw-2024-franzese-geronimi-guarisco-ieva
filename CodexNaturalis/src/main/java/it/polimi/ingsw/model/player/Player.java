@@ -97,7 +97,7 @@ public class Player {
      * @return an ArrayList of Objectives.
      * @see Objective
      */
-    public ArrayList<Objective> getStartingObjectives() {
+    public ArrayList<Objective> getStartingObjectives() { //TODO: test if this implementation throws an exception if used before setStartingObjectives
         return new ArrayList<Objective>(List.of(startingObjectives));
     }
 
@@ -108,6 +108,15 @@ public class Player {
      */
     public ConcurrentHashMap<Resource, Integer> getResources() {
         return new ConcurrentHashMap<>(playerResources);
+    }
+
+    /**
+     * Getter for the Starting Card of the Player.
+     * @return a StartingCard.
+     * @see StartingCard
+     */
+    public StartingCard getDrawnStartingCard() { //TODO: check for behaviour if starting card is null
+        return s;
     }
 
     /**

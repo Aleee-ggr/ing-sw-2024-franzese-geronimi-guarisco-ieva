@@ -235,6 +235,16 @@ public class Client {
         return true;
     }
 
+    public boolean fetchPersonalObjectiveClient(Integer personalObjectiveId) {
+
+        if(personalObjectiveId == null) {
+            return false;
+        }
+
+        ((PlayerData) playerData.get(username)).setPersonalObjective(Game.getObjectiveByID(personalObjectiveId));
+        return true;
+    }
+
     public boolean fetchVisibleCardsAndDecksClient(ArrayList<Integer> visibleCards, ArrayList<Integer> backSideDecks) {
 
         if (visibleCards == null || backSideDecks == null) {

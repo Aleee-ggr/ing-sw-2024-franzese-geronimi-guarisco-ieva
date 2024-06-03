@@ -151,12 +151,12 @@ public class Game {
      * */
     public void addPlayer(String playerUsername) throws TooManyPlayersException, ExistingUsernameException{
         if(this.numPlayers >= maxPlayers) {
-            throw new TooManyPlayersException("Too Many Players");
-        }
-        for(Player p : players){
-            if(p.getUsername().equals(playerUsername)){
-                throw new ExistingUsernameException("Username Already Exists in this game");
+            for(Player p : players){
+                if(p.getUsername().equals(playerUsername)){
+                    return;
+                }
             }
+            throw new TooManyPlayersException("Too Many Players");
         }
         Player toAdd = new Player(playerUsername, this);
         players.add(toAdd);

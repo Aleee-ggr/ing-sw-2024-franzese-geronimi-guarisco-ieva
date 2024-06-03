@@ -177,6 +177,21 @@ public record ThreadMessage(Status status, String player, String type, String[] 
     }
 
     /**
+     * Creates a ThreadMessage for requesting the personal objective.
+     * @param username The username of the player.
+     * @return A ThreadMessage requesting the personal objective.
+     */
+    public static ThreadMessage getPersonalObjective(String username) {
+        return new ThreadMessage(
+                Status.REQUEST,
+                username,
+                "getPersonalObjective",
+                null,
+                UUID.randomUUID()
+        );
+    }
+
+    /**
      * Creates a ThreadMessage for requesting the starting objectives.
      * @param username The username of the player.
      * @return A ThreadMessage requesting the starting objectives.
@@ -567,6 +582,25 @@ public record ThreadMessage(Status status, String player, String type, String[] 
                 username,
                 "getCommonObjectivesResponse",
                 args,
+                messageUUID
+        );
+    }
+
+    /**
+     * Creates a ThreadMessage for the personal objective response.
+     * @param username The username of the player.
+     * @param objectiveId the objective IDs.
+     * @param messageUUID The UUID of the message.
+     * @return A ThreadMessage to get the personal objective id response.
+     */
+    public static ThreadMessage getPersonalObjectiveResponse(String username, Integer objectiveId, UUID messageUUID){
+        return new ThreadMessage(
+                Status.OK,
+                username,
+                "getPersonalObjectiveResponse",
+                new String[]{
+                        objectiveId.toString(),
+                },
                 messageUUID
         );
     }

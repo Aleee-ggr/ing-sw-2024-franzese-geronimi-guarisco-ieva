@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.TUI.controller;
 
+import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.Compositor;
@@ -27,12 +28,27 @@ public class TuiController {
     }
 
     public void start() {
+
         login();
         selectGame();
         lobby();
-        setup();
-        mainGame();
-        endGame();
+
+        try {
+            client.fetchGameState();
+            client.fetchPlayers();
+            client.fetchPersonalObjective();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        switch(client.getGameState()){
+            case SETUP:
+                setup();
+            case MAIN:
+                mainGame();
+            case ENDGAME:
+                endGame();
+        }
     }
 
     private void login() {

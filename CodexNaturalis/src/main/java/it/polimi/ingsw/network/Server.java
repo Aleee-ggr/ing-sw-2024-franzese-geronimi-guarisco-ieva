@@ -46,6 +46,7 @@ public abstract class Server {
 
                     for (Map.Entry<String, AtomicInteger> entry : playerStatus.entrySet()) {
                         entry.getValue().incrementAndGet();
+                        System.out.println(entry.getKey() + " is now " + entry.getValue().get());
                     }
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
@@ -56,6 +57,9 @@ public abstract class Server {
 
 
     public static boolean isOffline(String username) {
+        if (username == null) {
+            return false;
+        }
         return playerStatus.get(username).get() > GameConsts.disconnectionThreshold;
     }
 
@@ -140,8 +144,9 @@ public abstract class Server {
             players.put(username, password);
             playerStatus.put(username, new AtomicInteger(0));
             return true;
+        } else {
+            return players.get(username).equals(password);
         }
-        return false;
     }
 
     /**
@@ -346,6 +351,20 @@ public abstract class Server {
             }
 
             return commonObjectives;
+        } else {
+            return null;
+        }
+    }
+
+    public static Integer getPersonalObjectiveServer(String username, UUID game){
+        ThreadMessage message = ThreadMessage.getPersonalObjective(
+                username
+        );
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+
+        if (response.status() == Status.OK) {
+            return Integer.parseInt(response.args()[0]);
         } else {
             return null;
         }
