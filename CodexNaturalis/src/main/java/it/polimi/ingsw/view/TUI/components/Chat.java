@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.TUI.components;
 
+import it.polimi.ingsw.model.ChatMessage;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientInterface;
 
@@ -39,8 +40,8 @@ public class Chat implements Component {
             return;
         }
         chat.clear();
-        for (String msg : client.getChat()) {
-            chat.add(msg);
+        for (ChatMessage msg : client.getChat()) {
+            chat.add(msg.toString());
         }
     }
 }

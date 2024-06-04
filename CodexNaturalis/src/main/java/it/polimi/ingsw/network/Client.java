@@ -6,6 +6,7 @@ import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.helpers.exceptions.model.ElementNotInHand;
 import it.polimi.ingsw.helpers.exceptions.model.HandFullException;
+import it.polimi.ingsw.model.ChatMessage;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -45,7 +47,7 @@ public class Client {
 
     protected ArrayList<Card> visibleCards;
     protected ArrayList<Card> backSideDecks;
-    protected ArrayList<String> chat;
+    protected List<ChatMessage> chat;
 
 
     /**
@@ -355,7 +357,7 @@ public class Client {
         return true;
     }
 
-    public ArrayList<String> getChat() {
+    public List<ChatMessage> getChat() {
         return this.chat;
     }
 }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.rmi;
 
 import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.controller.threads.GameState;
+import it.polimi.ingsw.model.ChatMessage;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.enums.Resource;
 
@@ -98,12 +99,12 @@ public interface RmiServerInterface extends Remote {
     /**
      * Allows a player to post a chat message in the game.
      * @param game The UUID of the game.
-     * @param name The name of the player posting the message.
+     * @param sender The name of the player posting the message.
      * @param message The chat message to post.
      * @return The posted message.
      * @throws RemoteException If an RMI error occurs.
      */
-    String postChat(UUID game, String name, String message) throws RemoteException;
+    String postChat(UUID game, String sender, String message, String receiver) throws RemoteException;
 
     WaitState wait(UUID game, String name) throws RemoteException;
 
@@ -118,5 +119,7 @@ public interface RmiServerInterface extends Remote {
 
     ArrayList<UUID> getAvailableGames(String username) throws RemoteException;
 
-    ArrayList<String> fetchChat(UUID game) throws RemoteException;
+    List<ChatMessage> fetchChat(UUID game, String username) throws RemoteException;
+
+    void ping(UUID game, String username) throws RemoteException;
 }

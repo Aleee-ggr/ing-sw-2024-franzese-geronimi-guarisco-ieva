@@ -205,7 +205,7 @@ public class SocketClient extends Client implements ClientInterface {
 
     //TODO: not implemented -> there is no socket message for this
     @Override
-    public synchronized void postChat(String message) throws IOException {
+    public synchronized void postChat(String message, String receiver) throws IOException {
 
     }
 

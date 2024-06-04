@@ -206,7 +206,7 @@ public class CommandThread extends Thread {
     private void postChat(String[] message) {
         String msg = String.join(" ", message);
         try {
-            client.postChat(msg);
+            client.postChat(msg, "TODO"); //TODO: fix implementation
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);

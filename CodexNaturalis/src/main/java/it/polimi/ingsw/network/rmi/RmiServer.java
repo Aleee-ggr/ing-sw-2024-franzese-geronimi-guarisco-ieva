@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.controller.threads.Status;
 import it.polimi.ingsw.controller.threads.ThreadMessage;
+import it.polimi.ingsw.model.ChatMessage;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.network.Server;
@@ -15,10 +16,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * The RmiServer class is an implementation of the RmiServerInterface, which defines methods for interacting with a remote game server using RMI.
@@ -80,6 +78,11 @@ public class RmiServer extends Server implements RmiServerInterface {
             }
             registry.unbind(name);
         } catch (NotBoundException | RemoteException ignored) {}
+    }
+
+    @Override
+    public void ping (UUID game, String username) {
+        heartbeatServer(game, username);
     }
 
     @Override
@@ -198,14 +201,14 @@ public class RmiServer extends Server implements RmiServerInterface {
     }
 
     @Override     //TODO: implement chat
-    public String postChat(UUID game, String name, String message) throws RemoteException {
-        postChatServer(game, name, message);
+    public String postChat(UUID game, String sender, String message, String receiver) throws RemoteException {
+        postChatServer(game, sender, message, receiver);
         return ""; //TODO change return type
     }
 
     @Override
-    public ArrayList<String> fetchChat(UUID game) throws RemoteException {
-        return fetchChatServer(game);
+    public List<ChatMessage> fetchChat(UUID game, String username) throws RemoteException {
+        return fetchChatServer(game, username);
     }
     
     @Override

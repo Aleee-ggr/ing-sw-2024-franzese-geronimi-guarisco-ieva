@@ -526,6 +526,9 @@ public abstract class Server {
 
     public static List<ChatMessage> fetchChatServer(UUID game, String username) {
         Predicate<ChatMessage> filter = ChatMessage.getPlayerFilter(username);
+        if(chat.get(game) == null){
+            return new ArrayList<>();
+        }
         return chat.get(game)
                 .stream()
                 .filter(filter)

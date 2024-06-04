@@ -2,6 +2,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.controller.threads.GameState;
+import it.polimi.ingsw.model.ChatMessage;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.client.ClientData;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -61,7 +63,7 @@ public interface ClientInterface {
      * @param message The message to send.
      * @throws IOException If an I/O error occurs.
      */
-    void postChat(String message) throws IOException;
+    void postChat(String message, String receiver) throws IOException;
 
     /**
      * Method to ask for a drawn card from the server.
@@ -281,5 +283,5 @@ public interface ClientInterface {
     /**
      * @return a list containing the chat messages saved in the client
      */
-    ArrayList<String> getChat();
+    List<ChatMessage> getChat();
 }

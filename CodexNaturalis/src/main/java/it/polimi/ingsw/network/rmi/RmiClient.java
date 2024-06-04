@@ -3,6 +3,7 @@ package it.polimi.ingsw.network.rmi;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.helpers.exceptions.model.ElementNotInHand;
@@ -88,10 +89,27 @@ public class RmiClient extends Client implements ClientInterface {
         }
         boolean success = remoteObject.join(game, this.username);
 
+        if(success){
+            new Thread(() -> {
+                while (true) {
+                    try {
+                        Thread.sleep(GameConsts.heartbeatInterval);
+                        pingServer();
+                    } catch (IOException | InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }).start();
+        }
+
         if (success) {
             this.setGameId(game);
         }
         return success;
+    }
+
+    public void pingServer() throws IOException {
+        remoteObject.ping(this.gameId, this.username);
     }
 
     @Override
@@ -264,7 +282,7 @@ public class RmiClient extends Client implements ClientInterface {
 
     @Override
     public boolean fetchChat() throws RemoteException {
-        this.chat = remoteObject.fetchChat(this.gameId);
+        this.chat = remoteObject.fetchChat(this.gameId, this.username);
         return this.chat != null;
     }
 
@@ -283,8 +301,8 @@ public class RmiClient extends Client implements ClientInterface {
      * @throws RemoteException If a remote communication error occurs.
      */
     @Override
-    public void postChat(String message) throws RemoteException{
-        remoteObject.postChat(this.gameId, username, message);
+    public void postChat(String message, String receiver) throws RemoteException{
+        remoteObject.postChat(this.gameId, username, message, receiver);
     }
 
 
