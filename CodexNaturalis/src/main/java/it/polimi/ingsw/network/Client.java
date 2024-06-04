@@ -2,7 +2,6 @@ package it.polimi.ingsw.network;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.helpers.exceptions.model.ElementNotInHand;
 import it.polimi.ingsw.helpers.exceptions.model.HandFullException;
@@ -17,16 +16,16 @@ import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
 
-import javax.lang.model.type.ArrayType;
-import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
 /**
- * Abstract class, baseline for building a client that can connect to a server to participate in a game.
+ * Client class, baseline for building a client that can connect to a server to participate in a game.
+ * Contains the generic methods that a client with any protocol can use to interact with the server.
+ * The client can be extended to implement specific methods for each protocol.
+ *
  * @author Alessio Guarisco
  * @author Daniele Ieva
  */
@@ -51,9 +50,10 @@ public class Client {
 
 
     /**
-     * Constructs a new Client object with the specified player username, server address, and server port.
-     * @param serverAddress  The address of the server.
-     * @param serverPort     The port of the server.
+     * Constructs a new Client object with the specified server address, and server port.
+     *
+     * @param serverAddress The address of the server.
+     * @param serverPort    The port of the server.
      */
     public Client(String serverAddress, int serverPort) {
         this.serverAddress = serverAddress;
@@ -65,60 +65,152 @@ public class Client {
         this.gameState = GameState.LOBBY;
     }
 
+    /**
+     * Getter for the username of the client.
+     *
+     * @return a String representing the username of the client.
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Getter for the GameState.
+     *
+     * @return the GameState of the game.
+     */
     public GameState getGameState() {
         return gameState;
     }
 
+    /**
+     * Getter for the available games.
+     *
+     * @return an ArrayList of UUIDs of the available games.
+     */
     public ArrayList<UUID> getAvailableGames() {
         return this.availableGames;
     }
 
+    /**
+     * Getter for the player number.
+     *
+     * @return an integer representing the number of players of the game.
+     */
     public int getPlayerNum() {
         return playerNum;
     }
 
+    /**
+     * Getter for the players.
+     *
+     * @return an ArrayList of Strings representing the players of the game.
+     */
     public ArrayList<String> getPlayers() {
         return this.players;
     }
 
+    /**
+     * Getter for the opponents' data.
+     *
+     * @return a HashMap of Strings and ClientData representing the opponents' data.
+     */
     public HashMap<String, ClientData> getOpponentData() {
         return this.playerData;
     }
 
+    /**
+     * Getter for the score map.
+     *
+     * @return a HashMap of Strings and Integers representing the score of each player.
+     */
     public HashMap<String, Integer> getScoreMap() {
         return this.scoreMap;
     }
 
+    /**
+     * Getter for the visible cards.
+     *
+     * @return an ArrayList of Cards representing the visible cards.
+     */
     public ArrayList<Card> getVisibleCards() {
         return visibleCards;
     }
 
+    /**
+     * Getter for the back side of the decks.
+     *
+     * @return an ArrayList of Cards representing the back side of the decks.
+     */
     public ArrayList<Card> getDecksBacks() {
         return backSideDecks;
     }
 
+    /**
+     * Getter for the playerData.
+     *
+     * @return a PlayerData class of the client player.
+     */
     public PlayerData getPlayerData() {
         return (PlayerData) playerData.get(username);
     }
 
+    /**
+     * Getter for the chat.
+     *
+     * @return a List of ChatMessages representing the chat.
+     */
+    public List<ChatMessage> getChat() {
+        return this.chat;
+    }
 
+    /**
+     * Setter for the gameId.
+     *
+     * @param gameId the UUID of the game.
+     */
     public void setGameId(UUID gameId) {
         this.gameId = gameId;
     }
 
+    /**
+     * Setter for the credentials of the player.
+     *
+     * @param username the username of the player.
+     * @param password the password of the player.
+     */
     public void setCredentials(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
+    /**
+     * This method overrides the toString method for the Client class.
+     * It constructs a string representation of the Client object, including the username and the data of all players.
+     *
+     * @return a String representing the Client object.
+     */
+    @Override
+    public String toString() {
+        StringBuilder out = new StringBuilder();
+        out.append("Username: ").append(this.username).append("\n");
+        for (String p : players) {
+            out.append(p).append(":\n");
+            out.append(playerData.get(p).toString());
+        }
+        return out.toString();
+    }
 
+    /**
+     * Method used to create the player data.
+     * It creates the player data for the client player and the opponent data for the other players.
+     * Mainly useful for testing.
+     *
+     * @param players an ArrayList of Strings representing the players of the game.
+     */
     public void createPlayerData(ArrayList<String> players) {
-        for(String player : players){
-            if(player.equals(this.username)) {
+        for (String player : players) {
+            if (player.equals(this.username)) {
                 playerData.put(player, new PlayerData());
             } else {
                 playerData.put(player, new OpponentData());
@@ -130,20 +222,14 @@ public class Client {
         this.playerNum = players.size();
     }
 
-
-    @Override
-    public String toString() {
-        StringBuilder out = new StringBuilder();
-        out.append("Username: " + this.username + "\n");
-        for (String p : players) {
-            out.append(p + ":\n");
-            out.append(playerData.get(p).toString());
-        }
-        return out.toString();
-    }
-
-
-    public boolean drawCardClient(Integer id){
+    /**
+     * Method used for drawing a card.
+     * It receives the id of the drawn card from the server and adds the card to the hand of the player in the model of the Client.
+     *
+     * @param id an Integer representing the id of the drawn card.
+     * @return a boolean value representing the success of the local operation.
+     */
+    public boolean drawCardClient(Integer id) {
         if (id != null) {
             try {
                 ((PlayerData) playerData.get(username)).addToHand(Game.getCardByID(id));
@@ -155,9 +241,16 @@ public class Client {
         return false;
     }
 
-
+    /**
+     * Method used for placing a card.
+     * It receives the id of the placed card from the user interface and removes the card from the hand of the player in the model of the Client.
+     *
+     * @param success a boolean value representing the success of the place from the server.
+     * @param cardId  an Integer representing the id of the placed card.
+     * @return a boolean value representing the success of the local operation.
+     */
     public boolean placeCardClient(Boolean success, int cardId) {
-        if(success){
+        if (success) {
             try {
                 ((PlayerData) playerData.get(username)).removeFromHand(Game.getCardByID(cardId));
             } catch (ElementNotInHand e) {
@@ -169,14 +262,29 @@ public class Client {
         return false;
     }
 
-
+    /**
+     * Method used for placing the Starting Card on the board.
+     * It receives the front side of the card from the user interface and the success of the operation from the server.
+     *
+     * @param frontSideUp a boolean value representing the front side of the card.
+     * @param success     a boolean value representing the success of the operation from the server.
+     * @return a boolean value representing the success of the placement locally.
+     */
     public boolean placeStartingCardClient(Boolean frontSideUp, Boolean success) {
-        if(success){
+        if (success) {
             getPlayerData().setStartingCard((StartingCard) getPlayerData().getStartingCard().setFrontSideUp(frontSideUp));
         }
         return success;
     }
 
+    /**
+     * Method used for choosing the personal objective.
+     * It receives the id of the chosen objective from the user interface and the success of the operation from the server.
+     *
+     * @param objectiveId an Integer representing the id of the chosen objective.
+     * @param success     a boolean value representing the success of the operation from the server.
+     * @return a boolean value representing the success of the choice locally.
+     */
     public boolean choosePersonalObjectiveClient(int objectiveId, Boolean success) {
         if (success) {
             getPlayerData().setPersonalObjective(Game.getObjectiveByID(objectiveId));
@@ -184,27 +292,48 @@ public class Client {
         return success;
     }
 
+    /**
+     * Method used for fetching the available games from the server.
+     * If the available games are not null, it sets the available games of the client.
+     *
+     * @param availableGames an ArrayList of UUIDs representing the available games.
+     * @return a boolean value representing the success of the set operation.
+     */
     public boolean fetchAvailableGamesClient(ArrayList<UUID> availableGames) {
 
-        if(availableGames != null) {
+        if (availableGames != null) {
             this.availableGames = availableGames;
             return !availableGames.isEmpty();
         }
         return false;
     }
 
+    /**
+     * Method used for fetching the game state from the server.
+     * If the game state is not null, it sets the game state of the client.
+     *
+     * @param gameState a GameState representing the game state.
+     * @return a boolean value representing the success of the set operation.
+     */
     public boolean fetchGameStateClient(GameState gameState) {
 
-        if (gameState == null){
+        if (gameState == null) {
             return false;
         }
         this.gameState = gameState;
         return true;
     }
 
+    /**
+     * Method used for fetching the players from the server.
+     * If the players are not null, it creates the player data for the players.
+     *
+     * @param players an ArrayList of Strings representing the players of the game.
+     * @return a boolean value representing the success of the set operation.
+     */
     public boolean fetchPlayersClient(ArrayList<String> players) {
 
-        if (players == null){
+        if (players == null) {
             return false;
         }
 
@@ -212,9 +341,16 @@ public class Client {
         return true;
     }
 
+    /**
+     * Method used for fetching the common objectives from the server.
+     * If the common objectives are not null, it sets the common objectives of the client.
+     *
+     * @param commonObjectivesId an ArrayList of Integers representing the ids of the common objectives.
+     * @return a boolean value representing the success of the set operation.
+     */
     public boolean fetchCommonObjectivesClient(ArrayList<Integer> commonObjectivesId) {
 
-        if(commonObjectivesId == null) {
+        if (commonObjectivesId == null) {
             return false;
         }
 
@@ -228,9 +364,16 @@ public class Client {
         return true;
     }
 
+    /**
+     * Method used for fetching the personal objectives from the server.
+     * If the personal objectives are not null, it sets the personal objective of the client.
+     *
+     * @param personalObjectiveId an Integer representing the id of the personal objective.
+     * @return a boolean value representing the success of the set operation.
+     */
     public boolean fetchPersonalObjectiveClient(Integer personalObjectiveId) {
 
-        if(personalObjectiveId == null) {
+        if (personalObjectiveId == null) {
             return false;
         }
 
@@ -238,6 +381,15 @@ public class Client {
         return true;
     }
 
+    /**
+     * Method used for fetching the visible cards and the decks from the server.
+     * Those are used to compose the draw pile of the game.
+     * If the visible cards and the back side of the decks are not null, it sets the visible cards and the back side of the decks of the client.
+     *
+     * @param visibleCards  an ArrayList of Integers representing the ids of the visible cards.
+     * @param backSideDecks an ArrayList of Integers representing the ids of the back side of the decks.
+     * @return a boolean value representing the success of the set operation.
+     */
     public boolean fetchVisibleCardsAndDecksClient(ArrayList<Integer> visibleCards, ArrayList<Integer> backSideDecks) {
 
         if (visibleCards == null || backSideDecks == null) {
@@ -259,7 +411,15 @@ public class Client {
         return true;
     }
 
-    public boolean fetchScoreMapClient(HashMap<String, Integer> scoreMap){
+
+    /**
+     * Method used for fetching the score map from the server.
+     * If the score map is not null, it sets the score map of the client.
+     *
+     * @param scoreMap a HashMap of Strings and Integers representing the score of each player.
+     * @return a boolean value representing the success of the set operation.
+     */
+    public boolean fetchScoreMapClient(HashMap<String, Integer> scoreMap) {
 
         if (scoreMap == null) {
             return false;
@@ -274,20 +434,38 @@ public class Client {
         return true;
     }
 
+    /**
+     * Method used for fetching the player resources from the server.
+     * It sets the resources of the players of the client.
+     *
+     * @param playersResourcesMap a HashMap of Strings and HashMaps of Resources and Integers representing the resources of each player.
+     *                            The inner HashMap represents the resources of a player.
+     *                            The String represents the player.
+     * @return a boolean value representing the success of the set operation.
+     */
     public boolean fetchPlayersResourcesClient(HashMap<String, HashMap<Resource, Integer>> playersResourcesMap) {
 
-        for(String player : players){
+        for (String player : players) {
             playerData.get(player).setResources(playersResourcesMap.get(player));
         }
 
         return true;
     }
 
+    /**
+     * Method used for fetching the players boards from the server.
+     * It sets the boards of the players of the client.
+     *
+     * @param playersBoardMap a HashMap of Strings and HashMaps of Coordinates and Integers representing the boards of each player.
+     *                        The inner HashMap represents the board of a player.
+     *                        The String represents the player.
+     * @return a boolean value representing the success of the set operation.
+     */
     public boolean fetchPlayersBoardsClient(HashMap<String, HashMap<Coordinates, Integer>> playersBoardMap) {
-        for(String player : players){
+        for (String player : players) {
             BiMap<Coordinates, Card> playerBoard = HashBiMap.create();
 
-            for(Coordinates c : playersBoardMap.get(player).keySet()){
+            for (Coordinates c : playersBoardMap.get(player).keySet()) {
                 playerBoard.put(c, Game.getCardByID(playersBoardMap.get(player).get(c)));
             }
 
@@ -297,15 +475,30 @@ public class Client {
         return true;
     }
 
-
+    /**
+     * Method used for fetching the players placing order from the server.
+     * It sets the placing order of the players of the client.
+     *
+     * @param placingOrderMap a HashMap of Strings and ArrayLists of Cards representing the placing order of each player.
+     *                        The ArrayList represents the placing order of a player.
+     *                        The String represents the player.
+     * @return a boolean value representing the success of the set operation.
+     */
     public boolean fetchPlayersPlacingOrderClient(HashMap<String, ArrayList<Card>> placingOrderMap) {
-        for(String player : players){
+        for (String player : players) {
             playerData.get(player).setOrder(placingOrderMap.get(player));
         }
 
         return true;
     }
 
+    /**
+     * Method used for fetching the main player possible card placements from the server.
+     * If the valid placements are not null, it sets the valid placements of the client player.
+     *
+     * @param validPlacements an ArrayList of Coordinates representing the valid placements of the client player.
+     * @return a boolean value representing the success of the set operation.
+     */
     public boolean fetchValidPlacementsClient(ArrayList<Coordinates> validPlacements) {
 
         if (validPlacements == null) {
@@ -316,15 +509,22 @@ public class Client {
         return true;
     }
 
+    /**
+     * Method used for fetching the main player's hand of cards from the server.
+     * If the hand is not null, it sets the hand of the client player.
+     *
+     * @param handIds an ArrayList of Integers representing the ids of the cards in the hand of the client player.
+     * @return a boolean value representing the success of the set operation.
+     */
     public boolean fetchClientHandClient(ArrayList<Integer> handIds) {
 
-        if(handIds == null || handIds.isEmpty()){
+        if (handIds == null || handIds.isEmpty()) {
             return false;
         }
 
         ArrayList<Card> hand = new ArrayList<>();
 
-        for(int id : handIds){
+        for (int id : handIds) {
             hand.add(Game.getCardByID(id));
         }
 
@@ -332,14 +532,22 @@ public class Client {
         return true;
     }
 
+    /**
+     * Method used for fetching the main player's starting objectives from the server.
+     * This method is used before the "chooseStartingObjective" method.
+     * If the starting objectives are not null, it sets the starting objectives of the client player so that the user can choose one.
+     *
+     * @param startingObjectives an ArrayList of Integers representing the ids of the possible objectives of the client player.
+     * @return a boolean value representing the success of the set operation.
+     */
     public boolean fetchStartingObjectivesClient(ArrayList<Integer> startingObjectives) {
 
-        if(startingObjectives == null){
+        if (startingObjectives == null) {
             return false;
         }
 
         ArrayList<Objective> startingObjectivesList = new ArrayList<>();
-        for(int id : startingObjectives){
+        for (int id : startingObjectives) {
             startingObjectivesList.add(Game.getObjectiveByID(id));
         }
 
@@ -347,17 +555,21 @@ public class Client {
         return true;
     }
 
+    /**
+     * Method used for fetching the main player's starting card from the server.
+     * This method is used before the "placeStartingCard" method.
+     * If the starting card is not null, it sets the starting card of the client player so that the user can place it.
+     *
+     * @param startingCardId an Integer representing the id of the starting card of the client player.
+     * @return a boolean value representing the success of the set operation.
+     */
     public boolean fetchStartingCardClient(Integer startingCardId) {
 
-        if(startingCardId == null){
+        if (startingCardId == null) {
             return false;
         }
 
-        ((PlayerData)playerData.get(username)).setStartingCard((StartingCard) Game.getCardByID(startingCardId));
+        ((PlayerData) playerData.get(username)).setStartingCard((StartingCard) Game.getCardByID(startingCardId));
         return true;
-    }
-
-    public List<ChatMessage> getChat() {
-        return this.chat;
     }
 }
