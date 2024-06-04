@@ -31,7 +31,7 @@ public class Player {
     private Objective hiddenObjective;
     private Objective[] startingObjectives;
     protected final ConcurrentHashMap<Resource, Integer> playerResources = new ConcurrentHashMap<>();
-    private StartingCard s;
+    private StartingCard startingCard;
     private final Game game;
 
     /**
@@ -97,7 +97,10 @@ public class Player {
      * @return an ArrayList of Objectives.
      * @see Objective
      */
-    public ArrayList<Objective> getStartingObjectives() { //TODO: test if this implementation throws an exception if used before setStartingObjectives
+    public ArrayList<Objective> getStartingObjectives() {
+        if(startingObjectives == null){
+            throw new RuntimeException("Starting Objectives not set");
+        }
         return new ArrayList<Objective>(List.of(startingObjectives));
     }
 
@@ -115,8 +118,8 @@ public class Player {
      * @return a StartingCard.
      * @see StartingCard
      */
-    public StartingCard getDrawnStartingCard() { //TODO: check for behaviour if starting card is null
-        return s;
+    public StartingCard getDrawnStartingCard() {
+        return startingCard;
     }
 
     /**
@@ -160,8 +163,8 @@ public class Player {
      * @see PlayerBoard
      * */
     public void setFirstCard(boolean frontsideup) {
-        s.setFrontSideUp(frontsideup);
-        this.board = new PlayerBoard(s, this);
+        startingCard.setFrontSideUp(frontsideup);
+        this.board = new PlayerBoard(startingCard, this);
     }
 
     /**
@@ -171,8 +174,8 @@ public class Player {
      * @see StartingCard
      * */
     public StartingCard drawStartingCard() {
-        s = game.getGameStartingDeck().draw();
-        return s;
+        startingCard = game.getGameStartingDeck().draw();
+        return startingCard;
     }
 
     /**

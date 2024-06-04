@@ -141,15 +141,6 @@ public class Client {
     }
 
 
-
-
-
-
-    //TODO: Implement for chat
-    public void postChat(String message) throws IOException {
-
-    }
-
     public boolean drawCardClient(Integer id){
         if (id != null) {
             try {

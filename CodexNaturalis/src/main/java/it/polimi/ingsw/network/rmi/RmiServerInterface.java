@@ -60,6 +60,8 @@ public interface RmiServerInterface extends Remote {
 
     ArrayList<Integer> getCommonObjectives(UUID game, String name) throws RemoteException;
 
+    Integer getPersonalObjective(UUID game, String name) throws RemoteException;
+
     HashMap<Resource, Integer> getPlayerResources(UUID game, String name, String nameRequiredData) throws RemoteException;
 
     ArrayList<String> getPlayers(UUID game, String name) throws RemoteException;

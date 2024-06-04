@@ -157,8 +157,8 @@ public class RmiClient extends Client implements ClientInterface {
     }
 
     @Override
-    public boolean fetchPersonalObjective() throws IOException { //TODO: missing implementation
-        return false;
+    public boolean fetchPersonalObjective() throws RemoteException {
+        return fetchPersonalObjectiveClient(remoteObject.getPersonalObjective(this.gameId, this.username));
     }
 
     @Override

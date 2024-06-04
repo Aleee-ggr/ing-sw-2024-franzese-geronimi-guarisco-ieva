@@ -118,6 +118,11 @@ public class RmiServer extends Server implements RmiServerInterface {
     }
 
     @Override
+    public Integer getPersonalObjective(UUID game, String name) throws RemoteException {
+        return getPersonalObjectiveServer(name, game);
+    }
+
+    @Override
     public HashMap<Resource, Integer> getPlayerResources(UUID game, String name, String nameRequiredData) throws RemoteException {
         return getPlayerResourcesServer(game, name, nameRequiredData);
     }
