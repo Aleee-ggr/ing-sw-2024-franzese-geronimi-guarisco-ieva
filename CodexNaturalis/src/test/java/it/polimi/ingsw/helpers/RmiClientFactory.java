@@ -11,10 +11,9 @@ public abstract class RmiClientFactory {
 
     public static RmiClient getClient() {
         playerCount++;
-        Random rn = new Random();
         RmiClient client = new RmiClient("localhost", 9091);
         try {
-            client.checkCredentials("player" + rn.nextInt(), "password");
+            client.checkCredentials("player" + playerCount, "password");
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
