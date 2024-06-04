@@ -162,6 +162,7 @@ public class SocketClient extends Client implements ClientInterface {
         return response;
     }
 
+    @Override
     public void pingServer() throws IOException {
         heartbeatOutput.writeObject(new SocketClientHeartbeatMessage(username, gameId));
         GenericResponseMessage message;

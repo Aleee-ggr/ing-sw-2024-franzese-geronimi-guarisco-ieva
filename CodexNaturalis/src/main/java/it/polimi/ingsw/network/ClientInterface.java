@@ -43,6 +43,12 @@ public interface ClientInterface {
     boolean joinGame(UUID game) throws IOException;
 
     /**
+     * Method to ping the server.
+     * @throws IOException If an I/O error occurs.
+     */
+    void pingServer() throws IOException;
+
+    /**
      * Method to check the credentials of a user.
      * This method is needed every time a user create a new username and password.
      * @param username The username of the user.

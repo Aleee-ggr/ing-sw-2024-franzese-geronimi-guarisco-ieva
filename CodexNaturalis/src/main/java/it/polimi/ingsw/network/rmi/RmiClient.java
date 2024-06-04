@@ -31,7 +31,7 @@ import java.util.UUID;
 
 /**
  * Represents a client using the RMI protocol.
- * Extends the abstract class Client, which contains the general specifications of a Client.
+ * Extends the Client class, which contains the general specifications of a Client.
  * This class connects to the RMI server and provides methods for interacting with the server,
  * such as drawing and placing cards, joining games, and performing other game-related operations.
  *
@@ -44,7 +44,7 @@ public class RmiClient extends Client implements ClientInterface {
     private final RmiServerInterface remoteObject;
 
     /**
-     * Constructs a new RmiClient object with the specified player username, password, server address, and server port.
+     * Constructs a new RmiClient object with the specified server address, and server port.
      * Connects to the RMI server at the given address and port, and initializes the client.
      * @param serverAddress The address of the server.
      * @param serverPort The port of the server.
@@ -63,6 +63,7 @@ public class RmiClient extends Client implements ClientInterface {
 
     /**
      * Requests to create a new game with the specified number of players.
+     * If the game is successfully created, the client automatically call the joinGame method.
      * @param players The number of players for the new game.
      * @return The UUID of the newly created game.
      * @throws RemoteException If a remote communication error occurs.
@@ -78,6 +79,8 @@ public class RmiClient extends Client implements ClientInterface {
 
     /**
      * Requests to join a game with the specified UUID.
+     * Checks if the user has already logged in, if not it will return false and offer a prompt.
+     * If the client successfully joins the game, it will start a new thread to send heartbeats to the server.
      * @param game The UUID of the game to join.
      * @throws RemoteException If a remote communication error occurs.
      */
@@ -108,6 +111,8 @@ public class RmiClient extends Client implements ClientInterface {
         return success;
     }
 
+
+    @Override
     public void pingServer() throws IOException {
         remoteObject.ping(this.gameId, this.username);
     }
