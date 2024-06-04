@@ -69,6 +69,8 @@ public class CommandThread extends Thread {
      *  <li> switch [player]: show the view from the given player side </li>
      *  <li> draw [int index]: draw the card at the given position
      *  0 to 3 are visible cards, 4 & 5 are respectively gold and std deck </li>
+     *  <li> chat: send a global message</li>
+     *  <li> whisper [player]: send a private message to a player</li>
      *  <li> w / a / s / d [int distance]: move the view of the board for the given distance</li>
      *  <li> h: show this list </li>
      *  </ul>
@@ -118,6 +120,9 @@ public class CommandThread extends Thread {
                     else {
                         defaultCommand();
                     }
+                    break;
+                case "whisper":
+                    //TODO whisper
                     break;
                 case "switch":
                     if (cmd.length == 2 && client.getPlayers().contains(cmd[1])) {
