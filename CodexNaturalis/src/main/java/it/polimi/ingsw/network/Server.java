@@ -9,6 +9,7 @@ import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.controller.threads.GameThread;
 import it.polimi.ingsw.controller.threads.Status;
 import it.polimi.ingsw.controller.threads.ThreadMessage;
+import it.polimi.ingsw.model.ChatMessage;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.enums.Resource;
@@ -19,6 +20,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 
 /**
  * The abstract class Server serves as a base class for server implementations.
@@ -32,7 +34,7 @@ public abstract class Server {
     protected static final Map<String, AtomicInteger> playerStatus = new ConcurrentHashMap<>();
     protected static final Map<String, UUID> playerGame = new ConcurrentHashMap<>();
     protected static final Map<UUID, Map<String, WaitState>> gameTurns = new ConcurrentHashMap<>();
-    protected static final Map<UUID, ArrayList<String>> chat = new ConcurrentHashMap<>();
+    protected static final Map<UUID, ArrayList<ChatMessage>> chat = new ConcurrentHashMap<>();
 
     static{
         new Thread(() -> {
@@ -522,13 +524,19 @@ public abstract class Server {
         playerStatus.get(username).set(0);
     }
 
-    public static ArrayList<String> fetchChatServer(UUID game) {
-        return chat.get(game);
+    public static List<ChatMessage> fetchChatServer(UUID game, String username) {
+        Predicate<ChatMessage> filter = ChatMessage.getPlayerFilter(username);
+        return chat.get(game)
+                .stream()
+                .filter(filter)
+                .toList();
     }
 
-    public static void postChatServer(UUID game, String username, String message) {
+    public static void postChatServer(UUID game, String username, String message, String reciever) {
         chat.computeIfAbsent(game, k -> new ArrayList<>());
-        chat.get(game).add(username + ": " + message);
+        chat.get(game).add(
+                new ChatMessage(username, message, reciever)
+        );
     }
 }
 

@@ -53,7 +53,6 @@ public class RmiTest {
         assertFalse(c1.joinGame(game));
     }
 
-    /*
     @Test
     public void testInvalidJoin_playerCount() throws ServerConnectionException, RemoteException {
         RmiClient c1 = RmiClientFactory.getClient();
@@ -63,6 +62,5 @@ public class RmiTest {
         RmiClient c3 = RmiClientFactory.getClient();
         assertFalse(c3.joinGame(game));
     }
-    */
 
 }
