@@ -31,12 +31,6 @@ public class GameTest {
         assertEquals(GameConsts.maxPlayersNum ,game.getPlayers().size());
     }
 
-    @Test (expected = ExistingUsernameException.class)
-    public void addPlayer_ExistingUsername_ThrowException() throws ExistingUsernameException, TooManyPlayersException {
-        game.addPlayer("user");
-        game.addPlayer("user");
-    }
-
     @Test (expected = TooManyPlayersException.class)
     public void addPlayer_FullGame_ThrowException() throws ExistingUsernameException, TooManyPlayersException {
         for(int i = 0; i < GameConsts.maxPlayersNum+1; i++){

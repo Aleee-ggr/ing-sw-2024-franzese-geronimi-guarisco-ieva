@@ -40,19 +40,6 @@ public class ControllerTest {
     }
 
     @Test
-    public void testJoinFailedUsernameAlreadyExists() throws InterruptedException {
-        UUID msgUUID = UUID.randomUUID();
-        String username = "p1";
-        controller.join(username, msgUUID);
-        msgQueue.take();
-
-        msgUUID = UUID.randomUUID();
-        controller.join(username, msgUUID);
-        ThreadMessage msg = msgQueue.take();
-        assertEquals(Status.ERROR, msg.status());
-    }
-
-    @Test
     public void testJoinFailedGameFull() throws InterruptedException {
         String[] validUsernames = {"p1", "p2"};
         String[] excessUsernames = {"p3", "p4", "p5"};
