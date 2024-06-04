@@ -172,7 +172,7 @@ public class GameThread extends Thread {
         boolean place = false;
 
         if(Server.isOffline(currentPlayer)){
-            disconnectionHandler(draw, place);
+            disconnectionHandler(place, draw);
             return false;
         }
 
@@ -180,7 +180,7 @@ public class GameThread extends Thread {
             ThreadMessage msg = getMessage();
 
             if(msg == null){
-                disconnectionHandler(draw, place);
+                disconnectionHandler(place, draw);
                 return false;
             }
 
@@ -214,7 +214,7 @@ public class GameThread extends Thread {
             ThreadMessage msg = getMessage();
 
             if(msg == null){
-                disconnectionHandler(draw, place);
+                disconnectionHandler(place, draw);
                 return false;
             }
 
@@ -314,8 +314,11 @@ public class GameThread extends Thread {
                 turnMap.put(currentPlayer, WaitState.TURN);
                 if(!firstParam){ //if the player has not placed the card
                     return;
-                } else if(!secondParam){ //if the player has not drawn the card
-                    //TODO: draw a card for the player
+                }
+                if(!secondParam){ //if the player has not drawn the card
+                    if(user.drawDecks(false) == null){
+                        user.drawVisible(0);
+                    }
                 }
                 break;
             case ENDGAME:
