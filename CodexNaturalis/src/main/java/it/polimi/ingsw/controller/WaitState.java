@@ -1,7 +1,5 @@
 package it.polimi.ingsw.controller;
 
 public enum WaitState {
-    UPDATE,
-    TURN,
-    WAIT
+    UPDATE, TURN_UPDATE, TURN, WAIT
 }

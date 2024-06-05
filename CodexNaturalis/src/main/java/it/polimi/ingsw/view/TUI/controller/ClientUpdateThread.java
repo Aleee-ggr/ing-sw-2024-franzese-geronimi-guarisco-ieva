@@ -29,7 +29,7 @@ public class ClientUpdateThread extends Thread {
             try {
                 oldState = state;
                 state = client.waitUpdate();
-                if (state == WaitState.UPDATE) {
+                if (state == WaitState.UPDATE || state == WaitState.TURN_UPDATE) {
                     fetchData();
                     updater.update();
                 }

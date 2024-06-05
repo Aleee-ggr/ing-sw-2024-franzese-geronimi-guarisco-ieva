@@ -108,7 +108,7 @@ public class GameThread extends Thread {
             boolean startChosen = false;
             this.currentPlayer = currentPlayer;
 
-            turnMap.put(currentPlayer, WaitState.TURN);
+            turnMap.put(currentPlayer, WaitState.TURN_UPDATE);
 
             while (!objChosen || !startChosen) {
 
@@ -153,7 +153,7 @@ public class GameThread extends Thread {
     public void mainGame() {
         for (Player player : controller.getGame().getPlayers()) {
             this.currentPlayer = player.getUsername();
-            turnMap.put(player.getUsername(), WaitState.TURN);
+            turnMap.put(player.getUsername(), WaitState.TURN_UPDATE);
             if (playerTurn(player.getUsername()) || controller.getGame().getGameBoard().areCardsOver()) {
                 gameState = GameState.ENDGAME;
                 controller.getGame().setGameState(GameState.ENDGAME);
@@ -194,11 +194,7 @@ public class GameThread extends Thread {
             if (msg.type().equals("place") && msg.player().equals(playerName)) {
                 place = respond(msg);
                 if (place) {
-                    for (Player player : controller.getGame().getPlayers()) {
-                        if (!player.getUsername().equals(currentPlayer)) {
-                            turnMap.put(player.getUsername(), WaitState.UPDATE);
-                        }
-                    }
+                    sendUpdate();
                 }
                 continue;
             }
@@ -222,11 +218,7 @@ public class GameThread extends Thread {
             if (msg.type().equals("draw") && msg.player().equals(playerName)) {
                 draw = respond(msg);
                 if (draw) {
-                    for (Player player : controller.getGame().getPlayers()) {
-                        if (!player.getUsername().equals(currentPlayer)) {
-                            turnMap.put(player.getUsername(), WaitState.UPDATE);
-                        }
-                    }
+                    sendUpdate();
                 }
                 continue;
             }
@@ -255,8 +247,9 @@ public class GameThread extends Thread {
                 controller.getGame().getGameBoard().updateScore(player, obj.getPoints(player));
             }
             controller.getGame().getGameBoard().updateScore(player, player.getHiddenObjective().getPoints(player));
-            turnMap.put(player.getUsername(), WaitState.TURN);
         }
+
+        sendUpdate();
 
         for (int i = 0; i < controller.getGame().getNumPlayers(); i++) {
             ThreadMessage msg = getMessage();
@@ -408,7 +401,9 @@ public class GameThread extends Thread {
                 controller.getGameState(msg.player(), msg.messageUUID());
                 break;
             case "sendUpdate":
-                sendUpdate(msg);
+                System.out.println("chatting");
+                sendUpdate();
+                messageQueue.add(ThreadMessage.okResponse(msg.player(), msg.messageUUID()));
                 break;
             case "kill":
                 gameState = GameState.STOP;
@@ -419,13 +414,15 @@ public class GameThread extends Thread {
         return false;
     }
 
-
-    public void sendUpdate(ThreadMessage src) {
+    public void sendUpdate() {
+        System.out.println(currentPlayer);
+        if (currentPlayer != null) {
+            turnMap.put(currentPlayer, WaitState.TURN_UPDATE);
+        }
         for (Player player : controller.getGame().getPlayers()) {
             if (!player.getUsername().equals(currentPlayer)) {
                 turnMap.put(player.getUsername(), WaitState.UPDATE);
             }
         }
-        messageQueue.add(ThreadMessage.okResponse(src.player(), src.messageUUID()));
     }
 }

@@ -461,10 +461,13 @@ public abstract class Server {
     }
 
     public static WaitState waitUpdate(UUID game, String username) {
-        if (gameTurns.get(game).get(username) != WaitState.TURN) {
+        if (gameTurns.get(game).get(username) == WaitState.UPDATE) {
             gameTurns.get(game).put(username, WaitState.WAIT);
         }
-        while (gameTurns.get(game).get(username) == WaitState.WAIT) {
+        if (gameTurns.get(game).get(username) == WaitState.TURN_UPDATE) {
+            gameTurns.get(game).put(username, WaitState.TURN);
+        }
+        while (gameTurns.get(game).get(username) == WaitState.WAIT || gameTurns.get(game).get(username) == WaitState.TURN) {
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
