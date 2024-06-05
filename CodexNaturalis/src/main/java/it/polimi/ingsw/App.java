@@ -13,13 +13,11 @@ import java.util.Scanner;
 
 /**
  * Hello world!
- *
  */
 
 //TODO: add credentials
-public class App
-{
-    public static void main( String[] args) throws RemoteException, ServerConnectionException {
+public class App {
+    public static void main(String[] args) throws RemoteException, ServerConnectionException {
         List<String> arguments = List.of(args);
         if (arguments.contains("server")) {
             new RmiServer(9000);
@@ -41,16 +39,12 @@ public class App
             switch (mode) {
                 case 1:
                     System.setProperty("java.socket.server.hostname", serverAddress);
-                    SocketClient clientSocket = new SocketClient(
-                            serverAddress,
-                            8000);
+                    SocketClient clientSocket = new SocketClient(serverAddress, 8000);
                     new TuiController(clientSocket).start();
                     break;
                 case 2:
                     System.setProperty("java.rmi.server.hostname", serverAddress);
-                    RmiClient clientRmi = new RmiClient(
-                            serverAddress,
-                            9000);
+                    RmiClient clientRmi = new RmiClient(serverAddress, 9000);
                     new TuiController(clientRmi).start();
                     break;
                 default:

@@ -42,7 +42,7 @@ public class ClientUpdateThread extends Thread {
                 sleep(500);
 
             } catch (IOException | InterruptedException e) {
-                throw new RuntimeException(e);
+                System.exit(1);
             }
             synchronized (client) {
                 running = client.getGameState() != GameState.STOP;

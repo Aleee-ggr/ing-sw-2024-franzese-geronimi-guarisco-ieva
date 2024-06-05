@@ -1,21 +1,13 @@
 package it.polimi.ingsw.network.rmi;
 
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.controller.WaitState;
-import it.polimi.ingsw.controller.threads.GameState;
-import it.polimi.ingsw.helpers.exceptions.model.ElementNotInHand;
-import it.polimi.ingsw.helpers.exceptions.model.HandFullException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.cards.StartingCard;
 import it.polimi.ingsw.model.client.OpponentData;
-import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.model.enums.Resource;
-import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientInterface;
 
@@ -46,8 +38,9 @@ public class RmiClient extends Client implements ClientInterface {
     /**
      * Constructs a new RmiClient object with the specified server address, and server port.
      * Connects to the RMI server at the given address and port, and initializes the client.
+     *
      * @param serverAddress The address of the server.
-     * @param serverPort The port of the server.
+     * @param serverPort    The port of the server.
      * @throws RuntimeException If an error occurs while connecting to the server.
      */
     public RmiClient(String serverAddress, int serverPort) {
@@ -64,6 +57,7 @@ public class RmiClient extends Client implements ClientInterface {
     /**
      * Requests to create a new game with the specified number of players.
      * If the game is successfully created, the client automatically call the joinGame method.
+     *
      * @param players The number of players for the new game.
      * @return The UUID of the newly created game.
      * @throws RemoteException If a remote communication error occurs.
@@ -71,7 +65,7 @@ public class RmiClient extends Client implements ClientInterface {
     @Override
     public UUID newGame(int players) throws RemoteException {
         UUID game = remoteObject.newGame(players);
-        if(game != null){
+        if (game != null) {
             joinGame(game);
         }
         return game;
@@ -81,18 +75,19 @@ public class RmiClient extends Client implements ClientInterface {
      * Requests to join a game with the specified UUID.
      * Checks if the user has already logged in, if not it will return false and offer a prompt.
      * If the client successfully joins the game, it will start a new thread to send heartbeats to the server.
+     *
      * @param game The UUID of the game to join.
      * @throws RemoteException If a remote communication error occurs.
      */
     @Override
     public boolean joinGame(UUID game) throws RemoteException {
-        if(username == null && password == null){
+        if (username == null && password == null) {
             System.out.println("Please login first");
             return false;
         }
         boolean success = remoteObject.join(game, this.username);
 
-        if(success){
+        if (success) {
             new Thread(() -> {
                 while (true) {
                     try {
@@ -119,7 +114,7 @@ public class RmiClient extends Client implements ClientInterface {
 
     @Override
     public boolean checkCredentials(String username, String password) throws RemoteException {
-        if(remoteObject.checkCredentials(username, password)){
+        if (remoteObject.checkCredentials(username, password)) {
             this.username = username;
             this.password = password;
             return true;
@@ -130,6 +125,7 @@ public class RmiClient extends Client implements ClientInterface {
     /**
      * Draws a card from the server from the deck or the visible card specified
      * by the position and adds it to the client's hand.
+     *
      * @param position The index of the deck to draw from.
      * @throws RemoteException If a remote communication error occurs.
      */
@@ -140,8 +136,9 @@ public class RmiClient extends Client implements ClientInterface {
 
     /**
      * Places a card from the client's hand onto the board at the specified coordinates.
+     *
      * @param coordinates The coordinates on the board where the card will be placed.
-     * @param cardId The ID of the card to be placed.
+     * @param cardId      The ID of the card to be placed.
      * @throws RemoteException If a remote communication error occurs.
      */
     @Override
@@ -150,17 +147,17 @@ public class RmiClient extends Client implements ClientInterface {
     }
 
     @Override
-    public boolean placeStartingCard(boolean frontSideUp) throws RemoteException{
+    public boolean placeStartingCard(boolean frontSideUp) throws RemoteException {
         return placeStartingCardClient(frontSideUp, remoteObject.setStartingCard(gameId, username, frontSideUp));
     }
 
     @Override
     public boolean choosePersonalObjective(int objectiveId) throws RemoteException {
-        return choosePersonalObjectiveClient(objectiveId , remoteObject.choosePersonalObjective(this.gameId, username, objectiveId));
+        return choosePersonalObjectiveClient(objectiveId, remoteObject.choosePersonalObjective(this.gameId, username, objectiveId));
     }
 
     @Override
-    public boolean fetchAvailableGames() throws RemoteException{
+    public boolean fetchAvailableGames() throws RemoteException {
         return fetchAvailableGamesClient(remoteObject.getAvailableGames(username));
     }
 
@@ -198,10 +195,10 @@ public class RmiClient extends Client implements ClientInterface {
     public boolean fetchPlayersResources() throws RemoteException {
         HashMap<String, HashMap<Resource, Integer>> playersResourcesMap = new HashMap<>();
 
-        for(String player : players){
+        for (String player : players) {
             HashMap<Resource, Integer> playerResources = remoteObject.getPlayerResources(this.gameId, this.username, player);
 
-            if(playerResources == null){
+            if (playerResources == null) {
                 return false;
             }
 
@@ -214,10 +211,10 @@ public class RmiClient extends Client implements ClientInterface {
     public boolean fetchPlayersBoards() throws RemoteException {
         HashMap<String, HashMap<Coordinates, Integer>> playersBoardMap = new HashMap<>();
 
-        for(String player : players){
+        for (String player : players) {
             HashMap<Coordinates, Integer> playerBoardId = remoteObject.getBoard(this.gameId, this.username, player);
 
-            if(playerBoardId == null){
+            if (playerBoardId == null) {
                 return false;
             }
 
@@ -231,15 +228,15 @@ public class RmiClient extends Client implements ClientInterface {
     public boolean fetchPlayersPlacingOrder() throws IOException {
         HashMap<String, ArrayList<Card>> placingOrderMap = new HashMap<>();
 
-        for(String player : players){
+        for (String player : players) {
             Deque<Integer> placingOrderId = remoteObject.getPlacingOrder(this.gameId, this.username, player);
 
-            if(placingOrderId == null){
+            if (placingOrderId == null) {
                 return false;
             }
             ArrayList<Card> placingOrder = new ArrayList<>();
 
-            for(int id : placingOrderId){
+            for (int id : placingOrderId) {
                 placingOrder.add(Game.getCardByID(id));
             }
             placingOrderMap.put(player, placingOrder);
@@ -260,13 +257,13 @@ public class RmiClient extends Client implements ClientInterface {
 
     @Override
     public boolean fetchOpponentsHandColor() throws RemoteException {
-        for(String player : players){
-            if(player.equals(this.username)){
+        for (String player : players) {
+            if (player.equals(this.username)) {
                 continue;
             }
 
             ArrayList<Resource> handColor = remoteObject.getHandColor(this.gameId, this.username, player);
-            if(handColor == null){
+            if (handColor == null) {
                 return false;
             }
 
@@ -293,6 +290,7 @@ public class RmiClient extends Client implements ClientInterface {
 
     /**
      * Waits for an update from the server.
+     *
      * @throws RemoteException If a remote communication error occurs.
      */
     @Override
@@ -302,13 +300,12 @@ public class RmiClient extends Client implements ClientInterface {
 
     /**
      * Posts a chat message on the server.
+     *
      * @param message The chat message to post.
      * @throws RemoteException If a remote communication error occurs.
      */
     @Override
-    public void postChat(String message, String receiver) throws RemoteException{
+    public void postChat(String message, String receiver) throws RemoteException {
         remoteObject.postChat(this.gameId, username, message, receiver);
     }
-
-
 }

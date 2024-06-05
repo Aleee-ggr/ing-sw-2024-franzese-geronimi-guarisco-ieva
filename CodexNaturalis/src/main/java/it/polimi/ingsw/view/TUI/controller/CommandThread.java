@@ -125,13 +125,17 @@ public class CommandThread extends Thread {
                     break;
                 case "chat":
                     if (cmd.length > 1) {
-                        postChat(Arrays.copyOfRange(cmd, 1, cmd.length));
+                        postChat(Arrays.copyOfRange(cmd, 1, cmd.length), null);
                     } else {
                         defaultCommand();
                     }
                     break;
                 case "whisper":
-                    //TODO whisper
+                    if (cmd.length > 2) {
+                        postChat(Arrays.copyOfRange(cmd, 2, cmd.length), cmd[1]);
+                    } else {
+                        defaultCommand();
+                    }
                     break;
                 case "center":
                     compositor.getBoard().setCenter(new Coordinates(0, 0));
@@ -217,10 +221,10 @@ public class CommandThread extends Thread {
         }
     }
 
-    private void postChat(String[] message) {
+    private void postChat(String[] message, String receiver) {
         String msg = String.join(" ", message);
         try {
-            client.postChat(msg, "TODO"); //TODO: fix implementation
+            client.postChat(msg, receiver);
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
