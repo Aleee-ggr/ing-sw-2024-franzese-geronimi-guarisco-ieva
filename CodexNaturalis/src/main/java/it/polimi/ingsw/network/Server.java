@@ -1,7 +1,5 @@
 package it.polimi.ingsw.network;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.controller.Logger;
 import it.polimi.ingsw.controller.WaitState;
@@ -10,7 +8,6 @@ import it.polimi.ingsw.controller.threads.GameThread;
 import it.polimi.ingsw.controller.threads.Status;
 import it.polimi.ingsw.controller.threads.ThreadMessage;
 import it.polimi.ingsw.model.ChatMessage;
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.enums.Resource;
 
@@ -25,6 +22,7 @@ import java.util.function.Predicate;
 /**
  * The abstract class Server serves as a base class for server implementations.
  * It manages games and their corresponding threads, as well as players and messages.
+ *
  * @author Daniele Ieva
  */
 public abstract class Server {
@@ -36,13 +34,13 @@ public abstract class Server {
     protected static final Map<UUID, Map<String, WaitState>> gameTurns = new ConcurrentHashMap<>();
     protected static final Map<UUID, ArrayList<ChatMessage>> chat = new ConcurrentHashMap<>();
 
-    static{
+    static {
         new Thread(() -> {
             while (true) {
                 try {
                     Thread.sleep(GameConsts.heartbeatInterval);
 
-                    if(playerStatus.isEmpty()){
+                    if (playerStatus.isEmpty()) {
                         continue;
                     }
 
@@ -68,6 +66,7 @@ public abstract class Server {
 
     /**
      * Creates a new game with the specified number of players and starts its thread.
+     *
      * @param numberOfPlayers the number of players in the game (between 2 and 4 inclusive)
      * @return the unique ID of the created game, or null if the number of players is out of range
      */
@@ -89,15 +88,14 @@ public abstract class Server {
 
     /**
      * Joins a player to a game.
-     * @param game the unique ID of the game to join
+     *
+     * @param game   the unique ID of the game to join
      * @param player the username of the player to join the game
      * @return true if the player was successfully joined to the game, false otherwise
      */
-    public static boolean joinGame(UUID game, String player){
+    public static boolean joinGame(UUID game, String player) {
         gameTurns.get(game).put(player, WaitState.WAIT);
-        ThreadMessage message = ThreadMessage.join(
-                player
-        );
+        ThreadMessage message = ThreadMessage.join(player);
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
@@ -105,10 +103,7 @@ public abstract class Server {
     }
 
     public static Integer drawCardServer(UUID game, String player, Integer position) throws RemoteException {
-        ThreadMessage message = ThreadMessage.draw(
-                player,
-                position
-        );
+        ThreadMessage message = ThreadMessage.draw(player, position);
 
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
@@ -121,11 +116,7 @@ public abstract class Server {
     }
 
     public static Boolean placeCardServer(UUID game, String player, Coordinates coordinates, Integer cardId) throws RemoteException {
-        ThreadMessage message = ThreadMessage.placeCard(
-                player,
-                coordinates,
-                cardId
-        );
+        ThreadMessage message = ThreadMessage.placeCard(player, coordinates, cardId);
 
         sendMessage(game, message);
 
@@ -134,6 +125,7 @@ public abstract class Server {
 
     /**
      * Check whether the given credentials are valid (size less than 16 and username is not reused)
+     *
      * @param username the username of the player
      * @param password the password of the player
      * @return true if the given credentials are valid, false otherwise
@@ -153,6 +145,7 @@ public abstract class Server {
 
     /**
      * Gets an unmodifiable view of the games managed by the server.
+     *
      * @return a map of game IDs to the number of players in each game
      */
     public static Map<UUID, Integer> getGames() {
@@ -161,7 +154,8 @@ public abstract class Server {
 
     /**
      * Adds a game to the server's collection of games.
-     * @param id the unique ID of the game
+     *
+     * @param id        the unique ID of the game
      * @param playerNum the number of players in the game
      */
     private static void addGame(UUID id, Integer playerNum) {
@@ -171,10 +165,11 @@ public abstract class Server {
     /**
      * Sends a message to a specified game.
      * The method uses a synchronized block to safely interact with the message queue of the game.
-     * @param game the unique ID of the game to send the message to
+     *
+     * @param game    the unique ID of the game to send the message to
      * @param message the message to be sent to the game
      */
-    public static void sendMessage(UUID game, ThreadMessage message ) {
+    public static void sendMessage(UUID game, ThreadMessage message) {
         synchronized (threadMessages) {
             BlockingQueue<ThreadMessage> queue = threadMessages.get(game);
             UUID messageUUID = message.messageUUID();
@@ -198,9 +193,7 @@ public abstract class Server {
     }
 
     public static GameState getGameStateServer(UUID game, String username) {
-        ThreadMessage message = ThreadMessage.getGameState(
-                username
-        );
+        ThreadMessage message = ThreadMessage.getGameState(username);
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
@@ -212,9 +205,7 @@ public abstract class Server {
     }
 
     public static HashMap<String, Integer> getScoreMapServer(UUID game, String username) {
-        ThreadMessage message = ThreadMessage.getScoreMap(
-                username
-        );
+        ThreadMessage message = ThreadMessage.getScoreMap(username);
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
@@ -234,9 +225,7 @@ public abstract class Server {
     }
 
     public static ArrayList<Integer> getHandServer(UUID game, String username) {
-        ThreadMessage message = ThreadMessage.getHand(
-                username
-        );
+        ThreadMessage message = ThreadMessage.getHand(username);
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
@@ -254,10 +243,7 @@ public abstract class Server {
     }
 
     public static boolean setStartingCardServer(UUID game, String username, boolean frontSideUp) {
-        ThreadMessage message = ThreadMessage.placeStartingCard(
-                username,
-                String.valueOf(frontSideUp)
-        );
+        ThreadMessage message = ThreadMessage.placeStartingCard(username, String.valueOf(frontSideUp));
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
@@ -265,10 +251,7 @@ public abstract class Server {
     }
 
     public static boolean choosePersonalObjectiveServer(UUID game, String username, Integer objectiveId) {
-        ThreadMessage message = ThreadMessage.choosePersonalObjective(
-                username,
-                objectiveId
-        );
+        ThreadMessage message = ThreadMessage.choosePersonalObjective(username, objectiveId);
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
@@ -276,10 +259,7 @@ public abstract class Server {
     }
 
     public static ArrayList<Resource> getHandColorServer(UUID game, String username, String usernameRequiredData) {
-        ThreadMessage message = ThreadMessage.getHandColor(
-                username,
-                usernameRequiredData
-        );
+        ThreadMessage message = ThreadMessage.getHandColor(username, usernameRequiredData);
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
@@ -297,10 +277,7 @@ public abstract class Server {
     }
 
     public static HashMap<Coordinates, Integer> getBoardServer(UUID game, String username, String usernameRequiredData) {
-        ThreadMessage message = ThreadMessage.getBoard(
-                username,
-                usernameRequiredData
-        );
+        ThreadMessage message = ThreadMessage.getBoard(username, usernameRequiredData);
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
@@ -320,10 +297,7 @@ public abstract class Server {
     }
 
     public static Deque<Integer> getPlacingOrderServer(UUID game, String username, String usernameRequiredData) {
-        ThreadMessage message = ThreadMessage.getPlacingOrder(
-                username,
-                usernameRequiredData
-        );
+        ThreadMessage message = ThreadMessage.getPlacingOrder(username, usernameRequiredData);
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
@@ -339,10 +313,8 @@ public abstract class Server {
         }
     }
 
-    public static ArrayList<Integer> getCommonObjectivesServer(UUID game, String username){
-        ThreadMessage message = ThreadMessage.getCommonObjectives(
-                username
-        );
+    public static ArrayList<Integer> getCommonObjectivesServer(UUID game, String username) {
+        ThreadMessage message = ThreadMessage.getCommonObjectives(username);
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
@@ -358,10 +330,8 @@ public abstract class Server {
         }
     }
 
-    public static Integer getPersonalObjectiveServer(String username, UUID game){
-        ThreadMessage message = ThreadMessage.getPersonalObjective(
-                username
-        );
+    public static Integer getPersonalObjectiveServer(String username, UUID game) {
+        ThreadMessage message = ThreadMessage.getPersonalObjective(username);
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
@@ -372,10 +342,8 @@ public abstract class Server {
         }
     }
 
-    public static ArrayList<Integer> getStartingObjectivesServer(UUID game, String username){
-        ThreadMessage message = ThreadMessage.getStartingObjectives(
-                username
-        );
+    public static ArrayList<Integer> getStartingObjectivesServer(UUID game, String username) {
+        ThreadMessage message = ThreadMessage.getStartingObjectives(username);
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
@@ -392,9 +360,7 @@ public abstract class Server {
     }
 
     public static ArrayList<String> getPlayersServer(UUID game, String username) {
-        ThreadMessage message = ThreadMessage.getPlayers(
-                username
-        );
+        ThreadMessage message = ThreadMessage.getPlayers(username);
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
@@ -407,10 +373,7 @@ public abstract class Server {
     }
 
     public static HashMap<Resource, Integer> getPlayerResourcesServer(UUID game, String username, String usernameRequiredData) {
-        ThreadMessage message = ThreadMessage.getPlayerResources(
-                username,
-                usernameRequiredData
-        );
+        ThreadMessage message = ThreadMessage.getPlayerResources(username, usernameRequiredData);
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
@@ -433,9 +396,7 @@ public abstract class Server {
     }
 
     public static ArrayList<Integer> getVisibleCardsServer(UUID game, String username) {
-        ThreadMessage message = ThreadMessage.getVisibleCards(
-                username
-        );
+        ThreadMessage message = ThreadMessage.getVisibleCards(username);
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
@@ -452,9 +413,7 @@ public abstract class Server {
     }
 
     public static ArrayList<Integer> getBackSideDecksServer(UUID game, String username) {
-        ThreadMessage message = ThreadMessage.getBackSideDecks(
-                username
-        );
+        ThreadMessage message = ThreadMessage.getBackSideDecks(username);
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
@@ -471,9 +430,7 @@ public abstract class Server {
     }
 
     public static ArrayList<Coordinates> getValidPlacementsServer(UUID game, String username) {
-        ThreadMessage message = ThreadMessage.getValidPlacements(
-                username
-        );
+        ThreadMessage message = ThreadMessage.getValidPlacements(username);
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
@@ -492,9 +449,7 @@ public abstract class Server {
     }
 
     public static Integer getStartingCardServer(UUID game, String username) {
-        ThreadMessage message = ThreadMessage.getStartingCard(
-                username
-        );
+        ThreadMessage message = ThreadMessage.getStartingCard(username);
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 
@@ -509,7 +464,7 @@ public abstract class Server {
         if (gameTurns.get(game).get(username) != WaitState.TURN) {
             gameTurns.get(game).put(username, WaitState.WAIT);
         }
-        while(gameTurns.get(game).get(username) == WaitState.WAIT) {
+        while (gameTurns.get(game).get(username) == WaitState.WAIT) {
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
@@ -526,20 +481,17 @@ public abstract class Server {
 
     public static List<ChatMessage> fetchChatServer(UUID game, String username) {
         Predicate<ChatMessage> filter = ChatMessage.getPlayerFilter(username);
-        if(chat.get(game) == null){
+        if (chat.get(game) == null) {
             return new ArrayList<>();
         }
-        return chat.get(game)
-                .stream()
-                .filter(filter)
-                .toList();
+        return chat.get(game).stream().filter(filter).toList();
     }
 
-    public static void postChatServer(UUID game, String username, String message, String reciever) {
+    public static void postChatServer(UUID game, String username, String message, String receiver) {
         chat.computeIfAbsent(game, k -> new ArrayList<>());
-        chat.get(game).add(
-                new ChatMessage(username, message, reciever)
-        );
+        chat.get(game).add(new ChatMessage(username, message, receiver));
+        sendMessage(game, ThreadMessage.sendUpdate(username));
+        threadMessages.get(game).remove();
     }
 }
 

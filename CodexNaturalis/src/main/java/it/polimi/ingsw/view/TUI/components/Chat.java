@@ -30,11 +30,12 @@ public class Chat implements Component {
             if (chat.get(row).receiver() != null) {
                 line.append("\u001b[1;90m");
             }
+            line.append(sender);
             if (chat.get(row).receiver() != null) {
                 line.append("\u001b[0m");
             }
-            line.append(sender).append("> ");
-            
+            line.append("> ");
+
             int totalWidth = chatWidth - (senderLength + 2);
             line.append(String.format("%-" + totalWidth + "s", message.substring(0, Math.min(totalWidth, message.length()))));
 
