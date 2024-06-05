@@ -4,7 +4,6 @@ import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.Compositor;
-import org.checkerframework.checker.units.qual.N;
 
 import java.io.IOException;
 
@@ -12,6 +11,7 @@ public class ClientUpdateThread extends Thread {
     private final ClientInterface client;
     private final SharedUpdate updater;
     private final Compositor compositor;
+
     public ClientUpdateThread(ClientInterface client, SharedUpdate updater, Compositor compositor) {
         this.client = client;
         this.updater = updater;

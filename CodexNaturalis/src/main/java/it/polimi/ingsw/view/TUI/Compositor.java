@@ -25,22 +25,17 @@ public class Compositor {
     private final ScoreBoard scoreBoard;
     private final Prompt prompt;
     private final TopBar topBar = new TopBar();
-    private Map<View, Component> mainComponent = new HashMap<>();
+    private final Map<View, Component> mainComponent = new HashMap<>();
     private View view = View.BOARD;
     private String viewPlayer;
-
-    @Override
-    public String toString() {
-        return updateView();
-    }
 
     public Compositor(ClientInterface client) {
         this.client = client;
         this.chat = new Chat(client);
         this.viewPlayer = client.getUsername();
-        miniBoard = new MiniBoard[client.getPlayerNum()-1];
-        for(int i = 0, y = 0; i < miniBoard.length; i++, y++){
-            if(client.getPlayers().get(y).equals(client.getUsername())){
+        miniBoard = new MiniBoard[client.getPlayerNum() - 1];
+        for (int i = 0, y = 0; i < miniBoard.length; i++, y++) {
+            if (client.getPlayers().get(y).equals(client.getUsername())) {
                 i--;
                 continue;
             }
@@ -53,9 +48,14 @@ public class Compositor {
         this.scoreBoard = new ScoreBoard(client);
         this.prompt = new Prompt(client.getUsername());
 
-        mainComponent.put(View.BOARD,  new Board(client));
+        mainComponent.put(View.BOARD, new Board(client));
         mainComponent.put(View.OBJECTIVES, createObjectiveView(client));
         mainComponent.put(View.DECK, new DeckView(client));
+    }
+
+    @Override
+    public String toString() {
+        return updateView();
     }
 
     public void setViewPlayer(String player) {
@@ -67,67 +67,51 @@ public class Compositor {
 
     }
 
-    public String updateView(){
+    public String updateView() {
         StringBuilder out = new StringBuilder();
         out.append(topBar).append("\n");
         resources.setResourceCount(client.getOpponentData().get(viewPlayer).getResources());
 
         for (MiniBoard miniBoard : miniBoard) {
-            Map<Coordinates, Integer> convertedBoard = convertBoard(((Client)client).getOpponentData().get(miniBoard.getUsername()).getBoard());
+            Map<Coordinates, Integer> convertedBoard = convertBoard(((Client) client).getOpponentData().get(miniBoard.getUsername()).getBoard());
             miniBoard.setBoard(convertedBoard);
         }
 
-        for(int y = 0; y < MiniBoard.boardHeight; y++){
+        for (int y = 0; y < MiniBoard.boardHeight; y++) {
             for (MiniBoard miniBoard : miniBoard) {
-                out.append(miniBoard.toStringArrayColor()[y])
-                        .append('┃');
+                out.append(miniBoard.toStringArrayColor()[y]).append('┃');
             }
-            out.append(chat.toStringArray()[y])
-                    .append('┃');
+            out.append(chat.toStringArray()[y]).append('┃');
             out.append(resources.toStringArrayColor()[y]);
             out.append('\n');
         }
 
 
-        switch(client.getPlayerNum()-1){
+        switch (client.getPlayerNum() - 1) {
             case 1:
                 out.append("━".repeat(MiniBoard.boardWidth));
                 break;
             case 2:
-                out.append("━".repeat((MiniBoard.boardWidth-1)/2))
-                        .append('┻')
-                        .append("━".repeat((MiniBoard.boardWidth-1)/2));
+                out.append("━".repeat((MiniBoard.boardWidth - 1) / 2)).append('┻').append("━".repeat((MiniBoard.boardWidth - 1) / 2));
                 break;
             case 3:
-                out.append("━".repeat((MiniBoard.boardWidth-2)/3))
-                        .append('┻')
-                        .append("━".repeat((MiniBoard.boardWidth-2)/3))
-                        .append('╋')
-                        .append("━".repeat((MiniBoard.boardWidth-2)/3));
+                out.append("━".repeat((MiniBoard.boardWidth - 2) / 3)).append('┻').append("━".repeat((MiniBoard.boardWidth - 2) / 3)).append('╋').append("━".repeat((MiniBoard.boardWidth - 2) / 3));
                 break;
             default:
                 throw new RuntimeException("Invalid player number.");
         }
-        out.append('┻')
-                .append("━".repeat(Chat.chatWidth))
-                .append('┻');
+        out.append('┻').append("━".repeat(Chat.chatWidth)).append('┻');
         out.append("━".repeat(ResourceView.width));
         out.append('\n');
 
 
         int y;
-        for(y = 0; y < HandView.panelHeight; y++){
-            out.append(hand.toStringArrayColor()[y])
-                    .append("┃")
-                    .append(mainComponent.get(view).toStringArrayColor()[y])
-                    .append("\n");
+        for (y = 0; y < HandView.panelHeight; y++) {
+            out.append(hand.toStringArrayColor()[y]).append("┃").append(mainComponent.get(view).toStringArrayColor()[y]).append("\n");
         }
 
-        for(int of_y = 0; of_y < ScoreBoard.scoreHeight; of_y++) {
-            out.append(scoreBoard.toStringArray()[of_y])
-                    .append("┃")
-                    .append(mainComponent.get(view).toStringArrayColor()[y + of_y])
-                    .append("\n");
+        for (int of_y = 0; of_y < ScoreBoard.scoreHeight; of_y++) {
+            out.append(scoreBoard.toStringArray()[of_y]).append("┃").append(mainComponent.get(view).toStringArrayColor()[y + of_y]).append("\n");
         }
 
         out.append(prompt.toString());
@@ -138,7 +122,7 @@ public class Compositor {
         topBar.setMessage(message);
     }
 
-    private ObjectiveView createObjectiveView(ClientInterface client){
+    private ObjectiveView createObjectiveView(ClientInterface client) {
         PlayerData clientData = client.getPlayerData();
         ObjectiveCard personal = new ObjectiveCard(clientData.getPersonalObjective());
         ObjectiveCard[] global = new ObjectiveCard[GameConsts.globalObjectives];
@@ -148,7 +132,7 @@ public class Compositor {
         return new ObjectiveView(personal, global);
     }
 
-    private Map<Coordinates, Integer> convertBoard(Map<Coordinates, Card> board){
+    private Map<Coordinates, Integer> convertBoard(Map<Coordinates, Card> board) {
         Map<Coordinates, Integer> convertedBoard = new HashMap<>();
         for (Map.Entry<Coordinates, Card> entry : board.entrySet()) {
             convertedBoard.put(entry.getKey(), entry.getValue().getId());

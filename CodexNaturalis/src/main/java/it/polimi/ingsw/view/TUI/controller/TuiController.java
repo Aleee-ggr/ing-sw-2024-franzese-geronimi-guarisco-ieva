@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.TUI.controller;
 
-import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.Compositor;
@@ -8,23 +7,24 @@ import it.polimi.ingsw.view.TUI.components.StartingCardView;
 import it.polimi.ingsw.view.TUI.components.StartingObjectiveView;
 import it.polimi.ingsw.view.TUI.components.printables.ObjectiveCard;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class TuiController {
+    private final ClientInterface client;
     BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     PrintWriter out = new PrintWriter(System.out, true);
-    private final ClientInterface client;
     Compositor compositor = null;
 
     public TuiController(ClientInterface client) {
         this.client = client;
-        client.setCredentials(
-                String.valueOf(ThreadLocalRandom.current().nextInt(100, 1000)),
-                "password");
+        client.setCredentials(String.valueOf(ThreadLocalRandom.current().nextInt(100, 1000)), "password");
     }
 
     public void start() {
@@ -41,7 +41,7 @@ public class TuiController {
             throw new RuntimeException(e);
         }
 
-        switch(client.getGameState()){
+        switch (client.getGameState()) {
             case SETUP:
                 setup();
             case MAIN:
@@ -54,19 +54,18 @@ public class TuiController {
     private void login() {
         try {
             boolean valid = false;
-            do{
+            do {
                 out.println("Insert username: ");
                 String username = in.readLine();
                 out.println("Insert password: ");
                 String password = in.readLine();
 
-                valid = client.checkCredentials(
-                        username,
-                        password
-                );
+                valid = client.checkCredentials(username, password);
             } while (!valid);
 
-        } catch (IOException e) {throw new RuntimeException(e);}
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void selectGame() { //TODO: change game selection for duplicate users
@@ -78,7 +77,7 @@ public class TuiController {
                 out.println("Available games: ");
 
                 for (int i = 0; i < client.getAvailableGames().size(); i++) {
-                    out.printf("%d.\t%s\n", i+1, client.getAvailableGames().get(i));
+                    out.printf("%d.\t%s\n", i + 1, client.getAvailableGames().get(i));
                 }
                 out.println("Select game to play (0 to create a new game)");
 
@@ -90,7 +89,9 @@ public class TuiController {
                 UUID choice = client.getAvailableGames().get(selected - 1);
                 client.joinGame(choice);
             }
-        } catch (IOException e) {throw new RuntimeException(e);}
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void lobby() {
@@ -102,39 +103,28 @@ public class TuiController {
     private void setup() {
         fetchSetup();
         boolean done = false;
-        PlayerData playerData  = client.getPlayerData();
+        PlayerData playerData = client.getPlayerData();
         int sel = 1;
         while (!done) {
             clear();
-            out.println(
-                    new StartingObjectiveView(
-                            playerData.getStartingObjectives()
-                                    .stream()
-                                    .map(ObjectiveCard::new)
-                                    .toArray(ObjectiveCard[]::new)
-                    )
-            );
+            out.println(new StartingObjectiveView(playerData.getStartingObjectives().stream().map(ObjectiveCard::new).toArray(ObjectiveCard[]::new)));
             out.println("Select starting objective: ");
             sel = select(1, 2);
             done = sel >= 0;
         }
 
         try {
-            client.choosePersonalObjective(
-                    playerData.getStartingObjectives().get(sel-1).getId()
-            );
-        } catch (IOException e) {throw new RuntimeException(e);}
+            client.choosePersonalObjective(playerData.getStartingObjectives().get(sel - 1).getId());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         done = false;
 
 
         while (!done) {
             clear();
-            out.println(
-                    new StartingCardView(
-                            client.getPlayerData().getStartingCard()
-                    )
-            );
+            out.println(new StartingCardView(client.getPlayerData().getStartingCard()));
             out.println("Select starting card face: ");
             sel = select(1, 2);
             done = sel >= 0;
@@ -142,7 +132,9 @@ public class TuiController {
 
         try {
             client.placeStartingCard(sel == 1);
-        } catch (IOException e) {throw new RuntimeException(e);}
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void mainGame() {
@@ -164,9 +156,7 @@ public class TuiController {
     private void endGame() {
         try {
             client.fetchScoreMap();
-            List<Map.Entry<String, Integer>> entryList =  client.getScoreMap().entrySet().stream()
-                    .sorted((e1, e2) -> e2.getValue() - e1.getValue())
-                    .toList();
+            List<Map.Entry<String, Integer>> entryList = client.getScoreMap().entrySet().stream().sorted((e1, e2) -> e2.getValue() - e1.getValue()).toList();
 
             for (int i = 0; i < entryList.size(); i++) {
                 out.print(i + 1);
@@ -189,7 +179,9 @@ public class TuiController {
                 return selection;
             }
         } catch (NumberFormatException ignored) {
-        } catch (IOException e) {throw new RuntimeException(e);}
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return -1;
     }
 
@@ -205,7 +197,9 @@ public class TuiController {
             } while (selection < 2 || selection > 4);
 
             client.newGame(selection);
-        } catch(IOException e) {throw new RuntimeException(e);}
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void fetchSetup() {
@@ -213,7 +207,9 @@ public class TuiController {
             client.fetchPlayers();
             client.fetchStartingObjectives();
             client.fetchStartingCard();
-        } catch (IOException e) {throw new RuntimeException(e);}
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void fetchData() {
@@ -228,13 +224,17 @@ public class TuiController {
             client.fetchGameState();
             client.fetchVisibleCardsAndDecks();
             client.fetchOpponentsHandColor();
-        } catch (IOException e) {throw new RuntimeException(e);}
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void waitUpdate() {
         try {
             client.waitUpdate();
-        } catch (IOException e) {throw new RuntimeException(e);}
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

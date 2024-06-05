@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.TUI.controller;
 
-import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.network.ClientInterface;
@@ -27,6 +26,14 @@ public class CommandThread extends Thread {
         this.compositor = compositor;
     }
 
+    private static int getOffset(String arg) {
+        try {
+            return Integer.parseInt(arg);
+        } catch (NumberFormatException ignored) {
+            return 0;
+        }
+    }
+
     @Override
     public void run() {
         boolean running;
@@ -39,7 +46,9 @@ public class CommandThread extends Thread {
                 handleCommand(command);
                 fetchData();
                 updater.update();
-            } catch (IOException e) {throw new RuntimeException(e);}
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             synchronized (client) {
                 running = client.getGameState() != GameState.STOP;
             }
@@ -74,6 +83,7 @@ public class CommandThread extends Thread {
      *  <li> w / a / s / d [int distance]: move the view of the board for the given distance</li>
      *  <li> h: show this list </li>
      *  </ul>
+     *
      * @param command the command to execute
      */
     private void handleCommand(String command) {
@@ -101,23 +111,21 @@ public class CommandThread extends Thread {
                                 compositor.switchView(View.DECK);
                             }
                         }
-                    }
-                    else {
+                    } else {
                         defaultCommand();
                     }
                     break;
                 case "view":
                     try {
                         compositor.switchView(View.getView(cmd[1]));
-                    } catch(IllegalStateException e){
+                    } catch (IllegalStateException e) {
                         defaultCommand();
                     }
-                        break;
+                    break;
                 case "chat":
                     if (cmd.length > 1) {
                         postChat(Arrays.copyOfRange(cmd, 1, cmd.length));
-                    }
-                    else {
+                    } else {
                         defaultCommand();
                     }
                     break;
@@ -200,12 +208,6 @@ public class CommandThread extends Thread {
             e.printStackTrace();
             System.exit(1);
         }
-    }
-
-    private static int getOffset(String arg) {
-        try {
-            return Integer.parseInt(arg);
-        } catch (NumberFormatException ignored) {return 0;}
     }
 
     private void postChat(String[] message) {
