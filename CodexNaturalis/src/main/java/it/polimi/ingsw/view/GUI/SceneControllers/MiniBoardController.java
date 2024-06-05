@@ -24,6 +24,7 @@ public class MiniBoardController implements Initializable {
     private ClientInterface client;
     private PlayerData playerData;
     private Coordinates center;
+    private GameController gameController;
 
     @FXML
     StackPane tabPane;
@@ -54,6 +55,8 @@ public class MiniBoardController implements Initializable {
             if (!entry.getKey().equals(client.getUsername())) {
                 GridPane currentBoard = boards[playerIndex % boards.length]; // Alterna le board
                 playerIndex++;
+
+                currentBoard.setOnMouseClicked(event -> gameController.setupOpponentData(entry.getKey()));
 
                 if (entry.getValue().getBoard().isEmpty()) {
                     int startingCard = entry.getValue().getOrder().getFirst().getId();
@@ -102,9 +105,10 @@ public class MiniBoardController implements Initializable {
         }
     }
 
-    public void setClient(ClientInterface client) {
+    public void setClient(ClientInterface client, GameController gameController) {
         this.client = client;
         this.playerData = client.getPlayerData();
+        this.gameController = gameController;
     }
 
     @FXML

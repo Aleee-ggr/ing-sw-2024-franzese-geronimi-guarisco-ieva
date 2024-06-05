@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.GUI.SceneControllers;
 
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.client.ClientData;
 import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.network.ClientInterface;
@@ -14,7 +15,9 @@ import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -85,6 +88,9 @@ public class GameController implements Initializable {
     HBox handContainer;
 
     @FXML
+    VBox buttonsContainer;
+
+    @FXML
     StackPane root;
 
     @FXML
@@ -92,6 +98,27 @@ public class GameController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        setPersonalData();
+    }
+
+    private void setupResources() {
+        Map<Resource, Text> resourceText = new HashMap<>();
+        resourceText.put(Resource.FUNGI, fungiCount);
+        resourceText.put(Resource.ANIMAL, animalCount);
+        resourceText.put(Resource.PLANT, plantCount);
+        resourceText.put(Resource.INSECT, insectCount);
+        resourceText.put(Resource.QUILL, quillCount);
+        resourceText.put(Resource.INKWELL, inkwellCount);
+        resourceText.put(Resource.MANUSCRIPT, manuscriptCount);
+
+        for (Map.Entry<Resource, Integer> entry : playerData.getResources().entrySet()) {
+            if (entry.getKey() != Resource.NONE && entry.getKey() != Resource.NONCOVERABLE) {
+                resourceText.get(entry.getKey()).setText(String.valueOf(entry.getValue()));
+            }
+        }
+    }
+
+    private void setPersonalData() {
         backgroundImage.fitWidthProperty().bind(root.widthProperty());
         backgroundImage.fitHeightProperty().bind(root.heightProperty());
         tabContainer.setVisible(false);
@@ -170,20 +197,50 @@ public class GameController implements Initializable {
         setupValidPlacements();
     }
 
-    private void setupResources() {
-        Map<Resource, Text> resourceText = new HashMap<>();
-        resourceText.put(Resource.FUNGI, fungiCount);
-        resourceText.put(Resource.ANIMAL, animalCount);
-        resourceText.put(Resource.PLANT, plantCount);
-        resourceText.put(Resource.INSECT, insectCount);
-        resourceText.put(Resource.QUILL, quillCount);
-        resourceText.put(Resource.INKWELL, inkwellCount);
-        resourceText.put(Resource.MANUSCRIPT, manuscriptCount);
+    public void setupOpponentData(String usernameOpponent) {
+        ClientData opponentData = client.getOpponentData().get(usernameOpponent);
+        Button button = new Button();
+        button.setText("YOUR BOARD");
+        button.setPrefWidth(250);
+        button.setPrefHeight(78);
 
-        for (Map.Entry<Resource, Integer> entry : playerData.getResources().entrySet()) {
-            if (entry.getKey() != Resource.NONE && entry.getKey() != Resource.NONCOVERABLE) {
-                resourceText.get(entry.getKey()).setText(String.valueOf(entry.getValue()));
+        Glow glow = new Glow();
+        glow.setLevel(0.3);
+        button.setEffect(glow);
+
+        button.setStyle("-fx-font-family: Trattatello;" +
+                "-fx-font-size: 30;" +
+                "-fx-text-fill: #432918;" +
+                "-fx-cursor: hand;" +
+                "-fx-effect: glow(0.3)");
+        button.setOnMouseClicked(event -> {
+            setPersonalData();
+            buttonsContainer.getChildren().remove(button);
+        });
+        buttonsContainer.getChildren().add(button);
+
+        board.getChildren().clear();
+
+        for (Card card: opponentData.getOrder()) {
+            Coordinates coordinates = opponentData.getBoard().inverse().get(card);
+            int id = card.getId();
+            String pathSide;
+
+            if (id > 0) {
+                pathSide = String.format("GUI/images/cards.nogit/front/%03d.png", id);
+            } else {
+                pathSide = String.format("GUI/images/cards.nogit/back/%03d.png", -id);
             }
+            ImageView image = new ImageView(pathSide);
+            image.setFitHeight(100.95);
+            image.setFitWidth(150);
+            image.preserveRatioProperty();
+
+            StackPane stackPane = new StackPane(image);
+
+            board.add(stackPane, calculateBoardCoordinates(coordinates).x(), calculateBoardCoordinates(coordinates).y());
+            GridPane.setHalignment(stackPane, HPos.CENTER);
+            GridPane.setValignment(stackPane, VPos.CENTER);
         }
     }
 
@@ -375,7 +432,7 @@ public class GameController implements Initializable {
             if (!tabContainer.isVisible()) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/MiniBoardTab.fxml"));
                 MiniBoardController controller = new MiniBoardController();
-                controller.setClient(client);
+                controller.setClient(client, this);
                 loader.setController(controller);
                 StackPane miniBoardPane = loader.load();
                 tabPane.getChildren().setAll(miniBoardPane);
