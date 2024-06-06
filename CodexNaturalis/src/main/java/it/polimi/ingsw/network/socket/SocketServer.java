@@ -43,7 +43,7 @@ public class SocketServer extends Server {
         while(!server.isClosed()) {
             try {
                 socket = server.accept();
-                new ClientHandler(socket, threadMessages).start();
+                new ClientHandler(socket).start();
             } catch (IOException e) {
                 e.printStackTrace();
             }
