@@ -116,9 +116,13 @@ public class ClientHandler extends Thread {
                 );
             }
 
-            //TODO: implementation of chat
             case SocketClientPostChatMessage socketClientPostChatMessage -> {
-                return;
+                Server.postChatServer(
+                        socketClientPostChatMessage.getGameUUID(),
+                        socketClientPostChatMessage.getUsername(),
+                        socketClientPostChatMessage.getMessage(),
+                        socketClientPostChatMessage.getReceiver()
+                );
             }
 
             case SocketClientDrawCardMessage socketClientDrawCardMessage -> {
@@ -309,6 +313,15 @@ public class ClientHandler extends Thread {
                         Server.getStartingCardServer(
                                 socketClientGetStartingCardMessage.getGameUUID(),
                                 socketClientGetStartingCardMessage.getUsername()
+                        )
+                );
+            }
+
+            case SocketClientFetchChatMessage socketClientFetchChatMessage -> {
+                responseMessage = new FetchChatResponseMessage(
+                        Server.fetchChatServer(
+                                socketClientFetchChatMessage.getGameUUID(),
+                                socketClientFetchChatMessage.getUsername()
                         )
                 );
             }

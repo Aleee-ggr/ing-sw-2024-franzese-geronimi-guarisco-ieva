@@ -5,11 +5,13 @@ import java.util.UUID;
 public class SocketClientPostChatMessage extends GenericRequestMessage{
     private final UUID gameUUID;
     private final String message;
+    private final String receiver;
 
-    public SocketClientPostChatMessage(String username, UUID gameUUID, String message) {
+    public SocketClientPostChatMessage(String username, UUID gameUUID, String message, String receiver) {
         this.username = username;
         this.gameUUID = gameUUID;
         this.message = message;
+        this.receiver = receiver;
     }
 
     public UUID getGameUUID() {
@@ -18,5 +20,9 @@ public class SocketClientPostChatMessage extends GenericRequestMessage{
 
     public String getMessage() {
         return message;
+    }
+
+    public String getReceiver() {
+        return receiver;
     }
 }

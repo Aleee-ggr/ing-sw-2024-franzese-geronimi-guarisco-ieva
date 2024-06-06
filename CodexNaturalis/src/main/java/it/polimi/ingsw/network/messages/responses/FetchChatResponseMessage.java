@@ -1,15 +1,17 @@
 package it.polimi.ingsw.network.messages.responses;
 
-import java.util.ArrayList;
+import it.polimi.ingsw.model.ChatMessage;
+
+import java.util.List;
 
 public class FetchChatResponseMessage extends GenericResponseMessage {
-    private final ArrayList<String> chat;
+    private final List<ChatMessage> chat;
 
-    public FetchChatResponseMessage(ArrayList<String> chat) {
+    public FetchChatResponseMessage(List<ChatMessage> chat) {
         this.chat = chat;
     }
 
-    public ArrayList<String> getChat() {
+    public List<ChatMessage> getChat() {
         return chat;
     }
 }

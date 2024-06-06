@@ -207,7 +207,7 @@ public class SocketClient extends Client implements ClientInterface {
     //TODO: not implemented -> there is no socket message for this
     @Override
     public synchronized void postChat(String message, String receiver) throws IOException {
-
+        output.writeObject(new SocketClientPostChatMessage(username, gameId, message, receiver));
     }
 
     /**
@@ -277,8 +277,9 @@ public class SocketClient extends Client implements ClientInterface {
     }
 
     @Override
-    public boolean fetchChat() {
-        return false; //TODO implement chat fetch
+    public synchronized boolean fetchChat() throws IOException {
+        output.writeObject(new SocketClientFetchChatMessage(username, gameId));
+        return handleResponse();
     }
 
     @Override
@@ -567,6 +568,11 @@ public class SocketClient extends Client implements ClientInterface {
             case GetBackSideDecksResponseMessage getBackSideDecksResponseMessage -> {
                 visibleDecksIds = getBackSideDecksResponseMessage.getBackSideDecks();
                 return visibleDecksIds != null;
+            }
+
+            case FetchChatResponseMessage fetchChatResponseMessage -> {
+                this.chat = fetchChatResponseMessage.getChat();
+                return this.chat != null;
             }
 
             default -> {
