@@ -48,6 +48,9 @@ public class SocketServer extends Server {
         }
     }
 
+    /**
+     * Stops the server and closes the server socket.
+     */
     public void stopServer() {
         try {
             server.close();
