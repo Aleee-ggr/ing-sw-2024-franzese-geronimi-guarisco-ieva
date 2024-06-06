@@ -1,6 +1,13 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="AllTests" type="JUnit" factoryName="JUnit">
     <module name="PSP11" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="it.polimi.ingsw.view.*" />
+        <option name="ENABLED" value="true" />
+        <option name="INCLUDE" value="false" />
+      </pattern>
+    </extension>
     <option name="PACKAGE_NAME" value="it.polimi.ingsw" />
     <option name="MAIN_CLASS_NAME" value="" />
     <option name="METHOD_NAME" value="" />

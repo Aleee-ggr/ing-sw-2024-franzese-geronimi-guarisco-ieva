@@ -12,10 +12,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ChatMessageTest {
-    private static final String[] messages = new String[]{"Foo", "Bar", "Baz", "Fizz", "Buzz", "FooBar", "FizzBuzz", "Lorem Ipsum", "Dolor Sit Amet", "Odi et Amo. quare id faciam, fortasse requirit.", "Please Intellij stop" + " " + "wrapping this array", "Please I'm begging you",};
+    private static final String[] messages = new String[]{"Foo", "Bar", "Baz", "Fizz", "Buzz", "FooBar", "FizzBuzz", "Lorem Ipsum", "Dolor Sit Amet", "Odi et Amo. quare id faciam, fortasse requiris.", "Please Intellij stop" + " " + "wrapping this array", "Please I'm begging you",};
 
     private static final String[] players = new String[]{"player1", "player2", "player3", "player4"};
-    
+
     @Test
     public void testSimpleChatMessage() {
         ArrayList<ChatMessage> chat = new ArrayList<>();
