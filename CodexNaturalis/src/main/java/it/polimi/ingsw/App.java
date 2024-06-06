@@ -26,18 +26,19 @@ public class App {
         }
         if (arguments.contains("client")) {
             System.out.println("Do you want to launch the GUI? [Y/N]:");
-            String useGui = new Scanner(System.in).nextLine();
+            Scanner scanner = new Scanner(System.in);
+            String useGui = scanner.nextLine();
             if (useGui.equalsIgnoreCase("Y")) {
                 Gui.start();
                 return;
             }
             System.out.print("insert connection mode\n1) socket\n2) RMI\n");
-            String input = new Scanner(System.in).next();
+            String input = scanner.next();
             int mode = Integer.parseInt(input);
 
 
             System.out.print("Insert server address: ");
-            input = new Scanner(System.in).next();
+            input = scanner.next();
             String serverAddress = "localhost";
             if (input.matches("([0-9]+\\.)+[0-9]+")) {
                 serverAddress = input;
