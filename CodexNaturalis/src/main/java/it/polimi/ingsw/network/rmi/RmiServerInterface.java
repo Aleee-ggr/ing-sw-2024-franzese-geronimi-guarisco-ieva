@@ -101,10 +101,9 @@ public interface RmiServerInterface extends Remote {
      * @param game The UUID of the game.
      * @param sender The name of the player posting the message.
      * @param message The chat message to post.
-     * @return The posted message.
      * @throws RemoteException If an RMI error occurs.
      */
-    String postChat(UUID game, String sender, String message, String receiver) throws RemoteException;
+    void postChat(UUID game, String sender, String message, String receiver) throws RemoteException;
 
     WaitState wait(UUID game, String name) throws RemoteException;
 

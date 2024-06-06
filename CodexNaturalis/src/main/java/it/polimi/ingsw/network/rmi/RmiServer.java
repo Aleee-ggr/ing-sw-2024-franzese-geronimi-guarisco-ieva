@@ -200,10 +200,9 @@ public class RmiServer extends Server implements RmiServerInterface {
         return getAvailableGamesServer(username);
     }
 
-    @Override     //TODO: implement chat
-    public String postChat(UUID game, String sender, String message, String receiver) throws RemoteException {
+    @Override
+    public void postChat(UUID game, String sender, String message, String receiver) throws RemoteException {
         postChatServer(game, sender, message, receiver);
-        return ""; //TODO change return type
     }
 
     @Override
