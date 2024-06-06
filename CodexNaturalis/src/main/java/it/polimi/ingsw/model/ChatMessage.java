@@ -12,9 +12,4 @@ public record ChatMessage(String sender, String message, String receiver) implem
     public boolean filterPlayer(String player) {
         return sender.equals(player) || receiver == null || receiver.equals(player);
     }
-
-    @Override
-    public String toString() {
-        return sender + ": " + message;
-    }
 }
