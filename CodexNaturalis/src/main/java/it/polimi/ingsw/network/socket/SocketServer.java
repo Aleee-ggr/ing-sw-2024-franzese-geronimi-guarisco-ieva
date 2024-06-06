@@ -29,7 +29,6 @@ public class SocketServer extends Server {
             new Thread(this::acceptConnection).start();
         } catch (IOException e) {
             e.printStackTrace();
-            System.exit(1);
         }
     }
 
@@ -43,7 +42,6 @@ public class SocketServer extends Server {
                 new ClientHandler(socket).start();
             } catch (IOException e) {
                 e.printStackTrace();
-                System.exit(1);
             }
         }
     }
