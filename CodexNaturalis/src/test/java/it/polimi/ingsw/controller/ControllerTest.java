@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.GameConsts;
+import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.controller.threads.Status;
 import it.polimi.ingsw.controller.threads.ThreadMessage;
 import it.polimi.ingsw.model.Game;
@@ -8,9 +9,11 @@ import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Corner;
 import it.polimi.ingsw.model.cards.StartingCard;
 import it.polimi.ingsw.model.enums.Resource;
+import it.polimi.ingsw.model.player.Player;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -20,13 +23,13 @@ import static java.lang.Math.abs;
 import static org.junit.Assert.*;
 
 public class ControllerTest {
-    private Controller controller;
     private final BlockingQueue<ThreadMessage> msgQueue = new LinkedBlockingQueue<>();
+    private Controller controller;
 
     @Before
     public void setUp() {
         msgQueue.clear();
-        controller = new Controller(msgQueue,2);
+        controller = new Controller(msgQueue, 2);
     }
 
     @Test
@@ -245,9 +248,7 @@ public class ControllerTest {
         ThreadMessage msg = msgQueue.take();
 
         Set<Coordinates> validCoordinates = new HashSet<>(4);
-        List<Resource> res = Arrays.stream(card.getFrontCorners())
-                .map(Corner::getCornerResource)
-                .collect(Collectors.toCollection(ArrayList::new));
+        List<Resource> res = Arrays.stream(card.getFrontCorners()).map(Corner::getCornerResource).collect(Collectors.toCollection(ArrayList::new));
 
         if (res.removeFirst() != Resource.NONCOVERABLE) {
             validCoordinates.add(new Coordinates(-1, 0));
@@ -269,6 +270,151 @@ public class ControllerTest {
             assertTrue(validCoordinates.contains(new Coordinates(x, y)));
         }
     }
+
+    @Test
+    public void testCreateGame() throws InterruptedException {
+        msgQueue.clear();
+        controller.createGame("user", 4, null, null);
+        ThreadMessage msg = msgQueue.take();
+        assertEquals(msg.status(), Status.OK);
+    }
+
+    @Test
+    public void testJoinTooManyPlayers() throws InterruptedException {
+        msgQueue.clear();
+        String[] usernames = {"p1", "p2", "p3"};
+
+        ThreadMessage msg = new ThreadMessage(null, null, null, null, null);
+        for (String username : usernames) {
+            controller.join(username, null);
+            msg = msgQueue.take();
+        }
+
+        assertEquals(msg.status(), Status.ERROR);
+    }
+
+    @Test
+    public void testJoinExistingPlayer() throws InterruptedException {
+        msgQueue.clear();
+        String username = "p1";
+        controller.join(username, null);
+        msgQueue.take();
+        controller.join(username, null);
+        assertEquals(msgQueue.take().status(), Status.ERROR);
+    }
+
+    @Test
+    public void testUpdate() throws InterruptedException {
+        msgQueue.clear();
+        controller.update(null, true, null);
+
+        assertEquals(msgQueue.take().type(), "updateResponse");
+    }
+
+    @Test
+    public void testGetPlayers() throws InterruptedException {
+        msgQueue.clear();
+        String[] players = {"p1", "p2"};
+
+        for (String username : players) {
+            controller.join(username, null);
+            msgQueue.take();
+        }
+
+        controller.getPlayers(null, null);
+        ThreadMessage tm = msgQueue.take();
+
+        assertEquals(tm.status(), Status.OK);
+        assertArrayEquals(tm.args(), players);
+    }
+
+    /**
+     * Test for setup and a whole turn of play, plus getters
+     *
+     * @throws InterruptedException   when receiving an interrupt signal
+     * @throws ClassNotFoundException hopefully never
+     */
+    @Test
+    public void simulateStartAndTurn() throws InterruptedException, ClassNotFoundException {
+        msgQueue.clear();
+        String[] players = {"p1", "p2"};
+
+        for (String username : players) {
+            controller.join(username, null);
+            msgQueue.take();
+        }
+
+        ThreadMessage msg = null;
+
+        for (String p : players) {
+            controller.getStartingObjectives(p, null);
+            msg = msgQueue.take();
+            int[] objectives = Arrays.stream(msg.args()).mapToInt(Integer::parseInt).toArray();
+            controller.choosePersonalObjective(p, objectives[0], null);
+            msg = msgQueue.take();
+
+            assertEquals(msg.status(), Status.OK);
+
+            controller.getStartingCards(p, null);
+            msgQueue.take();
+            controller.placeStartingCard(p, true, null);
+            msg = msgQueue.take();
+            assertEquals(msg.status(), Status.OK);
+        }
+
+        for (Player p : controller.getGame().getPlayers()) {
+            p.drawFirstHand();
+        }
+        controller.getGame().setGameState(GameState.MAIN);
+
+        for (String p : players) {
+            controller.getHand(p, null);
+            msg = msgQueue.take();
+            assertEquals(msg.status(), Status.OK);
+            int[] hand = Arrays.stream(msg.args()).parallel().mapToInt(Integer::parseInt).toArray();
+
+            controller.getValidPlacements(p, null);
+            msg = msgQueue.take();
+            assertEquals(msg.status(), Status.OK);
+            Coordinates[] placements = Arrays.stream(msg.args()).parallel().map(s -> new Coordinates(Integer.parseInt(s.split(",")[0]), Integer.parseInt(s.split(",")[1]))).toArray(Coordinates[]::new);
+
+            controller.placeCard(p, placements[0], hand[1], null);
+            msg = msgQueue.take();
+            assertEquals(msg.status(), Status.OK);
+            controller.draw(p, 4, null);
+            msg = msgQueue.take();
+            assertEquals(msg.status(), Status.OK);
+        }
+
+
+        Set<String> nonGetters = Set.of("getStartingObjectives", "getStartingCards", "getPlayerResources", "getBoard", "getHandColor", "getPlacingOrder", "getGame");
+        List<Method> getters = Arrays.stream(Class.forName("it.polimi.ingsw.controller.Controller").getDeclaredMethods()).filter(m -> m.getName().contains("get")).filter(m -> !nonGetters.contains(m.getName())).filter(m -> !m.getName().contains("lambda$")).toList();
+
+        for (Method getter : getters) {
+            try {
+                getter.invoke(controller, "p1", null);
+                msg = msgQueue.take();
+                assertEquals(msg.status(), Status.OK);
+            } catch (Exception e) {
+                System.out.println(getter.getName());
+                throw new RuntimeException(e);
+            }
+        }
+
+        controller.getPlayerResources("p1", "p1", null);
+        assertEquals(msgQueue.take().status(), Status.OK);
+
+        controller.getPlacingOrder("p1", "p1", null);
+        assertEquals(msgQueue.take().status(), Status.OK);
+
+        controller.getHandColor("p1", "p1", null);
+        assertEquals(msgQueue.take().status(), Status.OK);
+
+        controller.getBoard("p1", "p1", null);
+        assertEquals(msgQueue.take().status(), Status.OK);
+
+    }
+
     private void fillGame(String[] usernames) throws InterruptedException {
         for (String username : usernames) {
             UUID msgUUID = UUID.randomUUID();
