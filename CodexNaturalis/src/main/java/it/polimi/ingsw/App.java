@@ -40,7 +40,7 @@ public class App {
             System.out.print("Insert server address: ");
             input = scanner.next();
             String serverAddress = "localhost";
-            if (input.matches("([0-9]{1,3}\\.){3}[0-9]{1,3}")) {
+            if (input.matches("^([0-9]{1,3}\\.){3}[0-9]{1,3}$")) {
                 serverAddress = input;
             }
 
