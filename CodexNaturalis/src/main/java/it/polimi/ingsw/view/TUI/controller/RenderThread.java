@@ -18,6 +18,11 @@ public class RenderThread extends Thread {
         this.compositor = compositor;
     }
 
+    /**
+     * Clears the screen and print the tui whenever an update is received from the given {@link #updater}, which will
+     * be called from
+     * {@link ClientUpdateThread} and {@link CommandThread}.
+     */
     @Override
     public void run() {
         boolean running;
@@ -38,7 +43,9 @@ public class RenderThread extends Thread {
         }
     }
 
-
+    /**
+     * Clear the screen using ansi escape characters, preparing for the render of the next scene.
+     */
     private void clear() {
         out.print("\033[H\033[2J");
         out.flush();

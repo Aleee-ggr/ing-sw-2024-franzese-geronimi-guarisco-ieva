@@ -34,6 +34,13 @@ public class CommandThread extends Thread {
         }
     }
 
+    /**
+     * Starts a thread reading user commands, some are only visual, while "chat", "whisper", "place", and "draw" also
+     * have effects on the server, and require a server-side update, which will be detected by
+     * {@link ClientUpdateThread}.
+     *
+     * @see #handleCommand(String)  handleCommand("h") for a list of available commands.
+     */
     @Override
     public void run() {
         boolean running;
@@ -55,21 +62,6 @@ public class CommandThread extends Thread {
         }
     }
 
-    private boolean place(int card, int position) {
-        int id = 1;
-        if (card < 0) {
-            id = -1;
-            card = abs(card) - 2;
-        }
-        id *= client.getPlayerData().getClientHand().get(card).getId();
-        Coordinates coordinates = client.getPlayerData().getValidPlacements().get(position);
-        try {
-            return client.placeCard(coordinates, id);
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
     /**
      * List of available commands:
      * <ul>
@@ -84,8 +76,12 @@ public class CommandThread extends Thread {
      *  <li> w / a / s / d [int distance]: move the view of the board for the given distance</li>
      *  <li> h: show this list </li>
      *  </ul>
+     *  The command executed is the first word of the user input.<br/>
+     *  if the command given is not within the list, call {@link #defaultCommand()} to warn the user.
      *
      * @param command the command to execute
+     * @see #defaultCommand()
+     * @see #postChat(String[], String)
      */
     private void handleCommand(String command) {
         String[] cmd = command.split(" ");
@@ -211,6 +207,36 @@ public class CommandThread extends Thread {
         }
     }
 
+    /**
+     * Send a request to place a card to the server, and return whether the card was placed successfully
+     *
+     * @param card     the index of the card in the {@link it.polimi.ingsw.view.TUI.components.HandView hand} to play
+     *                 (base 1)
+     * @param position the index of the card placement, as shown in the
+     *                 {@link it.polimi.ingsw.view.TUI.components.Board} rendering
+     * @return true if the card was placed successfully, else false
+     * @see ClientInterface#placeCard(Coordinates, int)
+     */
+    private boolean place(int card, int position) {
+        int id = 1;
+        if (card < 0) {
+            id = -1;
+            card = abs(card) - 2;
+        }
+        id *= client.getPlayerData().getClientHand().get(card).getId();
+        Coordinates coordinates = client.getPlayerData().getValidPlacements().get(position);
+        try {
+            return client.placeCard(coordinates, id);
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Prints a warning if the given command was not found.
+     *
+     * @see #handleCommand(String)
+     */
     private void defaultCommand() {
         System.out.println("Unknown command\nPress ENTER to continue");
         try {
@@ -221,6 +247,15 @@ public class CommandThread extends Thread {
         }
     }
 
+    /**
+     * Sends a message to the server chat, to the given receiver, if any.
+     *
+     * @param message  the message to send
+     * @param receiver either the username of a player in case of private message, or null for a global message
+     * @see it.polimi.ingsw.model.ChatMessage#ChatMessage(String, String, String)  ChatMessage
+     * @see it.polimi.ingsw.model.ChatMessage#filterPlayer(String)
+     * @see #handleCommand(String)
+     */
     private void postChat(String[] message, String receiver) {
         String msg = String.join(" ", message);
         try {
@@ -231,6 +266,12 @@ public class CommandThread extends Thread {
         }
     }
 
+    /**
+     * Fetch all the required data from the server in order to render the tui interface,
+     *
+     * @see ClientInterface
+     * @see Compositor
+     */
     private void fetchData() {
         try {
             client.fetchClientHand();

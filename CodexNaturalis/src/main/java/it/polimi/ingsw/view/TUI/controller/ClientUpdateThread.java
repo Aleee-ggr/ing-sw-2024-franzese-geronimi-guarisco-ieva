@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.TUI.controller;
 
 import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.controller.threads.GameState;
+import it.polimi.ingsw.controller.threads.GameThread;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.Compositor;
 
@@ -18,6 +19,17 @@ public class ClientUpdateThread extends Thread {
         this.compositor = compositor;
     }
 
+    /**
+     * Wait for updates from the server, using the function waitUpdate and waiting for a return from the call.
+     * This function will set the state to either TURN or WAIT, and then wait for the server to change it to UPDATE
+     * or TURN_UPDATE, if an update is received, fetch necessary data from the server and update the view using the
+     * updater
+     *
+     * @see SharedUpdate
+     * @see WaitState
+     * @see ClientUpdateThread#fetchData()
+     * @see GameThread#sendUpdate()
+     */
     @Override
     public void run() {
         boolean running;
@@ -49,8 +61,13 @@ public class ClientUpdateThread extends Thread {
             }
         }
     }
-
-
+    
+    /**
+     * Fetch all the required data from the server in order to render the tui interface,
+     *
+     * @see ClientInterface
+     * @see Compositor
+     */
     private void fetchData() {
         try {
             client.fetchClientHand();
