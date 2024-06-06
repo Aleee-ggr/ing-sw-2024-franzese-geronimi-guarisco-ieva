@@ -5,6 +5,7 @@ import it.polimi.ingsw.network.rmi.RmiClient;
 import it.polimi.ingsw.network.rmi.RmiServer;
 import it.polimi.ingsw.network.socket.SocketClient;
 import it.polimi.ingsw.network.socket.SocketServer;
+import it.polimi.ingsw.view.GUI.Gui;
 import it.polimi.ingsw.view.TUI.controller.TuiController;
 
 import java.rmi.RemoteException;
@@ -24,6 +25,12 @@ public class App {
             new SocketServer(8000);
         }
         if (arguments.contains("client")) {
+            System.out.println("Do you want to launch the GUI? [Y/N]:");
+            String useGui = new Scanner(System.in).nextLine();
+            if (useGui.equalsIgnoreCase("Y")) {
+                Gui.start();
+                return;
+            }
             System.out.print("insert connection mode\n1) socket\n2) RMI\n");
             String input = new Scanner(System.in).next();
             int mode = Integer.parseInt(input);
