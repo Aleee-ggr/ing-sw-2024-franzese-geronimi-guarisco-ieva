@@ -34,15 +34,7 @@
             <Insets bottom="250.0" />
          </StackPane.margin>
       </Label>
-      <TextField fx:id="serverPort" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="500.0">
-         <StackPane.margin>
-            <Insets top="300.0" />
-         </StackPane.margin>
-         <font>
-            <Font name="Trattatello" size="35.0" />
-         </font>
-      </TextField>
-      <Label text="PORT" textFill="#432918">
+      <Label text="CONNECTION TYPE" textFill="#432918">
          <font>
             <Font name="Trattatello" size="30.0" />
          </font>
@@ -50,7 +42,7 @@
             <Insets top="130.0" />
          </StackPane.margin>
       </Label>
-      <Button fx:id="connectButton" mnemonicParsing="false" onAction="#changeLoginScene" prefHeight="100.0" prefWidth="200.0" text="CONNECT" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_RIGHT">
+      <Button fx:id="socketButton" mnemonicParsing="false" onAction="#changeLoginScene" prefHeight="100.0" prefWidth="200.0" text="SOCKET" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS">
          <font>
             <Font name="Trattatello" size="30.0" />
          </font>
@@ -61,7 +53,21 @@
             <Glow />
          </effect>
          <StackPane.margin>
-            <Insets bottom="100.0" right="130.0" />
+            <Insets right="300.0" top="300.0" />
+         </StackPane.margin>
+      </Button>
+      <Button fx:id="rmiButton" layoutX="870.0" layoutY="500.0" mnemonicParsing="false" onAction="#changeLoginScene" prefHeight="100.0" prefWidth="200.0" text="RMI" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS">
+         <font>
+            <Font name="Trattatello" size="30.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <effect>
+            <Glow />
+         </effect>
+         <StackPane.margin>
+            <Insets left="300.0" top="300.0" />
          </StackPane.margin>
       </Button>
       <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" prefHeight="100.0" prefWidth="200.0" text="BACK" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_LEFT">
