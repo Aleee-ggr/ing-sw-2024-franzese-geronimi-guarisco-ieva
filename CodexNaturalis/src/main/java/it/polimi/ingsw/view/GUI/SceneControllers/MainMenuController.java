@@ -60,26 +60,6 @@ public class MainMenuController implements Initializable {
     }
 
     /**
-     * Changes the scene to the login scene.
-     *
-     * @param event the action event that triggered the method
-     */
-    @FXML
-    private void goBack(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/LoginScene.fxml"));
-            LoginController controller = new LoginController();
-            controller.setClient(client);
-            loader.setController(controller);
-            Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * Sets the client for the controller.
      *
      * @param client the client interface to set

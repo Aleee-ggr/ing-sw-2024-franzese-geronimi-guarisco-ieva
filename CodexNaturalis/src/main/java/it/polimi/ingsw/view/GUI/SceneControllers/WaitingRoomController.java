@@ -163,26 +163,6 @@ public class WaitingRoomController implements Initializable {
         }
     }
 
-    /**
-     * Changes the scene back to the Main Menu.
-     * @param event The ActionEvent triggered by the user's interaction.
-     */
-    @FXML
-    private void goBack(ActionEvent event) {
-        try {
-            stopFetchingPlayers();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/MainMenu.fxml"));
-            MainMenuController controller = new MainMenuController();
-            controller.setClient(client);
-            loader.setController(controller);
-            Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void stopFetchingPlayers() {
         if (fetchPlayersTimeline != null) {
             fetchPlayersTimeline.stop();

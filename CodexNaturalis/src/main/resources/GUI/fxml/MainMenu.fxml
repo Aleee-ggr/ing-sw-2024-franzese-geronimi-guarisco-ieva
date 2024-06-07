@@ -32,7 +32,7 @@
             <Insets bottom="50.0" />
          </StackPane.margin>
       </Group>
-      <Button fx:id="createNewGameButton" mnemonicParsing="false" onAction="#changeCreateGameScene" prefHeight="100.0" prefWidth="327.0" text="CREATE NEW GAME" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_RIGHT">
+      <Button fx:id="createNewGameButton" mnemonicParsing="false" onAction="#changeCreateGameScene" prefHeight="100.0" prefWidth="327.0" text="CREATE GAME" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_RIGHT">
          <font>
             <Font name="Trattatello" size="30.0" />
          </font>
@@ -44,20 +44,6 @@
          </effect>
          <StackPane.margin>
             <Insets bottom="100.0" right="130.0" />
-         </StackPane.margin>
-      </Button>
-      <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" prefHeight="100.0" prefWidth="200.0" text="BACK" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_LEFT">
-         <font>
-            <Font name="Trattatello" size="30.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-         <effect>
-            <Glow />
-         </effect>
-         <StackPane.margin>
-            <Insets bottom="100.0" left="130.0" />
          </StackPane.margin>
       </Button>
       <Label text="CHOOSE ONE OF THE FOLLOWING GAMES or CREATE A NEW ONE" textFill="#432918" StackPane.alignment="TOP_CENTER">
