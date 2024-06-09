@@ -49,25 +49,26 @@ public class MiniBoardController implements Initializable {
         }
 
         GridPane[] boards = {board1, board2, board3};
-        int playerIndex = 0; // Indice per la board
+        int playerIndex = 0;
 
         for (Map.Entry<String, ClientData> entry: client.getOpponentData().entrySet()) {
             if (!entry.getKey().equals(client.getUsername())) {
-                GridPane currentBoard = boards[playerIndex % boards.length]; // Alterna le board
+                GridPane currentBoard = boards[playerIndex % boards.length];
                 playerIndex++;
 
-                currentBoard.setOnMouseClicked(event -> gameController.setupOpponentData(entry.getKey()));
+                currentBoard.setOnMouseClicked(event -> {
+                    gameController.setupOpponentData(entry.getKey());
+                });
 
                 if (entry.getValue().getBoard().isEmpty()) {
                     int startingCard = entry.getValue().getOrder().getFirst().getId();
-                    String pathSide = null;
+                    String pathSide;
                     if (startingCard > 0) {
                         pathSide = String.format("GUI/images/cards.nogit/front/%03d.png", startingCard);
                     } else {
                         pathSide = String.format("GUI/images/cards.nogit/back/%03d.png", -startingCard);
                     }
                     ImageView image = new ImageView(pathSide);
-                    //image.setId(String.valueOf(i));
                     image.setFitHeight(50.475);
                     image.setFitWidth(75);
                     image.preserveRatioProperty();
@@ -81,7 +82,7 @@ public class MiniBoardController implements Initializable {
                     for (Card card: entry.getValue().getOrder()) {
                         Coordinates coordinates = entry.getValue().getBoard().inverse().get(card);
                         int id = card.getId();
-                        String pathSide = null;
+                        String pathSide;
 
                         if (id > 0) {
                             pathSide = String.format("GUI/images/cards.nogit/front/%03d.png", id);
@@ -89,7 +90,6 @@ public class MiniBoardController implements Initializable {
                             pathSide = String.format("GUI/images/cards.nogit/back/%03d.png", -id);
                         }
                         ImageView image = new ImageView(pathSide);
-                        //image.setId(String.valueOf(i));
                         image.setFitHeight(50.475);
                         image.setFitWidth(75);
                         image.preserveRatioProperty();

@@ -196,25 +196,29 @@ public class GameController implements Initializable {
 
     public void setupOpponentData(String usernameOpponent) {
         ClientData opponentData = client.getOpponentData().get(usernameOpponent);
-        Button button = new Button();
-        button.setText("YOUR BOARD");
-        button.setPrefWidth(250);
-        button.setPrefHeight(78);
 
-        Glow glow = new Glow();
-        glow.setLevel(0.3);
-        button.setEffect(glow);
+        if (buttonsContainer.getChildren().size() == 1) {
+            Button button = new Button();
+            button.setText("YOUR BOARD");
+            button.setPrefWidth(250);
+            button.setPrefHeight(78);
+            button.setId("yourBoard");
 
-        button.setStyle("-fx-font-family: Trattatello;" +
-                "-fx-font-size: 30;" +
-                "-fx-text-fill: #432918;" +
-                "-fx-cursor: hand;" +
-                "-fx-effect: glow(0.3)");
-        button.setOnMouseClicked(event -> {
-            setPersonalData();
-            buttonsContainer.getChildren().remove(button);
-        });
-        buttonsContainer.getChildren().add(button);
+            Glow glow = new Glow();
+            glow.setLevel(0.3);
+            button.setEffect(glow);
+
+            button.setStyle("-fx-font-family: Trattatello;" +
+                    "-fx-font-size: 30;" +
+                    "-fx-text-fill: #432918;" +
+                    "-fx-cursor: hand;");
+
+            button.setOnMouseClicked(event -> {
+                setPersonalData();
+                buttonsContainer.getChildren().remove(button);
+            });
+            buttonsContainer.getChildren().add(button);
+        }
 
         board.getChildren().clear();
 
@@ -387,6 +391,8 @@ public class GameController implements Initializable {
             } else {
                 tabPane.setPrefWidth(350);
                 tabPane.setPrefHeight(1080);
+                tabContainer.setPrefWidth(350);
+                tabContainer.setPrefHeight(1080);
                 tabContainer.setVisible(false);
             }
         } catch (IOException e) {
