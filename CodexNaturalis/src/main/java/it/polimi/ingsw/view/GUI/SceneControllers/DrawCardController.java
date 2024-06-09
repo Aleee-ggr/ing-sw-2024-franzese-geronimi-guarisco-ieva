@@ -5,14 +5,11 @@ import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.network.ClientInterface;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,6 +18,10 @@ import java.util.ResourceBundle;
 public class DrawCardController implements Initializable {
     private ClientInterface client;
     private PlayerData playerData;
+    private GameController gameController;
+
+    @FXML
+    StackPane tabPane;
 
     @FXML
     StackPane root;
@@ -46,15 +47,41 @@ public class DrawCardController implements Initializable {
     @FXML
     private ImageView stdCard2;
 
-    public void setClient(ClientInterface client) {
+    @FXML
+    private VBox decksContainer;
+
+    @FXML
+    private VBox cardsContainer;
+
+    public void setClient(ClientInterface client, GameController gameController) {
         this.client = client;
         this.playerData = client.getPlayerData();
+        this.gameController = gameController;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        backgroundImage.fitWidthProperty().bind(root.widthProperty());
-        backgroundImage.fitHeightProperty().bind(root.heightProperty());
+        setCards();
+    }
+
+    private void drawCard(int position) {
+        try {
+            client.drawCard(position);
+            gameController.setHand(gameController.frontSide);
+
+            setCards();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void closeTab(ActionEvent event) {
+        tabPane.getParent().getParent().setVisible(false);
+    }
+
+    @FXML
+    private void setCards() {
         try {
             client.fetchVisibleCardsAndDecks();
         } catch (IOException e) {
@@ -92,45 +119,31 @@ public class DrawCardController implements Initializable {
         }
 
         if (playerData.getClientHand().size() != 3) {
-            goldCard1.setOnMouseClicked(event -> drawCard(0));
-            goldCard2.setOnMouseClicked(event -> drawCard(1));
-            stdCard1.setOnMouseClicked(event -> drawCard(2));
-            stdCard2.setOnMouseClicked(event -> drawCard(3));
-            stdDeck.setOnMouseClicked(event -> drawCard(4));
-            goldDeck.setOnMouseClicked(event -> drawCard(5));
-        }
+            goldCard1.setOnMouseClicked(event -> {
+                goldCard1.setImage(null);
+                drawCard(0);
+            });
+            goldCard2.setOnMouseClicked(event -> {
+                goldCard2.setImage(null);
+                drawCard(1);
+            });
+            stdCard1.setOnMouseClicked(event -> {
+                stdCard1.setImage(null);
+                drawCard(2);
+            });
+            stdCard2.setOnMouseClicked(event -> {
+                stdCard2.setImage(null);
+                drawCard(3);
+            });
+            goldDeck.setOnMouseClicked(event -> {
+                goldDeck.setImage(null);
+                drawCard(4);
+            });
+            stdDeck.setOnMouseClicked(event -> {
+                stdDeck.setImage(null);
+                drawCard(5);
+            });
 
-    }
-
-    private void drawCard(int position) {
-        try {
-            client.drawCard(position);
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/GameScene.fxml"));
-            GameController controller = new GameController();
-            controller.setClient(client);
-            loader.setController(controller);
-            Scene scene = null;
-            scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
-            Stage stage = (Stage) goldDeck.getScene().getWindow();
-            stage.setScene(scene);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void goBack(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/GameScene.fxml"));
-            GameController controller = new GameController();
-            controller.setClient(client);
-            loader.setController(controller);
-            Scene scene = null;
-            scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
-            Stage stage = (Stage) goldDeck.getScene().getWindow();
-            stage.setScene(scene);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

@@ -14,7 +14,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.Glow;
@@ -29,8 +28,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -43,7 +40,7 @@ public class GameController implements Initializable {
     private ClientInterface client;
     private PlayerData playerData;
     private Coordinates center;
-    private boolean frontSide = true;
+    protected boolean frontSide = true;
     private final Map<Coordinates, StackPane> validPlacementPanes = new HashMap<>();
     private static final double ZOOM_FACTOR = 1.1;
     private static final double MIN_SCALE = 0.3;
@@ -261,7 +258,7 @@ public class GameController implements Initializable {
         }
     }
 
-    private void setHand(boolean frontSide) {
+    protected void setHand(boolean frontSide) {
         String imagePath;
         handContainer.getChildren().clear();
         int size = playerData.getClientHand().size();
@@ -375,14 +372,23 @@ public class GameController implements Initializable {
     @FXML
     private void changeDrawCardScene() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/DrawCardScene.fxml"));
-            DrawCardController controller = new DrawCardController();
-            controller.setClient(client);
-            loader.setController(controller);
-            Scene scene = null;
-            scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
-            Stage stage = (Stage) board.getScene().getWindow();
-            stage.setScene(scene);
+            if (!tabContainer.isVisible()) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/DrawCardTab.fxml"));
+                DrawCardController controller = new DrawCardController();
+                controller.setClient(client, this);
+                loader.setController(controller);
+                StackPane drawPane = loader.load();
+                tabPane.setPrefWidth(600);
+                tabPane.setPrefHeight(800);
+                tabContainer.setPrefWidth(600);
+                tabContainer.setPrefHeight(800);
+                tabPane.getChildren().setAll(drawPane);
+                tabContainer.setVisible(true);
+            } else {
+                tabPane.setPrefWidth(350);
+                tabPane.setPrefHeight(1080);
+                tabContainer.setVisible(false);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -476,6 +482,8 @@ public class GameController implements Initializable {
             PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
             pause.setOnFinished(e -> { changeDrawCardScene(); });
             pause.play();
+
+            setupValidPlacements();
         }
 
         return placed;
