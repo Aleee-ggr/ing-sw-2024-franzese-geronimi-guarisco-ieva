@@ -19,9 +19,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * This class represents the controller for the create game scene in the GUI.
- * It handles user input for selecting the number of players and transitioning
- * to the waiting room scene.
+ * Controller for the Create Game scene in the GUI.
+ * This class manages user input for selecting the number of players and transitioning to the waiting room scene.
+ * It allows the user to specify the number of players for a new game and initiates the creation of the game accordingly.
  */
 public class CreateGameController implements Initializable {
     private ClientInterface client;
@@ -46,6 +46,8 @@ public class CreateGameController implements Initializable {
 
     /**
      * Handles the action when the user clicks on the button to change to the waiting room scene.
+     * Based on the user's selection, it starts a new game with the selected number of players.
+     *
      * @param event The action event triggered by the user.
      */
     @FXML
@@ -70,6 +72,7 @@ public class CreateGameController implements Initializable {
 
     /**
      * Changes the scene back to the Main Menu when the user clicks "Back".
+     *
      * @param event The ActionEvent triggered by the user's interaction.
      */
     @FXML
@@ -89,6 +92,7 @@ public class CreateGameController implements Initializable {
 
     /**
      * Sets the client for the controller.
+     *
      * @param client the client interface to set
      */
     public void setClient(ClientInterface client) {

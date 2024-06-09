@@ -19,6 +19,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for the Score scene in the GUI.
+ * Manages the display of player scores on the scoreboard.
+ */
 public class ScoreController implements Initializable {
     private ClientInterface client;
     private PlayerData playerData;
@@ -36,6 +40,11 @@ public class ScoreController implements Initializable {
     @FXML
     StackPane tabPane;
 
+    /**
+     * Closes the score tab when the close button is clicked.
+     *
+     * @param event The ActionEvent triggered by the close button.
+     */
     @FXML
     private void closeTab(ActionEvent event) {
         tabPane.getParent().getParent().setVisible(false);
@@ -91,11 +100,18 @@ public class ScoreController implements Initializable {
 
     }
 
+    /**
+     * Sets the client for the controller.
+     *
+     * @param client The client interface to set.
+     */
     public void setClient(ClientInterface client) {
         this.client = client;
         this.playerData = client.getPlayerData();
     }
-
+    /**
+     * Initializes the score coordinates for positioning markers on the scoreboard.
+     */
     private void initializeScoreCoordinates() {
         scoreCoordinates.put(0, new Point2D(54, 528));
         scoreCoordinates.put(1, new Point2D(124, 528));

@@ -18,6 +18,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Controller class for the ChooseStartingCardSide scene in the GUI.
+ * This class is responsible for displaying the front and back sides of the starting card
+ * and handling the user's selection. It initializes the scene with the appropriate images
+ * and updates the client with the user's chosen card side.
+ *
+ * The scene allows the user to choose between the front and back side of the starting card.
+ * Once a choice is made, the controller transitions to the main game scene.
+ */
 public class ChooseStartingCardSideController implements Initializable {
     private ClientInterface client;
     private PlayerData playerData;
@@ -34,6 +43,11 @@ public class ChooseStartingCardSideController implements Initializable {
     @FXML
     private ImageView backSide;
 
+    /**
+     * Sets the client interface and retrieves the player data.
+     *
+     * @param client the client interface to be set
+     */
     public void setClient(ClientInterface client) {
         this.client = client;
         playerData = client.getPlayerData();
@@ -54,6 +68,14 @@ public class ChooseStartingCardSideController implements Initializable {
         backSide.setImage(imageBackSide);
     }
 
+    /**
+     * Handles the event where the user selects the front or back side of the starting card.
+     * Depending on which side the user clicks, this method will notify the client of the user's choice,
+     * then load the main game scene.
+     *
+     * @param mouseEvent the mouse event that triggered this method,
+     *                  which contains information about which side was clicked
+     */
     public void changeBoardScene(MouseEvent mouseEvent) {
         try {
             if (mouseEvent.getSource() == frontSide) {

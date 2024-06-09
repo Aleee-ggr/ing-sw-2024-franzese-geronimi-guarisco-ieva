@@ -24,6 +24,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for the waiting room scene in the GUI.
+ * Manages the display of player list and transitions to the next scene when all players have joined.
+ */
 public class WaitingRoomController implements Initializable {
     private ClientInterface client;
     private Timeline fetchPlayersTimeline;
@@ -39,6 +43,7 @@ public class WaitingRoomController implements Initializable {
 
     /**
      * Changes the scene back to the Main Menu when the user clicks "Back".
+     *
      * @param event The ActionEvent triggered by the user's interaction.
      */
     @FXML
@@ -58,6 +63,7 @@ public class WaitingRoomController implements Initializable {
 
     /**
      * Sets the client for the controller.
+     *
      * @param client the client interface to set
      */
     public void setClient(ClientInterface client) {
@@ -67,6 +73,7 @@ public class WaitingRoomController implements Initializable {
     /**
      * Initializes the Waiting Room scene.
      * Fetches the list of players from the server and displays them.
+     *
      * @param location The location used to resolve relative paths for the root object,
      *                 or null if the location is not known.
      * @param resources The resources used to localize the root object,
@@ -82,6 +89,10 @@ public class WaitingRoomController implements Initializable {
         }
     }
 
+    /**
+     * Initiates periodic fetching of player list from the server.
+     * Updates the list of players displayed in the GUI.
+     */
     private void fetchPlayersPeriodically() {
         try {
             client.fetchPlayers();
@@ -101,6 +112,10 @@ public class WaitingRoomController implements Initializable {
         fetchPlayersTimeline.play();
     }
 
+    /**
+     * Initiates waiting for all players to join the game.
+     * Upon successful completion, transitions to the next scene.
+     */
     private void waitForUpdate() {
         Task<Void> waitUpdateTask = new Task<>() {
             @Override
@@ -139,6 +154,9 @@ public class WaitingRoomController implements Initializable {
         new Thread(waitUpdateTask).start();
     }
 
+    /**
+     * Transitions to the next scene where players choose their personal objective.
+     */
     private void changeToChooseObjectiveScene() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseObjectiveScene.fxml"));
@@ -153,6 +171,9 @@ public class WaitingRoomController implements Initializable {
         }
     }
 
+    /**
+     * Updates the list of players displayed in the GUI.
+     */
     private void updatePlayersList() {
         ArrayList<String> playersList = client.getPlayers();
         listOfPlayers.getChildren().clear();
@@ -163,6 +184,9 @@ public class WaitingRoomController implements Initializable {
         }
     }
 
+    /**
+     * Stops periodic fetching of player list.
+     */
     private void stopFetchingPlayers() {
         if (fetchPlayersTimeline != null) {
             fetchPlayersTimeline.stop();

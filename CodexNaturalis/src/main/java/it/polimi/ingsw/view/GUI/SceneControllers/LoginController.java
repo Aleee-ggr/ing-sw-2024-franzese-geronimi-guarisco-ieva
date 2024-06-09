@@ -19,8 +19,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * This class is the controller for the login scene in the GUI.
- * It handles the user interactions and scene transitions.
+ * Controller for the login scene in the GUI.
+ * This class manages user interactions for the login process and handles scene transitions.
+ * It validates user credentials and navigates to the main menu or connection scene based on user actions.
  */
 public class LoginController implements Initializable {
     private ClientInterface client;

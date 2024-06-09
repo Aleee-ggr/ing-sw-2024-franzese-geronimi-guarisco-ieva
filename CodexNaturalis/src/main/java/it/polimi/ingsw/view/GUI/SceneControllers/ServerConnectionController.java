@@ -21,8 +21,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * This class is the controller for the server connection scene in the GUI.
- * It handles the user interactions and scene transitions.
+ * Controller for the server connection scene in the GUI.
+ * Manages user interactions and transitions to login scene.
  */
 public class ServerConnectionController implements Initializable {
     @FXML
@@ -42,9 +42,9 @@ public class ServerConnectionController implements Initializable {
 
     /**
      * Changes the scene to the login scene when the corresponding button is clicked.
-     * Initializes the client with the server IP and port.
+     * Initializes the client with the server IP and port based on the selected connection type (Socket/RMI).
      *
-     * @param event the action event that triggered the method
+     * @param event The action event that triggered the method.
      */
     @FXML
     protected void changeLoginScene(ActionEvent event) {
@@ -68,9 +68,9 @@ public class ServerConnectionController implements Initializable {
     }
 
     /**
-     * Changes the scene to the game introduction scene.
+     * Changes the scene to the game introduction scene when the "Back" button is clicked.
      *
-     * @param event the action event that triggered the method
+     * @param event The action event that triggered the method.
      */
     @FXML
     protected void goBack(ActionEvent event) {

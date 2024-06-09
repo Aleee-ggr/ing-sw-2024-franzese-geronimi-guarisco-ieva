@@ -23,8 +23,10 @@ import java.util.ResourceBundle;
 import java.util.UUID;
 
 /**
- * This class is the controller for the main menu scene in the GUI.
- * It handles the user interactions and scene transitions.
+ * Controller for the main menu scene in the GUI.
+ * This class manages user interactions and scene transitions in the main menu,
+ * including creating new games, joining existing games, and periodically fetching
+ * the list of available games from the server.
  */
 public class MainMenuController implements Initializable {
     private ClientInterface client;
@@ -70,6 +72,8 @@ public class MainMenuController implements Initializable {
 
     /**
      * Initializes the controller.
+     * Binds the background image size to the root container size
+     * and starts fetching available games periodically if the client is set.
      *
      * @param location  The location used to resolve relative paths for the root object, or null if the location is not known.
      * @param resources The resources used to localize the root object, or null if the root object was not localized.
@@ -84,6 +88,10 @@ public class MainMenuController implements Initializable {
         System.out.println("MainMenuController initialized");
     }
 
+    /**
+     * Fetches the available games periodically and updates the game buttons.
+     * This method sets up a timeline that triggers the fetch and update actions every 5 seconds.
+     */
     private void fetchGamesPeriodically() {
         try {
             client.fetchAvailableGames();
@@ -103,6 +111,10 @@ public class MainMenuController implements Initializable {
         fetchGamesTimeline.play();
     }
 
+    /**
+     * Updates the game buttons based on the available games fetched from the client.
+     * This method clears the existing buttons and creates a new button for each available game.
+     */
     private void updateGameButtons() {
         gameButtonsContainer.getChildren().clear();
         int i = 0;
@@ -139,6 +151,9 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**
+     * Stops the periodic fetching of available games.
+     */
     private void stopFetchingGames() {
         if (fetchGamesTimeline != null) {
             fetchGamesTimeline.stop();

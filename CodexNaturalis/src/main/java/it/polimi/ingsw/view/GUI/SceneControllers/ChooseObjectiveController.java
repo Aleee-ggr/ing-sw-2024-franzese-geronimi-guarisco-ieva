@@ -18,6 +18,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Controller class for the ChooseObjective scene in the GUI.
+ * This class is responsible for displaying the player's initial objectives and
+ * handling the user's selection. It initializes the scene with the appropriate images
+ * and updates the client with the user's chosen objective.
+ *
+ * The scene allows the user to choose between two starting objectives. Once a choice is made,
+ * the controller transitions to the next scene where the user can choose the starting card side.
+ */
 public class ChooseObjectiveController implements Initializable {
     private ClientInterface client;
     private PlayerData playerData;
@@ -34,6 +43,11 @@ public class ChooseObjectiveController implements Initializable {
     @FXML
     private ImageView secondObjective;
 
+    /**
+     * Sets the client interface and retrieves the player data.
+     *
+     * @param client the client interface to be set
+     */
     public void setClient(ClientInterface client) {
         this.client = client;
         playerData = client.getPlayerData();
@@ -56,6 +70,14 @@ public class ChooseObjectiveController implements Initializable {
         secondObjective.setImage(imageSecond);
     }
 
+    /**
+     * Handles the event where the user selects one of the starting objectives.
+     * Depending on which objective the user clicks, this method will notify the client of the user's choice,
+     * then load the next scene, which allows the user to choose the starting card side.
+     *
+     * @param mouseEvent the mouse event that triggered this method,
+     *                   which contains information about which objective was clicked
+     */
     public void changeChooseStarting(MouseEvent mouseEvent) {
         try {
             if (mouseEvent.getSource() == firstObjective) {
