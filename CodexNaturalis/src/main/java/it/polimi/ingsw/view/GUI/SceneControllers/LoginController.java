@@ -53,27 +53,29 @@ public class LoginController implements Initializable {
     @FXML
     protected void changeMainMenuScene(ActionEvent event) {
         boolean valid = false;
-        try {
-            valid = client.checkCredentials(usernameField.getText(), passwordField.getText());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        if (valid) {
-            client.setCredentials(usernameField.getText(), passwordField.getText());
+        if (!usernameField.getText().isEmpty() && !passwordField.getText().isEmpty()) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/MainMenu.fxml"));
-                MainMenuController controller = new MainMenuController();
-                controller.setClient(client);
-                loader.setController(controller);
-                Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setScene(scene);
+                valid = client.checkCredentials(usernameField.getText(), passwordField.getText());
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
-        } else {
-            loginError.setVisible(true);
-            loginErrorMessage.setVisible(true);
+            if (valid) {
+                client.setCredentials(usernameField.getText(), passwordField.getText());
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/MainMenu.fxml"));
+                    MainMenuController controller = new MainMenuController();
+                    controller.setClient(client);
+                    loader.setController(controller);
+                    Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    stage.setScene(scene);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                loginError.setVisible(true);
+                loginErrorMessage.setVisible(true);
+            }
         }
     }
 
