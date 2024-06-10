@@ -208,11 +208,6 @@
                 </Text>
             </children>
         </StackPane>
-        <VBox fx:id="tabContainer" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1080.0" prefWidth="350.0">
-            <children>
-                <StackPane fx:id="tabPane" prefHeight="1080.0" prefWidth="350.0" />
-            </children>
-        </VBox>
         <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="1360.0" spacing="30.0" StackPane.alignment="BOTTOM_CENTER">
             <children>
                 <HBox fx:id="handContainer" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="225.0" prefWidth="800.0" spacing="25.0" style="-fx-background-color: white; -fx-border-color: #432918; -fx-border-width: 4;" />
@@ -236,6 +231,25 @@
                 </VBox>
             </children>
         </HBox>
+        <VBox fx:id="tabContainer" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1080.0" prefWidth="350.0">
+            <children>
+                <StackPane fx:id="tabPane" prefHeight="1080.0" prefWidth="350.0" />
+            </children>
+        </VBox>
+      <Button layoutX="1870.0" layoutY="571.0" mnemonicParsing="false" onAction="#changeChatScene" prefHeight="0.0" prefWidth="200.0" style="-fx-rotate: -90;" text="CHAT" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_RIGHT">
+         <font>
+            <Font name="Trattatello" size="30.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <effect>
+            <Glow />
+         </effect>
+         <StackPane.margin>
+            <Insets bottom="900.0" right="-60.0" />
+         </StackPane.margin>
+      </Button>
         <Button mnemonicParsing="false" onAction="#changeMiniBoardScene" prefHeight="0.0" prefWidth="200.0" style="-fx-rotate: -90;" text="BOARDS" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_RIGHT">
             <font>
                 <Font name="Trattatello" size="30.0" />

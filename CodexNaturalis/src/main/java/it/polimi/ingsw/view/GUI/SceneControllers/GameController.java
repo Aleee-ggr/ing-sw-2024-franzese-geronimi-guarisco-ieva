@@ -420,6 +420,25 @@ public class GameController implements Initializable {
     }
 
     @FXML
+    private void changeChatScene(ActionEvent event) {
+        try {
+            if (!tabContainer.isVisible()) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChatTab.fxml"));
+                ChatController controller = new ChatController();
+                controller.setClient(client);
+                loader.setController(controller);
+                StackPane chatPane = loader.load();
+                tabPane.getChildren().setAll(chatPane);
+                tabContainer.setVisible(true);
+            } else {
+                tabContainer.setVisible(false);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     private void changeObjectivesScene(ActionEvent event) {
         try {
             if (!tabContainer.isVisible()) {
