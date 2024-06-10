@@ -401,9 +401,11 @@ public class GameThread extends Thread {
                 controller.getGameState(msg.player(), msg.messageUUID());
                 break;
             case "sendUpdate":
-                System.out.println("chatting");
                 sendUpdate();
                 messageQueue.add(ThreadMessage.okResponse(msg.player(), msg.messageUUID()));
+                break;
+            case "getTurnPlayer":
+                messageQueue.add(ThreadMessage.getTurnPlayerResponse(msg.player(), msg.messageUUID(), currentPlayer));
                 break;
             case "kill":
                 gameState = GameState.STOP;

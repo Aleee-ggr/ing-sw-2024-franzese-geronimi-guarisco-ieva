@@ -460,6 +460,18 @@ public abstract class Server {
         }
     }
 
+
+    public static String getTurnPlayerServer(UUID game, String username) {
+        ThreadMessage message = ThreadMessage.getTurnPlayer(username);
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+        if (response.status() == Status.OK) {
+            return response.args()[0];
+        } else {
+            return null;
+        }
+    }
+
     public static WaitState waitUpdate(UUID game, String username) {
         if (gameTurns.get(game).get(username) == WaitState.UPDATE) {
             gameTurns.get(game).put(username, WaitState.WAIT);

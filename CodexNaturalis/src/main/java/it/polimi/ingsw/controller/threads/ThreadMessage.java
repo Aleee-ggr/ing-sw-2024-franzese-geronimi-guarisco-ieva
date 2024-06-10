@@ -258,6 +258,10 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         return new ThreadMessage(Status.REQUEST, username, "getAvailableGames", null, UUID.randomUUID());
     }
 
+    public static ThreadMessage getTurnPlayer(String username) {
+        return new ThreadMessage(Status.REQUEST, username, "getTurnPlayer", null, UUID.randomUUID());
+    }
+
     /**
      * @param username the username of the sender
      * @return
@@ -617,6 +621,18 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         String[] args = new String[1];
         args[0] = gameState;
         return new ThreadMessage(Status.OK, username, "getGameStateResponse", args, messageUUID);
+    }
+
+    /**
+     * Create a ThreadMessage for the turn player response.
+     *
+     * @param username    the username.
+     * @param messageUUID the uuid of the message.
+     * @param turnPlayer  the turn player.
+     * @return A thread message for a turnPlayer response.
+     */
+    public static ThreadMessage getTurnPlayerResponse(String username, UUID messageUUID, String turnPlayer) {
+        return new ThreadMessage(Status.OK, username, "getTurnPlayerResponse", new String[]{turnPlayer}, messageUUID);
     }
 }
 
