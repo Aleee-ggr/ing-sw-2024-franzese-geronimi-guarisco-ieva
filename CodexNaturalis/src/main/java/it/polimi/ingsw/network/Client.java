@@ -37,6 +37,7 @@ public class Client {
     protected String password;
 
     protected UUID gameId;
+    protected String turnPlayerName;
     protected GameState gameState;
     protected ArrayList<UUID> availableGames;
     protected int playerNum = 0;

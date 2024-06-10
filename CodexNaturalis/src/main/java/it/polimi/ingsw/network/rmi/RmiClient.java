@@ -288,6 +288,11 @@ public class RmiClient extends Client implements ClientInterface {
         return this.chat != null;
     }
 
+    @Override
+    public void fetchTurnPlayer() throws RemoteException {
+        this.turnPlayerName = remoteObject.getTurnPlayer(this.gameId, this.username);
+    }
+
     /**
      * Waits for an update from the server.
      *

@@ -21,10 +21,10 @@ import java.util.*;
 /**
  * The RmiServer class is an implementation of the RmiServerInterface, which defines methods for interacting with a remote game server using RMI.
  * This class manages game server operations such as drawing and placing cards, creating and joining games, and other game-related tasks.
- *
+ * <p>
  * The class extends the Server class and utilizes RMI to provide remote access to the game server.
  * It sets up an RMI registry and binds the server to allow remote clients to invoke methods defined in the RmiServerInterface.
- *
+ * <p>
  * Proper error handling and shutdown procedures are implemented to ensure smooth communication and resource management.
  * Runtime shutdown hooks are used to cleanly stop the server when the application exits.
  */
@@ -34,6 +34,7 @@ public class RmiServer extends Server implements RmiServerInterface {
 
     /**
      * Constructs a new RmiServer and sets up an RMI registry to allow remote clients to connect.
+     *
      * @param port The port on which the RMI server will listen.
      * @throws RemoteException If an RMI error occurs during server initialization.
      */
@@ -53,6 +54,7 @@ public class RmiServer extends Server implements RmiServerInterface {
 
     /**
      * Returns the name of the RMI server.
+     *
      * @return The name of the RMI server.
      */
     public static String getName() {
@@ -66,22 +68,15 @@ public class RmiServer extends Server implements RmiServerInterface {
     public void stop() {
         try {
             for (UUID key : threadMessages.keySet()) {
-                threadMessages.get(key).add(
-                    new ThreadMessage(
-                            Status.REQUEST,
-                            "",
-                            "kill",
-                            null,
-                            UUID.randomUUID()
-                    )
-                );
+                threadMessages.get(key).add(new ThreadMessage(Status.REQUEST, "", "kill", null, UUID.randomUUID()));
             }
             registry.unbind(name);
-        } catch (NotBoundException | RemoteException ignored) {}
+        } catch (NotBoundException | RemoteException ignored) {
+        }
     }
 
     @Override
-    public void ping (UUID game, String username) {
+    public void ping(UUID game, String username) {
         heartbeatServer(game, username);
     }
 
@@ -191,13 +186,18 @@ public class RmiServer extends Server implements RmiServerInterface {
     }
 
     @Override
-    public WaitState wait(UUID game, String player) throws RemoteException{
+    public WaitState wait(UUID game, String player) throws RemoteException {
         return waitUpdate(game, player);
     }
 
     @Override
     public ArrayList<UUID> getAvailableGames(String username) throws RemoteException {
         return getAvailableGamesServer(username);
+    }
+
+    @Override
+    public String getTurnPlayer(UUID game, String name) throws RemoteException {
+        return getTurnPlayerServer(game, name);
     }
 
     @Override
@@ -209,7 +209,7 @@ public class RmiServer extends Server implements RmiServerInterface {
     public List<ChatMessage> fetchChat(UUID game, String username) throws RemoteException {
         return fetchChatServer(game, username);
     }
-    
+
     @Override
     public boolean checkCredentials(String username, String password) {
         return isValidPlayer(username, password);

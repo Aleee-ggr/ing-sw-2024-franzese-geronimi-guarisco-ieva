@@ -9,7 +9,6 @@ import it.polimi.ingsw.model.client.ClientData;
 import it.polimi.ingsw.model.client.PlayerData;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,8 +25,10 @@ import java.util.UUID;
 public interface ClientInterface {
 
     //Server communication methods
+
     /**
      * Method to create a new game.
+     *
      * @param players The number of players in the game.
      * @return The UUID of the game created.
      * @throws IOException If an I/O error occurs.
@@ -36,6 +37,7 @@ public interface ClientInterface {
 
     /**
      * Method to join an existing game.
+     *
      * @param game The UUID of the game to join.
      * @return True if the game was joined successfully, false otherwise.
      * @throws IOException If an I/O error occurs.
@@ -44,6 +46,7 @@ public interface ClientInterface {
 
     /**
      * Method to ping the server.
+     *
      * @throws IOException If an I/O error occurs.
      */
     void pingServer() throws IOException;
@@ -51,6 +54,7 @@ public interface ClientInterface {
     /**
      * Method to check the credentials of a user.
      * This method is needed every time a user create a new username and password.
+     *
      * @param username The username of the user.
      * @param password The password of the user.
      * @return True if the credentials are valid, false otherwise.
@@ -60,12 +64,14 @@ public interface ClientInterface {
 
     /**
      * Method to wait for an update from the server.
+     *
      * @throws IOException If an I/O error occurs.
      */
     WaitState waitUpdate() throws IOException;
 
     /**
      * Method to send a chat message to the server.
+     *
      * @param message The message to send.
      * @throws IOException If an I/O error occurs.
      */
@@ -73,6 +79,7 @@ public interface ClientInterface {
 
     /**
      * Method to ask for a drawn card from the server.
+     *
      * @param position The index of the deck or visible card to draw.
      * @throws IOException If an I/O error occurs.
      */
@@ -80,8 +87,9 @@ public interface ClientInterface {
 
     /**
      * Method to ask the server to place a card on the board.
+     *
      * @param coordinates The coordinates where to place the card.
-     * @param CardId The ID of the card to place.
+     * @param CardId      The ID of the card to place.
      * @return True if the card was placed successfully, false otherwise.
      * @throws IOException If an I/O error occurs.
      */
@@ -89,6 +97,7 @@ public interface ClientInterface {
 
     /**
      * Method to ask the server to place a starting card on the board.
+     *
      * @param frontSideUp True if the front side of the card is up, false otherwise.
      * @return True if the card was placed successfully, false otherwise.
      * @throws IOException If an I/O error occurs.
@@ -97,6 +106,7 @@ public interface ClientInterface {
 
     /**
      * Method to ask the server to choose a starting objective.
+     *
      * @param objectiveId The ID of the chosen objective.
      * @return True if the objective was chosen successfully, false otherwise.
      * @throws IOException If an I/O error occurs.
@@ -105,6 +115,7 @@ public interface ClientInterface {
 
     /**
      * Method to fetch the available games from the server.
+     *
      * @return True if the available games were fetched successfully, false otherwise.
      * @throws IOException If an I/O error occurs.
      */
@@ -112,6 +123,7 @@ public interface ClientInterface {
 
     /**
      * Method to fetch the game state from the server.
+     *
      * @return True if the game state was fetched successfully, false otherwise.
      * @throws IOException If an I/O error occurs.
      */
@@ -119,6 +131,7 @@ public interface ClientInterface {
 
     /**
      * Method to fetch the players from the server.
+     *
      * @return True if the players were fetched successfully, false otherwise.
      * @throws IOException If an I/O error occurs.
      */
@@ -126,6 +139,7 @@ public interface ClientInterface {
 
     /**
      * Method to fetch the common objectives from the server.
+     *
      * @return True if the common objectives were fetched successfully, false otherwise.
      * @throws IOException If an I/O error occurs.
      */
@@ -133,6 +147,7 @@ public interface ClientInterface {
 
     /**
      * Method to fetch the personal objectives from the server.
+     *
      * @return True if the objective was fetched successfully, false otherwise.
      * @throws IOException If an I/O error occurs.
      */
@@ -141,6 +156,7 @@ public interface ClientInterface {
     /**
      * Method to fetch the visible cards and decks from the server.
      * It's used to form a drawing view for the Player.
+     *
      * @return True if the visible cards and decks were fetched successfully, false otherwise.
      * @throws IOException If an I/O error occurs.
      */
@@ -148,6 +164,7 @@ public interface ClientInterface {
 
     /**
      * Method to fetch the score map from the server.
+     *
      * @return True if the score map was fetched successfully, false otherwise.
      * @throws IOException If an I/O error occurs.
      */
@@ -155,6 +172,7 @@ public interface ClientInterface {
 
     /**
      * Method to fetch all the players resources from the server.
+     *
      * @return True if the players resources were fetched successfully, false otherwise.
      * @throws IOException If an I/O error occurs.
      */
@@ -162,6 +180,7 @@ public interface ClientInterface {
 
     /**
      * Method to fetch all the players boards from the server.
+     *
      * @return True if the players boards were fetched successfully, false otherwise.
      * @throws IOException If an I/O error occurs.
      */
@@ -169,12 +188,14 @@ public interface ClientInterface {
 
     /**
      * Method to fetch all the players placing order from the server.
+     *
      * @return True if the players placing order was fetched successfully, false otherwise.
      */
     boolean fetchPlayersPlacingOrder() throws IOException;
 
     /**
      * Method to fetch the valid placements of the Player from the server.
+     *
      * @return True if the valid placements were fetched successfully, false otherwise.
      * @throws IOException If an I/O error occurs.
      */
@@ -182,6 +203,7 @@ public interface ClientInterface {
 
     /**
      * Method to fetch the hand of the client from the server.
+     *
      * @return True if the hand was fetched successfully, false otherwise.
      * @throws IOException If an I/O error occurs.
      */
@@ -189,6 +211,7 @@ public interface ClientInterface {
 
     /**
      * Method to fetch the opponents hand color from the server.
+     *
      * @return True if the opponents hand color was fetched successfully, false otherwise.
      * @throws IOException If an I/O error occurs.
      */
@@ -197,6 +220,7 @@ public interface ClientInterface {
     /**
      * Method to fetch the starting objectives from the server.
      * The starting objectives are the ones the player needs to choose from at the start of the game.
+     *
      * @return True if the starting objectives were fetched successfully, false otherwise.
      * @throws IOException If an I/O error occurs.
      */
@@ -205,76 +229,88 @@ public interface ClientInterface {
     /**
      * Method to fetch the starting card from the server.
      * The starting card is the one the player needs to place at the start of the game.
+     *
      * @return True if the starting card was fetched successfully, false otherwise.
      * @throws IOException If an I/O error occurs.
      */
     boolean fetchStartingCard() throws IOException;
 
-
+    void fetchTurnPlayer() throws IOException;
     //getters and setters
 
     /**
      * Method to get the visible cards from the client.
+     *
      * @return The ArrayList of visible cards.
      */
     ArrayList<Card> getVisibleCards();
 
     /**
      * Method to get the decks backs from the client.
+     *
      * @return The ArrayList of decks backs.
      */
     ArrayList<Card> getDecksBacks();
 
     /**
      * Method to get the game state from the client.
+     *
      * @return the GameState of the client.
      */
     GameState getGameState();
 
     /**
      * Method to get the player number from the client.
+     *
      * @return The player number of the client.
      */
     int getPlayerNum();
 
     /**
      * Method to get the opponent data from the client.
+     *
      * @return The HashMap of opponent data.
      */
     HashMap<String, ClientData> getOpponentData();
 
     /**
      * Method to get the player data from the client.
+     *
      * @return The PlayerData of the client.
      */
     PlayerData getPlayerData();
 
     /**
      * Method to get the score map from the client.
+     *
      * @return The HashMap of the score map.
      */
     HashMap<String, Integer> getScoreMap();
 
     /**
      * Method to get the available games from the client.
+     *
      * @return The ArrayList of available games.
      */
     ArrayList<UUID> getAvailableGames();
 
     /**
      * Method to get the players usernames from the client.
+     *
      * @return The ArrayList of players usernames.
      */
     ArrayList<String> getPlayers();
 
     /**
      * Method to get the username of the client.
+     *
      * @return The username of the client.
      */
     String getUsername();
 
     /**
      * Method to set the credentials of the client.
+     *
      * @param username The username of the client.
      * @param password The password of the client.
      */
@@ -282,6 +318,7 @@ public interface ClientInterface {
 
     /**
      * Fetch the chat logs from the server
+     *
      * @return whether the fetch was successful
      */
     boolean fetchChat() throws IOException;

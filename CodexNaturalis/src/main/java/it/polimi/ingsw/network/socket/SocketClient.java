@@ -146,7 +146,7 @@ public class SocketClient extends Client implements ClientInterface {
         output.writeObject(new SocketClientJoinGameMessage(username, gameUUID));
         boolean response = handleResponse();
 
-        if(response){
+        if (response) {
             new Thread(() -> {
                 while (true) {
                     try {
@@ -176,7 +176,7 @@ public class SocketClient extends Client implements ClientInterface {
     }
 
     @Override
-    public  WaitState waitUpdate() throws IOException {
+    public WaitState waitUpdate() throws IOException {
         waitOutput.writeObject(new SocketClientWaitUpdateMessage(username, gameId));
         WaitUpdateResponseMessage message;
         do {
@@ -387,6 +387,12 @@ public class SocketClient extends Client implements ClientInterface {
     }
 
 
+    @Override
+    public void fetchTurnPlayer() throws IOException {
+        this.turnPlayerName = "";
+        //TODO implement socket version
+    }
+
     /**
      * Handles the server's response message.
      */
@@ -426,7 +432,7 @@ public class SocketClient extends Client implements ClientInterface {
 
             //checkCredentials
             case ValidateCredentialsResponseMessage validateCredentialsResponseMessage -> {
-                if (validateCredentialsResponseMessage.isValid()){
+                if (validateCredentialsResponseMessage.isValid()) {
                     this.username = validateCredentialsResponseMessage.getUsername();
                     this.password = validateCredentialsResponseMessage.getPassword();
                     return true;
