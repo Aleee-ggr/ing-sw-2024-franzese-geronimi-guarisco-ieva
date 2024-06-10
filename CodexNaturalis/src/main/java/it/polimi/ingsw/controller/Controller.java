@@ -2,10 +2,8 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.controller.threads.ThreadMessage;
-import it.polimi.ingsw.helpers.exceptions.RequirementsError;
 import it.polimi.ingsw.helpers.exceptions.model.ExistingUsernameException;
 import it.polimi.ingsw.helpers.exceptions.model.TooManyPlayersException;
-import it.polimi.ingsw.helpers.exceptions.model.UnrecognisedCardException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
@@ -21,17 +19,19 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Main Controller class.
  * It gets messages from the GameThread and calls and changes the model.
+ *
  * @author Alessio Guarisco
- * */
+ */
 public class Controller {
     private final BlockingQueue<ThreadMessage> messageQueue;
     private Game game;
 
     /**
      * Constructor for the Controller class.
-     * @param messageQ the BlockingQueue that will contain the messages.
+     *
+     * @param messageQ   the BlockingQueue that will contain the messages.
      * @param maxPlayers the maximum number of players that can join a game.
-     * */
+     */
     public Controller(BlockingQueue<ThreadMessage> messageQ, Integer maxPlayers) {
         this.messageQueue = messageQ;
         this.game = new Game(maxPlayers);
@@ -39,19 +39,21 @@ public class Controller {
 
     /**
      * Getter for the Game.
+     *
      * @return the Game object.
-     * */
+     */
     public Game getGame() {
         return game;
     }
 
     /**
      * Controller Method to create a new Game.
-     * @param username the username of the player that creates the game.
+     *
+     * @param username  the username of the player that creates the game.
      * @param playerNum the number of players that will join the game.
-     * @param gameId the unique identifier of the game.
+     * @param gameId    the unique identifier of the game.
      * @param messageId the unique identifier of the message.
-     * */
+     */
     public void createGame(String username, Integer playerNum, UUID gameId, UUID messageId) {
         game = new Game(playerNum);
         messageQueue.add(ThreadMessage.okResponse(username, messageId));
@@ -59,9 +61,10 @@ public class Controller {
 
     /**
      * Controller Method to join a Game.
-     * @param username the username of the player that joins the game.
+     *
+     * @param username  the username of the player that joins the game.
      * @param messageId the unique identifier of the message.
-     * */
+     */
     public void join(String username, UUID messageId) {
         try {
             game.addPlayer(username);
@@ -75,17 +78,18 @@ public class Controller {
         }
     }
 
-    public void update(String username,boolean playerTurn, UUID messageId) {
-        messageQueue.add(ThreadMessage.updateResponse(username,playerTurn, messageId));
+    public void update(String username, boolean playerTurn, UUID messageId) {
+        messageQueue.add(ThreadMessage.updateResponse(username, playerTurn, messageId));
     }
 
     /**
      * Controller Method to place a card.
-     * @param username the username of the player that places the card.
+     *
+     * @param username    the username of the player that places the card.
      * @param coordinates the coordinates where to place the card.
-     * @param cardId the unique identifier of the card.
-     * @param messageId the unique identifier of the message.
-     * */
+     * @param cardId      the unique identifier of the card.
+     * @param messageId   the unique identifier of the message.
+     */
     public boolean placeCard(String username, Coordinates coordinates, Integer cardId, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
@@ -97,26 +101,20 @@ public class Controller {
             user.playCard(card, coordinates);
             messageQueue.add(ThreadMessage.okResponse(username, messageId));
             return true;
-        } catch (IndexOutOfBoundsException e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, "Invalid card placing index"));
-        } catch (UnrecognisedCardException e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, "Unrecognised card"));
-        } catch (RequirementsError e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, "Requirement error"));
-        }
-        catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getClass() + " " + Arrays.toString(e.getStackTrace())));
+        } catch (Exception e) {
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
         return false;
     }
 
     /**
      * Controller Method to draw a card.
-     * @param username the username of the player that draws the card.
-     * @param index the index of where to draw the card.
-    4 for the standard deck, 5 for the gold deck, 0-3 for the visible cards.
+     *
+     * @param username  the username of the player that draws the card.
+     * @param index     the index of where to draw the card.
+     *                  4 for the standard deck, 5 for the gold deck, 0-3 for the visible cards.
      * @param messageId the unique identifier of the message.
-     * */
+     */
     public boolean draw(String username, Integer index, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
@@ -131,8 +129,8 @@ public class Controller {
             Integer cardId = card.getId();
             messageQueue.add(ThreadMessage.drawResponse(username, cardId, messageId));
             return true;
-        } catch (NullPointerException e){
-          messageQueue.add(ThreadMessage.genericError(username, messageId, "No card to draw"));
+        } catch (NullPointerException e) {
+            messageQueue.add(ThreadMessage.genericError(username, messageId, "No card to draw"));
 
         } catch (Exception e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
@@ -154,10 +152,11 @@ public class Controller {
 
     /**
      * Controller Method to choose a personal objective.
-     * @param username the username of the player that chooses the objective.
-     * @param objId the unique identifier of the chosen objective.
+     *
+     * @param username  the username of the player that chooses the objective.
+     * @param objId     the unique identifier of the chosen objective.
      * @param messageId the unique identifier of the message.
-     * */
+     */
     public void choosePersonalObjective(String username, Integer objId, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
@@ -170,9 +169,10 @@ public class Controller {
 
     /**
      * Controller Method to get the score map.
-     * @param username the username of the player that requests the score map.
+     *
+     * @param username  the username of the player that requests the score map.
      * @param messageId the unique identifier of the message.
-     * */
+     */
     public void getScoreMap(String username, UUID messageId) {
         try {
             ConcurrentHashMap<Player, Integer> scoreBoard = game.getGameBoard().getScore();
@@ -188,16 +188,15 @@ public class Controller {
 
     /**
      * Controller Method to get the hand of the player.
-     * @param username the username of the player that requests the hand.
+     *
+     * @param username  the username of the player that requests the hand.
      * @param messageId the unique identifier of the message.
-     * */
+     */
     public void getHand(String username, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
 
-            ColoredCard[] hand = Arrays.stream(user.getHand())
-                    .filter(Objects::nonNull)
-                    .toArray(ColoredCard[]::new);
+            ColoredCard[] hand = Arrays.stream(user.getHand()).filter(Objects::nonNull).toArray(ColoredCard[]::new);
             ArrayList<Integer> handIds = new ArrayList<>();
 
             for (ColoredCard card : hand) {
@@ -212,9 +211,10 @@ public class Controller {
 
     /**
      * Controller Method to get the common objectives.
-     * @param username the username of the player that requests the common objectives.
+     *
+     * @param username  the username of the player that requests the common objectives.
      * @param messageId the unique identifier of the message.
-     * */
+     */
     public void getCommonObjectives(String username, UUID messageId) {
         try {
             Objective[] objectives = game.getGameBoard().getGlobalObjectives();
@@ -232,9 +232,10 @@ public class Controller {
 
     /**
      * Controller Method to get the personal objective.
-     * @param username the username of the player that requests the common objectives.
+     *
+     * @param username  the username of the player that requests the common objectives.
      * @param messageId the unique identifier of the message.
-     * */
+     */
     public void getPersonalObjective(String username, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
@@ -247,9 +248,10 @@ public class Controller {
 
     /**
      * Controller Method to get the starting objectives to chose from.
-     * @param username the username of the player that gets the objectives.
+     *
+     * @param username  the username of the player that gets the objectives.
      * @param messageId the unique identifier of the message.
-     * */
+     */
     public void getStartingObjectives(String username, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
@@ -269,10 +271,11 @@ public class Controller {
 
     /**
      * Controller Method to get the player resources.
-     * @param username the username of the player that requests the resources.
+     *
+     * @param username             the username of the player that requests the resources.
      * @param usernameRequiredData the username of the player whose resources to get.
-     * @param messageId the unique identifier of the message.
-     * */
+     * @param messageId            the unique identifier of the message.
+     */
     public void getPlayerResources(String username, String usernameRequiredData, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(usernameRequiredData)).toArray()[0];
@@ -284,9 +287,10 @@ public class Controller {
 
     /**
      * Controller Method to get the visible cards.
-     * @param username the username of the player that requests the visible cards.
+     *
+     * @param username  the username of the player that requests the visible cards.
      * @param messageId the unique identifier of the message.
-     * */
+     */
     public void getVisibleCards(String username, UUID messageId) {
         try {
             ColoredCard[] visibleCards = (ColoredCard[]) game.getGameBoard().getVisibleCards();
@@ -304,11 +308,13 @@ public class Controller {
 
 
     //TODO: return an Arraylist of String of Resources, not cardIds
+
     /**
      * Controller Method to get the back side resource of decks.
-     * @param username the username of the player that requests the back resource of decks.
+     *
+     * @param username  the username of the player that requests the back resource of decks.
      * @param messageId the unique identifier of the message.
-     * */
+     */
     public void getBackSideDecks(String username, UUID messageId) {
         try {
             ArrayList<Integer> cardIds = new ArrayList<>();
@@ -319,11 +325,13 @@ public class Controller {
             messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
     }
+
     /**
      * Controller Method to get the valid placement coordinates of cards in the board.
-     * @param username the username of the player that requests the coordinates.
+     *
+     * @param username  the username of the player that requests the coordinates.
      * @param messageId the unique identifier of the message.
-     * */
+     */
     public void getValidPlacements(String username, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
@@ -336,17 +344,18 @@ public class Controller {
 
     /**
      * Controller Method to get the map board of a player.
-     * @param username the username of the player that requests the board.
+     *
+     * @param username             the username of the player that requests the board.
      * @param usernameRequiredData the username of the player whose board to get.
-     * @param messageId the unique identifier of the message.
-     * */
+     * @param messageId            the unique identifier of the message.
+     */
     public void getBoard(String username, String usernameRequiredData, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(usernameRequiredData)).toArray()[0];
             HashMap<Coordinates, Card> board = user.getPlayerBoard().getBoard();
             HashMap<Coordinates, Integer> boardIds = new HashMap<>();
             for (Coordinates coordinate : board.keySet()) {
-                if(board.get(coordinate).getId() == GameConsts.notFillableId){
+                if (board.get(coordinate).getId() == GameConsts.notFillableId) {
                     continue;
                 }
                 boardIds.put(coordinate, board.get(coordinate).getId());
@@ -360,16 +369,17 @@ public class Controller {
 
     /**
      * Controller Method to get the resources of cards in the hand of a Player.
-     * @param username the username of the player that requests the resources.
+     *
+     * @param username             the username of the player that requests the resources.
      * @param usernameRequiredData the username of the player whose hand to get.
-     * @param messageId the unique identifier of the message.
-     * */
+     * @param messageId            the unique identifier of the message.
+     */
     public void getHandColor(String username, String usernameRequiredData, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(usernameRequiredData)).toArray()[0];
             ArrayList<Resource> handColors = new ArrayList<>();
             for (ColoredCard c : user.getHand()) {
-                if(c == null){
+                if (c == null) {
                     continue;
                 }
                 handColors.add(c.getBackResource());
@@ -382,9 +392,10 @@ public class Controller {
 
     /**
      * Controller Method to get the Deque of the unique identifiers of the last placed Cards of the player.
-     * @param username the username of the player that requests the last placed cards.
+     *
+     * @param username  the username of the player that requests the last placed cards.
      * @param messageId the unique identifier of the message.
-     * */
+     */
     public void getPlacingOrder(String username, String usernameRequiredData, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(usernameRequiredData)).toArray()[0];
@@ -410,27 +421,28 @@ public class Controller {
         }
     }
 
-    public void placeStartingCard(String username, boolean bool, UUID messageId){
-        try{
+    public void placeStartingCard(String username, boolean bool, UUID messageId) {
+        try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
 
             user.setFirstCard(bool);
 
             messageQueue.add(ThreadMessage.okResponse(username, messageId));
-        } catch (Exception e){
+        } catch (Exception e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
     }
 
     /**
      * Controller Method to get the state of the game.
-     * @param username the username of the player that requests the state.
+     *
+     * @param username  the username of the player that requests the state.
      * @param messageId the unique identifier of the message.
-     * */
-    public void getGameState(String username, UUID messageId){
-        try{
+     */
+    public void getGameState(String username, UUID messageId) {
+        try {
             messageQueue.add(ThreadMessage.getGameStateResponse(username, game.getGameState().toString(), messageId));
-        } catch (Exception e){
+        } catch (Exception e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }
     }

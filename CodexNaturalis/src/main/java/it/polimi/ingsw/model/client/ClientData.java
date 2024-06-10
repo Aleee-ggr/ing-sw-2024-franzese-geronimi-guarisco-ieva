@@ -14,7 +14,7 @@ import java.util.HashMap;
  * The ClientData class contains the common data for all the players in the game.
  * The client must have every player's board, order of the cards, and resources.
  * The class is abstract and is extended by the PlayerData class and the OpponentData class.
- * */
+ */
 public abstract class ClientData {
     protected BiMap<Coordinates, Card> board;
     protected ArrayList<Card> order;
@@ -23,7 +23,7 @@ public abstract class ClientData {
     /**
      * Constructor for the ClientData class.
      * Initializes the board, order, and resources.
-     * */
+     */
     public ClientData() {
         this.board = HashBiMap.create();
         this.order = new ArrayList<>();
@@ -36,60 +36,55 @@ public abstract class ClientData {
 
     /**
      * Getter for the board.
+     *
      * @return the BiMap of the board
-     * */
+     */
     public BiMap<Coordinates, Card> getBoard() {
         return HashBiMap.create(board);
     }
 
     /**
-     * Getter for the placing order.
-     * @return the ArrayList of the placing order
-     * */
-    public ArrayList<Card> getOrder() {
-        return new ArrayList<>(order);
-    }
-
-    /**
-     * Getter for the resources.
-     * @return the HashMap of the resources
-     * */
-    public HashMap<Resource, Integer> getResources() {
-        return new HashMap<>(resources);
-    }
-
-    /**
      * Setter for the board.
+     *
      * @param board the BiMap of the board
-     * */
+     */
     public void setBoard(BiMap<Coordinates, Card> board) {
         this.board = board;
     }
 
     /**
+     * Getter for the placing order.
+     *
+     * @return the ArrayList of the placing order
+     */
+    public ArrayList<Card> getOrder() {
+        return new ArrayList<>(order);
+    }
+
+    /**
      * Setter for the placing order.
+     *
      * @param order the ArrayList of the placing order
-     * */
+     */
     public void setOrder(ArrayList<Card> order) {
         this.order = order;
     }
 
     /**
+     * Getter for the resources.
+     *
+     * @return the HashMap of the resources
+     */
+    public HashMap<Resource, Integer> getResources() {
+        return new HashMap<>(resources);
+    }
+
+    /**
      * Setter for the resources.
+     *
      * @param resources the HashMap of the resources
-     * */
+     */
     public void setResources(HashMap<Resource, Integer> resources) {
         this.resources = resources;
     }
-
-    @Override
-    public String toString() {
-        return "board: " +
-                board.toString() +
-                "\norder: " +
-                order.toString() +
-                "\nresources: " +
-                resources;
-    }
-
 }
