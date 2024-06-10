@@ -7,6 +7,11 @@
         <option name="ENABLED" value="true" />
         <option name="INCLUDE" value="false" />
       </pattern>
+      <pattern>
+        <option name="PATTERN" value="it.polimi.ingsw.helpers.exceptions.*" />
+        <option name="ENABLED" value="true" />
+        <option name="INCLUDE" value="false" />
+      </pattern>
     </extension>
     <option name="PACKAGE_NAME" value="it.polimi.ingsw" />
     <option name="MAIN_CLASS_NAME" value="" />

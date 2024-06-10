@@ -5,10 +5,15 @@ package it.polimi.ingsw.model.enums;
  * These resources include FUNGI, PLANT, ANIMAL, INSECT, INKWELL, QUILL, and MANUSCRIPT.
  * The NONE value is used when no specific resource is assigned.
  * The NONCOVERABLE value is used to represent a non-coverable corner.
+ *
  * @author Gloria Geronimi
  */
 public enum Resource {
     FUNGI, PLANT, ANIMAL, INSECT, INKWELL, QUILL, MANUSCRIPT, NONE, NONCOVERABLE;
+
+    public static Resource fromString(String string) {
+        return Resource.valueOf(string.toUpperCase());
+    }
 
     public char toChar() {
         return switch (this) {
@@ -21,12 +26,11 @@ public enum Resource {
             case MANUSCRIPT -> '✉';
             case NONE -> '⎕';
             case NONCOVERABLE -> '╳';
-            default -> ' ';
         };
     }
 
-    public char toCharCenter(){
-        return switch (this){
+    public char toCharCenter() {
+        return switch (this) {
             case FUNGI -> 'Ѓ';
             case PLANT -> 'Ῥ';
             case ANIMAL -> 'Ἁ';
@@ -35,30 +39,12 @@ public enum Resource {
         };
     }
 
-    public static Resource fromString(String string) {
-        return Resource.valueOf(string.toUpperCase());
-    }
-
-    public static Resource fromChar(char c) {
-        return switch (c) {
-            case 'F' -> FUNGI;
-            case 'P' -> PLANT;
-            case 'A' -> ANIMAL;
-            case 'I' -> INSECT;
-            case 'K' -> INKWELL;
-            case 'Q' -> QUILL;
-            case 'M' -> MANUSCRIPT;
-            case 'N' -> NONCOVERABLE;
-            default -> NONE;
-        };
-    }
-
     public String toColorBlock() {
         return toColorChar('█');
     }
 
 
-    public String toColorChar(Character character){
+    public String toColorChar(Character character) {
         return switch (this) {
             case FUNGI -> "\u001b[1;31m%c\u001b[0m".formatted(character);
             case PLANT -> "\u001b[1;32m%c\u001b[0m".formatted(character);
@@ -72,9 +58,9 @@ public enum Resource {
         };
     }
 
-    public String toColorCenter(){
+    public String toColorCenter() {
         return switch (this) {
-            case FUNGI, PLANT, ANIMAL, INSECT ->  toColorChar('◆');
+            case FUNGI, PLANT, ANIMAL, INSECT -> toColorChar('◆');
             default -> " ";
         };
     }
