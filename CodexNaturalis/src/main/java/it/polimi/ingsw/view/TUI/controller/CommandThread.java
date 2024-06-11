@@ -106,6 +106,8 @@ public class CommandThread extends Thread {
                                 sleep(1000);
                                 compositor.setTopBar("Your Turn: Draw a Card!");
                                 compositor.switchView(View.DECK);
+                            } else {
+                                defaultCommand();
                             }
                         }
                     } else {
