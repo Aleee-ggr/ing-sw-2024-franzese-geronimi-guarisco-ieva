@@ -208,6 +208,27 @@
                 </Text>
             </children>
         </StackPane>
+      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="300.0" style="-fx-background-color: dad6a6;" StackPane.alignment="TOP_RIGHT">
+         <children>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="25.0" StackPane.alignment="CENTER">
+               <children>
+                  <Text fx:id="username" strokeType="OUTSIDE" strokeWidth="0.0" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font name="Trattatello" size="30.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="turnMessage" strokeType="OUTSIDE" strokeWidth="0.0">
+                     <font>
+                        <Font name="Trattatello" size="20.0" />
+                     </font>
+                  </Text>
+               </children>
+            </VBox>
+         </children>
+         <StackPane.margin>
+            <Insets right="50.0" top="50.0" />
+         </StackPane.margin>
+      </StackPane>
         <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="1360.0" spacing="30.0" StackPane.alignment="BOTTOM_CENTER">
             <children>
                 <HBox fx:id="handContainer" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="225.0" prefWidth="800.0" spacing="25.0" style="-fx-background-color: white; -fx-border-color: #432918; -fx-border-width: 4;" />

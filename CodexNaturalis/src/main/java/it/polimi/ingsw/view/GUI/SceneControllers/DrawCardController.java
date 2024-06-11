@@ -126,26 +126,32 @@ public class DrawCardController implements Initializable, TabController {
             goldCard1.setOnMouseClicked(event -> {
                 goldCard1.setImage(null);
                 drawCard(0);
+                gameController.turnMessage.setText("Waiting for your Turn...");
             });
             goldCard2.setOnMouseClicked(event -> {
                 goldCard2.setImage(null);
                 drawCard(1);
+                gameController.turnMessage.setText("Waiting for your Turn...");
             });
             stdCard1.setOnMouseClicked(event -> {
                 stdCard1.setImage(null);
                 drawCard(2);
+                gameController.turnMessage.setText("Waiting for your Turn...");
             });
             stdCard2.setOnMouseClicked(event -> {
                 stdCard2.setImage(null);
                 drawCard(3);
+                gameController.turnMessage.setText("Waiting for your Turn...");
             });
             goldDeck.setOnMouseClicked(event -> {
                 goldDeck.setImage(null);
                 drawCard(4);
+                gameController.turnMessage.setText("Waiting for your Turn...");
             });
             stdDeck.setOnMouseClicked(event -> {
                 stdDeck.setImage(null);
                 drawCard(5);
+                gameController.turnMessage.setText("Waiting for your Turn...");
             });
         }
     }

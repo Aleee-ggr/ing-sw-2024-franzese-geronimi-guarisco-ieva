@@ -98,6 +98,12 @@ public class GameController implements Initializable {
     @FXML
     ImageView backgroundImage;
 
+    @FXML
+    Text username;
+
+    @FXML
+    Text turnMessage;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         updater = new SharedUpdate();
@@ -132,6 +138,8 @@ public class GameController implements Initializable {
     }
 
     private void setPersonalData() {
+        username.setText(client.getUsername());
+        turnMessage.setText("Waiting for your Turn...");
         board.getChildren().clear();
         backgroundImage.fitWidthProperty().bind(root.widthProperty());
         backgroundImage.fitHeightProperty().bind(root.heightProperty());
@@ -530,6 +538,8 @@ public class GameController implements Initializable {
             setupResources();
             setHand(frontSide);
 
+            turnMessage.setText("Your Turn: Draw a Card!");
+
             PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
             pause.setOnFinished(e -> { changeDrawCardScene(); });
             pause.play();
@@ -562,5 +572,9 @@ public class GameController implements Initializable {
             tabContainer.setPrefWidth(350);
             tabContainer.setPrefHeight(1080);
         }
+    }
+
+    protected void setTurn() {
+        turnMessage.setText("Your Turn: Place a Card!");
     }
 }
