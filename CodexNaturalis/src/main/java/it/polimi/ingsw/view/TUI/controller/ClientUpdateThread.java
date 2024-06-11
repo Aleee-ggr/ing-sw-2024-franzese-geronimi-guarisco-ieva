@@ -8,6 +8,8 @@ import it.polimi.ingsw.view.TUI.Compositor;
 
 import java.io.IOException;
 
+import static it.polimi.ingsw.controller.WaitState.*;
+
 public class ClientUpdateThread extends Thread {
     private final ClientInterface client;
     private final SharedUpdate updater;
@@ -20,9 +22,12 @@ public class ClientUpdateThread extends Thread {
     }
 
     /**
-     * Wait for updates from the server, using the function waitUpdate and waiting for a return from the call.
-     * This function will set the state to either TURN or WAIT, and then wait for the server to change it to UPDATE
-     * or TURN_UPDATE, if an update is received, fetch necessary data from the server and update the view using the
+     * Wait for updates from the server, using the function waitUpdate and waiting
+     * for a return from the call.
+     * This function will set the state to either TURN or WAIT, and then wait for
+     * the server to change it to UPDATE
+     * or TURN_UPDATE, if an update is received, fetch necessary data from the
+     * server and update the view using the
      * updater
      *
      * @see SharedUpdate
@@ -33,7 +38,8 @@ public class ClientUpdateThread extends Thread {
     @Override
     public void run() {
         boolean running;
-        WaitState state = null, oldState;
+        WaitState state = null;
+        WaitState oldState = null;
         synchronized (client) {
             running = client.getGameState() != GameState.STOP;
         }
@@ -41,16 +47,20 @@ public class ClientUpdateThread extends Thread {
             try {
                 oldState = state;
                 state = client.waitUpdate();
-                if (state == WaitState.UPDATE || state == WaitState.TURN_UPDATE) {
+                if (state == UPDATE || state == TURN_UPDATE) {
                     fetchData();
                     updater.update();
                 }
-                if (oldState != WaitState.TURN && state == WaitState.TURN) {
+                if (state == TURN || state == TURN_UPDATE) {
                     fetchData();
-                    compositor.switchView(View.BOARD);
-                    compositor.setTopBar("Your Turn: Place a Card!");
+                    compositor.setTopBar("Your Turn!");
                     updater.update();
+
+                    if (oldState == UPDATE || oldState == WAIT) {
+                        compositor.switchView(View.BOARD);
+                    }
                 }
+
                 sleep(500);
 
             } catch (IOException | InterruptedException e) {
@@ -61,9 +71,10 @@ public class ClientUpdateThread extends Thread {
             }
         }
     }
-    
+
     /**
-     * Fetch all the required data from the server in order to render the tui interface,
+     * Fetch all the required data from the server in order to render the tui
+     * interface,
      *
      * @see ClientInterface
      * @see Compositor
