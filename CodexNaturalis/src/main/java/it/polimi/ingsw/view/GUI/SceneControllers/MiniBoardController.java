@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.client.ClientData;
 import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.RotateBoard;
+import it.polimi.ingsw.view.TUI.controller.SharedUpdate;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -20,9 +22,10 @@ import java.net.URL;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class MiniBoardController implements Initializable {
+public class MiniBoardController implements Initializable, TabController {
     private ClientInterface client;
     private PlayerData playerData;
+    private SharedUpdate updater;
     private Coordinates center;
     private GameController gameController;
 
@@ -40,6 +43,38 @@ public class MiniBoardController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        setBoards();
+    }
+
+    public void setClient(ClientInterface client, GameController gameController, SharedUpdate updater) {
+        this.client = client;
+        this.playerData = client.getPlayerData();
+        this.gameController = gameController;
+        this.updater = updater;
+    }
+
+    @FXML
+    private void closeTab(ActionEvent event) {
+        tabPane.getParent().getParent().setVisible(false);
+    }
+
+    private Coordinates calculateBoardCoordinates(Coordinates coordinates) {
+        coordinates = RotateBoard.rotateCoordinates(coordinates, -45);
+        return new Coordinates(
+                center.x() + coordinates.x(),
+                center.y() - coordinates.y()
+        );
+    }
+
+    private void calculateBoardCenterCoordinates() {
+        center = new Coordinates(
+                board1.getColumnCount() / 2,
+                board1.getRowCount() / 2
+        );
+    }
+
+    @FXML
+    private void setBoards() {
         calculateBoardCenterCoordinates();
         try {
             client.fetchPlayersBoards();
@@ -105,29 +140,8 @@ public class MiniBoardController implements Initializable {
         }
     }
 
-    public void setClient(ClientInterface client, GameController gameController) {
-        this.client = client;
-        this.playerData = client.getPlayerData();
-        this.gameController = gameController;
-    }
-
-    @FXML
-    private void closeTab(ActionEvent event) {
-        tabPane.getParent().getParent().setVisible(false);
-    }
-
-    private Coordinates calculateBoardCoordinates(Coordinates coordinates) {
-        coordinates = RotateBoard.rotateCoordinates(coordinates, -45);
-        return new Coordinates(
-                center.x() + coordinates.x(),
-                center.y() - coordinates.y()
-        );
-    }
-
-    private void calculateBoardCenterCoordinates() {
-        center = new Coordinates(
-                board1.getColumnCount() / 2,
-                board1.getRowCount() / 2
-        );
+    @Override
+    public void update() {
+        Platform.runLater(this::setBoards);
     }
 }

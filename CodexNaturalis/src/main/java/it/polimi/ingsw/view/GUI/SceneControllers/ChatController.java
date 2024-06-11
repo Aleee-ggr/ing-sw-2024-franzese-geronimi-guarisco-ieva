@@ -3,6 +3,8 @@ package it.polimi.ingsw.view.GUI.SceneControllers;
 import it.polimi.ingsw.model.ChatMessage;
 import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.network.ClientInterface;
+import it.polimi.ingsw.view.TUI.controller.SharedUpdate;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,9 +21,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ChatController implements Initializable {
+public class ChatController implements Initializable, TabController {
     private ClientInterface client;
     private PlayerData playerData;
+    private SharedUpdate updater;
 
     @FXML
     VBox chatContainer;
@@ -35,9 +38,10 @@ public class ChatController implements Initializable {
     @FXML
     Button sendButton;
 
-    public void setClient(ClientInterface client) {
+    public void setClient(ClientInterface client, SharedUpdate updater) {
         this.client = client;
         this.playerData = client.getPlayerData();
+        this.updater = updater;
     }
 
     @Override
@@ -71,8 +75,8 @@ public class ChatController implements Initializable {
             HBox messageHBox = new HBox();
             Text message = new Text(chatMessage.sender() + (chatMessage.receiver()!=null ? " to " + chatMessage.receiver() : "") + ": " + chatMessage.message());
             message.setStyle("-fx-font-family: Trattatello;" +
-                             "-fx-font-size: 30;" +
-                             "-fx-text-fill: #432918;"
+                    "-fx-font-size: 30;" +
+                    "-fx-text-fill: #432918;"
             );
 
             if (chatMessage.sender().equals(client.getUsername())) {
@@ -91,5 +95,10 @@ public class ChatController implements Initializable {
     @FXML
     private void closeTab(ActionEvent event) {
         tabPane.getParent().getParent().setVisible(false);
+    }
+
+    @Override
+    public void update() {
+        Platform.runLater(this::setChat);
     }
 }

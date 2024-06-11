@@ -3,6 +3,8 @@ package it.polimi.ingsw.view.GUI.SceneControllers;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.network.ClientInterface;
+import it.polimi.ingsw.view.TUI.controller.SharedUpdate;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,10 +17,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class DrawCardController implements Initializable {
+public class DrawCardController implements Initializable, TabController {
     private ClientInterface client;
     private PlayerData playerData;
     private GameController gameController;
+    private SharedUpdate updater;
 
     @FXML
     StackPane tabPane;
@@ -53,10 +56,11 @@ public class DrawCardController implements Initializable {
     @FXML
     private VBox cardsContainer;
 
-    public void setClient(ClientInterface client, GameController gameController) {
+    public void setClient(ClientInterface client, GameController gameController, SharedUpdate updater) {
         this.client = client;
         this.playerData = client.getPlayerData();
         this.gameController = gameController;
+        this.updater = updater;
     }
 
     @Override
@@ -143,7 +147,11 @@ public class DrawCardController implements Initializable {
                 stdDeck.setImage(null);
                 drawCard(5);
             });
-
         }
+    }
+
+    @Override
+    public void update() {
+        Platform.runLater(this::setCards);
     }
 }

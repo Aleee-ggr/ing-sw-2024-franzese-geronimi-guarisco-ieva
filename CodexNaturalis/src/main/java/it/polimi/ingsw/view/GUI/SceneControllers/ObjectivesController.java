@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ObjectivesController implements Initializable {
+public class ObjectivesController implements Initializable, TabController {
     private ClientInterface client;
     private PlayerData playerData;
 
@@ -59,5 +59,7 @@ public class ObjectivesController implements Initializable {
     private void closeTab(ActionEvent event) {
         tabPane.getParent().getParent().setVisible(false);
     }
-}
 
+    @Override
+    public void update() {}
+}

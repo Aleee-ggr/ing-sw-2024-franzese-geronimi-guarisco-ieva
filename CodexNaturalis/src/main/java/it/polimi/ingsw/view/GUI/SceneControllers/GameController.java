@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.RotateBoard;
+import it.polimi.ingsw.view.TUI.controller.SharedUpdate;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,6 +40,7 @@ import java.util.ResourceBundle;
 public class GameController implements Initializable {
     private ClientInterface client;
     private PlayerData playerData;
+    private SharedUpdate updater;
     private Coordinates center;
     protected boolean frontSide = true;
     private final Map<Coordinates, StackPane> validPlacementPanes = new HashMap<>();
@@ -95,6 +97,9 @@ public class GameController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        updater = new SharedUpdate();
+        new ClientUpdate(client, this, updater).start();
+        new ClientRenderUpdateThread(client, this, updater).start();
         setPersonalData();
     }
 
