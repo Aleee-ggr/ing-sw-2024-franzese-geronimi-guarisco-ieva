@@ -223,11 +223,12 @@ public class CommandThread extends Thread {
             id = -1;
             card = abs(card) - 2;
         }
-        id *= client.getPlayerData().getClientHand().get(card).getId();
-        Coordinates coordinates = client.getPlayerData().getValidPlacements().get(position);
+
         try {
+            id *= client.getPlayerData().getClientHand().get(card).getId();
+            Coordinates coordinates = client.getPlayerData().getValidPlacements().get(position);
             return client.placeCard(coordinates, id);
-        } catch (IOException e) {
+        } catch (IndexOutOfBoundsException | IOException e) {
             return false;
         }
     }
