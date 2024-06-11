@@ -85,7 +85,6 @@ public class MainMenuController implements Initializable {
         if (client != null) {
             fetchGamesPeriodically();
         }
-        System.out.println("MainMenuController initialized");
     }
 
     /**
@@ -136,13 +135,37 @@ public class MainMenuController implements Initializable {
                 try {
                     client.joinGame(uuid);
                     stopFetchingGames();
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/WaitingRoom.fxml"));
-                    WaitingRoomController controller = new WaitingRoomController();
-                    controller.setClient(client);
-                    loader.setController(controller);
-                    Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
-                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                    stage.setScene(scene);
+
+                    try {
+                        client.fetchGameState();
+                        client.fetchPlayers();
+                        client.fetchPersonalObjective();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    FXMLLoader loader;
+                    switch (client.getGameState()) {
+                        case SETUP:
+                            loader = new FXMLLoader(getClass().getResource("/GUI/fxml/WaitingRoom.fxml"));
+                            WaitingRoomController controller = new WaitingRoomController();
+                            controller.setClient(client);
+                            loader.setController(controller);
+                            Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
+                            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                            stage.setScene(scene);
+                            break;
+                        case MAIN:
+                            loader = new FXMLLoader(getClass().getResource("/GUI/fxml/GameScene.fxml"));
+                            GameController gameController = new GameController();
+                            gameController.setClient(client);
+                            loader.setController(gameController);
+                            Scene scene1 = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
+                            Stage stage1 = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                            stage1.setScene(scene1);
+                            break;
+                        case ENDGAME:
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
