@@ -48,6 +48,9 @@ public class GameController implements Initializable {
     private static final double MIN_SCALE = 0.3;
     private static final double MAX_SCALE = 3.0;
 
+    private HashMap<String, TabController> tabControllers;
+    private String activeTab;
+
     private ImageView selectedHandCard = null;
 
     @FXML
@@ -100,6 +103,14 @@ public class GameController implements Initializable {
         updater = new SharedUpdate();
         new ClientUpdate(client, this, updater).start();
         new ClientRenderUpdateThread(client, this, updater).start();
+        tabControllers = new HashMap<>();
+        tabControllers.put("DrawCard", new DrawCardController());
+        tabControllers.put("Score", new ScoreController());
+        tabControllers.put("Chat", new ChatController());
+        tabControllers.put("MiniBoard", new MiniBoardController());
+        tabControllers.put("Objectives", new ObjectivesController());
+        activeTab = null;
+
         setPersonalData();
     }
 
@@ -382,18 +393,20 @@ public class GameController implements Initializable {
     @FXML
     private void changeDrawCardScene() {
         try {
-            if (!tabContainer.isVisible()) {
+            if (activeTab == null || !activeTab.equals("DrawCard")) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/DrawCardTab.fxml"));
-                DrawCardController controller = new DrawCardController();
-                controller.setClient(client, this);
+                DrawCardController controller = (DrawCardController) tabControllers.get("DrawCard");
+                controller.setClient(client, this, updater);
                 loader.setController(controller);
                 StackPane drawPane = loader.load();
                 tabContainer.setPrefWidth(600);
                 tabContainer.setPrefHeight(800);
                 tabPane.getChildren().setAll(drawPane);
                 tabContainer.setVisible(true);
+                activeTab = "DrawCard";
             } else {
                 updateTabDimensions();
+                activeTab = null;
                 tabContainer.setVisible(false);
             }
         } catch (IOException e) {
@@ -404,16 +417,18 @@ public class GameController implements Initializable {
     @FXML
     private void changeScoreScene(ActionEvent event) {
         try {
-            if (!tabContainer.isVisible()) {
+            if (activeTab == null || !activeTab.equals("Score")) {
                 updateTabDimensions();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ScoreTab.fxml"));
-                ScoreController controller = new ScoreController();
-                controller.setClient(client);
+                ScoreController controller = (ScoreController) tabControllers.get("Score");
+                controller.setClient(client, updater);
                 loader.setController(controller);
                 StackPane scorePane = loader.load();
                 tabPane.getChildren().setAll(scorePane);
                 tabContainer.setVisible(true);
+                activeTab = "Score";
             } else {
+                activeTab = null;
                 tabContainer.setVisible(false);
             }
         } catch (IOException e) {
@@ -424,16 +439,18 @@ public class GameController implements Initializable {
     @FXML
     private void changeChatScene(ActionEvent event) {
         try {
-            if (!tabContainer.isVisible()) {
+            if (activeTab == null || !activeTab.equals("Chat")) {
                 updateTabDimensions();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChatTab.fxml"));
-                ChatController controller = new ChatController();
-                controller.setClient(client);
+                ChatController controller = (ChatController) tabControllers.get("Chat");
+                controller.setClient(client, updater);
                 loader.setController(controller);
                 StackPane chatPane = loader.load();
                 tabPane.getChildren().setAll(chatPane);
                 tabContainer.setVisible(true);
+                activeTab = "Chat";
             } else {
+                activeTab = null;
                 tabContainer.setVisible(false);
             }
         } catch (IOException e) {
@@ -444,16 +461,18 @@ public class GameController implements Initializable {
     @FXML
     private void changeObjectivesScene(ActionEvent event) {
         try {
-            if (!tabContainer.isVisible()) {
+            if (activeTab == null || !activeTab.equals("Objectives")) {
                 updateTabDimensions();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ObjectivesTab.fxml"));
-                ObjectivesController controller = new ObjectivesController();
+                ObjectivesController controller = (ObjectivesController) tabControllers.get("Objectives");
                 controller.setClient(client);
                 loader.setController(controller);
                 StackPane objectivesPane = loader.load();
                 tabPane.getChildren().setAll(objectivesPane);
                 tabContainer.setVisible(true);
+                activeTab = "Objectives";
             } else {
+                activeTab = null;
                 tabContainer.setVisible(false);
             }
         } catch (IOException e) {
@@ -464,16 +483,18 @@ public class GameController implements Initializable {
     @FXML
     private void changeMiniBoardScene(ActionEvent event) {
         try {
-            if (!tabContainer.isVisible()) {
+            if (activeTab == null || !activeTab.equals("MiniBoard")) {
                 updateTabDimensions();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/MiniBoardTab.fxml"));
-                MiniBoardController controller = new MiniBoardController();
-                controller.setClient(client, this);
+                MiniBoardController controller = (MiniBoardController) tabControllers.get("MiniBoard");
+                controller.setClient(client, this, updater);
                 loader.setController(controller);
                 StackPane miniBoardPane = loader.load();
                 tabPane.getChildren().setAll(miniBoardPane);
                 tabContainer.setVisible(true);
+                activeTab = "MiniBoard";
             } else {
+                activeTab = null;
                 tabContainer.setVisible(false);
             }
 
@@ -527,6 +548,12 @@ public class GameController implements Initializable {
         } else {
             setHand(true);
             frontSide = true;
+        }
+    }
+
+    protected void updateView() {
+        if (activeTab != null && !activeTab.equals("Objectives")) {
+            tabControllers.get(activeTab).update();
         }
     }
 
