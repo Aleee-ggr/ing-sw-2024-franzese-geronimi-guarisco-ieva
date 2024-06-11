@@ -116,6 +116,7 @@ public class GameController implements Initializable {
     }
 
     private void setPersonalData() {
+        board.getChildren().clear();
         backgroundImage.fitWidthProperty().bind(root.widthProperty());
         backgroundImage.fitHeightProperty().bind(root.heightProperty());
         tabContainer.setVisible(false);
@@ -382,17 +383,12 @@ public class GameController implements Initializable {
                 controller.setClient(client, this);
                 loader.setController(controller);
                 StackPane drawPane = loader.load();
-                tabPane.setPrefWidth(600);
-                tabPane.setPrefHeight(800);
                 tabContainer.setPrefWidth(600);
                 tabContainer.setPrefHeight(800);
                 tabPane.getChildren().setAll(drawPane);
                 tabContainer.setVisible(true);
             } else {
-                tabPane.setPrefWidth(350);
-                tabPane.setPrefHeight(1080);
-                tabContainer.setPrefWidth(350);
-                tabContainer.setPrefHeight(1080);
+                updateTabDimensions();
                 tabContainer.setVisible(false);
             }
         } catch (IOException e) {
@@ -404,6 +400,7 @@ public class GameController implements Initializable {
     private void changeScoreScene(ActionEvent event) {
         try {
             if (!tabContainer.isVisible()) {
+                updateTabDimensions();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ScoreTab.fxml"));
                 ScoreController controller = new ScoreController();
                 controller.setClient(client);
@@ -423,6 +420,7 @@ public class GameController implements Initializable {
     private void changeChatScene(ActionEvent event) {
         try {
             if (!tabContainer.isVisible()) {
+                updateTabDimensions();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChatTab.fxml"));
                 ChatController controller = new ChatController();
                 controller.setClient(client);
@@ -442,6 +440,7 @@ public class GameController implements Initializable {
     private void changeObjectivesScene(ActionEvent event) {
         try {
             if (!tabContainer.isVisible()) {
+                updateTabDimensions();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ObjectivesTab.fxml"));
                 ObjectivesController controller = new ObjectivesController();
                 controller.setClient(client);
@@ -461,6 +460,7 @@ public class GameController implements Initializable {
     private void changeMiniBoardScene(ActionEvent event) {
         try {
             if (!tabContainer.isVisible()) {
+                updateTabDimensions();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/MiniBoardTab.fxml"));
                 MiniBoardController controller = new MiniBoardController();
                 controller.setClient(client, this);
@@ -522,6 +522,13 @@ public class GameController implements Initializable {
         } else {
             setHand(true);
             frontSide = true;
+        }
+    }
+
+    private void updateTabDimensions() {
+        if (tabContainer.getPrefWidth() == 600) {
+            tabContainer.setPrefWidth(350);
+            tabContainer.setPrefHeight(1080);
         }
     }
 }
