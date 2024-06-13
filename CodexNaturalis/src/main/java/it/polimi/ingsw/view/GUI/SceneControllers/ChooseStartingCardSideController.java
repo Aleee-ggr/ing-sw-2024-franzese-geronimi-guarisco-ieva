@@ -84,8 +84,8 @@ public class ChooseStartingCardSideController implements Initializable {
                 client.placeStartingCard(false);
             }
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/GameScene.fxml"));
-            GameController controller = new GameController();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseColorScene.fxml"));
+            ChooseColorController controller = new ChooseColorController();
             controller.setClient(client);
             loader.setController(controller);
             Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());

@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.client.OpponentData;
+import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientInterface;
@@ -241,6 +242,18 @@ public class SocketClient extends Client implements ClientInterface {
     }
 
     @Override
+    public synchronized boolean choosePlayerColor(Color playerColor) throws IOException {
+        output.writeObject(new SocketClientChoosePlayerColorMessage(username, playerColor, gameId));
+        return choosePlayerColorClient(playerColor, handleResponse());
+    }
+
+    @Override
+    public synchronized boolean fetchAvailableColors() throws IOException {
+        output.writeObject(new SocketClientGetAvailableColorsMessage(username, gameId));
+        return handleResponse();
+    }
+
+    @Override
     public synchronized boolean fetchAvailableGames() throws IOException {
         output.writeObject(new SocketClientFetchAvailableGamesMessage(username));
         return handleResponse();
@@ -301,6 +314,23 @@ public class SocketClient extends Client implements ClientInterface {
             }
 
             output.writeObject(new SocketClientGetHandColorMessage(username, this.gameId, player));
+
+            if (!handleResponse()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    @Override
+    public synchronized boolean fetchPlayersColors() throws IOException {
+        for (String player : players) {
+            if (player.equals(username)) {
+                continue;
+            }
+
+            output.writeObject(new SocketClientGetPlayerColorMessage(username, this.gameId, player));
 
             if (!handleResponse()) {
                 return false;
@@ -512,6 +542,26 @@ public class SocketClient extends Client implements ClientInterface {
                 ((OpponentData) playerData.get(player)).setHandColor(handColor);
 
                 return true;
+            }
+
+            case GetPlayerColorResponseMessage getPlayerColorResponseMessage -> {
+                String player = getPlayerColorResponseMessage.getUsernameRequiredData();
+                Color playerColor = getPlayerColorResponseMessage.getPlayerColor();
+                if (playerColor == null) {
+                    return false;
+                }
+
+                ((OpponentData) playerData.get(player)).setPlayerColor(playerColor);
+
+                return true;
+            }
+
+            case GetAvailableColorsResponseMessage getAvailableColorsResponseMessage -> {
+                return fetchAvailableColorsClient(getAvailableColorsResponseMessage.getAvailableColors());
+            }
+
+            case ChoosePlayerColorResponseMessage choosePlayerColorResponseMessage -> {
+                return choosePlayerColorResponseMessage.isCorrect();
             }
 
             //fetchClientHand

@@ -169,6 +169,7 @@ public class SocketTest {
             client.fetchGameState();
             client.fetchVisibleCardsAndDecks();
             client.fetchOpponentsHandColor();
+            client.fetchPlayersColors();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

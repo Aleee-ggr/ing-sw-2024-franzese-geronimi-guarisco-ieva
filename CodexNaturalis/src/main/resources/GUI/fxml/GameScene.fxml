@@ -232,7 +232,7 @@
         <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="1360.0" spacing="30.0" StackPane.alignment="BOTTOM_CENTER">
             <children>
                 <HBox fx:id="handContainer" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="225.0" prefWidth="800.0" spacing="25.0" style="-fx-background-color: white; -fx-border-color: #432918; -fx-border-width: 4;" />
-                <VBox fx:id="buttonsContainer" alignment="CENTER" spacing="30.0">
+                <VBox fx:id="buttonsContainer" alignment="CENTER" spacing="15.0">
                     <HBox.margin>
                         <Insets />
                     </HBox.margin>

@@ -150,6 +150,15 @@ public class ClientHandler extends Thread {
                             )
                     );
 
+            case SocketClientChoosePlayerColorMessage socketClientChoosePlayerColorMessage ->
+                    responseMessage = new ChoosePlayerColorResponseMessage(
+                            Server.choosePlayerColorServer(
+                                    socketClientChoosePlayerColorMessage.getGameUUID(),
+                                    socketClientChoosePlayerColorMessage.getUsername(),
+                                    socketClientChoosePlayerColorMessage.getPlayerColor()
+                            )
+                    );
+
             case SocketClientFetchAvailableGamesMessage socketClientFetchAvailableGamesMessage ->
                     responseMessage = new FetchAvailableGamesResponseMessage(
                             Server.getAvailableGamesServer(
@@ -284,6 +293,24 @@ public class ClientHandler extends Thread {
                             )
                     );
 
+            case SocketClientGetAvailableColorsMessage socketClientGetAvailableColorsMessage ->
+                    responseMessage = new GetAvailableColorsResponseMessage(
+                            Server.getAvailableColorsServer(
+                                    socketClientGetAvailableColorsMessage.getGameUUID(),
+                                    socketClientGetAvailableColorsMessage.getUsername()
+                            )
+                    );
+
+            case SocketClientGetPlayerColorMessage socketClientGetPlayerColorMessage ->
+                    responseMessage = new GetPlayerColorResponseMessage(
+                            Server.getPlayerColorServer(
+                                    socketClientGetPlayerColorMessage.getGameUUID(),
+                                    socketClientGetPlayerColorMessage.getUsername(),
+                                    socketClientGetPlayerColorMessage.getUsernameRequiredData()
+                            ),
+                            socketClientGetPlayerColorMessage.getUsernameRequiredData()
+                    );
+
             case SocketClientFetchChatMessage socketClientFetchChatMessage ->
                     responseMessage = new FetchChatResponseMessage(
                             Server.fetchChatServer(
@@ -313,3 +340,4 @@ public class ClientHandler extends Thread {
         }
     }
 }
+

@@ -282,6 +282,7 @@ public class GameController implements Initializable {
             client.fetchGameState();
             client.fetchVisibleCardsAndDecks();
             client.fetchOpponentsHandColor();
+            client.fetchAvailableColors();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view.GUI.SceneControllers;
 
+import it.polimi.ingsw.model.client.OpponentData;
 import it.polimi.ingsw.model.client.PlayerData;
+import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.controller.SharedUpdate;
 import javafx.application.Platform;
@@ -8,9 +10,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -51,7 +55,6 @@ public class ScoreController implements Initializable, TabController {
      */
     @FXML
     protected void closeTab(ActionEvent event) {
-        updateThread.interrupt();
         tabPane.getParent().getParent().setVisible(false);
     }
 
@@ -114,6 +117,7 @@ public class ScoreController implements Initializable, TabController {
 
         try {
             client.fetchScoreMap();
+            client.fetchPlayersColors();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -132,12 +136,20 @@ public class ScoreController implements Initializable, TabController {
                 .sorted(Map.Entry.comparingByValue())
                 .forEach(entry -> {
 
-                    Image markerImage;
-                    if (entry.getKey().equals("2")) {
-                        markerImage = new Image("GUI/images/score.nogit/CODEX_pion_bleu.png");
+                    Image markerImage = null;
+                    Color playerColor = null;
+                    if (entry.getKey().equals(client.getUsername())) {
+                        playerColor = playerData.getPlayerColor();
                     } else {
-                        markerImage = new Image("GUI/images/score.nogit/CODEX_pion_rouge.png");
+                        playerColor = ((OpponentData) client.getOpponentData().get(entry.getKey())).getPlayerColor();
                     }
+                    switch (playerColor) {
+                        case RED -> markerImage = new Image("GUI/images/score.nogit/CODEX_pion_rouge.png");
+                        case BLUE -> markerImage = new Image("GUI/images/score.nogit/CODEX_pion_bleu.png");
+                        case GREEN -> markerImage = new Image("GUI/images/score.nogit/CODEX_pion_vert.png");
+                        case YELLOW -> markerImage = new Image("GUI/images/score.nogit/CODEX_pion_jaune.png");
+                    }
+
                     ImageView scorePion = new ImageView(markerImage);
                     scorePion.setFitHeight(50);
                     scorePion.setFitWidth(50);
@@ -150,9 +162,15 @@ public class ScoreController implements Initializable, TabController {
 
                     scoreBoard.getChildren().add(scorePion);
 
-                    Label label = new Label(entry.getKey() + ": " + entry.getValue());
-                    label.setStyle("-fx-font-weight: bold; -fx-text-fill: #432918; -fx-font-family: Trattatello; -fx-font-size: 50px;");
-                    listOfPlayers.getChildren().add(label);
+                    Label nameLabel = new Label(entry.getKey());
+                    nameLabel.setStyle(String.format("-fx-font-weight: bold; -fx-text-fill: %s; -fx-font-family: Trattatello; -fx-font-size: 50px;", playerColor));
+
+                    Label scoreLabel = new Label(": " + entry.getValue());
+                    scoreLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #432918; -fx-font-family: Trattatello; -fx-font-size: 50px;");
+
+                    HBox playerInfo = new HBox(nameLabel, scoreLabel);
+                    playerInfo.setAlignment(Pos.CENTER);
+                    listOfPlayers.getChildren().add(playerInfo);
                 });
 
     }
