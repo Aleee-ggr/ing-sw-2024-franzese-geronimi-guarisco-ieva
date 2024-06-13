@@ -14,7 +14,7 @@ public class Chat implements Component {
 
     public Chat(ClientInterface client) {
         this.client = client;
-        this.chatWidth = Compositor.screenWidth - client.getPlayerNum() * MiniBoard.boardWidth - ResourceView.width;
+        this.chatWidth = Compositor.screenWidth - (client.getPlayerNum()-1) * MiniBoard.boardWidth - ResourceView.width - (client.getPlayerNum()-1)-1;
     }
 
     @Override

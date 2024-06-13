@@ -37,11 +37,13 @@ public class ScoreBoard implements Component {
             }
 
             String colorCode = getColorCode(playerColor);
+
+            if (player.length() > maxLength) {
+                player = player.substring(0, maxLength);
+            }
+
             String coloredPlayer = colorCode + player + "\u001b[0m";
 
-            if (coloredPlayer.length() > maxLength) {
-                coloredPlayer = coloredPlayer.substring(0, maxLength);
-            }
             int spacesCount = scoreWidth - (player.length() + score.length() + 2);
             String spaces = " ".repeat(spacesCount);
             out.append(String.format("%s: %s%s\n", coloredPlayer, spaces, score));

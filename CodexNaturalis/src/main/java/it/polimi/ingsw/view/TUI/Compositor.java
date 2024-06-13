@@ -78,30 +78,38 @@ public class Compositor {
         }
 
         for (int y = 0; y < MiniBoard.boardHeight; y++) {
+            out.append(resources.toStringArrayColor()[y]).append('┃');
             for (MiniBoard miniBoard : miniBoard) {
                 out.append(miniBoard.toStringArrayColor()[y]).append('┃');
             }
-            out.append(resources.toStringArrayColor()[y]).append('┃');
             out.append(chat.toStringArray()[y]).append('┃');
             out.append('\n');
         }
 
+        out.append("━".repeat(ResourceView.width))
+                .append('╋');
 
         switch (client.getPlayerNum() - 1) {
             case 1:
-                out.append("━".repeat(MiniBoard.boardWidth));
+                out.append("━".repeat((MiniBoard.boardWidth)));
                 break;
             case 2:
-                out.append("━".repeat((MiniBoard.boardWidth - 1) / 2)).append('┻').append("━".repeat((MiniBoard.boardWidth - 1) / 2));
+                out.append("━".repeat((MiniBoard.boardWidth)))
+                        .append('┻')
+                        .append("━".repeat((MiniBoard.boardWidth)));
                 break;
             case 3:
-                out.append("━".repeat((MiniBoard.boardWidth - 2) / 3)).append('┻').append("━".repeat((MiniBoard.boardWidth - 2) / 3)).append('╋').append("━".repeat((MiniBoard.boardWidth - 2) / 3));
+                out.append("━".repeat((MiniBoard.boardWidth)))
+                        .append('┻')
+                        .append("━".repeat((MiniBoard.boardWidth)))
+                        .append('┻')
+                        .append("━".repeat((MiniBoard.boardWidth)));
                 break;
             default:
                 throw new RuntimeException("Invalid player number.");
         }
-        out.append('┻').append("━".repeat(chat.chatWidth)).append('┻');
-        out.append("━".repeat(ResourceView.width));
+        out.append('┻')
+                .append("━".repeat(chat.chatWidth));
         out.append('\n');
 
 
