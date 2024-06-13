@@ -11,6 +11,7 @@ public class PatternDeduplicator {
 
     /**
      * A class to find the best possible coverage in order to score the most points
+     *
      * @param patterns a set of patterns found
      */
     public PatternDeduplicator(Set<Pattern> patterns) {
@@ -19,17 +20,22 @@ public class PatternDeduplicator {
 
     /**
      * Remove redundant patterns in order to find best match
+     *
      * @return this
      */
     public PatternDeduplicator removeDuplicates() {
         for (Pattern pattern : patterns) {
-            if (checked.contains(pattern)) {continue;}
+            if (checked.contains(pattern)) {
+                continue;
+            }
             Set<Pattern> conflicts = getConflictGroup(pattern);
             deduplicate(conflicts);
             Set<Pattern> newOutput = new HashSet<>(output);
-            for (Pattern p1: output) {
+            for (Pattern p1 : output) {
                 for (Pattern p2 : output) {
-                    if (!newOutput.contains(p1) || !newOutput.contains(p2)) {continue;}
+                    if (!newOutput.contains(p1) || !newOutput.contains(p2)) {
+                        continue;
+                    }
                     if (!p1.equals(p2) && p1.getOverlap(p2) > 0) {
                         newOutput.remove(p2);
                     }
@@ -42,6 +48,7 @@ public class PatternDeduplicator {
 
     /**
      * Count non overlapping pattern in conflict group
+     *
      * @return the number of non overlapping pattern
      */
     public int countDistinct() {
@@ -53,6 +60,7 @@ public class PatternDeduplicator {
 
     /**
      * for the given match, find all other matches that overlap with the current one
+     *
      * @param pattern a match
      * @return a set of patterns that present a conflict with the given one
      */
@@ -77,6 +85,7 @@ public class PatternDeduplicator {
 
     /**
      * Get all the coordinates that are covered by multiple matches
+     *
      * @param patterns a set of patterns that share some coordinates
      * @return a set of coordinates where the given matches overlap
      */
@@ -93,7 +102,8 @@ public class PatternDeduplicator {
     /**
      *
      * @param patterns a set of conflicting patterns with some overlap
-     * @return a map that associates a set of coordinates to how many patterns contains them
+     * @return a map that associates a set of coordinates to how many patterns
+     *         contains them
      */
     private Map<Coordinates, Integer> countPatternPerCoordinates(Set<Pattern> patterns) {
         Set<Coordinates> coordinates = getConflictingCoordinates(patterns);
@@ -111,7 +121,9 @@ public class PatternDeduplicator {
     }
 
     /**
-     * Recursively store necessary patterns for coverage based on the coordinateCounter
+     * Recursively store necessary patterns for coverage based on the
+     * coordinateCounter
+     *
      * @param patterns a set of conflicting patterns with some overlap
      */
     private void deduplicate(Set<Pattern> patterns) {
@@ -120,9 +132,12 @@ public class PatternDeduplicator {
     }
 
     /**
-     * Recursively store necessary patterns for coverage based on the coordinateCounter
-     * @param patterns a set of conflicting patterns with some overlap
-     * @param coordinateCounter a map that associates a set of coordinates to how many patterns contains them
+     * Recursively store necessary patterns for coverage based on the
+     * coordinateCounter
+     *
+     * @param patterns          a set of conflicting patterns with some overlap
+     * @param coordinateCounter a map that associates a set of coordinates to how
+     *                          many patterns contains them
      */
     private void saveUnique(Set<Pattern> patterns, Map<Coordinates, Integer> coordinateCounter) {
         Set<Pattern> toAdd = new HashSet<>();
