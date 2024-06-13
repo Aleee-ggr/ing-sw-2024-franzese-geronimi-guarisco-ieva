@@ -109,7 +109,8 @@ public class Compositor {
                 throw new RuntimeException("Invalid player number.");
         }
         out.append('┻')
-                .append("━".repeat(chat.chatWidth));
+                .append("━".repeat(chat.chatWidth))
+                .append("┛");
         out.append('\n');
 
 
