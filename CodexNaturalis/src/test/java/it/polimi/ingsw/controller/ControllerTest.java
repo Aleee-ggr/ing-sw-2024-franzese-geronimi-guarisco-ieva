@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Corner;
 import it.polimi.ingsw.model.cards.StartingCard;
+import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.player.Player;
 import org.junit.Before;
@@ -345,6 +346,7 @@ public class ControllerTest {
         }
 
         ThreadMessage msg = null;
+        int colorInt = 0;
 
         for (String p : players) {
             controller.getStartingObjectives(p, null);
@@ -360,6 +362,15 @@ public class ControllerTest {
             controller.placeStartingCard(p, true, null);
             msg = msgQueue.take();
             assertEquals(msg.status(), Status.OK);
+
+            controller.getAvailableColors(p, null);
+            msg = msgQueue.take();
+            Color[] colors = Arrays.stream(msg.args()).map(Color::valueOf).toArray(Color[]::new);
+            controller.choosePlayerColor(p, colors[colorInt], null);
+            msg = msgQueue.take();
+
+            assertEquals(msg.status(), Status.OK);
+            colorInt++;
         }
 
         for (Player p : controller.getGame().getPlayers()) {
@@ -387,7 +398,7 @@ public class ControllerTest {
         }
 
 
-        Set<String> nonGetters = Set.of("getStartingObjectives", "getStartingCards", "getPlayerResources", "getBoard", "getHandColor", "getPlacingOrder", "getGame");
+        Set<String> nonGetters = Set.of("getStartingObjectives", "getStartingCards", "getPlayerResources", "getBoard", "getHandColor", "getPlacingOrder", "getGame", "getAvailableColors", "getPlayerColor");
         List<Method> getters = Arrays.stream(Class.forName("it.polimi.ingsw.controller.Controller").getDeclaredMethods()).filter(m -> m.getName().contains("get")).filter(m -> !nonGetters.contains(m.getName())).filter(m -> !m.getName().contains("lambda$")).toList();
 
         for (Method getter : getters) {

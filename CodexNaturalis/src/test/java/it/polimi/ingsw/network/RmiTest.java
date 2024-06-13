@@ -96,6 +96,7 @@ public class RmiTest {
             client.placeStartingCard(true);
             int objectiveId = client.getPlayerData().getStartingObjectives().getFirst().getId();
             client.choosePersonalObjective(objectiveId);
+            client.choosePlayerColor(client.getPlayerData().getAvailableColors().getFirst());
         }
 
         for (ClientInterface client : clients) {
@@ -127,6 +128,7 @@ public class RmiTest {
             client.fetchPlayers();
             client.fetchStartingObjectives();
             client.fetchStartingCard();
+            client.fetchAvailableColors();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
