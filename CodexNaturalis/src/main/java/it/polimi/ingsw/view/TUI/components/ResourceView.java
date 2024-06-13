@@ -36,7 +36,7 @@ public class ResourceView implements Component {
         StringBuilder out = new StringBuilder();
 
         out.append(" %s resources".formatted(username.substring(0, Math.min(username.length(), 7))))
-                .append(" ".repeat(width - Math.min(username.length(), 7) - 10))
+                .append(" ".repeat(width - Math.min(username.length(), 7) - 11))
                 .append("\n");
 
         for (Resource res : Resource.values()) {
@@ -48,7 +48,7 @@ public class ResourceView implements Component {
                     .append(res.toChar())
                     .append(" ")
                     .append(String.format("%2d ",resourceCount.get(res)))
-                    .append(" ".repeat(width-5))
+                    .append(" ".repeat(width-6))
                     .append("\n");
         }
         return out.toString();

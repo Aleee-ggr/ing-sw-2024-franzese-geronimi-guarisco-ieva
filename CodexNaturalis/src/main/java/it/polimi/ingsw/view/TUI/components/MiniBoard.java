@@ -62,12 +62,14 @@ public class MiniBoard implements Component{
         Color playerColor = ((OpponentData) client.getOpponentData().get(username)).getPlayerColor();
 
         String colorCode = getColorCode(playerColor);
-        String coloredPlayer = colorCode + username + "\u001b[0m";
+        String coloredPlayer = " " + colorCode + username + "\u001b[0m";
 
         if (username.length() > boardWidth -1) {
-            out.append(coloredPlayer, 0, boardWidth - 1).append("…");
+            out.append(coloredPlayer, 0, boardWidth - 1)
+                    .append("\u001b[0m")
+                    .append("…");
         } else {
-            String spaces = " ".repeat(boardWidth - username.length());
+            String spaces = " ".repeat(boardWidth - username.length() - 1);
             out.append(String.format("%s%s", coloredPlayer, spaces));
         }
 
