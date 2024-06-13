@@ -9,6 +9,7 @@ import it.polimi.ingsw.controller.threads.Status;
 import it.polimi.ingsw.controller.threads.ThreadMessage;
 import it.polimi.ingsw.model.ChatMessage;
 import it.polimi.ingsw.model.board.Coordinates;
+import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.model.enums.Resource;
 
 import java.rmi.RemoteException;
@@ -258,6 +259,14 @@ public abstract class Server {
         return Boolean.parseBoolean(response.args()[0]);
     }
 
+    public static boolean choosePlayerColorServer(UUID game, String username, Color playerColor) {
+        ThreadMessage message = ThreadMessage.choosePlayerColor(username, playerColor);
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+
+        return Boolean.parseBoolean(response.args()[0]);
+    }
+
     public static ArrayList<Resource> getHandColorServer(UUID game, String username, String usernameRequiredData) {
         ThreadMessage message = ThreadMessage.getHandColor(username, usernameRequiredData);
         sendMessage(game, message);
@@ -337,6 +346,23 @@ public abstract class Server {
 
         if (response.status() == Status.OK) {
             return Integer.parseInt(response.args()[0]);
+        } else {
+            return null;
+        }
+    }
+
+    public static ArrayList<Color> getAvailableColorsServer(UUID game, String username) {
+        ThreadMessage message = ThreadMessage.getAvailableColors(username);
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+
+        if (response.status() == Status.OK) {
+            ArrayList<Color> availableColors = new ArrayList<>();
+            for (String arg : response.args()) {
+                availableColors.add(Color.valueOf(arg));
+            }
+
+            return availableColors;
         } else {
             return null;
         }
@@ -443,6 +469,18 @@ public abstract class Server {
             }
 
             return validPlacements;
+        } else {
+            return null;
+        }
+    }
+
+    public static Color getPlayerColorServer(UUID game, String username, String usernameRequiredData) {
+        ThreadMessage message = ThreadMessage.getPlayerColor(username, usernameRequiredData);
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+
+        if (response.status() == Status.OK) {
+            return Color.valueOf(response.args()[0]);
         } else {
             return null;
         }

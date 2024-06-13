@@ -92,6 +92,7 @@ public class ClientUpdateThread extends Thread {
             client.fetchVisibleCardsAndDecks();
             client.fetchOpponentsHandColor();
             client.fetchChat();
+            client.fetchPlayersColors();
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);

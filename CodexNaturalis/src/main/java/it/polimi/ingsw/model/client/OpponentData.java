@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.client;
 
+import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.model.enums.Resource;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
  * */
 public class OpponentData extends ClientData{
     private ArrayList<Resource> handColor;
+    private Color playerColor;
 
     /**
      * Constructor for the OpponentData class.
@@ -28,11 +30,19 @@ public class OpponentData extends ClientData{
         return new ArrayList<>(handColor);
     }
 
+    public Color getPlayerColor() {
+        return playerColor;
+    }
+
     /**
      * Setter for the hand color.
      * @param handColor the ArrayList of the hand color
      * */
     public void setHandColor(ArrayList<Resource> handColor) {
         this.handColor = handColor;
+    }
+
+    public void setPlayerColor(Color playerColor) {
+        this.playerColor = playerColor;
     }
 }

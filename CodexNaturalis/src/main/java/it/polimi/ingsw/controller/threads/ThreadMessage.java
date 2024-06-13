@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller.threads;
 
 import it.polimi.ingsw.model.board.Coordinates;
+import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.model.enums.Resource;
 
 import java.util.*;
@@ -89,6 +90,10 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         return new ThreadMessage(Status.REQUEST, username, "choosePersonalObjective", new String[]{objectiveId.toString()}, UUID.randomUUID());
     }
 
+    public static ThreadMessage choosePlayerColor(String username, Color playerColor) {
+        return new ThreadMessage(Status.REQUEST, username, "choosePlayerColor", new String[]{playerColor.toString()}, UUID.randomUUID());
+    }
+
     /**
      * Creates a ThreadMessage for requesting the score map.
      *
@@ -137,6 +142,14 @@ public record ThreadMessage(Status status, String player, String type, String[] 
      */
     public static ThreadMessage getStartingObjectives(String username) {
         return new ThreadMessage(Status.REQUEST, username, "getStartingObjectives", null, UUID.randomUUID());
+    }
+
+    public static ThreadMessage getAvailableColors(String username) {
+        return new ThreadMessage(Status.REQUEST, username, "getAvailableColors", null, UUID.randomUUID());
+    }
+
+    public static ThreadMessage getPlayerColor(String username, String usernameRequiredData) {
+        return new ThreadMessage(Status.REQUEST, username, "getPlayerColor", new String[]{usernameRequiredData}, UUID.randomUUID());
     }
 
     /**
@@ -334,6 +347,10 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         return new ThreadMessage(Status.OK, username, "choosePersonalObjectiveResponse", new String[]{String.valueOf(correct)}, messageUUID);
     }
 
+    public static ThreadMessage choosePlayerColorResponse(String username, boolean correct, UUID messageUUID) {
+        return new ThreadMessage(Status.OK, username, "choosePlayerColorResponse", new String[]{String.valueOf(correct)}, messageUUID);
+    }
+
     /**
      * Creates a ThreadMessage for a starting card response.
      *
@@ -435,6 +452,22 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         }
 
         return new ThreadMessage(Status.OK, username, "getStartingObjectivesResponse", args, messageUUID);
+    }
+
+    public static ThreadMessage getAvailableColorsResponse(String username, ArrayList<Color> availableColors, UUID messageUUID) {
+        String[] args = new String[availableColors.size()];
+
+        for (int i = 0; i < availableColors.size(); i++) {
+            args[i] = availableColors.get(i).toString();
+        }
+
+        return new ThreadMessage(Status.OK, username, "getAvailableColorsResponse", args, messageUUID);
+    }
+
+    public static ThreadMessage getPlayerColorResponse(String username, Color playerColor, UUID messageUUID) {
+        String[] args = new String[1];
+        args[0] = playerColor.toString();
+        return new ThreadMessage(Status.OK, username, "getPlayerColorResponse", args, messageUUID);
     }
 
     /**

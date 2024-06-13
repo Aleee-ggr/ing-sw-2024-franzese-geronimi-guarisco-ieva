@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.client.OpponentData;
+import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientInterface;
@@ -154,6 +155,30 @@ public class RmiClient extends Client implements ClientInterface {
     @Override
     public boolean choosePersonalObjective(int objectiveId) throws RemoteException {
         return choosePersonalObjectiveClient(objectiveId, remoteObject.choosePersonalObjective(this.gameId, username, objectiveId));
+    }
+
+    public boolean choosePlayerColor(Color playerColor) throws RemoteException {
+        return choosePlayerColorClient(playerColor, remoteObject.choosePlayerColor(this.gameId, username, playerColor));
+    }
+
+    public boolean fetchPlayersColors() throws RemoteException {
+        for (String player : players) {
+            if (player.equals(this.username)) {
+                continue;
+            }
+
+            Color playerColor = remoteObject.getPlayerColor(this.gameId, this.username, player);
+            if (playerColor == null) {
+                return false;
+            }
+
+            ((OpponentData) playerData.get(player)).setPlayerColor(playerColor);
+        }
+        return true;
+    }
+
+    public boolean fetchAvailableColors() throws RemoteException {
+        return fetchAvailableColorsClient(remoteObject.getAvailableColors(this.gameId, this.username));
     }
 
     @Override

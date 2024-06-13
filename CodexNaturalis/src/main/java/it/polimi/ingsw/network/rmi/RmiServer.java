@@ -6,6 +6,7 @@ import it.polimi.ingsw.controller.threads.Status;
 import it.polimi.ingsw.controller.threads.ThreadMessage;
 import it.polimi.ingsw.model.ChatMessage;
 import it.polimi.ingsw.model.board.Coordinates;
+import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.network.Server;
 
@@ -96,6 +97,11 @@ public class RmiServer extends Server implements RmiServerInterface {
     }
 
     @Override
+    public Color getPlayerColor(UUID game, String name, String nameRequiredData) throws RemoteException {
+        return getPlayerColorServer(game, name, nameRequiredData);
+    }
+
+    @Override
     public Integer getStartingCard(UUID game, String player) throws RemoteException {
         return getStartingCardServer(game, player);
     }
@@ -173,6 +179,16 @@ public class RmiServer extends Server implements RmiServerInterface {
     @Override
     public boolean choosePersonalObjective(UUID game, String username, Integer objectiveId) throws RemoteException {
         return choosePersonalObjectiveServer(game, username, objectiveId);
+    }
+
+    @Override
+    public boolean choosePlayerColor(UUID game, String username, Color playerColor) throws RemoteException {
+        return choosePlayerColorServer(game, username, playerColor);
+    }
+
+    @Override
+    public ArrayList<Color> getAvailableColors(UUID game, String username) throws RemoteException {
+        return getAvailableColorsServer(game, username);
     }
 
     @Override

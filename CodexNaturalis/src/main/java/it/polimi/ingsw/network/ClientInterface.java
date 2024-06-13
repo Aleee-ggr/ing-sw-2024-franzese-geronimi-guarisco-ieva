@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.client.ClientData;
 import it.polimi.ingsw.model.client.PlayerData;
+import it.polimi.ingsw.model.enums.Color;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -113,6 +114,11 @@ public interface ClientInterface {
      */
     boolean choosePersonalObjective(int objectiveId) throws IOException;
 
+    boolean choosePlayerColor(Color playerColor) throws IOException;
+
+    boolean fetchPlayersColors() throws IOException;
+
+    boolean fetchAvailableColors() throws IOException;
     /**
      * Method to fetch the available games from the server.
      *

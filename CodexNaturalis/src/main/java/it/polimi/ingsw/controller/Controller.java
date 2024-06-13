@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.ColoredCard;
+import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.model.player.Player;
@@ -167,6 +168,17 @@ public class Controller {
         }
     }
 
+    public void choosePlayerColor(String username, Color playerColor, UUID messageId) {
+        try {
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
+            user.choosePlayerColor(playerColor);
+            game.updateAvailableColors(playerColor);
+            messageQueue.add(ThreadMessage.choosePlayerColorResponse(username, true, messageId));
+        } catch (Exception e) {
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+        }
+    }
+
     /**
      * Controller Method to get the score map.
      *
@@ -264,6 +276,19 @@ public class Controller {
             }
 
             messageQueue.add(ThreadMessage.getStartingObjectivesResponse(username, objectiveIds, messageId));
+        } catch (Exception e) {
+            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+        }
+    }
+
+    public void getAvailableColors(String username, UUID messageId) {
+        messageQueue.add(ThreadMessage.getAvailableColorsResponse(username, game.getAvailableColors(), messageId));
+    }
+
+    public void getPlayerColor(String username, String usernameRequiredData, UUID messageId) {
+        try {
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(usernameRequiredData)).toArray()[0];
+            messageQueue.add(ThreadMessage.getPlayerColorResponse(username, user.getPlayerColor(), messageId));
         } catch (Exception e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
         }

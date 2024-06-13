@@ -6,10 +6,12 @@ import it.polimi.ingsw.helpers.exceptions.model.ExistingUsernameException;
 import it.polimi.ingsw.helpers.exceptions.model.TooManyPlayersException;
 import it.polimi.ingsw.model.board.SharedBoard;
 import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.model.player.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -41,6 +43,7 @@ public class Game {
     }};
     private final List<Player> players = new ArrayList<>();
     private final int maxPlayers;
+    private final ArrayList<Color> availableColors = new ArrayList<>();
     /*Game-Specific Decks: not static decks for the instance of Game*/ Deck<GoldCard> gameGoldDeck;
     Deck<StdCard> gameStdDeck;
     Deck<Objective> gameObjDeck;
@@ -56,6 +59,7 @@ public class Game {
         resetBoard();
         this.maxPlayers = maxPlayers;
         this.manageObjectives();
+        Collections.addAll(availableColors, Color.values());
     }
 
     /**
@@ -98,6 +102,10 @@ public class Game {
      */
     public List<Player> getPlayers() {
         return players;
+    }
+
+    public ArrayList<Color> getAvailableColors() {
+        return availableColors;
     }
 
     /**
@@ -209,5 +217,9 @@ public class Game {
             objectiveToAdd[i] = gameObjDeck.draw();
         }
         gameBoard.setObjectives(objectiveToAdd);
+    }
+
+    public void updateAvailableColors(Color playerColor) {
+        availableColors.remove(playerColor);
     }
 }

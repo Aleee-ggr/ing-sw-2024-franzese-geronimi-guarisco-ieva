@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.cards.StartingCard;
 import it.polimi.ingsw.model.client.ClientData;
 import it.polimi.ingsw.model.client.OpponentData;
 import it.polimi.ingsw.model.client.PlayerData;
+import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
 
@@ -291,6 +292,22 @@ public class Client {
             getPlayerData().setPersonalObjective(Game.getObjectiveByID(objectiveId));
         }
         return success;
+    }
+
+    public boolean choosePlayerColorClient(Color playerColor, Boolean success) {
+        if (success) {
+            getPlayerData().setPlayerColor(playerColor);
+        }
+        return success;
+    }
+
+    public boolean fetchAvailableColorsClient(ArrayList<Color> availableColors) {
+        if (availableColors == null) {
+            return false;
+        }
+
+        getPlayerData().setAvailableColors(availableColors);
+        return true;
     }
 
     /**

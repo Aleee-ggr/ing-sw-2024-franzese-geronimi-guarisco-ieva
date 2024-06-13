@@ -20,6 +20,7 @@ public enum GameState {
                                                                     "getCommonObjectives",
                                                                     "getStartingCard",
                                                                     "choosePersonalObjective",
+                                                                    "choosePlayerColor",
                                                                     "getGameState");
     public static final ImmutableSet<String> main = ImmutableSet.of("join",
                                                                     "draw",

@@ -4,6 +4,7 @@ import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.model.board.Coordinates;
+import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.Server;
@@ -106,11 +107,12 @@ public class GameThread extends Thread {
         for (String currentPlayer : controller.getGame().getPlayers().stream().map(Player::getUsername).toList()) {
             boolean objChosen = false;
             boolean startChosen = false;
+            boolean colorChosen = false;
             this.currentPlayer = currentPlayer;
 
             turnMap.put(currentPlayer, WaitState.TURN_UPDATE);
 
-            while (!objChosen || !startChosen) {
+            while (!objChosen || !startChosen || !colorChosen) {
 
                 ThreadMessage msg = getMessage();
 
@@ -135,6 +137,8 @@ public class GameThread extends Thread {
                     objChosen = true;
                 } else if (msg.type().equals("placeStartingCard")) {
                     startChosen = true;
+                } else if (msg.type().equals("choosePlayerColor")) {
+                    colorChosen = true;
                 }
             }
             controller.getGame().getPlayers().stream().filter(p -> p.getUsername().equals(currentPlayer)).toList().getFirst().drawFirstHand();
@@ -352,6 +356,9 @@ public class GameThread extends Thread {
             case "choosePersonalObjective":
                 controller.choosePersonalObjective(msg.player(), Integer.valueOf(msg.args()[0]), msg.messageUUID());
                 break;
+            case "choosePlayerColor":
+                controller.choosePlayerColor(msg.player(), Color.valueOf(msg.args()[0]), msg.messageUUID());
+                break;
             case "getScoreMap":
                 controller.getScoreMap(msg.player(), msg.messageUUID());
                 break;
@@ -367,8 +374,14 @@ public class GameThread extends Thread {
             case "getStartingObjectives":
                 controller.getStartingObjectives(msg.player(), msg.messageUUID());
                 break;
+            case "getAvailableColors":
+                controller.getAvailableColors(msg.player(), msg.messageUUID());
+                break;
             case "getPlayerResources":
                 controller.getPlayerResources(msg.player(), msg.args()[0], msg.messageUUID());
+                break;
+            case "getPlayerColor":
+                controller.getPlayerColor(msg.player(), msg.args()[0], msg.messageUUID());
                 break;
             case "getVisibleCards":
                 controller.getVisibleCards(msg.player(), msg.messageUUID());

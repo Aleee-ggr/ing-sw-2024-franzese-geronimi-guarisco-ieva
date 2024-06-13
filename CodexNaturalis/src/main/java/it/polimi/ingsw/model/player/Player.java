@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.board.PlayerBoard;
 import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
 
@@ -34,6 +35,8 @@ public class Player {
     private StartingCard startingCard;
     private final Game game;
 
+    private Color playerColor;
+
     /**
      * Constructor of Player <br/>
      * set up a new Player and sets all Resources to zero.
@@ -55,6 +58,14 @@ public class Player {
      */
     public String getUsername() {
         return username;
+    }
+
+    public Color getPlayerColor() {
+        return playerColor;
+    }
+
+    public ArrayList<Color> getAvailableColors(){
+        return game.getAvailableColors();
     }
 
     /**
@@ -130,7 +141,6 @@ public class Player {
         this.score = score;
     }
 
-
     /**
      * Draws the objectives to chose from at the start of the game.
      * @see Objective
@@ -153,6 +163,10 @@ public class Player {
                 hiddenObjective = obj;
             }
         }
+    }
+
+    public void choosePlayerColor(Color playerColor) {
+        this.playerColor = playerColor;
     }
 
 

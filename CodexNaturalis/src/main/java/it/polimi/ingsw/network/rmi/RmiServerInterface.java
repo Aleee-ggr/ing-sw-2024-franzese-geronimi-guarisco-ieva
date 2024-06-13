@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.model.ChatMessage;
 import it.polimi.ingsw.model.board.Coordinates;
+import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.model.enums.Resource;
 
 import java.rmi.Remote;
@@ -55,6 +56,10 @@ public interface RmiServerInterface extends Remote {
      */
     UUID newGame(Integer player_count) throws RemoteException;
 
+    Color getPlayerColor(UUID game, String name, String nameRequiredData) throws RemoteException;
+
+    ArrayList<Color> getAvailableColors(UUID game, String name) throws RemoteException;
+
     Integer getStartingCard(UUID game, String name) throws RemoteException;
 
     HashMap<String, Integer> getScoreMap(UUID game, String name) throws RemoteException;
@@ -82,6 +87,8 @@ public interface RmiServerInterface extends Remote {
     ArrayList<Resource> getHandColor(UUID game, String name, String nameRequiredData) throws RemoteException;
 
     boolean choosePersonalObjective(UUID game, String username, Integer objectiveId) throws RemoteException;
+
+    boolean choosePlayerColor(UUID game, String username, Color playerColor) throws RemoteException;
 
     ArrayList<Integer> getStartingObjectives(UUID game, String username) throws RemoteException;
 

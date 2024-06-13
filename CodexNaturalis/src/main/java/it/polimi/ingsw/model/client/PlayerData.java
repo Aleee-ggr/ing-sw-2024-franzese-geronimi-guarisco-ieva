@@ -6,6 +6,7 @@ import it.polimi.ingsw.helpers.exceptions.model.HandFullException;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.StartingCard;
+import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.model.objectives.Objective;
 
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ public class PlayerData extends ClientData {
 
     private ArrayList<Coordinates> validPlacements;
     private ArrayList<Card> clientHand;
+    private ArrayList<Color> availableColors;
+    private Color playerColor;
 
     private ArrayList<Objective> globalObjectives;
     private ArrayList<Objective> startingObjectives;
@@ -34,6 +37,7 @@ public class PlayerData extends ClientData {
         this.clientHand = new ArrayList<>();
         this.globalObjectives = new ArrayList<>();
         this.startingObjectives = new ArrayList<>();
+        this.availableColors = new ArrayList<>();
     }
 
     /**
@@ -50,6 +54,14 @@ public class PlayerData extends ClientData {
      * */
     public ArrayList<Card> getClientHand() {
         return new ArrayList<>(clientHand);
+    }
+
+    public Color getPlayerColor() {
+        return playerColor;
+    }
+
+    public ArrayList<Color> getAvailableColors() {
+        return new ArrayList<>(availableColors);
     }
 
     /**
@@ -98,6 +110,14 @@ public class PlayerData extends ClientData {
      * */
     public void setClientHand(ArrayList<Card> clientHand) {
         this.clientHand = clientHand;
+    }
+
+    public void setPlayerColor(Color playerColor) {
+        this.playerColor = playerColor;
+    }
+
+    public void setAvailableColors(ArrayList<Color> availableColors) {
+        this.availableColors = availableColors;
     }
 
     /**

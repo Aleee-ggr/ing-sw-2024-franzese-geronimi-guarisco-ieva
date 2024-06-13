@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.TUI.controller;
 import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.Compositor;
+import it.polimi.ingsw.view.TUI.components.ColorView;
 import it.polimi.ingsw.view.TUI.components.StartingCardView;
 import it.polimi.ingsw.view.TUI.components.StartingObjectiveView;
 import it.polimi.ingsw.view.TUI.components.printables.ObjectiveCard;
@@ -135,6 +136,22 @@ public class TuiController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        done = false;
+
+        while (!done) {
+            clear();
+            out.println(new ColorView(playerData.getAvailableColors()));
+            out.println("Select color: ");
+            sel = select(1, 4);
+            done = sel >= 0;
+        }
+
+        try {
+            client.choosePlayerColor(playerData.getAvailableColors().get(sel - 1));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void mainGame() {
@@ -207,6 +224,7 @@ public class TuiController {
             client.fetchPlayers();
             client.fetchStartingObjectives();
             client.fetchStartingCard();
+            client.fetchAvailableColors();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -224,6 +242,7 @@ public class TuiController {
             client.fetchGameState();
             client.fetchVisibleCardsAndDecks();
             client.fetchOpponentsHandColor();
+            client.fetchPlayersColors();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -4,6 +4,8 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.ColoredCard;
+import it.polimi.ingsw.model.client.OpponentData;
+import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.RotateBoard;
 
@@ -59,11 +61,16 @@ public class MiniBoard implements Component{
             out.append('\n');
         }
 
-        if (username.length() > singleBoardWidth-1) {
-            out.append(username, 0, singleBoardWidth - 1).append("…");
-        } else {
-            out.append(String.format("%-" + singleBoardWidth + "s", username));
+        Color playerColor = ((OpponentData) client.getOpponentData().get(username)).getPlayerColor();
 
+        String colorCode = getColorCode(playerColor);
+        String coloredPlayer = colorCode + username + "\u001b[0m";
+
+        if (username.length() > singleBoardWidth-1) {
+            out.append(coloredPlayer, 0, singleBoardWidth - 1).append("…");
+        } else {
+            String spaces = " ".repeat(singleBoardWidth - username.length());
+            out.append(String.format("%s%s", coloredPlayer, spaces));
         }
 
         out.append('\n');
@@ -74,5 +81,15 @@ public class MiniBoard implements Component{
         int newX = x - (singleBoardWidth - 1) / 2;
         int newY = (boardHeight - 1) / 2 - y;
         return new Coordinates(newX, newY);
+    }
+
+    private String getColorCode(Color color) {
+        return switch (color) {
+            case RED -> "\u001b[1;31m"; // Rosso
+            case BLUE -> "\u001b[1;34m"; // Blu
+            case GREEN -> "\u001b[1;32m"; // Verde
+            case YELLOW -> "\u001b[1;33m"; // Giallo
+            case null -> "\u001b[0m"; // Reset
+        };
     }
 }
