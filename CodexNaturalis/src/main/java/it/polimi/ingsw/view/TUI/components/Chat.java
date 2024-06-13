@@ -2,17 +2,19 @@ package it.polimi.ingsw.view.TUI.components;
 
 import it.polimi.ingsw.model.ChatMessage;
 import it.polimi.ingsw.network.ClientInterface;
+import it.polimi.ingsw.view.TUI.Compositor;
 
 import java.util.ArrayList;
 
 public class Chat implements Component {
     public static final int chatHeight = 8;
-    public static final int chatWidth = 63;
+    public int chatWidth;
     private final FixedSizeList<ChatMessage> chat = new FixedSizeList<>(chatHeight);
     private final ClientInterface client;
 
     public Chat(ClientInterface client) {
         this.client = client;
+        this.chatWidth = Compositor.screenWidth - client.getPlayerNum() * MiniBoard.boardWidth - ResourceView.width;
     }
 
     @Override

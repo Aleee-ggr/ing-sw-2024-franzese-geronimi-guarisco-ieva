@@ -81,8 +81,8 @@ public class Compositor {
             for (MiniBoard miniBoard : miniBoard) {
                 out.append(miniBoard.toStringArrayColor()[y]).append('┃');
             }
+            out.append(resources.toStringArrayColor()[y]).append('┃');
             out.append(chat.toStringArray()[y]).append('┃');
-            out.append(resources.toStringArrayColor()[y]);
             out.append('\n');
         }
 
@@ -100,7 +100,7 @@ public class Compositor {
             default:
                 throw new RuntimeException("Invalid player number.");
         }
-        out.append('┻').append("━".repeat(Chat.chatWidth)).append('┻');
+        out.append('┻').append("━".repeat(chat.chatWidth)).append('┻');
         out.append("━".repeat(ResourceView.width));
         out.append('\n');
 

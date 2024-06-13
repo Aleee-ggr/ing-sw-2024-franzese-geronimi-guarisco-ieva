@@ -8,7 +8,7 @@ import java.util.Map;
 import static java.lang.Math.min;
 
 public class ResourceView implements Component {
-    public static final int width = 73;
+    public static final int width = 19;
     private Map<Resource, Integer> resourceCount;
     private String username;
 
@@ -35,7 +35,9 @@ public class ResourceView implements Component {
     public String toString() {
         StringBuilder out = new StringBuilder();
 
-        out.append(" %s:\tresources\n".formatted(username));
+        out.append(" %s resources".formatted(username.substring(0, Math.min(username.length(), 7))))
+                .append(" ".repeat(width - Math.min(username.length(), 7) - 10))
+                .append("\n");
 
         for (Resource res : Resource.values()) {
             if (res == Resource.NONE || res == Resource.NONCOVERABLE ) {
@@ -46,8 +48,7 @@ public class ResourceView implements Component {
                     .append(res.toChar())
                     .append(" ")
                     .append(String.format("%2d ",resourceCount.get(res)))
-                    .append("੦".repeat(min(65, resourceCount.get(res))))
-                    .append(" ".repeat(min(1, resourceCount.get(res))))
+                    .append(" ".repeat(width-5))
                     .append("\n");
         }
         return out.toString();

@@ -15,7 +15,6 @@ import java.util.Map;
 public class MiniBoard implements Component{
     public static final int boardHeight = 8;
     public static final int boardWidth = 29;
-    private int singleBoardWidth;
     private Character[][] boardToPrint;
     private final ClientInterface client;
     private final String username;
@@ -31,10 +30,9 @@ public class MiniBoard implements Component{
 
     public void setBoard(Map<Coordinates, Integer> board) {
         Map<Coordinates, Integer> rotatedBoard = RotateBoard.rotateBoard(board);
-        singleBoardWidth = (boardWidth - (client.getPlayerNum()-2)) / (client.getPlayerNum()-1);
-        boardToPrint = new Character[singleBoardWidth][boardHeight];
+        boardToPrint = new Character[boardWidth][boardHeight];
         for (int y = 0; y < boardHeight; y++){
-            for(int x = 0; x < singleBoardWidth; x++){
+            for(int x = 0; x < boardWidth; x++){
                 Integer cardId = rotatedBoard.get(getBoardCoords(x, y));
                 if(cardId == null){
                     boardToPrint[x][y] = ' ';
@@ -55,7 +53,7 @@ public class MiniBoard implements Component{
     public String toString() {
         StringBuilder out = new StringBuilder();
         for(int y = 0; y < boardHeight-1; y++) {
-            for (int x = 0; x < singleBoardWidth; x++) {
+            for (int x = 0; x < boardWidth; x++) {
                 out.append(boardToPrint[x][y] != null ? boardToPrint[x][y].toString() : " ");
             }
             out.append('\n');
@@ -66,10 +64,10 @@ public class MiniBoard implements Component{
         String colorCode = getColorCode(playerColor);
         String coloredPlayer = colorCode + username + "\u001b[0m";
 
-        if (username.length() > singleBoardWidth-1) {
-            out.append(coloredPlayer, 0, singleBoardWidth - 1).append("…");
+        if (username.length() > boardWidth -1) {
+            out.append(coloredPlayer, 0, boardWidth - 1).append("…");
         } else {
-            String spaces = " ".repeat(singleBoardWidth - username.length());
+            String spaces = " ".repeat(boardWidth - username.length());
             out.append(String.format("%s%s", coloredPlayer, spaces));
         }
 
@@ -78,7 +76,7 @@ public class MiniBoard implements Component{
     }
 
     private Coordinates getBoardCoords(int x, int y){
-        int newX = x - (singleBoardWidth - 1) / 2;
+        int newX = x - (boardWidth - 1) / 2;
         int newY = (boardHeight - 1) / 2 - y;
         return new Coordinates(newX, newY);
     }
