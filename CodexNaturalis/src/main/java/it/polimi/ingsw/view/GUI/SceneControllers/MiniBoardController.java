@@ -16,6 +16,7 @@ import javafx.geometry.VPos;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
@@ -40,6 +41,15 @@ public class MiniBoardController implements Initializable, TabController {
 
     @FXML
     GridPane board3;
+
+    @FXML
+    Text firstPlayerName;
+
+    @FXML
+    Text secondPlayerName;
+
+    @FXML
+    Text thirdPlayerName;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -85,11 +95,13 @@ public class MiniBoardController implements Initializable, TabController {
         }
 
         GridPane[] boards = {board1, board2, board3};
+        Text[] playersNames = {firstPlayerName, secondPlayerName, thirdPlayerName};
         int playerIndex = 0;
 
         for (Map.Entry<String, ClientData> entry: client.getOpponentData().entrySet()) {
             if (!entry.getKey().equals(client.getUsername())) {
                 GridPane currentBoard = boards[playerIndex % boards.length];
+                playersNames[playerIndex % boards.length].setText(entry.getKey());
                 playerIndex++;
 
                 currentBoard.setOnMouseClicked(event -> {

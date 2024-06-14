@@ -116,6 +116,14 @@
             <Insets top="75.0" />
          </StackPane.margin>
       </ScrollPane>
+      <Text fx:id="firstPlayerName" strokeType="OUTSIDE" strokeWidth="0.0" StackPane.alignment="TOP_LEFT">
+         <font>
+            <Font name="Trattatello" size="20.0" />
+         </font>
+         <StackPane.margin>
+            <Insets left="35.0" top="75.0" />
+         </StackPane.margin>
+      </Text>
       <ImageView fitHeight="300.0" fitWidth="300.0" pickOnBounds="true" StackPane.alignment="TOP_CENTER">
          <image>
             <Image url="@../images/board.jpeg" />
@@ -203,6 +211,14 @@
             <Insets top="420.0" />
          </StackPane.margin>
       </ScrollPane>
+      <Text fx:id="secondPlayerName" strokeType="OUTSIDE" strokeWidth="0.0" StackPane.alignment="TOP_LEFT">
+         <font>
+            <Font name="Trattatello" size="20.0" />
+         </font>
+         <StackPane.margin>
+            <Insets left="35.0" top="420.0" />
+         </StackPane.margin>
+      </Text>
       <ImageView fitHeight="300.0" fitWidth="300.0" pickOnBounds="true" StackPane.alignment="BOTTOM_CENTER">
          <image>
             <Image url="@../images/board.jpeg" />
@@ -290,5 +306,13 @@
             <Insets bottom="15.0" />
          </StackPane.margin>
       </ScrollPane>
+      <Text fx:id="thirdPlayerName" strokeType="OUTSIDE" strokeWidth="0.0" StackPane.alignment="TOP_LEFT">
+         <font>
+            <Font name="Trattatello" size="20.0" />
+         </font>
+         <StackPane.margin>
+            <Insets left="35.0" top="765.0" />
+         </StackPane.margin>
+      </Text>
    </children>
 </StackPane>
