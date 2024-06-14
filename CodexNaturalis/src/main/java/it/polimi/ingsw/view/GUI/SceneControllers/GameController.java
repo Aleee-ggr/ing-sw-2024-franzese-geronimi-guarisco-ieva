@@ -109,6 +109,9 @@ public class GameController implements Initializable {
     @FXML
     Text turnMessage;
 
+    @FXML
+    Button centerBoardButton;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         updater = new SharedUpdate();
@@ -121,6 +124,13 @@ public class GameController implements Initializable {
         tabControllers.put("MiniBoard", new MiniBoardController());
         tabControllers.put("Objectives", new ObjectivesController());
         activeTab = null;
+
+        scrollPane.hvalueProperty().addListener((observable, oldValue, newValue) -> {
+            centerBoardButton();
+        });
+        scrollPane.vvalueProperty().addListener((observable, oldValue, newValue) -> {
+            centerBoardButton();
+        });
 
         setPersonalData();
     }
@@ -584,6 +594,51 @@ public class GameController implements Initializable {
 
     protected void setTurn() {
         turnMessage.setText("Your Turn: Place a Card!");
+    }
+
+    private void centerBoardButton() {
+        if (centerBoardButton != null) {
+            buttonsContainer.getChildren().remove(centerBoardButton);
+            centerBoardButton = null;
+        }
+
+        double hValue = scrollPane.getHvalue();
+        double vValue = scrollPane.getVvalue();
+
+        boolean showButton = hValue != 0.0 || vValue != 0.0;
+
+        if (showButton) {
+            centerBoardButton = new Button("CENTER BOARD");
+            centerBoardButton.setPrefWidth(250);
+            centerBoardButton.setPrefHeight(78);
+            centerBoardButton.setOnAction(event -> centerBoard());
+            Glow glow = new Glow();
+            glow.setLevel(0.3);
+            centerBoardButton.setEffect(glow);
+
+            centerBoardButton.setStyle("-fx-font-family: Trattatello;" +
+                    "-fx-font-size: 30;" +
+                    "-fx-text-fill: #432918;" +
+                    "-fx-cursor: hand;");
+
+            buttonsContainer.getChildren().add(centerBoardButton);
+        }
+    }
+
+    private void centerBoard() {
+        double hMax = scrollPane.getHmax();
+        double vMax = scrollPane.getVmax();
+
+        double hCenter = hMax / 2;
+        double vCenter = vMax / 2;
+
+        scrollPane.setHvalue(hCenter);
+        scrollPane.setVvalue(vCenter);
+
+        if (centerBoardButton != null) {
+            buttonsContainer.getChildren().remove(centerBoardButton);
+            centerBoardButton = null;
+        }
     }
 
     protected void setActiveTab(String activeTab) {
