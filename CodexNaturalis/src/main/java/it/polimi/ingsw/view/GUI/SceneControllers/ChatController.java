@@ -24,6 +24,7 @@ import java.util.ResourceBundle;
 public class ChatController implements Initializable, TabController {
     private ClientInterface client;
     private PlayerData playerData;
+    private GameController gameController;
     private SharedUpdate updater;
 
     @FXML
@@ -38,9 +39,10 @@ public class ChatController implements Initializable, TabController {
     @FXML
     Button sendButton;
 
-    public void setClient(ClientInterface client, SharedUpdate updater) {
+    public void setClient(ClientInterface client, GameController gameController, SharedUpdate updater) {
         this.client = client;
         this.playerData = client.getPlayerData();
+        this.gameController = gameController;
         this.updater = updater;
     }
 
@@ -95,6 +97,7 @@ public class ChatController implements Initializable, TabController {
     @FXML
     private void closeTab(ActionEvent event) {
         tabPane.getParent().getParent().setVisible(false);
+        gameController.setActiveTab(null);
     }
 
     @Override

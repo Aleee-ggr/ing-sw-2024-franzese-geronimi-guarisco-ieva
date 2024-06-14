@@ -82,6 +82,7 @@ public class DrawCardController implements Initializable, TabController {
     @FXML
     private void closeTab(ActionEvent event) {
         tabPane.getParent().getParent().setVisible(false);
+        gameController.setActiveTab(null);
     }
 
     @FXML

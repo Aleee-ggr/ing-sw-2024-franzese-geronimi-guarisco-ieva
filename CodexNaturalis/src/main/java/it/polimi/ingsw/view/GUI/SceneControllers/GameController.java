@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.GUI.SceneControllers;
 
+import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.client.ClientData;
@@ -9,12 +10,14 @@ import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.RotateBoard;
 import it.polimi.ingsw.view.TUI.controller.SharedUpdate;
 import javafx.animation.PauseTransition;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.Glow;
@@ -29,6 +32,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -412,10 +417,10 @@ public class GameController implements Initializable {
                 tabContainer.setPrefHeight(800);
                 tabPane.getChildren().setAll(drawPane);
                 tabContainer.setVisible(true);
-                activeTab = "DrawCard";
+                setActiveTab("DrawCard");
             } else {
                 updateTabDimensions();
-                activeTab = null;
+                setActiveTab(null);
                 tabContainer.setVisible(false);
             }
         } catch (IOException e) {
@@ -430,14 +435,14 @@ public class GameController implements Initializable {
                 updateTabDimensions();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ScoreTab.fxml"));
                 ScoreController controller = (ScoreController) tabControllers.get("Score");
-                controller.setClient(client, updater);
+                controller.setClient(client, this, updater);
                 loader.setController(controller);
                 StackPane scorePane = loader.load();
                 tabPane.getChildren().setAll(scorePane);
                 tabContainer.setVisible(true);
-                activeTab = "Score";
+                setActiveTab("Score");
             } else {
-                activeTab = null;
+                setActiveTab(null);
                 tabContainer.setVisible(false);
             }
         } catch (IOException e) {
@@ -452,14 +457,14 @@ public class GameController implements Initializable {
                 updateTabDimensions();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChatTab.fxml"));
                 ChatController controller = (ChatController) tabControllers.get("Chat");
-                controller.setClient(client, updater);
+                controller.setClient(client, this, updater);
                 loader.setController(controller);
                 StackPane chatPane = loader.load();
                 tabPane.getChildren().setAll(chatPane);
                 tabContainer.setVisible(true);
-                activeTab = "Chat";
+                setActiveTab("Chat");
             } else {
-                activeTab = null;
+                setActiveTab(null);
                 tabContainer.setVisible(false);
             }
         } catch (IOException e) {
@@ -474,14 +479,14 @@ public class GameController implements Initializable {
                 updateTabDimensions();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ObjectivesTab.fxml"));
                 ObjectivesController controller = (ObjectivesController) tabControllers.get("Objectives");
-                controller.setClient(client);
+                controller.setClient(this, client);
                 loader.setController(controller);
                 StackPane objectivesPane = loader.load();
                 tabPane.getChildren().setAll(objectivesPane);
                 tabContainer.setVisible(true);
-                activeTab = "Objectives";
+                setActiveTab("Objectives");
             } else {
-                activeTab = null;
+                setActiveTab(null);
                 tabContainer.setVisible(false);
             }
         } catch (IOException e) {
@@ -501,9 +506,9 @@ public class GameController implements Initializable {
                 StackPane miniBoardPane = loader.load();
                 tabPane.getChildren().setAll(miniBoardPane);
                 tabContainer.setVisible(true);
-                activeTab = "MiniBoard";
+                setActiveTab("MiniBoard");
             } else {
-                activeTab = null;
+                setActiveTab(null);
                 tabContainer.setVisible(false);
             }
 
@@ -541,9 +546,11 @@ public class GameController implements Initializable {
 
             turnMessage.setText("Your Turn: Draw a Card!");
 
-            PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
-            pause.setOnFinished(e -> { changeDrawCardScene(); });
-            pause.play();
+            if (activeTab == null || !activeTab.equals("DrawCard")) {
+                PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
+                pause.setOnFinished(e -> { changeDrawCardScene(); });
+                pause.play();
+            }
 
             setupValidPlacements();
         }
@@ -577,5 +584,9 @@ public class GameController implements Initializable {
 
     protected void setTurn() {
         turnMessage.setText("Your Turn: Place a Card!");
+    }
+
+    protected void setActiveTab(String activeTab) {
+        this.activeTab = activeTab;
     }
 }

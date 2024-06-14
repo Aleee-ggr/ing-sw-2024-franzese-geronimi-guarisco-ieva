@@ -16,6 +16,7 @@ import java.util.ResourceBundle;
 public class ObjectivesController implements Initializable, TabController {
     private ClientInterface client;
     private PlayerData playerData;
+    private GameController gameController;
 
     @FXML
     StackPane tabPane;
@@ -50,14 +51,16 @@ public class ObjectivesController implements Initializable, TabController {
         personalObjective.setImage(image);
     }
 
-    public void setClient(ClientInterface client) {
+    public void setClient(GameController gameController, ClientInterface client) {
         this.client = client;
         this.playerData = client.getPlayerData();
+        this.gameController = gameController;
     }
 
     @FXML
     private void closeTab(ActionEvent event) {
         tabPane.getParent().getParent().setVisible(false);
+        gameController.setActiveTab(null);
     }
 
     @Override

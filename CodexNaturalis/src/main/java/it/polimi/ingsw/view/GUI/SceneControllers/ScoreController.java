@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.GUI.SceneControllers;
 
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.client.OpponentData;
 import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.model.enums.Color;
@@ -32,6 +33,7 @@ import java.util.ResourceBundle;
 public class ScoreController implements Initializable, TabController {
     private ClientInterface client;
     private PlayerData playerData;
+    private GameController gameController;
     private SharedUpdate updater;
     protected Thread updateThread;
     private Map<Integer, Point2D> scoreCoordinates;
@@ -56,6 +58,7 @@ public class ScoreController implements Initializable, TabController {
     @FXML
     protected void closeTab(ActionEvent event) {
         tabPane.getParent().getParent().setVisible(false);
+        gameController.setActiveTab(null);
     }
 
     @Override
@@ -68,9 +71,10 @@ public class ScoreController implements Initializable, TabController {
      *
      * @param client The client interface to set.
      */
-    public void setClient(ClientInterface client, SharedUpdate updater) {
+    public void setClient(ClientInterface client, GameController gameController, SharedUpdate updater) {
         this.client = client;
         this.playerData = client.getPlayerData();
+        this.gameController = gameController;
         this.updater = updater;
     }
     /**

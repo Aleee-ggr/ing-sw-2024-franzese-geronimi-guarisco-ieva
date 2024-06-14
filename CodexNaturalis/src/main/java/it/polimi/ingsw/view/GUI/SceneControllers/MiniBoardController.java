@@ -56,6 +56,7 @@ public class MiniBoardController implements Initializable, TabController {
     @FXML
     private void closeTab(ActionEvent event) {
         tabPane.getParent().getParent().setVisible(false);
+        gameController.setActiveTab(null);
     }
 
     private Coordinates calculateBoardCoordinates(Coordinates coordinates) {
