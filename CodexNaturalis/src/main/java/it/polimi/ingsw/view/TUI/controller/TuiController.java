@@ -38,6 +38,7 @@ public class TuiController {
             client.fetchGameState();
             client.fetchPlayers();
             client.fetchPersonalObjective();
+            client.fetchPlayersColors();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

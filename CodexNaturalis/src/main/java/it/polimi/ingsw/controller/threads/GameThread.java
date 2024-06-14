@@ -117,7 +117,7 @@ public class GameThread extends Thread {
                 ThreadMessage msg = getMessage();
 
                 if (Server.isOffline(currentPlayer)) {
-                    disconnectionHandler(objChosen, startChosen);
+                    disconnectionHandler(objChosen, startChosen, colorChosen);
                     break;
                 }
 
@@ -178,7 +178,7 @@ public class GameThread extends Thread {
         boolean place = false;
 
         if (Server.isOffline(currentPlayer)) {
-            disconnectionHandler(place, draw);
+            disconnectionHandler(place, draw, true);
             return false;
         }
 
@@ -186,7 +186,7 @@ public class GameThread extends Thread {
             ThreadMessage msg = getMessage();
 
             if (msg == null) {
-                disconnectionHandler(place, draw);
+                disconnectionHandler(place, draw, true);
                 return false;
             }
 
@@ -210,7 +210,7 @@ public class GameThread extends Thread {
             ThreadMessage msg = getMessage();
 
             if (msg == null) {
-                disconnectionHandler(place, draw);
+                disconnectionHandler(place, draw, true);
                 return false;
             }
 
@@ -268,7 +268,7 @@ public class GameThread extends Thread {
         controller.getGame().setGameState(GameState.STOP);
     }
 
-    private void disconnectionHandler(Boolean firstParam, Boolean secondParam) {
+    private void disconnectionHandler(Boolean firstParam, Boolean secondParam, Boolean thirdParam) {
         System.out.printf("Player %s is offline%n", currentPlayer);
         Player user = controller.getGame().getPlayers().stream().filter(p -> p.getUsername().equals(currentPlayer)).toList().getFirst();
 
@@ -294,6 +294,13 @@ public class GameThread extends Thread {
                         user.drawStartingCard();
                     }
                     user.setFirstCard(rand.nextBoolean());
+                }
+
+                if (!thirdParam) {
+                    if (user.getPlayerColor() == null) {
+                        ArrayList<Color> availableColors = user.getAvailableColors();
+                        user.choosePlayerColor(availableColors.get(rand.nextInt(availableColors.size())));
+                    }
                 }
 
                 break;
