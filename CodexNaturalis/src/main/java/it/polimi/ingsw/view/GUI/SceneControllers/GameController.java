@@ -133,6 +133,7 @@ public class GameController implements Initializable {
         });
 
         setPersonalData();
+        setEndGameThread();
     }
 
     private void setupResources() {
@@ -644,4 +645,37 @@ public class GameController implements Initializable {
     protected void setActiveTab(String activeTab) {
         this.activeTab = activeTab;
     }
+
+    private void setEndGameThread() {
+        Task<Void> endGameThread = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                boolean running = true;
+                while (running) {
+                    if (client.getGameState().equals(GameState.ENDGAME)) {
+                        running = false;
+                    }
+                }
+                return null;
+            }
+        };
+
+        endGameThread.setOnSucceeded(event -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseColorScene.fxml"));
+                EndGameController controller = new EndGameController();
+                controller.setClient(client);
+                loader.setController(controller);
+                Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
+                Stage stage = (Stage) board.getScene().getWindow();
+                stage.setScene(scene);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        });
+
+        new Thread(endGameThread).start();
+    }
+
 }
