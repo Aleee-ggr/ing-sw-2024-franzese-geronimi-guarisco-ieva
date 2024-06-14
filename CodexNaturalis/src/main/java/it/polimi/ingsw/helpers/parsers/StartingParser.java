@@ -13,8 +13,6 @@ import it.polimi.ingsw.model.enums.Resource;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -23,12 +21,8 @@ public class StartingParser implements JsonParser<Deck<StartingCard>> {
     private String json;
 
     @Override
-    public StartingParser readFile(Path path) throws IOException {
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(
-                        Objects.requireNonNull(this.getClass().getResourceAsStream(path.toString()))
-                )
-        );
+    public StartingParser readFile(String path) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(this.getClass().getResourceAsStream(path))));
 
         json = reader.lines().collect(Collectors.joining(System.lineSeparator()));
         return this;
@@ -43,8 +37,7 @@ public class StartingParser implements JsonParser<Deck<StartingCard>> {
     @Override
     public Deck<StartingCard> parse() throws JsonFormatException {
         Gson gson = new Gson();
-        JsonArray cards = gson.fromJson(json, JsonObject.class)
-                .getAsJsonArray("startingcards");
+        JsonArray cards = gson.fromJson(json, JsonObject.class).getAsJsonArray("startingcards");
         ArrayList<StartingCard> deck = new ArrayList<>();
 
         for (JsonElement card : cards) {
@@ -81,18 +74,17 @@ public class StartingParser implements JsonParser<Deck<StartingCard>> {
 
 
     /**
-     *  Parse the resource data within the card json to use for the StartingCard constructor..<br/>
-     *  takes as input the object obtained by using the card {@link com.google.gson.JsonObject#get(String)  JsonObject.get("resource")}
-     *  @param resources the JsonElement obtained from the element "resource" in cards.json
-     *  @return an arrayList with the resources on the front of the card, (MUSHROOM, WOLF, LEAF or BUTTERFLY)
-     *  @see StartingCard
+     * Parse the resource data within the card json to use for the StartingCard constructor..<br/>
+     * takes as input the object obtained by using the card {@link com.google.gson.JsonObject#get(String)  JsonObject.get("resource")}
+     *
+     * @param resources the JsonElement obtained from the element "resource" in cards.json
+     * @return an arrayList with the resources on the front of the card, (MUSHROOM, WOLF, LEAF or BUTTERFLY)
+     * @see StartingCard
      */
     private ArrayList<Resource> getFrontResources(JsonArray resources) {
         ArrayList<Resource> front_resources = new ArrayList<>();
         for (JsonElement resource : resources) {
-            front_resources.add(
-                    JsonParser.getResource(resource)
-            );
+            front_resources.add(JsonParser.getResource(resource));
         }
         return front_resources;
     }

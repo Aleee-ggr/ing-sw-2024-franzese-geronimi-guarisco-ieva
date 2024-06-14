@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.helpers.exceptions.model.JsonFormatException;
 import it.polimi.ingsw.helpers.parsers.GoldCardParser;
 import it.polimi.ingsw.helpers.parsers.ObjectiveParser;
@@ -9,14 +8,14 @@ import it.polimi.ingsw.helpers.parsers.StdCardParser;
 import it.polimi.ingsw.model.objectives.Objective;
 
 import java.io.IOException;
-import java.nio.file.Path;
+
+import static it.polimi.ingsw.GameConsts.cardJsonPath;
 
 /**
  * The FullDeck class represents a deck that contains all the cards in the game.
  * It provides static methods to access the full deck of different types of cards.
  */
 public class FullDeck {
-    private static final Path cardJsonPath = Path.of(GameConsts.cardJsonPath);
 
     private static final Deck<GoldCard> FullGoldDeck;
     private static final Deck<StdCard> FullStdDeck;

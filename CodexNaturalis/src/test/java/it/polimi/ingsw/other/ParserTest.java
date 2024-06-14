@@ -17,7 +17,6 @@ import it.polimi.ingsw.model.player.Player;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.nio.file.Path;
 
 import static org.junit.Assert.*;
 
@@ -69,10 +68,7 @@ public class ParserTest {
                 """;
         ObjectiveParser objectiveParser = new ObjectiveParser().readString(json);
         Objective objective = objectiveParser.parse().draw();
-        Player dummy = new PlayerBuilder()
-                .setUsername("")
-                .setResource(Resource.PLANT, 6)
-                .build();
+        Player dummy = new PlayerBuilder().setUsername("").setResource(Resource.PLANT, 6).build();
         int result = objective.getPoints(dummy);
         assertEquals(result, 2);
     }
@@ -103,10 +99,7 @@ public class ParserTest {
 
         assertNotNull(goldCard);
 
-        Player dummy = new PlayerBuilder()
-                .setUsername("")
-                .setResource(Resource.QUILL, 10)
-                .build();
+        Player dummy = new PlayerBuilder().setUsername("").setResource(Resource.QUILL, 10).build();
 
         int score = goldCard.getScore(dummy);
 
@@ -115,10 +108,10 @@ public class ParserTest {
 
     @Test
     public void workingParserTest() throws JsonFormatException, IOException {
-        Deck<GoldCard> goldCardDeck = new GoldCardParser().readFile(Path.of(GameConsts.cardJsonPath)).parse();
-        Deck<StdCard> stdCardDeck = new StdCardParser().readFile(Path.of(GameConsts.cardJsonPath)).parse();
-        Deck<StartingCard> startingCardDeck = new StartingParser().readFile(Path.of(GameConsts.cardJsonPath)).parse();
-        Deck<Objective> objectiveDeck = new ObjectiveParser().readFile(Path.of(GameConsts.cardJsonPath)).parse();
+        Deck<GoldCard> goldCardDeck = new GoldCardParser().readFile(GameConsts.cardJsonPath).parse();
+        Deck<StdCard> stdCardDeck = new StdCardParser().readFile(GameConsts.cardJsonPath).parse();
+        Deck<StartingCard> startingCardDeck = new StartingParser().readFile(GameConsts.cardJsonPath).parse();
+        Deck<Objective> objectiveDeck = new ObjectiveParser().readFile(GameConsts.cardJsonPath).parse();
 
         assertFalse(goldCardDeck.isEmpty());
         assertFalse(stdCardDeck.isEmpty());
@@ -127,7 +120,7 @@ public class ParserTest {
     }
 
     @Test
-    public void testStdCardFormatExceptions(){
+    public void testStdCardFormatExceptions() {
         String json = """
                 {
                     "stdcards": [
