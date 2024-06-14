@@ -46,7 +46,11 @@ public abstract class Server {
                     }
 
                     for (Map.Entry<String, AtomicInteger> entry : playerStatus.entrySet()) {
-                        entry.getValue().incrementAndGet();
+                        if(entry.getValue().get() >= 10) {
+                            continue;
+                        } else {
+                            entry.getValue().incrementAndGet();
+                        }
                         System.out.println(entry.getKey() + " is now " + entry.getValue().get());
                     }
                 } catch (InterruptedException e) {
