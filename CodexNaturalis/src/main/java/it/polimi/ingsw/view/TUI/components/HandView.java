@@ -2,7 +2,6 @@ package it.polimi.ingsw.view.TUI.components;
 
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.cards.GoldCard;
 import it.polimi.ingsw.model.client.OpponentData;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.network.ClientInterface;
@@ -10,18 +9,17 @@ import it.polimi.ingsw.view.TUI.components.printables.CardBack;
 import it.polimi.ingsw.view.TUI.components.printables.PrintCards;
 
 import java.util.List;
-import java.util.Map;
 
-
-public class HandView implements Component{
+public class HandView implements Component {
     public static final int panelHeight = 22;
     public static final int panelWidth = 19;
 
     private final ClientInterface client;
 
     private String currentPlayer;
+
     @Override
-    public String toString()  {
+    public String toString() {
         return setHand();
     }
 
@@ -77,7 +75,6 @@ public class HandView implements Component{
             }
         }
 
-
         else {
             OpponentData data = (OpponentData) client.getOpponentData().get(currentPlayer);
             List<Resource> cardsToPrint = data.getHandColor();
@@ -98,17 +95,15 @@ public class HandView implements Component{
             }
 
             for (int i = 0; i < cardsToPrint.size() - GameConsts.firstHandDim; i++) {
-                for (int j = 0; j < CardBack.height + 2; j++) {
+                for (int j = 0; j < PrintCards.height; j++) {
                     out.append(" ".repeat(panelWidth))
                             .append("\n");
                 }
             }
-            for (int i = 0; i < panelHeight - cardsToPrint.size() * (PrintCards.height + 2); i++) {
+            for (int i = 0; i < panelHeight - cardsToPrint.size() * (PrintCards.height); i++) {
                 out.append(" ".repeat(panelWidth))
                         .append("\n");
             }
-            out.append(" ".repeat(panelWidth))
-                            .append("\n");
         }
         return out.toString();
     }
