@@ -38,7 +38,7 @@ public class RmiTest {
     public void testNewGame() throws ServerConnectionException, RemoteException {
         RmiClient c = RmiClientFactory.getClient();
 
-        UUID game = c.newGame(3, "name");
+        UUID game = c.newGame(3, "testNewGame");
         assertNotNull(game);
     }
 
@@ -46,7 +46,7 @@ public class RmiTest {
     @Test
     public void testJoin() throws ServerConnectionException, RemoteException {
         RmiClient c1 = RmiClientFactory.getClient();
-        UUID game = c1.newGame(3, "name");
+        UUID game = c1.newGame(3, "testJoin");
         RmiClient c2 = RmiClientFactory.getClient();
         assertTrue(c2.joinGame(game));
     }
@@ -60,14 +60,14 @@ public class RmiTest {
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
-        UUID game = c1.newGame(3, "name");
+        UUID game = c1.newGame(3, "testInvalidJoin_usernameExists");
         assertFalse(c2.joinGame(game));
     }
 
     @Test
     public void testInvalidJoin_playerCount() throws ServerConnectionException, RemoteException {
         RmiClient c1 = RmiClientFactory.getClient();
-        UUID game = c1.newGame(2, "name");
+        UUID game = c1.newGame(2, "testInvalidJoin_playerCount");
         RmiClient c2 = RmiClientFactory.getClient();
         assertTrue(c2.joinGame(game));
         RmiClient c4 = RmiClientFactory.getClient();
@@ -86,7 +86,7 @@ public class RmiTest {
             clients.get(i).checkCredentials(name + i, name);
         }
 
-        UUID game = clients.getFirst().newGame(2, "name");
+        UUID game = clients.getFirst().newGame(2, "turnTest");
         for (int i = 1; i < clients.size(); i++) {
             clients.get(i).joinGame(game);
         }

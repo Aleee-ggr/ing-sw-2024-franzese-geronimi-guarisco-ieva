@@ -82,6 +82,11 @@ public abstract class Server {
         if (numberOfPlayers < 2 || numberOfPlayers > 4) {
             return null;
         }
+        for (Map.Entry<UUID, String> entry : gameNames.entrySet()) {
+            if (entry.getValue().equals(gameName)) {
+                return null;
+            }
+        }
         UUID id = UUID.randomUUID();
         while (threadMessages.containsKey(id)) {
             id = UUID.randomUUID();

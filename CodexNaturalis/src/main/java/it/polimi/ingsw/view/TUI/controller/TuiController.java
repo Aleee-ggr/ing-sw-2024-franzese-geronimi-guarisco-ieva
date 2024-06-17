@@ -12,9 +12,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class TuiController {
@@ -207,6 +205,7 @@ public class TuiController {
     private void createGame() {
         try {
             int selection = 0;
+            final Set<String> existingGames = new HashSet<>(client.getAvailableGames().values());
             do {
                 out.println("Insert number of players: ");
                 try {
@@ -219,7 +218,7 @@ public class TuiController {
             String gameName;
             do {
                 gameName = in.readLine();
-            } while (gameName.isEmpty());
+            } while (gameName.isEmpty() && existingGames.contains(gameName));
             client.newGame(selection, gameName);
         } catch (IOException e) {
             throw new RuntimeException(e);
