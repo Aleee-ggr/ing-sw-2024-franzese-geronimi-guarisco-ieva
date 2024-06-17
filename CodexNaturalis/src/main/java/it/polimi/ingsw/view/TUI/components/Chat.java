@@ -8,13 +8,15 @@ import java.util.ArrayList;
 
 public class Chat implements Component {
     public static final int chatHeight = 8;
-    public int chatWidth;
     private final FixedSizeList<ChatMessage> chat = new FixedSizeList<>(chatHeight);
     private final ClientInterface client;
+    private final String firstPlayer;
+    public int chatWidth;
 
     public Chat(ClientInterface client) {
         this.client = client;
-        this.chatWidth = Compositor.screenWidth - (client.getPlayerNum()-1) * MiniBoard.boardWidth - ResourceView.width - (client.getPlayerNum()-1)-1;
+        this.chatWidth = Compositor.screenWidth - (client.getPlayerNum() - 1) * MiniBoard.boardWidth - ResourceView.width - (client.getPlayerNum() - 1) - 1;
+        firstPlayer = client.getPlayers().getFirst();
     }
 
     @Override
@@ -36,7 +38,16 @@ public class Chat implements Component {
             if (chat.get(row).receiver() != null) {
                 line.append("\u001b[0m");
             }
-            line.append("> ");
+
+            if (chat.get(row).sender().equals(firstPlayer)) {
+                line.append("\u001b[1;90m");
+            }
+
+            line.append("❯ ");
+
+            if (chat.get(row).sender().equals(firstPlayer)) {
+                line.append("\u001b[0m");
+            }
 
             int totalWidth = chatWidth - (senderLength + 2);
             line.append(String.format("%-" + totalWidth + "s", message.substring(0, Math.min(totalWidth, message.length()))));

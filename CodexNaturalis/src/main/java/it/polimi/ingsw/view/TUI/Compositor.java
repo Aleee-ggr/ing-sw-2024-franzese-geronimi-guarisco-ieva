@@ -86,31 +86,22 @@ public class Compositor {
             out.append('\n');
         }
 
-        out.append("━".repeat(ResourceView.width))
-                .append('╋');
+        out.append("━".repeat(ResourceView.width)).append('╋');
 
         switch (client.getPlayerNum() - 1) {
             case 1:
                 out.append("━".repeat((MiniBoard.boardWidth)));
                 break;
             case 2:
-                out.append("━".repeat((MiniBoard.boardWidth)))
-                        .append('┻')
-                        .append("━".repeat((MiniBoard.boardWidth)));
+                out.append("━".repeat((MiniBoard.boardWidth))).append('┻').append("━".repeat((MiniBoard.boardWidth)));
                 break;
             case 3:
-                out.append("━".repeat((MiniBoard.boardWidth)))
-                        .append('┻')
-                        .append("━".repeat((MiniBoard.boardWidth)))
-                        .append('┻')
-                        .append("━".repeat((MiniBoard.boardWidth)));
+                out.append("━".repeat((MiniBoard.boardWidth))).append('┻').append("━".repeat((MiniBoard.boardWidth))).append('┻').append("━".repeat((MiniBoard.boardWidth)));
                 break;
             default:
                 throw new RuntimeException("Invalid player number.");
         }
-        out.append('┻')
-                .append("━".repeat(chat.chatWidth))
-                .append("┛");
+        out.append('┻').append("━".repeat(chat.chatWidth)).append("┛");
         out.append('\n');
 
 
