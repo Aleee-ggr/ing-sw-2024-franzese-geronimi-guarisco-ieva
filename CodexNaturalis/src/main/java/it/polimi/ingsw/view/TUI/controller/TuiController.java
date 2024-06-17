@@ -214,11 +214,12 @@ public class TuiController {
                 }
             } while (selection < 2 || selection > 4);
 
-            out.println("Insert game name: ");
             String gameName;
             do {
+                out.println("Insert game name: ");
                 gameName = in.readLine();
-            } while (gameName.isEmpty() && existingGames.contains(gameName));
+            } while (gameName.isEmpty() || existingGames.contains(gameName));
+
             client.newGame(selection, gameName);
         } catch (IOException e) {
             throw new RuntimeException(e);
