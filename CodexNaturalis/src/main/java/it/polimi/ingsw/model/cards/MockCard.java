@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
-public class MockCard extends Card{
+public class MockCard extends Card {
 
     /**
      * Constructor for the Card class.
@@ -9,6 +9,6 @@ public class MockCard extends Card{
      * @param frontCorners Array of corners on the front side of the card.
      */
     public MockCard(int id, Corner[] frontCorners) {
-        super(id, frontCorners, false);
+        super(0, frontCorners, false);
     }
 }
