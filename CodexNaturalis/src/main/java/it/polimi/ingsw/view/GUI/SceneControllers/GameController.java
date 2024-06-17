@@ -612,7 +612,11 @@ public class GameController implements Initializable {
             centerBoardButton = new Button("CENTER BOARD");
             centerBoardButton.setPrefWidth(250);
             centerBoardButton.setPrefHeight(78);
-            centerBoardButton.setOnAction(event -> centerBoard());
+            centerBoardButton.setOnAction(event -> {
+                centerBoard();
+                board.setScaleX(1.0);
+                board.setScaleY(1.0);
+            });
             Glow glow = new Glow();
             glow.setLevel(0.3);
             centerBoardButton.setEffect(glow);
@@ -662,7 +666,7 @@ public class GameController implements Initializable {
 
         endGameThread.setOnSucceeded(event -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseColorScene.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/EndGameScene.fxml"));
                 EndGameController controller = new EndGameController();
                 controller.setClient(client);
                 loader.setController(controller);
