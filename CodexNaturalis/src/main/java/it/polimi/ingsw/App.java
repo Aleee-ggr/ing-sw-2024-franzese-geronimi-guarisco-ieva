@@ -16,7 +16,6 @@ import java.util.Scanner;
  * Hello world!
  */
 
-//TODO: add credentials
 public class App {
     public static void main(String[] args) throws RemoteException, ServerConnectionException {
         List<String> arguments = List.of(args);
@@ -25,21 +24,21 @@ public class App {
             new SocketServer(8000);
         }
         if (arguments.contains("client")) {
-            System.out.println("Do you want to launch the GUI? [Y/N]:");
+            System.out.println("Do you want to launch the GUI [default: N]? [Y/N]:");
             Scanner scanner = new Scanner(System.in);
             String useGui = scanner.nextLine();
             if (useGui.equalsIgnoreCase("Y")) {
                 Gui.start();
+                scanner.close();
                 return;
             }
-            System.out.print("insert connection mode\n1) socket\n2) RMI\n");
+            System.out.print("insert connection mode [Default: RMI]\n1) socket\n2) RMI\n");
             String input = scanner.next();
             int mode = Integer.parseInt(input);
 
-
-            System.out.print("Insert server address: ");
+            System.out.print("Insert server address [Default: 127.0.0.1]: ");
             input = scanner.next();
-            String serverAddress = "localhost";
+            String serverAddress = "127.0.0.1";
             if (input.matches("^([0-9]{1,3}\\.){3}[0-9]{1,3}$")) {
                 serverAddress = input;
             }
@@ -58,7 +57,7 @@ public class App {
                 default:
                     System.out.println("Unknown option!");
             }
-
+            scanner.close();
         }
     }
 }
