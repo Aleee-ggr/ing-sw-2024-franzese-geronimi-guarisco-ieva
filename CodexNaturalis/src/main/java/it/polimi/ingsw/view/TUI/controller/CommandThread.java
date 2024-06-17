@@ -112,13 +112,14 @@ public class CommandThread extends Thread {
                                 compositor.setTopBar("Your Turn: Draw a Card!");
                                 compositor.switchView(View.DECK);
                             } else {
-                                defaultCommand();
+                                printError("Could not place card!");
                             }
                         }
                     } else {
                         defaultCommand();
                     }
                     break;
+
                 case "view":
                     try {
                         compositor.switchView(View.getView(cmd[1]));
@@ -126,6 +127,7 @@ public class CommandThread extends Thread {
                         defaultCommand();
                     }
                     break;
+
                 case "chat":
                     if (cmd.length > 1) {
                         postChat(Arrays.copyOfRange(cmd, 1, cmd.length), null);
@@ -133,16 +135,23 @@ public class CommandThread extends Thread {
                         defaultCommand();
                     }
                     break;
+
                 case "whisper":
                     if (cmd.length > 2) {
-                        postChat(Arrays.copyOfRange(cmd, 2, cmd.length), cmd[1]);
+                        if (client.getPlayers().contains(cmd[1])) {
+                            postChat(Arrays.copyOfRange(cmd, 2, cmd.length), cmd[1]);
+                        } else {
+                            printError("Unknown Player %s".formatted(cmd[1]));
+                        }
                     } else {
                         defaultCommand();
                     }
                     break;
+
                 case "center":
                     compositor.getBoard().setCenter(new Coordinates(0, 0));
                     break;
+
                 case "switch":
                     if (cmd.length == 2 && client.getPlayers().contains(cmd[1])) {
                         compositor.setViewPlayer(cmd[1]);
@@ -150,6 +159,7 @@ public class CommandThread extends Thread {
                         defaultCommand();
                     }
                     break;
+
                 case "draw":
                     if (cmd.length == 2) {
                         position = Integer.parseInt(cmd[1]) - 1;
@@ -157,11 +167,14 @@ public class CommandThread extends Thread {
                             client.drawCard(position);
                             placed = false;
                             compositor.setTopBar("Waiting for your Turn...");
+                        } else {
+                            printError("You must place a card first!");
                         }
                     } else {
                         defaultCommand();
                     }
                     break;
+
                 case "w":
                     offset = 1;
                     if (cmd.length == 2) {
@@ -176,6 +189,7 @@ public class CommandThread extends Thread {
                     }
                     compositor.getBoard().moveCenter(4 * offset, 0);
                     break;
+
                 case "s":
                     offset = 1;
                     if (cmd.length == 2) {
@@ -183,6 +197,7 @@ public class CommandThread extends Thread {
                     }
                     compositor.getBoard().moveCenter(0, -2 * offset);
                     break;
+
                 case "d":
                     offset = 1;
                     if (cmd.length == 2) {
@@ -190,6 +205,7 @@ public class CommandThread extends Thread {
                     }
                     compositor.getBoard().moveCenter(-2 * offset, 0);
                     break;
+
                 case "h", "help":
                     updater.lock();
                     System.out.println(
@@ -208,10 +224,13 @@ public class CommandThread extends Thread {
                     in.readLine();
                     updater.unlock();
                     break;
+
                 default:
                     defaultCommand();
             }
-        } catch (IOException | NumberFormatException | InterruptedException e) {
+        } catch (IOException | NumberFormatException |
+
+                InterruptedException e) {
             e.printStackTrace();
             System.exit(1);
         }
@@ -253,6 +272,16 @@ public class CommandThread extends Thread {
      */
     private void defaultCommand() {
         System.out.println("Unknown command\nPress ENTER to continue");
+        try {
+            in.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    private void printError(String error) {
+        System.out.println("Invalid input| %s".formatted(error));
         try {
             in.readLine();
         } catch (IOException e) {

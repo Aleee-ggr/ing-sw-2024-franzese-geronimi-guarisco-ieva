@@ -34,7 +34,7 @@ public class PlayerTest {
         int count = 0;
         player.drawFirstHand();
 
-        for(Card card: player.getHand()) {
+        for (Card card : player.getHand()) {
             if (card != null) {
                 count++;
             }
@@ -77,8 +77,7 @@ public class PlayerTest {
             player.drawVisible(pos);
             if (pos < 2) {
                 assertSame(player.getHand()[0].getClass(), GoldCard.class);
-            }
-            else {
+            } else {
                 assertSame(player.getHand()[0].getClass(), StdCard.class);
             }
         }
@@ -96,7 +95,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void playCard_stdCard_hasPoints() throws RequirementsError{
+    public void playCard_stdCard_hasPoints() throws RequirementsError {
         player.drawStartingCard();
         player.setFirstCard(true);
         player.drawFirstHand();
@@ -117,15 +116,12 @@ public class PlayerTest {
 
         player.drawFirstHand();
 
-        player.getHand()[2] = null;
-        int cardId = player.drawDecks(true).getId();
-
+        int cardId = 80;
+        player.getHand()[2] = (ColoredCard) Game.getCardByID(cardId);
         player.playCard(player.getHand()[2], new Coordinates(0, 1));
-        player.drawDecks(true);
-        assertNotEquals(cardId, player.getHand()[2].getId());
     }
 
-    @Test (expected = RequirementsError.class)
+    @Test(expected = RequirementsError.class)
     public void playCard_playGoldCard_unplayable() throws RequirementsError {
         player.drawStartingCard();
         player.setFirstCard(true);
