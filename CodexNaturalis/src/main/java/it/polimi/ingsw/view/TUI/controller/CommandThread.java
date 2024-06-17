@@ -89,6 +89,9 @@ public class CommandThread extends Thread {
      * @see #postChat(String[], String)
      */
     private void handleCommand(String command) {
+        if (command.strip() == "" || command == null) {
+            return;
+        }
         String[] cmd = command.split(" ");
         int position, id;
         int offset;
