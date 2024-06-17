@@ -123,8 +123,8 @@ public class SocketClient extends Client implements ClientInterface {
      * @throws IOException If an I/O error occurs while sending the message.
      */
     @Override
-    public synchronized UUID newGame(int numPlayers) throws IOException {
-        output.writeObject(new SocketClientCreateGameMessage(numPlayers));
+    public synchronized UUID newGame(int numPlayers, String gameName) throws IOException {
+        output.writeObject(new SocketClientCreateGameMessage(numPlayers, gameName));
         if (!handleResponse()) {
             throw new IOException("Error while creating the game.");
         }

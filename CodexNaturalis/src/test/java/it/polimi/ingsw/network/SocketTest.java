@@ -46,7 +46,7 @@ public class SocketTest {
 
         try {
             client.checkCredentials("player1", "password");
-            client.newGame(3);
+            client.newGame(3, "game");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -74,7 +74,7 @@ public class SocketTest {
             clients.get(i).checkCredentials(name + i, name);
         }
 
-        UUID game = clients.getFirst().newGame(2);
+        UUID game = clients.getFirst().newGame(2, "name");
         for (int i = 1; i < clients.size(); i++) {
             clients.get(i).joinGame(game);
         }

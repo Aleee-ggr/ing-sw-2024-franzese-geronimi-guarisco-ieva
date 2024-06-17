@@ -65,8 +65,8 @@ public class RmiClient extends Client implements ClientInterface {
      * @throws RemoteException If a remote communication error occurs.
      */
     @Override
-    public UUID newGame(int players) throws RemoteException {
-        UUID game = remoteObject.newGame(players);
+    public UUID newGame(int players, String gameName) throws RemoteException {
+        UUID game = remoteObject.newGame(players, gameName);
         if (game != null) {
             joinGame(game);
         }

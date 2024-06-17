@@ -17,10 +17,7 @@ import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Client class, baseline for building a client that can connect to a server to participate in a game.
@@ -40,7 +37,7 @@ public class Client {
     protected UUID gameId;
     protected String turnPlayerName;
     protected GameState gameState;
-    protected ArrayList<UUID> availableGames;
+    protected Map<UUID, String> availableGames;
     protected int playerNum = 0;
     protected ArrayList<String> players;
     protected HashMap<String, ClientData> playerData;
@@ -60,7 +57,7 @@ public class Client {
     public Client(String serverAddress, int serverPort) {
         this.serverAddress = serverAddress;
         this.serverPort = serverPort;
-        this.availableGames = new ArrayList<>();
+        this.availableGames = new HashMap<>();
         this.players = new ArrayList<>();
         this.scoreMap = new HashMap<>();
         this.playerData = new HashMap<>();
@@ -90,7 +87,7 @@ public class Client {
      *
      * @return an ArrayList of UUIDs of the available games.
      */
-    public ArrayList<UUID> getAvailableGames() {
+    public Map<UUID, String> getAvailableGames() {
         return this.availableGames;
     }
 
@@ -317,7 +314,7 @@ public class Client {
      * @param availableGames an ArrayList of UUIDs representing the available games.
      * @return a boolean value representing the success of the set operation.
      */
-    public boolean fetchAvailableGamesClient(ArrayList<UUID> availableGames) {
+    public boolean fetchAvailableGamesClient(Map<UUID, String> availableGames) {
 
         if (availableGames != null) {
             this.availableGames = availableGames;

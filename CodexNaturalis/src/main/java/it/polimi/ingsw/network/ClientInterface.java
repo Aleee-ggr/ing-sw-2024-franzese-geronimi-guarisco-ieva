@@ -10,10 +10,7 @@ import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.model.enums.Color;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * This interface defines the methods for client-server communication and the getters and setters for the client.
@@ -34,7 +31,7 @@ public interface ClientInterface {
      * @return The UUID of the game created.
      * @throws IOException If an I/O error occurs.
      */
-    UUID newGame(int players) throws IOException;
+    UUID newGame(int players, String gameName) throws IOException;
 
     /**
      * Method to join an existing game.
@@ -119,6 +116,7 @@ public interface ClientInterface {
     boolean fetchPlayersColors() throws IOException;
 
     boolean fetchAvailableColors() throws IOException;
+
     /**
      * Method to fetch the available games from the server.
      *
@@ -298,7 +296,7 @@ public interface ClientInterface {
      *
      * @return The ArrayList of available games.
      */
-    ArrayList<UUID> getAvailableGames();
+    Map<UUID, String> getAvailableGames();
 
     /**
      * Method to get the players usernames from the client.

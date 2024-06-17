@@ -92,8 +92,8 @@ public class RmiServer extends Server implements RmiServerInterface {
     }
 
     @Override
-    public UUID newGame(Integer player_count) throws RemoteException {
-        return createGame(player_count);
+    public UUID newGame(Integer player_count, String gameName) throws RemoteException {
+        return createGame(player_count, gameName);
     }
 
     @Override
@@ -207,7 +207,7 @@ public class RmiServer extends Server implements RmiServerInterface {
     }
 
     @Override
-    public ArrayList<UUID> getAvailableGames(String username) throws RemoteException {
+    public Map<UUID, String> getAvailableGames(String username) throws RemoteException {
         return getAvailableGamesServer(username);
     }
 

@@ -54,7 +54,7 @@ public interface RmiServerInterface extends Remote {
      * @return the uuid of the game if the operation was successful, null otherwise
      * @throws RemoteException If an RMI error occurs.
      */
-    UUID newGame(Integer player_count) throws RemoteException;
+    UUID newGame(Integer player_count, String gameName) throws RemoteException;
 
     Color getPlayerColor(UUID game, String name, String nameRequiredData) throws RemoteException;
 
@@ -130,7 +130,7 @@ public interface RmiServerInterface extends Remote {
      */
     boolean checkCredentials(String username, String password) throws RemoteException;
 
-    ArrayList<UUID> getAvailableGames(String username) throws RemoteException;
+    Map<UUID, String> getAvailableGames(String username) throws RemoteException;
 
     List<ChatMessage> fetchChat(UUID game, String username) throws RemoteException;
 

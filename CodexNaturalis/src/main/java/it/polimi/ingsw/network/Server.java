@@ -22,7 +22,8 @@ import java.util.function.Predicate;
 
 /**
  * The abstract class Server serves as a base class for server implementations.
- * It manages games and their corresponding threads, as well as players and messages.
+ * It manages games and their corresponding threads, as well as players and
+ * messages.
  *
  * @author Daniele Ieva
  */
@@ -34,6 +35,7 @@ public abstract class Server {
     protected static final Map<String, UUID> playerGame = new ConcurrentHashMap<>();
     protected static final Map<UUID, Map<String, WaitState>> gameTurns = new ConcurrentHashMap<>();
     protected static final Map<UUID, ArrayList<ChatMessage>> chat = new ConcurrentHashMap<>();
+    protected static final Map<UUID, String> gameNames = new ConcurrentHashMap<>();
 
     static {
         new Thread(() -> {
@@ -46,7 +48,7 @@ public abstract class Server {
                     }
 
                     for (Map.Entry<String, AtomicInteger> entry : playerStatus.entrySet()) {
-                        if(entry.getValue().get() >= 10) {
+                        if (entry.getValue().get() >= 10) {
                             continue;
                         } else {
                             entry.getValue().incrementAndGet();
@@ -60,7 +62,6 @@ public abstract class Server {
         }).start();
     }
 
-
     public static boolean isOffline(String username) {
         if (username == null) {
             return false;
@@ -68,14 +69,16 @@ public abstract class Server {
         return playerStatus.get(username).get() > GameConsts.disconnectionThreshold;
     }
 
-
     /**
-     * Creates a new game with the specified number of players and starts its thread.
+     * Creates a new game with the specified number of players and starts its
+     * thread.
      *
-     * @param numberOfPlayers the number of players in the game (between 2 and 4 inclusive)
-     * @return the unique ID of the created game, or null if the number of players is out of range
+     * @param numberOfPlayers the number of players in the game (between 2 and 4
+     *                        inclusive)
+     * @return the unique ID of the created game, or null if the number of players
+     * is out of range
      */
-    public static UUID createGame(int numberOfPlayers) {
+    public static UUID createGame(int numberOfPlayers, String gameName) {
         if (numberOfPlayers < 2 || numberOfPlayers > 4) {
             return null;
         }
@@ -86,6 +89,7 @@ public abstract class Server {
         BlockingQueue<ThreadMessage> messageQueue = new LinkedBlockingDeque<>();
         threadMessages.put(id, messageQueue);
         gameTurns.put(id, new ConcurrentHashMap<>());
+        gameNames.put(id, gameName);
         new GameThread(messageQueue, gameTurns.get(id), numberOfPlayers).start();
         addGame(id, numberOfPlayers);
         return id;
@@ -96,7 +100,8 @@ public abstract class Server {
      *
      * @param game   the unique ID of the game to join
      * @param player the username of the player to join the game
-     * @return true if the player was successfully joined to the game, false otherwise
+     * @return true if the player was successfully joined to the game, false
+     * otherwise
      */
     public static boolean joinGame(UUID game, String player) {
         gameTurns.get(game).put(player, WaitState.WAIT);
@@ -129,7 +134,8 @@ public abstract class Server {
     }
 
     /**
-     * Check whether the given credentials are valid (size less than 16 and username is not reused)
+     * Check whether the given credentials are valid (size less than 16 and username
+     * is not reused)
      *
      * @param username the username of the player
      * @param password the password of the player
@@ -169,7 +175,8 @@ public abstract class Server {
 
     /**
      * Sends a message to a specified game.
-     * The method uses a synchronized block to safely interact with the message queue of the game.
+     * The method uses a synchronized block to safely interact with the message
+     * queue of the game.
      *
      * @param game    the unique ID of the game to send the message to
      * @param message the message to be sent to the game
@@ -193,8 +200,8 @@ public abstract class Server {
         }
     }
 
-    public static ArrayList<UUID> getAvailableGamesServer(String username) {
-        return new ArrayList<>(games.keySet());
+    public static Map<UUID, String> getAvailableGamesServer(String username) {
+        return new HashMap<>(gameNames);
     }
 
     public static GameState getGameStateServer(UUID game, String username) {
@@ -502,7 +509,6 @@ public abstract class Server {
         }
     }
 
-
     public static String getTurnPlayerServer(UUID game, String username) {
         ThreadMessage message = ThreadMessage.getTurnPlayer(username);
         sendMessage(game, message);
@@ -551,5 +557,3 @@ public abstract class Server {
         threadMessages.get(game).remove();
     }
 }
-
-

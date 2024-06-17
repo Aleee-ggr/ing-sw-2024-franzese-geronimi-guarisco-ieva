@@ -29,15 +29,12 @@ import java.util.UUID;
  * the list of available games from the server.
  */
 public class MainMenuController implements Initializable {
-    private ClientInterface client;
-    private Timeline fetchGamesTimeline;
-
     @FXML
     StackPane root;
-
     @FXML
     ImageView backgroundImage;
-
+    private ClientInterface client;
+    private Timeline fetchGamesTimeline;
     @FXML
     private VBox gameButtonsContainer;
 
@@ -117,20 +114,10 @@ public class MainMenuController implements Initializable {
     private void updateGameButtons() {
         gameButtonsContainer.getChildren().clear();
         int i = 0;
-        for (UUID uuid : client.getAvailableGames()) {
+        for (UUID uuid : client.getAvailableGames().keySet()) { //TODO change uuids to game names
             i++;
             Button button = new Button("Game " + i + ": " + uuid.toString());
-            button.setStyle("-fx-background-color: ffffff;" +
-                    "-fx-border-color: black;" +
-                    "-fx-border-width: 2;" +
-                    "-fx-border-style: solid;" +
-                    "-fx-pref-height: 100;" +
-                    "-fx-pref-width: 700;" +
-                    "-fx-text-fill: #432918;" +
-                    "-fx-font-family: Trattatello;" +
-                    "-fx-font-size: 30;" +
-                    "-fx-cursor: hand;"
-            );
+            button.setStyle("-fx-background-color: ffffff;" + "-fx-border-color: black;" + "-fx-border-width: 2;" + "-fx-border-style: solid;" + "-fx-pref-height: 100;" + "-fx-pref-width: 700;" + "-fx-text-fill: #432918;" + "-fx-font-family: Trattatello;" + "-fx-font-size: 30;" + "-fx-cursor: hand;");
             button.setOnAction(event -> {
                 try {
                     client.joinGame(uuid);

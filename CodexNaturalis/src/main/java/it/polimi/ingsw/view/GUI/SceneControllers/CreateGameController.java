@@ -24,14 +24,11 @@ import java.util.ResourceBundle;
  * It allows the user to specify the number of players for a new game and initiates the creation of the game accordingly.
  */
 public class CreateGameController implements Initializable {
-    private ClientInterface client;
-
     @FXML
     StackPane root;
-
     @FXML
     ImageView backgroundImage;
-
+    private ClientInterface client;
     @FXML
     private RadioButton twoPlayers;
 
@@ -56,7 +53,7 @@ public class CreateGameController implements Initializable {
         if (selected != null) {
             try {
                 int numPlayer = Integer.parseInt((String) selected.getUserData());
-                client.newGame(numPlayer);
+                client.newGame(numPlayer, "test"); //TODO add game name prompt
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/WaitingRoom.fxml"));
                 WaitingRoomController controller = new WaitingRoomController();
                 controller.setClient(client);

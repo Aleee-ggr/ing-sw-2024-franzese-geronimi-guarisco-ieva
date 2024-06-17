@@ -74,12 +74,13 @@ public class TuiController {
         try {
             client.fetchAvailableGames();
             int selected;
+            List<UUID> games = client.getAvailableGames().keySet().stream().toList();
             do {
                 clear();
                 out.println("Available games: ");
 
-                for (int i = 0; i < client.getAvailableGames().size(); i++) {
-                    out.printf("%d.\t%s\n", i + 1, client.getAvailableGames().get(i));
+                for (int i = 0; i < games.size(); i++) {
+                    out.printf("%d.\t%s\n", i + 1, client.getAvailableGames().get(games.get(i)));
                 }
                 out.println("Select game to play (0 to create a new game)");
 
@@ -88,7 +89,7 @@ public class TuiController {
             if (selected == 0) {
                 createGame();
             } else {
-                UUID choice = client.getAvailableGames().get(selected - 1);
+                UUID choice = games.get(selected - 1);
                 client.joinGame(choice);
             }
         } catch (IOException e) {
@@ -214,7 +215,12 @@ public class TuiController {
                 }
             } while (selection < 2 || selection > 4);
 
-            client.newGame(selection);
+            out.println("Insert game name: ");
+            String gameName;
+            do {
+                gameName = in.readLine();
+            } while (gameName.isEmpty());
+            client.newGame(selection, gameName);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
