@@ -191,7 +191,7 @@ public class CommandThread extends Thread {
                               - place [card] [position]: place the card in the given position
                               - view [deck|objectives|board]: show the selected element
                               - switch [player]: show the view from the given player side
-                              - draw [int index]: draw the card at the given position, 0 to 3 are visible cards, 4 & 5 are respectively gold and std deck
+                              - draw [int index]: draw the card at the given position, 1 to 4 are visible cards, 5 & 6 are respectively gold and std deck
                               - w / a / s / d [int distance]: move the view of the board for the given distance
                               - center: center the board
                               - chat: send a global message
