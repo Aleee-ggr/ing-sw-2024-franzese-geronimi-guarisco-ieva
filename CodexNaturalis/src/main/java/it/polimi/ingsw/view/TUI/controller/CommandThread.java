@@ -35,11 +35,14 @@ public class CommandThread extends Thread {
     }
 
     /**
-     * Starts a thread reading user commands, some are only visual, while "chat", "whisper", "place", and "draw" also
-     * have effects on the server, and require a server-side update, which will be detected by
+     * Starts a thread reading user commands, some are only visual, while "chat",
+     * "whisper", "place", and "draw" also
+     * have effects on the server, and require a server-side update, which will be
+     * detected by
      * {@link ClientUpdateThread}.
      *
-     * @see #handleCommand(String)  handleCommand("h") for a list of available commands.
+     * @see #handleCommand(String) handleCommand("h") for a list of available
+     *      commands.
      */
     @Override
     public void run() {
@@ -65,19 +68,21 @@ public class CommandThread extends Thread {
     /**
      * List of available commands:
      * <ul>
-     *  <li> place [card] [position]: place the card in the given position</li>
-     *  <li> view [deck|objectives|board]: show the selected element </li>
-     *  <li> switch [player]: show the view from the given player side </li>
-     *  <li> draw [int index]: draw the card at the given position
-     *  0 to 3 are visible cards, 4 & 5 are respectively gold and std deck </li>
-     *  <li> center: center the board</li>
-     *  <li> chat: send a global message</li>
-     *  <li> whisper [player]: send a private message to a player</li>
-     *  <li> w / a / s / d [int distance]: move the view of the board for the given distance</li>
-     *  <li> h: show this list </li>
-     *  </ul>
-     *  The command executed is the first word of the user input.<br/>
-     *  if the command given is not within the list, call {@link #defaultCommand()} to warn the user.
+     * <li>place [card] [position]: place the card in the given position</li>
+     * <li>view [deck|objectives|board]: show the selected element</li>
+     * <li>switch [player]: show the view from the given player side</li>
+     * <li>draw [int index]: draw the card at the given position
+     * 0 to 3 are visible cards, 4 & 5 are respectively gold and std deck</li>
+     * <li>center: center the board</li>
+     * <li>chat [message]: send a global message</li>
+     * <li>whisper [player]: send a private message to a player</li>
+     * <li>w / a / s / d [int distance]: move the view of the board for the given
+     * distance</li>
+     * <li>h: show this list</li>
+     * </ul>
+     * The command executed is the first word of the user input.<br/>
+     * if the command given is not within the list, call {@link #defaultCommand()}
+     * to warn the user.
      *
      * @param command the command to execute
      * @see #defaultCommand()
@@ -186,19 +191,22 @@ public class CommandThread extends Thread {
                     compositor.getBoard().moveCenter(-2 * offset, 0);
                     break;
                 case "h", "help":
-                    System.out.println("""
-                            List of available commands:
-                              - place [card] [position]: place the card in the given position
-                              - view [deck|objectives|board]: show the selected element
-                              - switch [player]: show the view from the given player side
-                              - draw [int index]: draw the card at the given position, 1 to 4 are visible cards, 5 & 6 are respectively gold and std deck
-                              - w / a / s / d [int distance]: move the view of the board for the given distance
-                              - center: center the board
-                              - chat: send a global message
-                              - whisper [player]: send a private message to a player
-                              - h: show this list
-                              Press ENTER to continue""");
+                    updater.lock();
+                    System.out.println(
+                            """
+                                    List of available commands:
+                                      - place [card] [position]: place the card in the given position
+                                      - view [deck|objectives|board]: show the selected element
+                                      - switch [player]: show the view from the given player side
+                                      - draw [int index]: draw the card at the given position, 1 to 4 are visible cards, 5 & 6 are respectively gold and std deck
+                                      - w / a / s / d [int distance]: move the view of the board for the given distance
+                                      - center: center the board
+                                      - chat [message]: send a global message
+                                      - whisper [player]: send a private message to a player
+                                      - h: show this list
+                                      Press ENTER to continue""");
                     in.readLine();
+                    updater.unlock();
                     break;
                 default:
                     defaultCommand();
@@ -210,9 +218,12 @@ public class CommandThread extends Thread {
     }
 
     /**
-     * Send a request to place a card to the server, and return whether the card was placed successfully
+     * Send a request to place a card to the server, and return whether the card was
+     * placed successfully
      *
-     * @param card     the index of the card in the {@link it.polimi.ingsw.view.TUI.components.HandView hand} to play
+     * @param card     the index of the card in the
+     *                 {@link it.polimi.ingsw.view.TUI.components.HandView hand} to
+     *                 play
      *                 (base 1)
      * @param position the index of the card placement, as shown in the
      *                 {@link it.polimi.ingsw.view.TUI.components.Board} rendering
@@ -254,8 +265,10 @@ public class CommandThread extends Thread {
      * Sends a message to the server chat, to the given receiver, if any.
      *
      * @param message  the message to send
-     * @param receiver either the username of a player in case of private message, or null for a global message
-     * @see it.polimi.ingsw.model.ChatMessage#ChatMessage(String, String, String)  ChatMessage
+     * @param receiver either the username of a player in case of private message,
+     *                 or null for a global message
+     * @see it.polimi.ingsw.model.ChatMessage#ChatMessage(String, String, String)
+     *      ChatMessage
      * @see it.polimi.ingsw.model.ChatMessage#filterPlayer(String)
      * @see #handleCommand(String)
      */
@@ -270,7 +283,8 @@ public class CommandThread extends Thread {
     }
 
     /**
-     * Fetch all the required data from the server in order to render the tui interface,
+     * Fetch all the required data from the server in order to render the tui
+     * interface,
      *
      * @see ClientInterface
      * @see Compositor

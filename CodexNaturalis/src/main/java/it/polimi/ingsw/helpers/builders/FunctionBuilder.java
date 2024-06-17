@@ -13,7 +13,7 @@ import java.util.function.Function;
 import static java.lang.Math.signum;
 
 public class FunctionBuilder {
-    public static final String[] validTypes = { "none", "pattern", "resource", "resources", "cover", };
+    public static final String[] validTypes = {"none", "pattern", "resource", "resources", "cover",};
     private final Map<Coordinates, Resource> pattern = new HashMap<>(3);
     private int points;
     private String type;
@@ -151,9 +151,9 @@ public class FunctionBuilder {
                 Coordinates lastCoordinates = board.getLastPlacedPosition();
                 int neighbor_count = 0;
                 for (Coordinates neighbor : lastCoordinates.getNeighbors()) {
-                    if (board.getCard(neighbor) != null || board.getCard(neighbor).getId() != 0) { // TODO test wether
-                                                                                                   // MockCards get
-                                                                                                   // counted
+                    if (board.getCard(neighbor) != null || board.getCard(neighbor).getId() != 0) { // TODO test whether
+                        // MockCards get
+                        // counted
                         neighbor_count++;
                     }
                 }
