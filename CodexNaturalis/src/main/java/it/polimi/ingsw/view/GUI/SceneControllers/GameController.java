@@ -4,7 +4,9 @@ import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.client.ClientData;
+import it.polimi.ingsw.model.client.OpponentData;
 import it.polimi.ingsw.model.client.PlayerData;
+import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.RotateBoard;
@@ -205,6 +207,7 @@ public class GameController implements Initializable {
             image.preserveRatioProperty();
 
             StackPane stackPane = new StackPane(image);
+            setPion(client.getUsername(), stackPane);
 
             board.add(stackPane, center.x(), center.y());
             GridPane.setHalignment(stackPane, HPos.CENTER);
@@ -214,7 +217,6 @@ public class GameController implements Initializable {
                 Coordinates coordinates = playerData.getBoard().inverse().get(card);
                 int id = card.getId();
                 String pathSide;
-
                 if (id > 0) {
                     pathSide = String.format("GUI/images/cards.nogit/front/%03d.png", id);
                 } else {
@@ -226,6 +228,9 @@ public class GameController implements Initializable {
                 image.preserveRatioProperty();
 
                 StackPane stackPane = new StackPane(image);
+                if (card.equals(playerData.getOrder().getFirst())) {
+                    setPion(client.getUsername(), stackPane);
+                }
 
                 board.add(stackPane, calculateBoardCoordinates(coordinates).x(), calculateBoardCoordinates(coordinates).y());
                 GridPane.setHalignment(stackPane, HPos.CENTER);
@@ -280,6 +285,9 @@ public class GameController implements Initializable {
             image.preserveRatioProperty();
 
             StackPane stackPane = new StackPane(image);
+            if (card.equals(opponentData.getOrder().getFirst())) {
+                setPion(usernameOpponent, stackPane);
+            }
 
             board.add(stackPane, calculateBoardCoordinates(coordinates).x(), calculateBoardCoordinates(coordinates).y());
             GridPane.setHalignment(stackPane, HPos.CENTER);
@@ -682,5 +690,56 @@ public class GameController implements Initializable {
 
         new Thread(endGameThread).start();
     }
+
+    private void setPion(String username, StackPane stackPane) {
+        ImageView pion = null;
+        Color playerColor;
+        Integer startingCardId;
+
+        if (username.equals(client.getUsername())) {
+            playerColor = playerData.getPlayerColor();
+            startingCardId = playerData.getStartingCard().getId();
+        } else {
+            playerColor = ((OpponentData) client.getOpponentData().get(username)).getPlayerColor();
+            startingCardId = client.getOpponentData().get(username).getOrder().getFirst().getId();
+        }
+
+        switch (playerColor) {
+            case RED -> pion = new ImageView("GUI/images/score.nogit/CODEX_pion_rouge.png");
+            case BLUE -> pion = new ImageView("GUI/images/score.nogit/CODEX_pion_bleu.png");
+            case YELLOW -> pion = new ImageView("GUI/images/score.nogit/CODEX_pion_jaune.png");
+            case GREEN -> pion = new ImageView("GUI/images/score.nogit/CODEX_pion_vert.png");
+        }
+
+        pion.setFitWidth(25);
+        pion.setFitHeight(25);
+        pion.setPreserveRatio(true);
+
+        stackPane.getChildren().add(pion);
+
+        if (client.getPlayers().getFirst().equals(username)) {
+            ImageView firstPion = new ImageView("GUI/images/score.nogit/CODEX_pion_noir.png");
+            firstPion.setFitWidth(25);
+            firstPion.setFitHeight(25);
+            firstPion.setPreserveRatio(true);
+
+            stackPane.getChildren().add(firstPion);
+
+            if (startingCardId < 0) {
+                StackPane.setMargin(pion, new Insets(0, 32, 0, 0));
+                StackPane.setMargin(firstPion, new Insets(0, 0, 0, 32));
+            } else {
+                StackPane.setMargin(pion, new Insets(0, 55, 0, 0));
+                StackPane.setMargin(firstPion, new Insets(0, 0, 0, 55));
+            }
+        } else {
+            if (startingCardId < 0) {
+                StackPane.setMargin(pion, new Insets(0, 32, 0, 0));
+            } else {
+                StackPane.setMargin(pion, new Insets(0, 55, 0, 0));
+            }
+        }
+    }
+
 
 }
