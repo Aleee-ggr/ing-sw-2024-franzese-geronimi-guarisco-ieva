@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -181,17 +182,7 @@ public class GameController implements Initializable {
         fetchData();
         setupResources();
         calculateBoardCenterCoordinates();
-        setHand(frontSide);
-
-        System.out.println(client.getOpponentData());
-        System.out.println(playerData.getValidPlacements());
-
-        for (Coordinates coordinates : playerData.getValidPlacements()) {
-            System.out.println(RotateBoard.rotateCoordinates(coordinates, -45));
-        }
-        System.out.println(playerData.getBoard());
-
-
+        setHand(client.getUsername(), frontSide);
 
         if (playerData.getBoard().isEmpty()) {
             int startingCard = playerData.getStartingCard().getId();
@@ -293,6 +284,8 @@ public class GameController implements Initializable {
             GridPane.setHalignment(stackPane, HPos.CENTER);
             GridPane.setValignment(stackPane, VPos.CENTER);
         }
+
+        setHand(client.getUsername(), frontSide);
     }
 
     private void fetchData() {
@@ -318,37 +311,56 @@ public class GameController implements Initializable {
         handContainer.getChildren().clear();
         int size = playerData.getClientHand().size();
         int i = 0;
-        for (Card card: playerData.getClientHand()) {
-            int id = card.getId();
-            i++;
-            if (frontSide) {
-                imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", id);
-            } else {
-                imagePath = String.format("GUI/images/cards.nogit/back/%03d.png", id);
+        if (username.equals(client.getUsername())) {
+            for (Card card: playerData.getClientHand()) {
+                System.out.println(card);
+                int id = card.getId();
+                i++;
+                if (frontSide) {
+                    imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", id);
+                } else {
+                    imagePath = String.format("GUI/images/cards.nogit/back/%03d.png", id);
+                }
+                ImageView image = new ImageView(imagePath);
+                image.setFitHeight(151.5);
+                image.setFitWidth(225);
+                image.preserveRatioProperty();
+                if (frontSide) {
+                    image.setId(String.valueOf(id));
+                } else {
+                    image.setId(String.valueOf(-id));
+                }
+
+                handContainer.getChildren().add(image);
+
+                image.setOnMouseClicked(mouseEvent -> {
+                    selectedHandCard = image;
+                });
+
+                image.setOnDragDetected(event -> {
+                    selectedHandCard = image;
+                    Dragboard db = image.startDragAndDrop(TransferMode.MOVE);
+                    db.setContent(clipboardContent(String.valueOf(id)));
+                    db.setDragView(image.getImage());
+                    event.consume();
+                });
             }
-            ImageView image = new ImageView(imagePath);
-            image.setFitHeight(151.5);
-            image.setFitWidth(225);
-            image.preserveRatioProperty();
-            if (frontSide) {
-                image.setId(String.valueOf(id));
-            } else {
-                image.setId(String.valueOf(-id));
+        } else {
+            for (Resource resource: ((OpponentData) client.getOpponentData().get(username)).getHandColor()) {
+                switch (resource) {
+                    case FUNGI -> imagePath = "GUI/images/cards.nogit/back/001.png";
+                    case PLANT -> imagePath = "GUI/images/cards.nogit/back/011.png";
+                    case ANIMAL -> imagePath = "GUI/images/cards.nogit/back/021.png";
+                    case INSECT -> imagePath = "GUI/images/cards.nogit/back/031.png";
+                }
+
+                ImageView image = new ImageView(imagePath);
+                image.setFitHeight(151.5);
+                image.setFitWidth(225);
+                image.preserveRatioProperty();
+
+                handContainer.getChildren().add(image);
             }
-
-            handContainer.getChildren().add(image);
-
-            image.setOnMouseClicked(mouseEvent -> {
-                selectedHandCard = image;
-            });
-
-            image.setOnDragDetected(event -> {
-                selectedHandCard = image;
-                Dragboard db = image.startDragAndDrop(TransferMode.MOVE);
-                db.setContent(clipboardContent(String.valueOf(id)));
-                db.setDragView(image.getImage());
-                event.consume();
-            });
         }
     }
 
@@ -562,7 +574,7 @@ public class GameController implements Initializable {
 
             fetchData();
             setupResources();
-            setHand(frontSide);
+            setHand(client.getUsername(), frontSide);
 
             turnMessage.setText("Your Turn: Draw a Card!");
 
@@ -581,10 +593,10 @@ public class GameController implements Initializable {
     @FXML
     private void flipCards(ActionEvent event) {
         if (frontSide) {
-            setHand(false);
+            setHand(client.getUsername(), false);
             frontSide = false;
         } else {
-            setHand(true);
+            setHand(client.getUsername(), true);
             frontSide = true;
         }
     }

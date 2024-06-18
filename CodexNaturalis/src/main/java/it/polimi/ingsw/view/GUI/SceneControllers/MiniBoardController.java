@@ -106,6 +106,9 @@ public class MiniBoardController implements Initializable, TabController {
 
                 currentBoard.setOnMouseClicked(event -> {
                     gameController.setupOpponentData(entry.getKey());
+                    gameController.setHand(entry.getKey(), false);
+                    gameController.buttonsContainer.getChildren().remove(gameController.flipButton);
+                    gameController.setActiveTab(null);
                 });
 
                 if (entry.getValue().getBoard().isEmpty()) {

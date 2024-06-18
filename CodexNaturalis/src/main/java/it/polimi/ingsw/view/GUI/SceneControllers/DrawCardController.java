@@ -71,7 +71,7 @@ public class DrawCardController implements Initializable, TabController {
     private void drawCard(int position) {
         try {
             client.drawCard(position);
-            gameController.setHand(gameController.frontSide);
+            gameController.setHand(client.getUsername(), gameController.frontSide);
 
             setCards();
         } catch (IOException e) {
