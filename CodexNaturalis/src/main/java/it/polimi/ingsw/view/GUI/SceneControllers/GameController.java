@@ -115,6 +115,9 @@ public class GameController implements Initializable {
     @FXML
     Button centerBoardButton;
 
+    @FXML
+    Button flipButton;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         updater = new SharedUpdate();
@@ -254,6 +257,7 @@ public class GameController implements Initializable {
             button.setOnMouseClicked(event -> {
                 setPersonalData();
                 buttonsContainer.getChildren().remove(button);
+                buttonsContainer.getChildren().add(flipButton);
             });
             buttonsContainer.getChildren().add(button);
         }

@@ -237,7 +237,7 @@
                         <Insets />
                     </HBox.margin>
                     <children>
-                        <Button mnemonicParsing="false" onAction="#flipCards" prefHeight="0.0" prefWidth="250.0" text="FLIP" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS">
+                        <Button fx:id="flipButton" mnemonicParsing="false" onAction="#flipCards" prefHeight="0.0" prefWidth="250.0" text="FLIP" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS">
                             <font>
                                 <Font name="Trattatello" size="30.0" />
                             </font>
