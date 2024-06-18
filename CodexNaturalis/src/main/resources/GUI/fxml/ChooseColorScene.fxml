@@ -23,7 +23,7 @@
                 <Insets bottom="250.0" />
             </StackPane.margin>
         </Label>
-        <HBox fx:id="colorsContainer" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="397.2" prefWidth="1650.0" spacing="30.0">
+        <HBox fx:id="pionsContainer" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="397.2" prefWidth="1650.0" spacing="30.0">
             <StackPane.margin>
                 <Insets top="300.0" />
             </StackPane.margin>

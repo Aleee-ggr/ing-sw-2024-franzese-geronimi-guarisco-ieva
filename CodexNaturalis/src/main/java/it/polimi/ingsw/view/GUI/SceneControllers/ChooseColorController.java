@@ -7,9 +7,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -22,7 +21,7 @@ public class ChooseColorController implements Initializable {
     private PlayerData playerData;
 
     @FXML
-    HBox colorsContainer;
+    HBox pionsContainer;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -33,10 +32,20 @@ public class ChooseColorController implements Initializable {
         }
 
         for (Color playerColor: playerData.getAvailableColors()) {
-            Rectangle rectangle = new Rectangle(397.2, 397.2);
-            rectangle.setFill(Paint.valueOf(playerColor.toString()));
+            ImageView pion = null;
 
-            rectangle.setOnMouseClicked(event -> {
+            switch (playerColor) {
+                case RED -> pion = new ImageView("GUI/images/score.nogit/CODEX_pion_rouge.png");
+                case BLUE -> pion = new ImageView("GUI/images/score.nogit/CODEX_pion_bleu.png");
+                case YELLOW -> pion = new ImageView("GUI/images/score.nogit/CODEX_pion_jaune.png");
+                case GREEN -> pion = new ImageView("GUI/images/score.nogit/CODEX_pion_vert.png");
+            }
+
+            pion.setFitWidth(300);
+            pion.setFitHeight(300);
+            pion.preserveRatioProperty();
+
+            pion.setOnMouseClicked(event -> {
                 try {
                     client.choosePlayerColor(playerColor);
 
@@ -45,14 +54,14 @@ public class ChooseColorController implements Initializable {
                     controller.setClient(client);
                     loader.setController(controller);
                     Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
-                    Stage stage = (Stage) colorsContainer.getScene().getWindow();
+                    Stage stage = (Stage) pionsContainer.getScene().getWindow();
                     stage.setScene(scene);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             });
 
-            colorsContainer.getChildren().add(rectangle);
+            pionsContainer.getChildren().add(pion);
         }
     }
 
@@ -61,4 +70,5 @@ public class ChooseColorController implements Initializable {
         this.playerData = client.getPlayerData();
     }
 }
+
 
