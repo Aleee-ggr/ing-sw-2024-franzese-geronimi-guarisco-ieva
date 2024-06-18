@@ -149,6 +149,7 @@ public class GameController implements Initializable {
         for (Map.Entry<Resource, Integer> entry : playerData.getResources().entrySet()) {
             if (entry.getKey() != Resource.NONE && entry.getKey() != Resource.NONCOVERABLE) {
                 resourceText.get(entry.getKey()).setText(String.valueOf(entry.getValue()));
+                resourceText.get(entry.getKey()).setStyle("-fx-font-family: Trattatello;" + "-fx-font-weight: bold;" + "-fx-text-fill: #432918;" + "-fx-font-size: 20");
             }
         }
     }
