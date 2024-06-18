@@ -306,8 +306,14 @@ public class GameController implements Initializable {
         }
     }
 
-    protected void setHand(boolean frontSide) {
-        String imagePath;
+    protected void setHand(String username, boolean frontSide) {
+        try {
+            client.fetchClientHand();
+            client.fetchOpponentsHandColor();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String imagePath = "";
         handContainer.getChildren().clear();
         int size = playerData.getClientHand().size();
         int i = 0;
