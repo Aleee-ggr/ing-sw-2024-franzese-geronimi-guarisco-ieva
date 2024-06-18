@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.controller.SharedUpdate;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -72,8 +74,13 @@ public class DrawCardController implements Initializable, TabController {
         try {
             client.drawCard(position);
             gameController.setHand(client.getUsername(), gameController.frontSide);
-
             setCards();
+            PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
+            pause.setOnFinished(e -> {
+                gameController.setActiveTab(null);
+                gameController.tabContainer.setVisible(false);
+            });
+            pause.play();
         } catch (IOException e) {
             e.printStackTrace();
         }
