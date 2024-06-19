@@ -19,6 +19,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
@@ -114,13 +115,13 @@ public class MainMenuController implements Initializable {
     private void updateGameButtons() {
         gameButtonsContainer.getChildren().clear();
         int i = 0;
-        for (UUID uuid : client.getAvailableGames().keySet()) { //TODO change uuids to game names
+        for (Map.Entry<UUID, String> entry: client.getAvailableGames().entrySet()) { //TODO change uuids to game names
             i++;
-            Button button = new Button("Game " + i + ": " + uuid.toString());
+            Button button = new Button(entry.getValue());
             button.setStyle("-fx-background-color: ffffff;" + "-fx-border-color: black;" + "-fx-border-width: 2;" + "-fx-border-style: solid;" + "-fx-pref-height: 100;" + "-fx-pref-width: 700;" + "-fx-text-fill: #432918;" + "-fx-font-family: Trattatello;" + "-fx-font-size: 30;" + "-fx-cursor: hand;");
             button.setOnAction(event -> {
                 try {
-                    client.joinGame(uuid);
+                    client.joinGame(entry.getKey());
                     stopFetchingGames();
 
                     try {

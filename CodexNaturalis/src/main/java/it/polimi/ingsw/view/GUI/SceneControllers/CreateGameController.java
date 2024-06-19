@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -41,6 +42,9 @@ public class CreateGameController implements Initializable {
     @FXML
     private ToggleGroup numPlayers;
 
+    @FXML
+    private TextField gameName;
+
     /**
      * Handles the action when the user clicks on the button to change to the waiting room scene.
      * Based on the user's selection, it starts a new game with the selected number of players.
@@ -50,10 +54,11 @@ public class CreateGameController implements Initializable {
     @FXML
     protected void changeWaitingRoomScene(ActionEvent event) {
         RadioButton selected = (RadioButton) numPlayers.getSelectedToggle();
-        if (selected != null) {
+        if (selected != null && gameName.getText() != null) {
             try {
+                System.out.println(gameName.getText());
                 int numPlayer = Integer.parseInt((String) selected.getUserData());
-                client.newGame(numPlayer, "test"); //TODO add game name prompt
+                client.newGame(numPlayer, gameName.getText());
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/WaitingRoom.fxml"));
                 WaitingRoomController controller = new WaitingRoomController();
                 controller.setClient(client);
