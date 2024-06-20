@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.Server;
 
+import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 
@@ -16,7 +17,8 @@ import static java.lang.Math.abs;
 
 /**
  * GameThread Class, used to manage the thread-side logic for the controller.
- * Instantiate a new thread for each game to work simultaneously with the same server.
+ * Instantiate a new thread for each game to work simultaneously with the same
+ * server.
  *
  * @author Daniele Ieva
  * @author ALessio Guarisco
@@ -42,7 +44,6 @@ public class GameThread extends Thread {
         this.controller = new Controller(messageQueue, maxPlayers);
         this.turnMap = turnMap;
     }
-
 
     /**
      * Run method of the thread, it manages the game loop.
@@ -75,11 +76,7 @@ public class GameThread extends Thread {
                     break;
             }
         }
-        while (controller.getGame().getPlayers().size() == controller.getGame().getMaxPlayers()) {
-            for (Player player : controller.getGame().getPlayers()) {
-                playerTurn(player.getUsername());
-            }
-        }
+        gameStop();
     }
 
     /**
@@ -101,7 +98,8 @@ public class GameThread extends Thread {
 
     /**
      * Setup method, manages the game setup state.
-     * It waits for all players to choose their personal objectives and starting cards.
+     * It waits for all players to choose their personal objectives and starting
+     * cards.
      */
     public void setup() {
         for (String currentPlayer : controller.getGame().getPlayers().stream().map(Player::getUsername).toList()) {
@@ -253,19 +251,27 @@ public class GameThread extends Thread {
             controller.getGame().getGameBoard().updateScore(player, player.getHiddenObjective().getPoints(player));
         }
 
-        sendUpdate();
-
-        for (int i = 0; i < controller.getGame().getNumPlayers(); i++) {
-            ThreadMessage msg = getMessage();
-            if (msg.type().equals("getScoreMap")) {
-                respond(msg);
-            } else {
-                i--;
-                messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "Invalid message for context: %s".formatted(msg.type())));
-            }
-        }
         gameState = GameState.STOP;
         controller.getGame().setGameState(GameState.STOP);
+    }
+
+    public void gameStop() {
+        sendUpdate();
+        LocalTime t = LocalTime.now();
+
+        while (!LocalTime.now().isAfter(t.plusSeconds(10))) {
+            ThreadMessage msg = getMessage();
+
+            if (msg.type().equals("getScore")) {
+                respond(msg);
+            } else {
+                messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), ("Invalid message for " + "context STOP: %s").formatted(msg.type())));
+            }
+            try {
+                sleep(10);
+            } catch (InterruptedException ignored) {
+            }
+        }
     }
 
     private void disconnectionHandler(Boolean firstParam, Boolean secondParam, Boolean thirdParam) {
@@ -277,8 +283,7 @@ public class GameThread extends Thread {
                 turnMap.put(currentPlayer, WaitState.TURN);
                 Random rand = new Random();
 
-
-                if (!firstParam) { //if the player has not chosen the personal objective
+                if (!firstParam) { // if the player has not chosen the personal objective
                     int index = rand.nextInt() % 2;
 
                     if (user.getStartingObjectives().isEmpty()) {
@@ -306,10 +311,10 @@ public class GameThread extends Thread {
                 break;
             case MAIN:
                 turnMap.put(currentPlayer, WaitState.TURN);
-                if (!firstParam) { //if the player has not placed the card
+                if (!firstParam) { // if the player has not placed the card
                     return;
                 }
-                if (!secondParam) { //if the player has not drawn the card
+                if (!secondParam) { // if the player has not drawn the card
                     if (user.drawDecks(false) == null) {
                         user.drawVisible(0);
                     }
@@ -340,7 +345,8 @@ public class GameThread extends Thread {
     }
 
     /**
-     * Respond method, processes the message and calls the appropriate method in the controller.
+     * Respond method, processes the message and calls the appropriate method in the
+     * controller.
      *
      * @param msg the message to be processed.
      * @return the message itself.
