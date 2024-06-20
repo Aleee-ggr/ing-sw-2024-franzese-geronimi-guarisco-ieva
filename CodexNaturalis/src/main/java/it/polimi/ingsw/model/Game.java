@@ -41,7 +41,7 @@ public class Game {
             put(objective.getId(), objective);
         }
     }};
-    private final List<Player> players = new ArrayList<>();
+    private final List<Player> players = Collections.synchronizedList(new ArrayList<>());
     private final int maxPlayers;
     private final ArrayList<Color> availableColors = new ArrayList<>();
     /*Game-Specific Decks: not static decks for the instance of Game*/ Deck<GoldCard> gameGoldDeck;

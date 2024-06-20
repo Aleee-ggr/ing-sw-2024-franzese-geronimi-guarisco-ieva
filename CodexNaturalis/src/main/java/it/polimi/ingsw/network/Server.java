@@ -85,6 +85,7 @@ public abstract class Server {
 
     /**
      * Gets the games available to a player.
+     * The method iterates over the games and removes the ones that are closed or have all the players disconnected.
      *
      * @param username the username of the player
      * @return a map of game IDs to the names of the games available to the player
@@ -92,11 +93,56 @@ public abstract class Server {
     public static Map<UUID, String> getAvailableGamesServer(String username) {
         for (Map.Entry<UUID, GameThread> gameThread : gameThreads.entrySet()) {
             if (!gameThread.getValue().isAlive()) {
-                gameThreads.remove(gameThread.getKey());
+                UUID toRemove =  gameThread.getKey();
+                removeGame(toRemove, gameThread.getValue(), username);
+            } else {
+                boolean disconnected = true;
+
+                if(gameThread.getValue().getGameState().equals(GameState.LOBBY)){
+                    continue;
+                }
+
+                for(String player : gameThread.getValue().getPlayers()){
+
+                    if(!isOffline(player)){
+                        disconnected = false;
+                        break;
+                    }
+
+                }
+
+                if(disconnected){
+                    removeGame(gameThread.getKey(), gameThread.getValue(), username);
+                }
+
             }
         }
         return new HashMap<>(gameNames);
     }
+
+    /**
+     * Remove the game if it is closed or if all the players disconnect.
+     *
+     * @param game the UUID of the game to remove
+     * @param gameThread the GameThread of the game to remove
+     */
+    public static void removeGame(UUID game, GameThread gameThread, String playerUsername){
+        for(String player : gameThread.getPlayers()){
+            if(!player.equals(playerUsername)){
+                playerGame.remove(player);
+                playerStatus.remove(player);
+                playerGame.remove(player);
+            }
+        }
+        threadMessages.remove(game);
+        games.remove(game);
+        gameTurns.remove(game);
+        chat.remove(game);
+        gameNames.remove(game);
+        gameThreads.remove(game);
+        gameThread.interrupt();
+    }
+
 
     /**
      * General Server method to check if a player is offline.

@@ -28,7 +28,7 @@ public class GameThread extends Thread {
     private final Controller controller;
     private final Map<String, WaitState> turnMap;
     private String currentPlayer;
-    private GameState gameState = GameState.LOBBY;
+    private volatile GameState gameState = GameState.LOBBY;
     private volatile boolean running = true;
 
     /**
@@ -45,8 +45,22 @@ public class GameThread extends Thread {
         this.turnMap = turnMap;
     }
 
-    public Integer getPlayerCount() {
-        return playerCount;
+    /**
+     * Getter for the game state.
+     *
+     * @return the current game state.
+     */
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    /**
+     * Getter for the players in the game.
+     *
+     * @return the list of players in the game.
+     */
+    public List<String> getPlayers() {
+        return controller.getGame().getPlayers().stream().map(Player::getUsername).toList();
     }
 
     /**
