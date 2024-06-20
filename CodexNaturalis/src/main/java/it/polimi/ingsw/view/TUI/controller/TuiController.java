@@ -164,12 +164,16 @@ public class TuiController {
         fetchData();
         compositor = new Compositor(client);
         SharedUpdate updater = new SharedUpdate();
-        new CommandThread(client, updater, compositor).start();
-        new ClientUpdateThread(client, updater, compositor).start();
-        Thread t = new RenderThread(client, updater, compositor);
-        t.start();
+        Thread commands = new CommandThread(client, updater, compositor);
+        commands.start();
+        Thread update = new ClientUpdateThread(client, updater, compositor);
+        update.start();
+        Thread render = new RenderThread(client, updater, compositor);
+        render.start();
         try {
-            t.join();
+            render.join();
+            update.interrupt();
+            commands.interrupt();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

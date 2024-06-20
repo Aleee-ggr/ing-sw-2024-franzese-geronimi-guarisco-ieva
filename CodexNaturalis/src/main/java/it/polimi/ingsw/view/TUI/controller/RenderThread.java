@@ -27,7 +27,7 @@ public class RenderThread extends Thread {
     public void run() {
         boolean running;
         synchronized (client) {
-            running = client.getGameState() != GameState.ENDGAME;
+            running = client.getGameState() != GameState.STOP;
         }
         while (running) {
             boolean update = false;
@@ -38,7 +38,7 @@ public class RenderThread extends Thread {
             out.print(compositor);
             out.flush();
             synchronized (client) {
-                running = client.getGameState() != GameState.ENDGAME;
+                running = client.getGameState() != GameState.STOP;
             }
         }
     }
