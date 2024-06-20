@@ -53,8 +53,8 @@ public class ChatController implements Initializable, TabController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        setChat();
         setChoiceChat();
+        setChat();
     }
 
     @FXML
@@ -124,19 +124,12 @@ public class ChatController implements Initializable, TabController {
         chatContainer.getChildren().add(messageHBox);
     }
 
-
     @FXML
     private void setChoiceChat() {
         playerChoiceChat.getItems().clear();
         playerChoiceChat.getItems().add("General");
         playerChoiceChat.setValue("General");
         playerChoiceChat.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> setChat());
-
-        try {
-            client.fetchPlayers();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
         for (String player : client.getPlayers()) {
             if (!player.equals(client.getUsername())) {
