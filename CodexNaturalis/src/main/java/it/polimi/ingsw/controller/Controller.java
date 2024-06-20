@@ -75,7 +75,7 @@ public class Controller {
         } catch (ExistingUsernameException e) {
             messageQueue.add(ThreadMessage.genericError(username, messageId, "Username already exists"));
         } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+            logError(username, messageId, e);
         }
     }
 
@@ -103,7 +103,7 @@ public class Controller {
             messageQueue.add(ThreadMessage.okResponse(username, messageId));
             return true;
         } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+            logError(username, messageId, e);
         }
         return false;
     }
@@ -134,7 +134,7 @@ public class Controller {
             messageQueue.add(ThreadMessage.genericError(username, messageId, "No card to draw"));
 
         } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+            logError(username, messageId, e);
         }
         return false;
     }
@@ -147,7 +147,7 @@ public class Controller {
             }
             messageQueue.add(ThreadMessage.getPlayersResponse(username, players, messageId));
         } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+            logError(username, messageId, e);
         }
     }
 
@@ -164,7 +164,7 @@ public class Controller {
             user.choosePersonalObjective(objId);
             messageQueue.add(ThreadMessage.choosePersonalObjectiveResponse(username, true, messageId));
         } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+            logError(username, messageId, e);
         }
     }
 
@@ -175,7 +175,7 @@ public class Controller {
             game.updateAvailableColors(playerColor);
             messageQueue.add(ThreadMessage.choosePlayerColorResponse(username, true, messageId));
         } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+            logError(username, messageId, e);
         }
     }
 
@@ -194,7 +194,7 @@ public class Controller {
             }
             messageQueue.add(ThreadMessage.getScoreMapResponse(username, scoreBoardString, messageId));
         } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+            logError(username, messageId, e);
         }
     }
 
@@ -217,7 +217,7 @@ public class Controller {
 
             messageQueue.add(ThreadMessage.getHandResponse(username, handIds, messageId));
         } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+            logError(username, messageId, e);
         }
     }
 
@@ -238,8 +238,19 @@ public class Controller {
 
             messageQueue.add(ThreadMessage.getCommonObjectivesResponse(username, objectiveIds, messageId));
         } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+            logError(username, messageId, e);
         }
+    }
+
+    /**
+     * Add an error threadMessage in the queue
+     *
+     * @param username  sender username
+     * @param messageId request id
+     * @param e         error
+     */
+    private void logError(String username, UUID messageId, Exception e) {
+        messageQueue.add(ThreadMessage.genericError(username, messageId, Arrays.toString(e.getStackTrace())));
     }
 
     /**
@@ -254,7 +265,7 @@ public class Controller {
 
             messageQueue.add(ThreadMessage.getPersonalObjectiveResponse(username, user.getHiddenObjective().getId(), messageId));
         } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+            logError(username, messageId, e);
         }
     }
 
@@ -277,7 +288,7 @@ public class Controller {
 
             messageQueue.add(ThreadMessage.getStartingObjectivesResponse(username, objectiveIds, messageId));
         } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+            logError(username, messageId, e);
         }
     }
 
@@ -290,7 +301,7 @@ public class Controller {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(usernameRequiredData)).toArray()[0];
             messageQueue.add(ThreadMessage.getPlayerColorResponse(username, user.getPlayerColor(), messageId));
         } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+            logError(username, messageId, e);
         }
     }
 
@@ -306,7 +317,7 @@ public class Controller {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(usernameRequiredData)).toArray()[0];
             messageQueue.add(ThreadMessage.getPlayerResourcesResponse(username, user.getResources(), messageId));
         } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+            logError(username, messageId, e);
         }
     }
 
@@ -327,7 +338,7 @@ public class Controller {
 
             messageQueue.add(ThreadMessage.getVisibleCardsResponse(username, cardIds, messageId));
         } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+            logError(username, messageId, e);
         }
     }
 
@@ -347,7 +358,7 @@ public class Controller {
             cardIds.add(game.getGameBoard().getStdDeck().peekFirstCard().getId());
             messageQueue.add(ThreadMessage.getBackSideDecksResponse(username, cardIds, messageId));
         } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+            logError(username, messageId, e);
         }
     }
 
@@ -363,7 +374,7 @@ public class Controller {
             Set<Coordinates> validPlacements = user.getPlayerBoard().getValidPlacements();
             messageQueue.add(ThreadMessage.getValidPlacementsResponse(username, validPlacements, messageId));
         } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+            logError(username, messageId, e);
         }
     }
 
@@ -388,7 +399,7 @@ public class Controller {
             }
             messageQueue.add(ThreadMessage.getBoardResponse(username, boardIds, messageId));
         } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+            logError(username, messageId, e);
         }
     }
 
@@ -411,7 +422,7 @@ public class Controller {
             }
             messageQueue.add(ThreadMessage.getHandColorResponse(username, handColors, messageId));
         } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+            logError(username, messageId, e);
         }
     }
 
@@ -430,7 +441,7 @@ public class Controller {
             }
             messageQueue.add(ThreadMessage.getPlacingOrderResponse(username, cardIds, messageId));
         } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+            logError(username, messageId, e);
         }
     }
 
@@ -442,7 +453,7 @@ public class Controller {
 
             messageQueue.add(ThreadMessage.getStartingCardResponse(username, startingCard.getId(), messageId));
         } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+            logError(username, messageId, e);
         }
     }
 
@@ -454,7 +465,7 @@ public class Controller {
 
             messageQueue.add(ThreadMessage.okResponse(username, messageId));
         } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+            logError(username, messageId, e);
         }
     }
 
@@ -468,7 +479,7 @@ public class Controller {
         try {
             messageQueue.add(ThreadMessage.getGameStateResponse(username, game.getGameState().toString(), messageId));
         } catch (Exception e) {
-            messageQueue.add(ThreadMessage.genericError(username, messageId, e.getMessage()));
+            logError(username, messageId, e);
         }
     }
 
