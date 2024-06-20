@@ -39,7 +39,7 @@ public abstract class Server {
     protected static final Map<UUID, Map<String, WaitState>> gameTurns = new ConcurrentHashMap<>();
     protected static final Map<UUID, ArrayList<ChatMessage>> chat = new ConcurrentHashMap<>();
     protected static final Map<UUID, String> gameNames = new ConcurrentHashMap<>();
-
+    protected static final Map<UUID, GameThread> gameThreads = new ConcurrentHashMap<>();
 
     /*
      * The static initializer starts a thread that monitors player disconnections.
@@ -90,6 +90,11 @@ public abstract class Server {
      * @return a map of game IDs to the names of the games available to the player
      */
     public static Map<UUID, String> getAvailableGamesServer(String username) {
+        for (Map.Entry<UUID, GameThread> gameThread : gameThreads.entrySet()) {
+            if (!gameThread.getValue().isAlive()) {
+                gameThreads.remove(gameThread.getKey());
+            }
+        }
         return new HashMap<>(gameNames);
     }
 
@@ -132,7 +137,9 @@ public abstract class Server {
         threadMessages.put(id, messageQueue);
         gameTurns.put(id, new ConcurrentHashMap<>());
         gameNames.put(id, gameName);
-        new GameThread(messageQueue, gameTurns.get(id), numberOfPlayers).start();
+        GameThread game = new GameThread(messageQueue, gameTurns.get(id), numberOfPlayers);
+        gameThreads.put(id, game);
+        game.start();
         addGame(id, numberOfPlayers);
         return id;
     }
@@ -146,8 +153,7 @@ public abstract class Server {
      * otherwise
      */
     public static boolean joinGame(UUID game, String player) {
-        if((gameTurns.get(game).containsKey(player) && !isOffline(player))||
-                (playerGame.get(player) != null && playerGame.get(player) != game && !isOffline(player))){
+        if ((gameTurns.get(game).containsKey(player) && !isOffline(player)) || (playerGame.get(player) != null && playerGame.get(player) != game && !isOffline(player))) {
             return false;
         }
         playerGame.put(player, game);

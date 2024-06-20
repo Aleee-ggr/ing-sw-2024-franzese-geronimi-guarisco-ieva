@@ -46,8 +46,8 @@ public class TuiController {
                 setup();
             case MAIN:
                 mainGame();
-            case ENDGAME:
-                endGame();
+            case STOP:
+                stop();
         }
     }
 
@@ -91,9 +91,7 @@ public class TuiController {
             } else {
                 UUID choice = games.get(selected - 1);
                 if (!client.joinGame(choice)) {
-                    out.println("Invalid Join! \n" +
-                            "Are you sure you don't already have a game open?\n" +
-                            "Are you sure you are not trying to join a different game than the one you are already in?");
+                    out.println("Invalid Join! \n" + "Are you sure you don't already have a game open?\n" + "Are you sure you are not trying to join a different game than the one you are already in?");
                     System.exit(0);
                 }
             }
@@ -177,7 +175,7 @@ public class TuiController {
         }
     }
 
-    private void endGame() {
+    private void stop() {
         try {
             client.fetchScoreMap();
             List<Map.Entry<String, Integer>> entryList = client.getScoreMap().entrySet().stream().sorted((e1, e2) -> e2.getValue() - e1.getValue()).toList();

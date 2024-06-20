@@ -9,7 +9,6 @@ import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.Server;
 
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 
@@ -25,24 +24,29 @@ import static java.lang.Math.abs;
  */
 public class GameThread extends Thread {
     private final BlockingQueue<ThreadMessage> messageQueue;
-    private final Integer maxPlayers;
+    private final Integer playerCount;
     private final Controller controller;
     private final Map<String, WaitState> turnMap;
     private String currentPlayer;
     private GameState gameState = GameState.LOBBY;
+    private volatile boolean running = true;
 
     /**
      * Constructor of GameThread
      *
      * @param messageQueue the queue of messages to be processed by the thread.
      * @param turnMap      the map of players and their turn status.
-     * @param maxPlayers   the maximum number of players in the game.
+     * @param playerCount  the maximum number of players in the game.
      */
-    public GameThread(BlockingQueue<ThreadMessage> messageQueue, Map<String, WaitState> turnMap, Integer maxPlayers) {
+    public GameThread(BlockingQueue<ThreadMessage> messageQueue, Map<String, WaitState> turnMap, Integer playerCount) {
         this.messageQueue = messageQueue;
-        this.maxPlayers = maxPlayers;
-        this.controller = new Controller(messageQueue, maxPlayers);
+        this.playerCount = playerCount;
+        this.controller = new Controller(messageQueue, playerCount);
         this.turnMap = turnMap;
+    }
+
+    public Integer getPlayerCount() {
+        return playerCount;
     }
 
     /**
@@ -59,7 +63,6 @@ public class GameThread extends Thread {
      * It is a loop that runs until the game is stopped.
      */
     public void gameLoop() {
-        ThreadMessage msg;
         while (gameState != GameState.STOP) {
             switch (gameState) {
                 case LOBBY:
@@ -90,7 +93,7 @@ public class GameThread extends Thread {
         } else {
             messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "Invalid message for context: %s".formatted(msg.type())));
         }
-        if (controller.getGame().getPlayers().size() == maxPlayers) {
+        if (controller.getGame().getPlayers().size() == playerCount) {
             gameState = GameState.SETUP;
             controller.getGame().setGameState(GameState.SETUP);
         }
@@ -257,21 +260,25 @@ public class GameThread extends Thread {
 
     public void gameStop() {
         sendUpdate();
-        LocalDateTime t = LocalDateTime.now();
-
-        while (!LocalDateTime.now().isAfter(t.plusSeconds(10))) {
+        Thread message = new Thread(() -> {
             ThreadMessage msg = getMessage();
 
-            if (msg.type().equals("getScore")) {
-                respond(msg);
-            } else {
-                messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), ("Invalid message for " + "context STOP: %s").formatted(msg.type())));
+            while (true) {
+                if (msg.type().equals("getScore")) {
+                    respond(msg);
+                } else {
+                    messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), ("Invalid message for " + "context STOP: %s").formatted(msg.type())));
+                }
             }
-            try {
-                sleep(10);
-            } catch (InterruptedException ignored) {
-            }
+        });
+
+        try {
+            sleep(10000);
+        } catch (InterruptedException ignored) {
         }
+
+        message.interrupt();
+        running = false;
     }
 
     private void disconnectionHandler(Boolean firstParam, Boolean secondParam, Boolean thirdParam) {
