@@ -5,12 +5,13 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="tabPane" prefHeight="1080.0" prefWidth="350.0" style="-fx-background-color: efedd6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="tabPane" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: efedd6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="CHAT" StackPane.alignment="TOP_CENTER">
          <font>
@@ -22,7 +23,7 @@
       </Text>
       <ChoiceBox fx:id="playerChoiceChat" prefWidth="150.0" StackPane.alignment="TOP_CENTER">
          <StackPane.margin>
-            <Insets top="100.0" />
+            <Insets top="75.0" />
          </StackPane.margin>
       </ChoiceBox>
       <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeTab" text="CLOSE" StackPane.alignment="TOP_RIGHT">
@@ -32,23 +33,26 @@
          <font>
             <Font name="Trattatello" size="13.0" />
          </font></Button>
-      <ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="750.0" prefWidth="300.0" vbarPolicy="NEVER">
+      <ScrollPane fx:id="chatScrollPane" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="550.0" prefWidth="800.0" vbarPolicy="NEVER">
          <content>
-            <VBox fx:id="chatContainer" alignment="BOTTOM_CENTER" prefHeight="750.0" prefWidth="300.0" spacing="10.0" />
+            <VBox fx:id="chatContainer" alignment="BOTTOM_CENTER" prefHeight="550.0" prefWidth="800.0" spacing="10.0" />
          </content>
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
       </ScrollPane>
-      <TextField fx:id="messageInput" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="200.0" StackPane.alignment="BOTTOM_LEFT">
-         <StackPane.margin>
-            <Insets bottom="75.0" left="25.0" />
-         </StackPane.margin>
-      </TextField>
-      <Button fx:id="sendButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#sendMessage" prefHeight="35.0" prefWidth="75.0" text="SEND" StackPane.alignment="BOTTOM_RIGHT">
-         <font>
-            <Font name="Trattatello" size="13.0" />
-         </font>
-         <StackPane.margin>
-            <Insets bottom="82.5" right="25.0" />
-         </StackPane.margin>
-      </Button>
+      <HBox alignment="CENTER" maxHeight="-Infinity" prefHeight="100.0" spacing="50.0" StackPane.alignment="BOTTOM_CENTER">
+         <children>
+            <TextField fx:id="messageInput" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="300.0" />
+            <Button fx:id="sendButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#sendMessage" prefHeight="35.0" prefWidth="75.0" text="SEND">
+               <font>
+                  <Font name="Trattatello" size="13.0" />
+               </font>
+            </Button>
+         </children>
+         <padding>
+            <Insets bottom="35.0" />
+         </padding>
+      </HBox>
    </children>
 </StackPane>

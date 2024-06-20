@@ -12,12 +12,14 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextBoundsType;
 
 import java.io.IOException;
 import java.net.URL;
@@ -31,6 +33,9 @@ public class ChatController implements Initializable, TabController {
 
     @FXML
     VBox chatContainer;
+
+    @FXML
+    ScrollPane chatScrollPane;
 
     @FXML
     StackPane tabPane;
@@ -84,32 +89,58 @@ public class ChatController implements Initializable, TabController {
         for (ChatMessage chatMessage : client.getChat()) {
             if (selectedPlayer.equals("General")) {
                 if (chatMessage.receiver() == null) {
-                    addMessageToChat(chatMessage);
+                    addMessageToChat(chatMessage, true);
                 }
             } else {
                 if ((chatMessage.sender().equals(selectedPlayer) && chatMessage.receiver() != null && chatMessage.receiver().equals(client.getUsername())) || (chatMessage.receiver() != null && chatMessage.receiver().equals(selectedPlayer) && chatMessage.sender().equals(client.getUsername()))) {
-                    addMessageToChat(chatMessage);
+                    addMessageToChat(chatMessage, false);
                 }
             }
         }
+
+        Platform.runLater(() -> {
+            chatContainer.layoutBoundsProperty().addListener((observable, oldValue, newValue) -> {
+                chatScrollPane.setVvalue(1.0);
+            });
+        });
     }
 
-    private void addMessageToChat(ChatMessage chatMessage) {
+    private void addMessageToChat(ChatMessage chatMessage, boolean isGeneral) {
         HBox messageHBox = new HBox();
         VBox messageVBox = new VBox();
+        messageVBox.setPadding(new Insets(10, 0, 10, 0));
+        messageVBox.setSpacing(10);
 
-        Text message = new Text(chatMessage.sender() + ":\n" + chatMessage.message());
+        Text sender = new Text(chatMessage.sender() + ":");
+        sender.setStyle("-fx-font-family: Trattatello;" +
+                "-fx-font-size: 30;" +
+                "-fx-text-fill: #432918;"
+        );
+        Text message = new Text(chatMessage.message());
         message.setStyle("-fx-font-family: Trattatello;" +
                 "-fx-font-size: 30;" +
                 "-fx-text-fill: #432918;"
         );
+        sender.setBoundsType(TextBoundsType.VISUAL);
+        message.setBoundsType(TextBoundsType.VISUAL);
+        message.setWrappingWidth(chatContainer.getWidth() / 1.5);
+        message.setLineSpacing(-10);
 
         if (!chatMessage.sender().equals(client.getUsername())) {
+            sender.setTextAlignment(TextAlignment.LEFT);
             message.setTextAlignment(TextAlignment.LEFT);
+            messageVBox.setAlignment(Pos.CENTER_LEFT);
         } else {
+            sender.setTextAlignment(TextAlignment.RIGHT);
             message.setTextAlignment(TextAlignment.RIGHT);
+            messageVBox.setAlignment(Pos.CENTER_RIGHT);
         }
-        messageVBox.getChildren().add(message);
+
+        if (isGeneral) {
+            messageVBox.getChildren().addAll(sender, message);
+        } else {
+            messageVBox.getChildren().add(message);
+        }
 
 
         if (chatMessage.sender().equals(client.getUsername())) {

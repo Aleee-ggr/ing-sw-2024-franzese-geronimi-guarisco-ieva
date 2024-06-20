@@ -496,7 +496,9 @@ public class GameController implements Initializable {
     private void changeChatScene(ActionEvent event) {
         try {
             if (activeTab == null || !activeTab.equals("Chat")) {
-                updateTabDimensions();
+                tabContainer.setPrefWidth(1000);
+                tabContainer.setPrefHeight(800);
+                tabContainer.setTranslateX((tabContainer.getScene().getWindow().getWidth() - tabContainer.getPrefWidth()) / 2);
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChatTab.fxml"));
                 ChatController controller = (ChatController) tabControllers.get("Chat");
                 controller.setClient(client, this, updater);
@@ -506,6 +508,7 @@ public class GameController implements Initializable {
                 tabContainer.setVisible(true);
                 setActiveTab("Chat");
             } else {
+                updateTabDimensions();
                 setActiveTab(null);
                 tabContainer.setVisible(false);
             }
@@ -621,6 +624,10 @@ public class GameController implements Initializable {
         if (tabContainer.getPrefWidth() == 600) {
             tabContainer.setPrefWidth(350);
             tabContainer.setPrefHeight(1080);
+        } else {
+            tabContainer.setPrefWidth(350);
+            tabContainer.setPrefHeight(1080);
+            tabContainer.setTranslateX(0);
         }
     }
 
@@ -765,3 +772,4 @@ public class GameController implements Initializable {
 
 
 }
+
