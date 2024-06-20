@@ -9,7 +9,7 @@ import it.polimi.ingsw.model.objectives.Objective;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.Server;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 
@@ -257,9 +257,9 @@ public class GameThread extends Thread {
 
     public void gameStop() {
         sendUpdate();
-        LocalTime t = LocalTime.now();
+        LocalDateTime t = LocalDateTime.now();
 
-        while (!LocalTime.now().isAfter(t.plusSeconds(10))) {
+        while (!LocalDateTime.now().isAfter(t.plusSeconds(10))) {
             ThreadMessage msg = getMessage();
 
             if (msg.type().equals("getScore")) {
