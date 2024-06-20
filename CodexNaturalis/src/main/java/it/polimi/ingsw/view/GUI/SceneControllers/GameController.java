@@ -694,7 +694,7 @@ public class GameController implements Initializable {
             protected Void call() throws Exception {
                 boolean running = true;
                 while (running) {
-                    if (client.getGameState().equals(GameState.ENDGAME)) {
+                    if (client.getGameState().equals(GameState.STOP)) {
                         running = false;
                     }
                 }
