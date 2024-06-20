@@ -45,8 +45,8 @@ public class SocketTest {
         SocketClient client = new SocketClient("localhost", 9092);
 
         try {
-            client.checkCredentials("player1", "password");
-            client.newGame(3, "createGameTest");
+            client.checkCredentials("Splayer1", "password");
+            client.newGame(3, "createGameTestSocket");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -68,7 +68,7 @@ public class SocketTest {
         clients.add(new SocketClient("localhost", 9092));
         clients.add(new SocketClient("localhost", 9092));
 
-        String name = "turnTest_";
+        String name = "turnTestS_";
 
         for (int i = 0; i < clients.size(); i++) {
             clients.get(i).checkCredentials(name + i, name);

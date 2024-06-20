@@ -41,7 +41,7 @@ public abstract class Server {
     protected static final Map<UUID, String> gameNames = new ConcurrentHashMap<>();
 
 
-    /**
+    /*
      * The static initializer starts a thread that monitors player disconnections.
      * The thread checks the status of each player every heartbeatInterval milliseconds.
      * If a player has been offline for more than disconnectionThreshold heartbeats, the player is considered disconnected.
@@ -146,6 +146,11 @@ public abstract class Server {
      * otherwise
      */
     public static boolean joinGame(UUID game, String player) {
+        if((gameTurns.get(game).containsKey(player) && !isOffline(player))||
+                (playerGame.get(player) != null && playerGame.get(player) != game && !isOffline(player))){
+            return false;
+        }
+        playerGame.put(player, game);
         gameTurns.get(game).put(player, WaitState.WAIT);
         ThreadMessage message = ThreadMessage.join(player);
         sendMessage(game, message);

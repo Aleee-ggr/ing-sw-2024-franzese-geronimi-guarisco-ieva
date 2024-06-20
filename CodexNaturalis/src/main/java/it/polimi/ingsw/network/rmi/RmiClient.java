@@ -68,7 +68,10 @@ public class RmiClient extends Client implements ClientInterface {
     public UUID newGame(int players, String gameName) throws RemoteException {
         UUID game = remoteObject.newGame(players, gameName);
         if (game != null) {
-            joinGame(game);
+            if(!joinGame(game)){
+                System.out.println("You can't join a game while in another game!");
+                System.exit(0);
+            }
         }
         return game;
     }

@@ -2,6 +2,9 @@ package it.polimi.ingsw.controller.threads;
 
 import com.google.common.collect.ImmutableSet;
 
+/**
+ * Enumerates the possible states of the game and the methods that can be called in each state.
+ */
 public enum GameState {
     LOBBY,
     SETUP,

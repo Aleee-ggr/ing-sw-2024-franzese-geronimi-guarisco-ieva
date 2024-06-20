@@ -73,6 +73,7 @@ public class TuiController {
             client.fetchAvailableGames();
             int selected;
             List<UUID> games = client.getAvailableGames().keySet().stream().toList();
+
             do {
                 clear();
                 out.println("Available games: ");
@@ -84,11 +85,17 @@ public class TuiController {
 
                 selected = select(0, client.getAvailableGames().size());
             } while (selected < 0);
+
             if (selected == 0) {
                 createGame();
             } else {
                 UUID choice = games.get(selected - 1);
-                client.joinGame(choice);
+                if (!client.joinGame(choice)) {
+                    out.println("Invalid Join! \n" +
+                            "Are you sure you don't already have a game open?\n" +
+                            "Are you sure you are not trying to join a different game than the one you are already in?");
+                    System.exit(0);
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

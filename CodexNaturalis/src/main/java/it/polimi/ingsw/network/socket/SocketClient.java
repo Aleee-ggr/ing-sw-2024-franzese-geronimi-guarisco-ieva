@@ -448,7 +448,10 @@ public class SocketClient extends Client implements ClientInterface {
                 if (id == null) {
                     return false;
                 }
-                joinGame(id);
+                if(!joinGame(id)){
+                    System.out.println("You can't join a game while in another game!");
+                    System.exit(0);
+                }
                 return true;
             }
 

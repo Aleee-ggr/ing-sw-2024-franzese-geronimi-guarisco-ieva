@@ -80,13 +80,13 @@ public class RmiTest {
         clients.add(new RmiClient("localhost", 9091));
         clients.add(new RmiClient("localhost", 9091));
 
-        String name = "turnTest_";
+        String name = "turnTestR_";
 
         for (int i = 0; i < clients.size(); i++) {
             clients.get(i).checkCredentials(name + i, name);
         }
 
-        UUID game = clients.getFirst().newGame(2, "turnTest");
+        UUID game = clients.getFirst().newGame(2, "turnTestRMI");
         for (int i = 1; i < clients.size(); i++) {
             clients.get(i).joinGame(game);
         }
