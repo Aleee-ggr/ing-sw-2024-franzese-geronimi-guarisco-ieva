@@ -247,6 +247,13 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         return new ThreadMessage(Status.REQUEST, username, "getStartingCard", null, UUID.randomUUID());
     }
 
+    /**
+     * Creates a ThreadMessage for requesting to place the starting card.
+     *
+     * @param username The username of the player.
+     * @param bool     A boolean indicating whether the card is placed.
+     * @return A ThreadMessage requesting to place the starting card.
+     */
     public static ThreadMessage placeStartingCard(String username, String bool) {
         return new ThreadMessage(Status.REQUEST, username, "placeStartingCard", new String[]{bool}, UUID.randomUUID());
     }
@@ -271,13 +278,19 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         return new ThreadMessage(Status.REQUEST, username, "getAvailableGames", null, UUID.randomUUID());
     }
 
+    /**
+     * Creates a ThreadMessage for requesting the turn of the player.
+     *
+     * @param username The username of the player.
+     * @return A ThreadMessage requesting the turn of the player.
+     */
     public static ThreadMessage getTurnPlayer(String username) {
         return new ThreadMessage(Status.REQUEST, username, "getTurnPlayer", null, UUID.randomUUID());
     }
 
     /**
      * @param username the username of the sender
-     * @return
+     * @return a ThreadMessage to send an update to the client
      */
     public static ThreadMessage sendUpdate(String username) {
         return new ThreadMessage(Status.REQUEST, username, "sendUpdate", null, UUID.randomUUID());
@@ -347,6 +360,14 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         return new ThreadMessage(Status.OK, username, "choosePersonalObjectiveResponse", new String[]{String.valueOf(correct)}, messageUUID);
     }
 
+    /**
+     * Creates a ThreadMessage for a player color choice response.
+     *
+     * @param username    The username of the player.
+     * @param correct     A boolean indicating whether the choice was correct.
+     * @param messageUUID The UUID of the message.
+     * @return A ThreadMessage for a player color choice response.
+     */
     public static ThreadMessage choosePlayerColorResponse(String username, boolean correct, UUID messageUUID) {
         return new ThreadMessage(Status.OK, username, "choosePlayerColorResponse", new String[]{String.valueOf(correct)}, messageUUID);
     }
@@ -454,6 +475,14 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         return new ThreadMessage(Status.OK, username, "getStartingObjectivesResponse", args, messageUUID);
     }
 
+    /**
+     * Creates a ThreadMessage for a available colors response.
+     *
+     * @param username        The username of the player.
+     * @param availableColors An ArrayList of available colors.
+     * @param messageUUID     The UUID of the message.
+     * @return A ThreadMessage for a available colors response.
+     */
     public static ThreadMessage getAvailableColorsResponse(String username, ArrayList<Color> availableColors, UUID messageUUID) {
         String[] args = new String[availableColors.size()];
 
@@ -464,6 +493,14 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         return new ThreadMessage(Status.OK, username, "getAvailableColorsResponse", args, messageUUID);
     }
 
+    /**
+     * Creates a ThreadMessage for a player color response.
+     *
+     * @param username    The username of the player.
+     * @param playerColor The player color.
+     * @param messageUUID The UUID of the message.
+     * @return A ThreadMessage for a player color response.
+     */
     public static ThreadMessage getPlayerColorResponse(String username, Color playerColor, UUID messageUUID) {
         String[] args = new String[1];
         args[0] = playerColor.toString();
