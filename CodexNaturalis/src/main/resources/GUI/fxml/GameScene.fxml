@@ -208,7 +208,7 @@
                 </Text>
             </children>
         </StackPane>
-      <HBox alignment="TOP_CENTER">
+      <HBox alignment="TOP_CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0">
          <children>
             <Button mnemonicParsing="false" onAction="#changeChatScene" prefHeight="0.0" prefWidth="200.0" text="CHAT" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS">
                <font>
