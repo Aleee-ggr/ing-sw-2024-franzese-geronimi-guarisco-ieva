@@ -249,10 +249,7 @@ public class GameController implements Initializable {
             glow.setLevel(0.3);
             button.setEffect(glow);
 
-            button.setStyle("-fx-font-family: Trattatello;" +
-                    "-fx-font-size: 30;" +
-                    "-fx-text-fill: #432918;" +
-                    "-fx-cursor: hand;");
+            button.getStyleClass().add("button");
 
             button.setOnMouseClicked(event -> {
                 setPersonalData();
@@ -450,6 +447,7 @@ public class GameController implements Initializable {
     private void changeDrawCardScene() {
         try {
             if (activeTab == null || !activeTab.equals("DrawCard")) {
+                updateTabDimensions();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/DrawCardTab.fxml"));
                 DrawCardController controller = (DrawCardController) tabControllers.get("DrawCard");
                 controller.setClient(client, this, updater);
@@ -496,8 +494,8 @@ public class GameController implements Initializable {
     private void changeChatScene(ActionEvent event) {
         try {
             if (activeTab == null || !activeTab.equals("Chat")) {
-                tabContainer.setPrefWidth(1000);
-                tabContainer.setPrefHeight(800);
+                tabContainer.setPrefWidth(900);
+                tabContainer.setPrefHeight(500);
                 tabContainer.setTranslateX((tabContainer.getScene().getWindow().getWidth() - tabContainer.getPrefWidth()) / 2);
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChatTab.fxml"));
                 ChatController controller = (ChatController) tabControllers.get("Chat");
@@ -659,10 +657,7 @@ public class GameController implements Initializable {
             glow.setLevel(0.3);
             centerBoardButton.setEffect(glow);
 
-            centerBoardButton.setStyle("-fx-font-family: Trattatello;" +
-                    "-fx-font-size: 30;" +
-                    "-fx-text-fill: #432918;" +
-                    "-fx-cursor: hand;");
+            centerBoardButton.getStyleClass().add("button");
 
             buttonsContainer.getChildren().add(centerBoardButton);
         }
@@ -769,7 +764,4 @@ public class GameController implements Initializable {
             }
         }
     }
-
-
 }
-

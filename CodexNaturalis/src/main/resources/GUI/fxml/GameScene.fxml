@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="root" alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="root" alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <ImageView fx:id="backgroundImage" pickOnBounds="true">
             <StackPane.margin>
@@ -208,6 +208,21 @@
                 </Text>
             </children>
         </StackPane>
+      <HBox alignment="TOP_CENTER">
+         <children>
+            <Button mnemonicParsing="false" onAction="#changeChatScene" prefHeight="0.0" prefWidth="200.0" text="CHAT" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS">
+               <font>
+                  <Font name="Trattatello" size="30.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <effect>
+                  <Glow />
+               </effect>
+            </Button>
+         </children>
+      </HBox>
       <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="300.0" style="-fx-background-color: dad6a6;" StackPane.alignment="TOP_RIGHT">
          <children>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="25.0" StackPane.alignment="CENTER">
@@ -257,75 +272,56 @@
                 <StackPane fx:id="tabPane" prefHeight="1080.0" prefWidth="350.0" />
             </children>
         </VBox>
-      <Button layoutX="1870.0" layoutY="571.0" mnemonicParsing="false" onAction="#changeChatScene" prefHeight="0.0" prefWidth="200.0" style="-fx-rotate: -90;" text="CHAT" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_RIGHT">
-         <font>
-            <Font name="Trattatello" size="30.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-         <effect>
-            <Glow />
-         </effect>
+      <VBox alignment="CENTER" maxWidth="-Infinity" prefWidth="200.0" spacing="125.0" StackPane.alignment="CENTER_RIGHT">
+         <children>
+              <Button mnemonicParsing="false" onAction="#changeMiniBoardScene" prefHeight="0.0" prefWidth="200.0" style="-fx-rotate: -90;" text="BOARDS" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS">
+                  <font>
+                      <Font name="Trattatello" size="30.0" />
+                  </font>
+                  <cursor>
+                      <Cursor fx:constant="HAND" />
+                  </cursor>
+                  <effect>
+                      <Glow />
+                  </effect>
+              </Button>
+              <Button mnemonicParsing="false" onAction="#changeDrawCardScene" prefHeight="0.0" prefWidth="200.0" style="-fx-rotate: -90;" text="DECKS" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS">
+                  <font>
+                      <Font name="Trattatello" size="30.0" />
+                  </font>
+                  <cursor>
+                      <Cursor fx:constant="HAND" />
+                  </cursor>
+                  <effect>
+                      <Glow />
+                  </effect>
+              </Button>
+              <Button mnemonicParsing="false" onAction="#changeObjectivesScene" prefHeight="0.0" prefWidth="200.0" style="-fx-rotate: -90;" text="OBJECTIVES" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS">
+                  <font>
+                      <Font name="Trattatello" size="30.0" />
+                  </font>
+                  <cursor>
+                      <Cursor fx:constant="HAND" />
+                  </cursor>
+                  <effect>
+                      <Glow />
+                  </effect>
+              </Button>
+              <Button mnemonicParsing="false" onAction="#changeScoreScene" prefHeight="0.0" prefWidth="200.0" style="-fx-rotate: -90;" text="SCORE" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS">
+                  <font>
+                      <Font name="Trattatello" size="30.0" />
+                  </font>
+                  <cursor>
+                      <Cursor fx:constant="HAND" />
+                  </cursor>
+                  <effect>
+                      <Glow />
+                  </effect>
+              </Button>
+         </children>
          <StackPane.margin>
-            <Insets bottom="900.0" right="-60.0" />
+            <Insets right="-50.0" />
          </StackPane.margin>
-      </Button>
-        <Button mnemonicParsing="false" onAction="#changeMiniBoardScene" prefHeight="0.0" prefWidth="200.0" style="-fx-rotate: -90;" text="BOARDS" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_RIGHT">
-            <font>
-                <Font name="Trattatello" size="30.0" />
-            </font>
-            <cursor>
-                <Cursor fx:constant="HAND" />
-            </cursor>
-            <effect>
-                <Glow />
-            </effect>
-            <StackPane.margin>
-                <Insets bottom="700.0" right="-60.0" />
-            </StackPane.margin>
-        </Button>
-        <Button mnemonicParsing="false" onAction="#changeDrawCardScene" prefHeight="0.0" prefWidth="200.0" style="-fx-rotate: -90;" text="DECKS" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_RIGHT">
-            <font>
-                <Font name="Trattatello" size="30.0" />
-            </font>
-            <cursor>
-                <Cursor fx:constant="HAND" />
-            </cursor>
-            <effect>
-                <Glow />
-            </effect>
-            <StackPane.margin>
-                <Insets bottom="500.0" right="-60.0" />
-            </StackPane.margin>
-        </Button>
-        <Button mnemonicParsing="false" onAction="#changeObjectivesScene" prefHeight="0.0" prefWidth="200.0" style="-fx-rotate: -90;" text="OBJECTIVES" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_RIGHT">
-            <font>
-                <Font name="Trattatello" size="30.0" />
-            </font>
-            <cursor>
-                <Cursor fx:constant="HAND" />
-            </cursor>
-            <effect>
-                <Glow />
-            </effect>
-            <StackPane.margin>
-                <Insets bottom="300.0" right="-60.0" />
-            </StackPane.margin>
-        </Button>
-        <Button mnemonicParsing="false" onAction="#changeScoreScene" prefHeight="0.0" prefWidth="200.0" style="-fx-rotate: -90;" text="SCORE" textAlignment="CENTER" textFill="#432918" textOverrun="CENTER_ELLIPSIS" StackPane.alignment="BOTTOM_RIGHT">
-            <font>
-                <Font name="Trattatello" size="30.0" />
-            </font>
-            <cursor>
-                <Cursor fx:constant="HAND" />
-            </cursor>
-            <effect>
-                <Glow />
-            </effect>
-            <StackPane.margin>
-                <Insets bottom="100.0" right="-60.0" />
-            </StackPane.margin>
-        </Button>
+      </VBox>
     </children>
 </StackPane>

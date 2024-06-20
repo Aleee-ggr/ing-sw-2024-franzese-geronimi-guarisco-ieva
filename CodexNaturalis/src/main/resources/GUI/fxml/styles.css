@@ -1,0 +1,102 @@
+/* styles.css */
+
+.button {
+    -fx-background-color: #d4c7a3;
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-radius: 10px;
+    -fx-border-color: #6e4c1e;
+    -fx-border-width: 3px;
+    -fx-border-radius: 10px;
+    -fx-text-fill: #4a2e14;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 0);
+}
+
+.button:hover {
+    -fx-background-color: #e5d8b7;
+}
+
+.button:pressed {
+    -fx-background-color: #b89c6c;
+    -fx-translate-y: 2px;
+}
+
+.button-close {
+    -fx-background-color: #d9534f;
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-radius: 5px;
+    -fx-border-color: #b52b27;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 5px 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 5, 0, 0, 0);
+}
+
+.button-close:hover {
+    -fx-background-color: #e57373;
+}
+
+.button-close:pressed {
+    -fx-background-color: #c62828;
+    -fx-translate-y: 1px;
+}
+
+.button-send {
+    -fx-background-color: #5cb85c;
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-radius: 5px;
+    -fx-border-color: #4cae4c;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 5px 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 5, 0, 0, 0);
+}
+
+.button-send:hover {
+    -fx-background-color: #5cd65c;
+}
+
+.button-send:pressed {
+    -fx-background-color: #4cae4c;
+    -fx-translate-y: 1px;
+}
+
+
+.choice-box {
+    -fx-background-color: #d4c7a3;
+    -fx-background-radius: 5px;
+    -fx-border-color: #6e4c1e;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-text-fill: #4a2e14;
+    -fx-padding: 5px;
+}
+
+.choice-box:hover {
+    -fx-background-color: #e5d8b7;
+}
+
+.choice-box:pressed {
+    -fx-background-color: #b89c6c;
+}
+
+.choice-box .arrow {
+    -fx-background-color: #6e4c1e;
+    -fx-padding: 5px;
+    -fx-shape: "M 0 0 L 5 5 L 10 0 Z";
+}
+
+.choice-box .list-cell {
+    -fx-background-color: #d4c7a3;
+    -fx-text-fill: #4a2e14;
+}
+
+.choice-box .list-cell:hover {
+    -fx-background-color: #e5d8b7;
+}
