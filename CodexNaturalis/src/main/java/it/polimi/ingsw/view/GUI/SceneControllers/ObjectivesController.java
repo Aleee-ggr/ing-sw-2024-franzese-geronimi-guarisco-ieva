@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * The ObjectivesController class manages the display of objectives (both personal and global common objectives) in the GUI.
+ */
 public class ObjectivesController implements Initializable, TabController {
     private ClientInterface client;
     private PlayerData playerData;
@@ -51,12 +54,23 @@ public class ObjectivesController implements Initializable, TabController {
         personalObjective.setImage(image);
     }
 
+    /**
+     * Sets the client interface and game controller for this objectives controller.
+     *
+     * @param gameController The game controller managing the game view.
+     * @param client         The client interface to communicate with the server.
+     */
     public void setClient(GameController gameController, ClientInterface client) {
         this.client = client;
         this.playerData = client.getPlayerData();
         this.gameController = gameController;
     }
 
+    /**
+     * Closes the tab containing the objectives panel when the close button is clicked.
+     *
+     * @param event The action event triggered by clicking the close button.
+     */
     @FXML
     private void closeTab(ActionEvent event) {
         tabPane.getParent().getParent().setVisible(false);

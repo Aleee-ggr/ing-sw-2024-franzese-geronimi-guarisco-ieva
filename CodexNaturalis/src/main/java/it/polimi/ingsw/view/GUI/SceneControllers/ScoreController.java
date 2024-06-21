@@ -112,6 +112,9 @@ public class ScoreController implements Initializable, TabController {
         scoreCoordinates.put(29, new Point2D(124, 94));
     }
 
+    /**
+     * Initializes the scoreboard, including loading the plateau image and positioning score markers and player information.
+     */
     @FXML
     private void setPlateau() {
         scoreBoard.getChildren().clear();

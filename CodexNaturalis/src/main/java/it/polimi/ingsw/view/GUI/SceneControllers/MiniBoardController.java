@@ -23,6 +23,10 @@ import java.net.URL;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+/**
+ * The MiniBoardController class manages the mini boards displayed in the GUI for each opponent.
+ * It allows interaction with opponent boards and sets up visual representation of opponent game states.
+ */
 public class MiniBoardController implements Initializable, TabController {
     private ClientInterface client;
     private PlayerData playerData;
@@ -56,6 +60,13 @@ public class MiniBoardController implements Initializable, TabController {
         setBoards();
     }
 
+    /**
+     * Sets the client interface, game controller, and updater for the mini board controller.
+     *
+     * @param client        the client interface to communicate with the server
+     * @param gameController the game controller managing the game view
+     * @param updater       the shared updater triggering view updates
+     */
     public void setClient(ClientInterface client, GameController gameController, SharedUpdate updater) {
         this.client = client;
         this.playerData = client.getPlayerData();
@@ -63,12 +74,23 @@ public class MiniBoardController implements Initializable, TabController {
         this.updater = updater;
     }
 
+    /**
+     * Closes the mini board tab when the close button is clicked.
+     *
+     * @param event the action event triggered by clicking the close button
+     */
     @FXML
     private void closeTab(ActionEvent event) {
         tabPane.getParent().getParent().setVisible(false);
         gameController.setActiveTab(null);
     }
 
+    /**
+     * Calculates the transformed coordinates for displaying cards on the mini boards.
+     *
+     * @param coordinates the original coordinates to be transformed
+     * @return transformed coordinates adjusted for board orientation
+     */
     private Coordinates calculateBoardCoordinates(Coordinates coordinates) {
         coordinates = RotateBoard.rotateCoordinates(coordinates, -45);
         return new Coordinates(
@@ -77,6 +99,9 @@ public class MiniBoardController implements Initializable, TabController {
         );
     }
 
+    /**
+     * Calculates the center coordinates of the mini boards for positioning cards.
+     */
     private void calculateBoardCenterCoordinates() {
         center = new Coordinates(
                 board1.getColumnCount() / 2,
@@ -84,6 +109,10 @@ public class MiniBoardController implements Initializable, TabController {
         );
     }
 
+    /**
+     * Sets up the mini boards with opponent data and allows interaction with opponent boards.
+     * Fetches opponent boards and placing orders from the server.
+     */
     @FXML
     private void setBoards() {
         calculateBoardCenterCoordinates();

@@ -16,6 +16,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * The ChooseColorController class handles the color selection interface in the GUI.
+ * It allows players to choose their player color and proceed to the game screen.
+ */
 public class ChooseColorController implements Initializable {
     private ClientInterface client;
     private PlayerData playerData;
@@ -68,10 +72,13 @@ public class ChooseColorController implements Initializable {
         }
     }
 
+    /**
+     * Sets the client interface and initializes the player data.
+     *
+     * @param client the client interface to communicate with the server
+     */
     public void setClient(ClientInterface client) {
         this.client = client;
         this.playerData = client.getPlayerData();
     }
 }
-
-

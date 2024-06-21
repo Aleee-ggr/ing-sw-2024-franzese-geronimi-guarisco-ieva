@@ -45,6 +45,24 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
+/**
+ * GameController class manages the GUI for the game.
+ * It handles various aspects of the game interface, including:
+ * - Displaying the game board and player boards.
+ * - Managing player resources and updating resource counts.
+ * - Handling user interactions through buttons and drag-and-drop functionalities.
+ * - Controlling game state updates and threading for real-time updates.
+ * - Implementing multiple tabs for different game functionalities (e.g., drawing cards, scoring).
+ * - Supporting zoom and scroll functionalities for the game board.
+ * - Displaying chat messages and indicating new messages with a visual cue.
+ * - Managing opponent data display and setup.
+ * - Implementing game-specific UI elements such as buttons for flipping cards and centering the board.
+ *
+ * This controller class uses JavaFX for UI components and threading mechanisms for real-time updates.
+ * It interacts with a ClientInterface for game data and manages data updates through SharedUpdate and other helper classes.
+ *
+ * The game-specific logic for placing cards, updating game state, and handling turns is embedded in this class.
+ */
 public class GameController implements Initializable {
     private ClientInterface client;
     private PlayerData playerData;
@@ -148,6 +166,10 @@ public class GameController implements Initializable {
         setChatThread();
     }
 
+    /**
+     * Sets up resources display on the UI based on the player's resource counts.
+     * Uses mappings of resource types to corresponding UI Text elements for display.
+     */
     private void setupResources() {
         Map<Resource, Text> resourceText = new HashMap<>();
         resourceText.put(Resource.FUNGI, fungiCount);
@@ -166,6 +188,10 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Sets up personal data for the current client user.
+     * Sets username, initializes board setup, displays starting card, and sets up valid placement areas.
+     */
     private void setPersonalData() {
         username.setText(client.getUsername());
         turnMessage.setText("Waiting for your Turn...");
@@ -241,6 +267,10 @@ public class GameController implements Initializable {
         setupValidPlacements();
     }
 
+    /**
+     * Sets up a thread to handle chat messages display and updates.
+     * Monitors for new chat messages and updates the UI accordingly.
+     */
     private void setChatThread() {
         Task<Void> chatThread = new Task<>() {
             @Override
@@ -268,6 +298,12 @@ public class GameController implements Initializable {
         new Thread(chatThread).start();
     }
 
+    /**
+     * Sets up opponent data display on the board.
+     * Displays opponent's board and initializes UI components for opponent-specific data.
+     *
+     * @param usernameOpponent The username of the opponent whose data needs to be displayed.
+     */
     public void setupOpponentData(String usernameOpponent) {
         ClientData opponentData = client.getOpponentData().get(usernameOpponent);
 
@@ -326,6 +362,12 @@ public class GameController implements Initializable {
         setHand(client.getUsername(), frontSide);
     }
 
+    /**
+     * Fetches initial game data from the server.
+     * Fetches various game-related data such as player hands, objectives, valid placements, etc.
+     *
+     * @throws RuntimeException If there is an error in fetching data from the server.
+     */
     private void fetchData() {
         try {
             client.fetchClientHand();
@@ -344,6 +386,16 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Sets up the display of cards in the hand container based on the player's or opponent's hand.
+     * If the username matches the client's username, displays the client's hand with card images.
+     * If the username does not match, displays the opponent's hand with generic card backs.
+     *
+     * @param username   The username of the player whose hand is to be displayed.
+     * @param frontSide  Boolean flag indicating whether to display card fronts (true) or backs (false).
+     *                   Fronts are displayed for the client's hand, backs for opponents.
+     * @throws RuntimeException If there is an error in fetching data from the server during initialization.
+     */
     protected void setHand(String username, boolean frontSide) {
         try {
             client.fetchClientHand();
@@ -420,11 +472,22 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Sets the client interface and initializes player data based on the client's data.
+     *
+     * @param client The client interface to set.
+     */
     public void setClient(ClientInterface client) {
         this.client = client;
         playerData = client.getPlayerData();
     }
 
+    /**
+     * Calculates the board coordinates after rotating them by -45 degrees.
+     *
+     * @param coordinates The original coordinates to rotate.
+     * @return The rotated board coordinates.
+     */
     private Coordinates calculateBoardCoordinates(Coordinates coordinates) {
         coordinates = RotateBoard.rotateCoordinates(coordinates, -45);
         return new Coordinates(
@@ -433,6 +496,10 @@ public class GameController implements Initializable {
         );
     }
 
+    /**
+     * Calculates the center coordinates of the board based on its dimensions.
+     * The center coordinates are used for positioning elements relative to the board.
+     */
     private void calculateBoardCenterCoordinates() {
         center = new Coordinates(
                 board.getColumnCount() / 2,
@@ -440,12 +507,24 @@ public class GameController implements Initializable {
         );
     }
 
+    /**
+     * Creates a ClipboardContent object and sets the provided text as its string content.
+     *
+     * @param text The text to be set in the ClipboardContent.
+     * @return The created ClipboardContent object with the text set.
+     */
     private ClipboardContent clipboardContent(String text) {
         ClipboardContent clipboardContent = new ClipboardContent();
         clipboardContent.putString(text);
         return clipboardContent;
     }
 
+    /**
+     * Sets up valid placements on the board for player's cards.
+     * This method clears existing placement panes, calculates board coordinates,
+     * creates ImageView objects for each valid placement, and sets up event handlers
+     * for mouse clicks and drag-and-drop operations.
+     */
     private void setupValidPlacements() {
         for (StackPane pane : validPlacementPanes.values()) {
             board.getChildren().remove(pane);
@@ -492,6 +571,13 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Changes the active tab to the Draw Card tab, loading it if necessary.
+     * Updates tab dimensions and sets the client and controllers accordingly.
+     * Handles tab visibility and sets it as the active tab.
+     *
+     * @throws RuntimeException If there is an error loading or setting up the Draw Card tab.
+     */
     @FXML
     private void changeDrawCardScene() {
         try {
@@ -517,6 +603,11 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Changes the active tab to the Score tab. If the Score tab is already active, hides the tab container.
+     *
+     * @param event The ActionEvent triggering the tab change.
+     */
     @FXML
     private void changeScoreScene(ActionEvent event) {
         try {
@@ -539,6 +630,11 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Changes the active tab to the Chat tab. If the Chat tab is already active, hides the tab container.
+     *
+     * @param event The ActionEvent triggering the tab change.
+     */
     @FXML
     private void changeChatScene(ActionEvent event) {
         try {
@@ -565,6 +661,11 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Changes the active tab to the Objectives tab. If the Objectives tab is already active, hides the tab container.
+     *
+     * @param event The ActionEvent triggering the tab change.
+     */
     @FXML
     private void changeObjectivesScene(ActionEvent event) {
         try {
@@ -587,6 +688,11 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Changes the active tab to the MiniBoard tab. If the MiniBoard tab is already active, hides the tab container.
+     *
+     * @param event The ActionEvent triggering the tab change.
+     */
     @FXML
     private void changeMiniBoardScene(ActionEvent event) {
         try {
@@ -610,6 +716,15 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Places a card on the board based on the selected hand card and board coordinates.
+     * Updates the UI with the placed card's image, adjusts styles, and handles subsequent game actions.
+     *
+     * @param stackPane The StackPane representing the placement area on the board.
+     * @param imageView The ImageView displaying the card's image.
+     * @param boardCoordinates The Coordinates object specifying the board position.
+     * @return true if the card was successfully placed, false otherwise.
+     */
     @FXML
     private boolean placeCard(StackPane stackPane, ImageView imageView, Coordinates boardCoordinates) {
         boolean placed;
@@ -651,6 +766,12 @@ public class GameController implements Initializable {
         return placed;
     }
 
+    /**
+     * Flips the cards in the hand display between front and back sides.
+     * Updates the UI to display the front or back side of the cards.
+     *
+     * @param event The ActionEvent triggering the card flip.
+     */
     @FXML
     private void flipCards(ActionEvent event) {
         if (frontSide) {
@@ -662,12 +783,20 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Updates the view of the active tab, if not currently on the Objectives tab.
+     * Calls the update method of the corresponding tab controller to refresh its content.
+     */
     protected void updateView() {
         if (activeTab != null && !activeTab.equals("Objectives")) {
             tabControllers.get(activeTab).update();
         }
     }
 
+    /**
+     * Updates the dimensions of the tab container based on its current width.
+     * Adjusts the tab container's preferred width and height and resets its translation.
+     */
     private void updateTabDimensions() {
         if (tabContainer.getPrefWidth() == 600) {
             tabContainer.setPrefWidth(350);
@@ -679,10 +808,17 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Sets the turn message to indicate the player's turn to place a card.
+     */
     protected void setTurn() {
         turnMessage.setText("Your Turn: Place a Card!");
     }
 
+    /**
+     * Centers the board button based on the current scroll pane values.
+     * Adds or removes the center board button dynamically based on scroll pane positions.
+     */
     private void centerBoardButton() {
         if (centerBoardButton != null) {
             buttonsContainer.getChildren().remove(centerBoardButton);
@@ -713,6 +849,10 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Centers the board view within the scroll pane by adjusting horizontal and vertical scroll values.
+     * Removes the center board button if it exists.
+     */
     protected void centerBoard() {
         double hMax = scrollPane.getHmax();
         double vMax = scrollPane.getVmax();
@@ -729,10 +869,18 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Sets the active tab based on the provided tab name.
+     *
+     * @param activeTab The name of the tab to set as active.
+     */
     protected void setActiveTab(String activeTab) {
         this.activeTab = activeTab;
     }
 
+    /**
+     * Monitors the game state from the client and switches to the end game scene when the game stops.
+     */
     private void setEndGameThread() {
         Task<Void> endGameThread = new Task<>() {
             @Override
@@ -766,6 +914,13 @@ public class GameController implements Initializable {
         new Thread(endGameThread).start();
     }
 
+    /**
+     * Sets a player's pawn image on the provided StackPane based on the player's username and color.
+     * Determines the appropriate pawn image based on the player's color and starting card.
+     *
+     * @param username The username of the player.
+     * @param stackPane The StackPane on which to set the pawn image.
+     */
     private void setPion(String username, StackPane stackPane) {
         ImageView pion = null;
         Color playerColor;

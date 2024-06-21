@@ -17,6 +17,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+/**
+ * The EndGameController class manages the end game screen in the GUI.
+ * It displays the final scores of players and announces the winner.
+ */
 public class EndGameController implements Initializable {
     private ClientInterface client;
     private PlayerData playerData;
@@ -63,6 +67,11 @@ public class EndGameController implements Initializable {
         }
     }
 
+    /**
+     * Sets the client interface and initializes player data for the end game screen.
+     *
+     * @param client the client interface to communicate with the server
+     */
     public void setClient(ClientInterface client) {
         this.client = client;
         this.playerData = client.getPlayerData();

@@ -19,6 +19,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * The DrawCardController class manages the GUI functionality for drawing cards.
+ * It allows the player to draw cards from decks and handles updating the view accordingly.
+ */
 public class DrawCardController implements Initializable, TabController {
     private ClientInterface client;
     private PlayerData playerData;
@@ -58,6 +62,13 @@ public class DrawCardController implements Initializable, TabController {
     @FXML
     private VBox cardsContainer;
 
+    /**
+     * Sets the client interface, game controller, and shared updater for this controller.
+     *
+     * @param client        the client interface to communicate with the server
+     * @param gameController the game controller that manages the game view
+     * @param updater       the shared updater that triggers view updates
+     */
     public void setClient(ClientInterface client, GameController gameController, SharedUpdate updater) {
         this.client = client;
         this.playerData = client.getPlayerData();
@@ -70,6 +81,11 @@ public class DrawCardController implements Initializable, TabController {
         setCards();
     }
 
+    /**
+     * Draws a card from the specified position and updates the game view accordingly.
+     *
+     * @param position the position of the card to draw
+     */
     private void drawCard(int position) {
         try {
             client.drawCard(position);
@@ -86,12 +102,21 @@ public class DrawCardController implements Initializable, TabController {
         }
     }
 
+    /**
+     * Closes the draw card tab when the close button is clicked.
+     *
+     * @param event the action event triggered by closing the tab
+     */
     @FXML
     private void closeTab(ActionEvent event) {
         tabPane.getParent().getParent().setVisible(false);
         gameController.setActiveTab(null);
     }
 
+    /**
+     * Updates the images of visible cards and decks based on fetched data from the server.
+     * Allows interaction with cards and decks to draw cards when clicked, if the player's hand is not full.
+     */
     @FXML
     private void setCards() {
         try {
@@ -164,6 +189,10 @@ public class DrawCardController implements Initializable, TabController {
         }
     }
 
+    /**
+     * Updates the view after receiving updates from the server.
+     * Executes on the JavaFX Application Thread to ensure UI safety.
+     */
     @Override
     public void update() {
         Platform.runLater(this::setCards);

@@ -25,6 +25,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * The ChatController class manages the chat functionality of the GUI.
+ * It initializes the chat interface, handles sending and receiving messages,
+ * and updates the chat view accordingly.
+ */
 public class ChatController implements Initializable, TabController {
     private ClientInterface client;
     private PlayerData playerData;
@@ -49,6 +54,13 @@ public class ChatController implements Initializable, TabController {
     @FXML
     ChoiceBox<String> playerChoiceChat;
 
+    /**
+     * Sets the client, game controller, and shared updater for this chat controller.
+     *
+     * @param client         the client interface to communicate with the server
+     * @param gameController the game controller to manage game state
+     * @param updater        the shared updater to synchronize updates
+     */
     public void setClient(ClientInterface client, GameController gameController, SharedUpdate updater) {
         this.client = client;
         this.playerData = client.getPlayerData();
@@ -62,6 +74,11 @@ public class ChatController implements Initializable, TabController {
         setChat();
     }
 
+    /**
+     * Sends a message when the send button is clicked.
+     *
+     * @param event the action event triggered by clicking the send button
+     */
     @FXML
     private void sendMessage(ActionEvent event) {
         if (!messageInput.getText().isEmpty()) {
@@ -77,6 +94,9 @@ public class ChatController implements Initializable, TabController {
         messageInput.clear();
     }
 
+    /**
+     * Updates the chat view with the latest messages. Fetches messages from the server and displays them.
+     */
     @FXML
     private void setChat() {
         chatContainer.getChildren().clear();
@@ -107,6 +127,12 @@ public class ChatController implements Initializable, TabController {
         });
     }
 
+    /**
+     * Adds a message to the chat container.
+     *
+     * @param chatMessage the chat message to add to the chat container
+     * @param isGeneral   whether the message is a general message (true) or a private message (false)
+     */
     private void addMessageToChat(ChatMessage chatMessage, boolean isGeneral) {
         HBox messageHBox = new HBox();
         VBox messageVBox = new VBox();
@@ -157,6 +183,12 @@ public class ChatController implements Initializable, TabController {
         chatContainer.getChildren().add(messageHBox);
     }
 
+    /**
+     * Sets up the choice box for selecting the chat recipient.
+     * Populates the choice box with player names and the "General" option,
+     * allowing the user to select between sending a general message or a private message.
+     * The choice box is initially set to "General".
+     */
     @FXML
     private void setChoiceChat() {
         playerChoiceChat.getItems().clear();
@@ -171,6 +203,11 @@ public class ChatController implements Initializable, TabController {
         }
     }
 
+    /**
+     * Closes the chat tab.
+     *
+     * @param event the action event triggered by clicking the close button
+     */
     @FXML
     private void closeTab(ActionEvent event) {
         tabPane.getParent().getParent().setVisible(false);
