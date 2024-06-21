@@ -101,16 +101,40 @@ public class GameThread extends Thread {
      * It waits for the game to be full and then changes the game state to SETUP.
      */
     public void gameLobby() {
-        ThreadMessage msg = getMessage();
-        if (GameState.lobby.contains(msg.type())) {
-            respond(msg);
-        } else {
-            messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "Invalid message for context: %s".formatted(msg.type())));
+        Thread lobby = new Thread(() -> {
+            while (gameState != GameState.STOP) {
+                ThreadMessage msg = getMessage();
+                if (GameState.lobby.contains(msg.type())) {
+                    respond(msg);
+                } else {
+                    messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), ("Invalid message for " + "LOBBY:%s").formatted(msg.type())));
+                }
+                System.out.println("here");
+                if (controller.getGame().getPlayers().size() == playerCount) {
+                    gameState = GameState.SETUP;
+                    controller.getGame().setGameState(GameState.SETUP);
+                }
+            }
+        });
+        Thread timer = new Thread(() -> {
+            try {
+                sleep(10 * 1000);
+                gameState = GameState.STOP;
+            } catch (InterruptedException ignored) {
+            }
+        });
+        lobby.start();
+        timer.start();
+        while (gameState == GameState.LOBBY) {
+            try {
+                sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
-        if (controller.getGame().getPlayers().size() == playerCount) {
-            gameState = GameState.SETUP;
-            controller.getGame().setGameState(GameState.SETUP);
-        }
+
+        timer.interrupt();
+        lobby.interrupt();
     }
 
     /**
