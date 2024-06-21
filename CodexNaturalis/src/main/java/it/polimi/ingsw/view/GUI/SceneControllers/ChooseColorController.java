@@ -56,6 +56,9 @@ public class ChooseColorController implements Initializable {
                     Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
                     Stage stage = (Stage) pionsContainer.getScene().getWindow();
                     stage.setScene(scene);
+                    stage.setMaxWidth(3840);
+                    stage.setMaxHeight(2160);
+                    stage.setFullScreen(true);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

@@ -23,11 +23,24 @@ public class Gui extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Gui.class.getResource("/GUI/fxml/GameIntroduction.fxml"));
-        System.out.println(fxmlLoader.getLocation());
-        Scene scene = new Scene(fxmlLoader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
+        double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
+        double screenHeight = Screen.getPrimary().getVisualBounds().getHeight();
 
-        System.out.println(Screen.getPrimary().getVisualBounds().getHeight());
-        System.out.println(stage.getHeight());
+        double baseWidth = 1920;
+        double baseHeight = 1080;
+
+        double scale = Math.min(screenWidth / baseWidth, screenHeight / baseHeight);
+
+        double sceneWidth = baseWidth * scale;
+        double sceneHeight = baseHeight * scale;
+        Scene scene = new Scene(fxmlLoader.load());
+
+        stage.setMinWidth(1600);
+        stage.setMinHeight(900);
+        stage.setWidth(sceneWidth);
+        stage.setHeight(sceneHeight);
+        stage.setMaxWidth(baseWidth);
+        stage.setMaxHeight(baseHeight);
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();

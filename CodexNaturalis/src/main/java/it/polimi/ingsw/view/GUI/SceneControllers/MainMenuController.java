@@ -151,6 +151,9 @@ public class MainMenuController implements Initializable {
                                 Scene scene1 = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
                                 Stage stage1 = (Stage) ((Node) event.getSource()).getScene().getWindow();
                                 stage1.setScene(scene1);
+                                stage1.setMaxWidth(3840);
+                                stage1.setMaxHeight(2160);
+                                stage1.setFullScreen(true);
                                 break;
                         }
                     }
