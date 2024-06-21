@@ -118,7 +118,7 @@ public class GameThread extends Thread {
         });
         Thread timer = new Thread(() -> {
             try {
-                sleep(10 * 1000);
+                sleep(10 * 1000 * 60);
                 gameState = GameState.STOP;
             } catch (InterruptedException ignored) {
             }
