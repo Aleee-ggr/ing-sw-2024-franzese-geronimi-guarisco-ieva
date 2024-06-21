@@ -304,6 +304,23 @@ public class RmiClient extends Client implements ClientInterface {
     }
 
     @Override
+    public boolean fetchOpponentsHandType() throws IOException {
+        for (String player : players) {
+            if (player.equals(this.username)) {
+                continue;
+            }
+
+            ArrayList<Boolean> isGold = remoteObject.getHandType(this.gameId, this.username, player);
+            if (isGold == null) {
+                return false;
+            }
+
+            ((OpponentData) playerData.get(player)).setHandIsGold(isGold);
+        }
+        return true;
+    }
+
+    @Override
     public boolean fetchStartingObjectives() throws RemoteException {
         return fetchStartingObjectivesClient(remoteObject.getStartingObjectives(this.gameId, this.username));
     }

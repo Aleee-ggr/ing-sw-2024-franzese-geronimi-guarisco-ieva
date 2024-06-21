@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.model.enums.Resource;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -213,6 +214,10 @@ public record ThreadMessage(Status status, String player, String type, String[] 
      */
     public static ThreadMessage getHandColor(String username, String usernameRequiredData) {
         return new ThreadMessage(Status.REQUEST, username, "getHandColor", new String[]{usernameRequiredData}, UUID.randomUUID());
+    }
+
+    public static ThreadMessage getHandType(String username, String usernameRequiredData) {
+        return new ThreadMessage(Status.REQUEST, username, "getHandType", new String[]{usernameRequiredData}, UUID.randomUUID());
     }
 
     /**
@@ -619,6 +624,17 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         }
 
         return new ThreadMessage(Status.OK, username, "getHandColorResponse", args, messageUUID);
+    }
+
+
+    public static ThreadMessage getHandTypeResponse(String username, ArrayList<Boolean> isGold, UUID messageUUID) {
+        String[] args = new String[isGold.size()];
+
+        for (int i = 0; i < isGold.size(); i++) {
+            args[i] = isGold.get(i).toString();
+        }
+
+        return new ThreadMessage(Status.OK, username, "getHandTypeResponse", args, messageUUID);
     }
 
     /**

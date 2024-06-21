@@ -148,6 +148,9 @@ public class ClientHandler extends Thread {
             case SocketClientGetHandColorMessage socketClientGetHandColorMessage ->
                     responseMessage = new GetHandColorResponseMessage(Server.getHandColorServer(socketClientGetHandColorMessage.getGameUUID(), socketClientGetHandColorMessage.getUsername(), socketClientGetHandColorMessage.getUsernameRequiredData()), socketClientGetHandColorMessage.getUsernameRequiredData());
 
+            case SocketClientGetHandTypeMessage socketClientGetHandTypeMessage ->
+                    responseMessage = new GetHandTypeResponseMessage(Server.getHandTypeServer(socketClientGetHandTypeMessage.getGameUUID(), socketClientGetHandTypeMessage.getUsername(), socketClientGetHandTypeMessage.getUsernameRequiredData()), socketClientGetHandTypeMessage.getUsernameRequiredData());
+
             case SocketClientGetStartingObjectivesMessage socketClientGetStartingObjectivesMessage ->
                     responseMessage = new GetStartingObjectivesResponseMessage(Server.getStartingObjectivesServer(socketClientGetStartingObjectivesMessage.getGameUUID(), socketClientGetStartingObjectivesMessage.getUsername()));
 

@@ -398,7 +398,7 @@ public class ControllerTest {
         }
 
 
-        Set<String> nonGetters = Set.of("getStartingObjectives", "getStartingCards", "getPlayerResources", "getBoard", "getHandColor", "getPlacingOrder", "getGame", "getAvailableColors", "getPlayerColor");
+        Set<String> nonGetters = Set.of("getStartingObjectives", "getStartingCards", "getPlayerResources", "getBoard", "getHandColor", "getHandType", "getPlacingOrder", "getGame", "getAvailableColors", "getPlayerColor");
         List<Method> getters = Arrays.stream(Class.forName("it.polimi.ingsw.controller.Controller").getDeclaredMethods()).filter(m -> m.getName().contains("get")).filter(m -> !nonGetters.contains(m.getName())).filter(m -> !m.getName().contains("lambda$")).toList();
 
         for (Method getter : getters) {

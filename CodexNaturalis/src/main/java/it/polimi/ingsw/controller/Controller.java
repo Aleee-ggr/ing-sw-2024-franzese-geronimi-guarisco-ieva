@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.ColoredCard;
+import it.polimi.ingsw.model.cards.GoldCard;
 import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
@@ -422,6 +423,22 @@ public class Controller {
             }
             messageQueue.add(ThreadMessage.getHandColorResponse(username, handColors, messageId));
         } catch (Exception e) {
+            logError(username, messageId, e);
+        }
+    }
+
+    public void getHandType(String username, String usernameRequiredData, UUID messageId) {
+        try{
+            Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(usernameRequiredData)).toArray()[0];
+            ArrayList<Boolean> isGold = new ArrayList<>();
+            for (ColoredCard c : user.getHand()) {
+                if (c == null) {
+                    continue;
+                }
+                isGold.add(c instanceof GoldCard);
+            }
+            messageQueue.add(ThreadMessage.getHandTypeResponse(username, isGold, messageId));
+        } catch (Exception e){
             logError(username, messageId, e);
         }
     }

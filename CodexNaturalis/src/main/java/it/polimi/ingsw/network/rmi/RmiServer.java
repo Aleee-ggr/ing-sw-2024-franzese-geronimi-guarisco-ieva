@@ -177,6 +177,11 @@ public class RmiServer extends Server implements RmiServerInterface {
     }
 
     @Override
+    public ArrayList<Boolean> getHandType (UUID game, String name, String nameRequiredData) throws RemoteException {
+        return getHandTypeServer(game, name, nameRequiredData);
+    }
+
+    @Override
     public boolean choosePersonalObjective(UUID game, String username, Integer objectiveId) throws RemoteException {
         return choosePersonalObjectiveServer(game, username, objectiveId);
     }

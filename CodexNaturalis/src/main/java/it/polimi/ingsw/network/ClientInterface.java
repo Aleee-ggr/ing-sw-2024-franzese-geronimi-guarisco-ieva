@@ -221,6 +221,7 @@ public interface ClientInterface {
      */
     boolean fetchOpponentsHandColor() throws IOException;
 
+    boolean fetchOpponentsHandType() throws IOException;
     /**
      * Method to fetch the starting objectives from the server.
      * The starting objectives are the ones the player needs to choose from at the start of the game.

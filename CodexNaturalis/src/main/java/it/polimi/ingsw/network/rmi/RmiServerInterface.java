@@ -86,6 +86,8 @@ public interface RmiServerInterface extends Remote {
 
     ArrayList<Resource> getHandColor(UUID game, String name, String nameRequiredData) throws RemoteException;
 
+    ArrayList<Boolean> getHandType (UUID game, String name, String nameRequiredData) throws RemoteException;
+
     boolean choosePersonalObjective(UUID game, String username, Integer objectiveId) throws RemoteException;
 
     boolean choosePlayerColor(UUID game, String username, Color playerColor) throws RemoteException;

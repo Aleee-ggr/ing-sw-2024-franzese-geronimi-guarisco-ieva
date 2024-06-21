@@ -454,6 +454,24 @@ public abstract class Server {
         }
     }
 
+    public static ArrayList<Boolean> getHandTypeServer(UUID game, String username, String usernameRequiredData) {
+        ThreadMessage message = ThreadMessage.getHandType(username, usernameRequiredData);
+        sendMessage(game, message);
+        ThreadMessage response = threadMessages.get(game).remove();
+
+        if (response.status() == Status.OK) {
+            ArrayList<Boolean> isGold = new ArrayList<>();
+
+            for (String arg : response.args()) {
+                isGold.add(Boolean.valueOf(arg));
+            }
+
+            return isGold;
+        } else {
+            return null;
+        }
+    }
+
     /**
      * General Server method to get the board of a player.
      *

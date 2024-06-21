@@ -11,6 +11,7 @@ import java.util.ArrayList;
  * */
 public class OpponentData extends ClientData{
     private ArrayList<Resource> handColor;
+    private ArrayList<Boolean> handIsGold;
     private Color playerColor;
 
     /**
@@ -20,6 +21,7 @@ public class OpponentData extends ClientData{
     public OpponentData() {
         super();
         this.handColor = new ArrayList<>();
+        this.handIsGold = new ArrayList<>();
     }
 
     /**
@@ -28,6 +30,10 @@ public class OpponentData extends ClientData{
      * */
     public ArrayList<Resource> getHandColor() {
         return new ArrayList<>(handColor);
+    }
+
+    public ArrayList<Boolean> getHandIsGold() {
+        return handIsGold;
     }
 
     public Color getPlayerColor() {
@@ -40,6 +46,10 @@ public class OpponentData extends ClientData{
      * */
     public void setHandColor(ArrayList<Resource> handColor) {
         this.handColor = handColor;
+    }
+
+    public void setHandIsGold(ArrayList<Boolean> handIsGold) {
+        this.handIsGold = handIsGold;
     }
 
     public void setPlayerColor(Color playerColor) {

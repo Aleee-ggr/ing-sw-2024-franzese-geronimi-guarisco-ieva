@@ -322,6 +322,22 @@ public class SocketClient extends Client implements ClientInterface {
         return true;
     }
 
+    @Override
+    public boolean fetchOpponentsHandType() throws IOException {
+        for (String player : players) {
+            if (player.equals(username)) {
+                continue;
+            }
+
+            output.writeObject(new SocketClientGetHandTypeMessage(username, this.gameId, player));
+
+            if (!handleResponse()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     @Override
     public synchronized boolean fetchPlayersColors() throws IOException {
@@ -543,6 +559,19 @@ public class SocketClient extends Client implements ClientInterface {
                 }
 
                 ((OpponentData) playerData.get(player)).setHandColor(handColor);
+
+                return true;
+            }
+
+            //fetchOpponentsHandType
+            case GetHandTypeResponseMessage getHandTypeResponseMessage -> {
+                String player = getHandTypeResponseMessage.getUsernameRequiredData();
+                ArrayList<Boolean> isGold = getHandTypeResponseMessage.getIsGold();
+                if (isGold == null) {
+                    return false;
+                }
+
+                ((OpponentData) playerData.get(player)).setHandIsGold(isGold);
 
                 return true;
             }
