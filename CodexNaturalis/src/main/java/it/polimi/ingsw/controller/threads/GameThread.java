@@ -102,17 +102,17 @@ public class GameThread extends Thread {
      */
     public void gameLobby() {
         Thread lobby = new Thread(() -> {
-            while (gameState != GameState.STOP) {
+            while (gameState == GameState.LOBBY) {
                 ThreadMessage msg = getMessage();
                 if (GameState.lobby.contains(msg.type())) {
                     respond(msg);
                 } else {
                     messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), ("Invalid message for " + "LOBBY:%s").formatted(msg.type())));
                 }
-                System.out.println("here");
                 if (controller.getGame().getPlayers().size() == playerCount) {
                     gameState = GameState.SETUP;
                     controller.getGame().setGameState(GameState.SETUP);
+                    System.out.println("New game state: " + gameState);
                 }
             }
         });
@@ -126,6 +126,7 @@ public class GameThread extends Thread {
         lobby.start();
         timer.start();
         while (gameState == GameState.LOBBY) {
+            System.out.println("New game state: " + gameState);
             try {
                 sleep(100);
             } catch (InterruptedException e) {
