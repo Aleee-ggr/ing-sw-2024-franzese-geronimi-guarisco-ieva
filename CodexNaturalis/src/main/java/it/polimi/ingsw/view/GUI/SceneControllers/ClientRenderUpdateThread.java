@@ -18,7 +18,7 @@ public class ClientRenderUpdateThread extends Thread {
     public void run() {
         boolean running;
         synchronized (client) {
-            running = client.getGameState() != GameState.ENDGAME;
+            running = client.getGameState() != GameState.STOP;
         }
         while (running) {
             boolean update = false;
@@ -27,7 +27,7 @@ public class ClientRenderUpdateThread extends Thread {
             }
             gameController.updateView();
             synchronized (client) {
-                running = client.getGameState() != GameState.ENDGAME;
+                running = client.getGameState() != GameState.STOP;
             }
         }
     }
