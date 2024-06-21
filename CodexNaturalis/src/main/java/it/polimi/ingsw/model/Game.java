@@ -20,7 +20,6 @@ import static java.lang.Math.abs;
 /**
  * Game Class for creating a game with id, players, numPlayers and SharedBoard.
  *
- * @author Alessio Guarisco
  * @see Player
  * @see SharedBoard
  */
@@ -196,6 +195,7 @@ public class Game {
     public void randomizePlayers(){
         Collections.shuffle(players);
     }
+
     /**
      * Method used to reset the SharedBoard. <br/>
      * It creates a new board with new shuffled decks.

@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a pair of coordinates (x, y) on a 2D plane.
+ * Coordinates are immutable and serializable.
+ */
 public record Coordinates(Integer x, Integer y) implements Serializable {
 
     /**

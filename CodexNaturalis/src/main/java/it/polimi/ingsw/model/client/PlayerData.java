@@ -188,6 +188,4 @@ public class PlayerData extends ClientData {
         this.order.add(card);
         this.setStartingCard((StartingCard) card);
     }
-
-
 }

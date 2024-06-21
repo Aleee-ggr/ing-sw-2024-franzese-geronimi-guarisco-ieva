@@ -17,7 +17,6 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Player Class is called by Game Class.
  * Contains the Player username, score, hiddenObjective, resources, hand and board.
- * @author Alessio Guarisco
  * @see Game
  * @see it.polimi.ingsw.model.cards.Deck
  * @see Card
@@ -165,6 +164,11 @@ public class Player {
         }
     }
 
+    /**
+     * Sets the player color to the specified color.
+     *
+     * @param playerColor The color to set for the player.
+     */
     public void choosePlayerColor(Color playerColor) {
         this.playerColor = playerColor;
     }

@@ -12,7 +12,6 @@ import java.util.function.Function;
 /**
  * Represents an objective in the game.
  * Objectives define criteria for scoring points for players.
- * @author Daniele Ieva
  */
 public class Objective {
     private final Function<Player, Integer> pointCalculator;

@@ -9,7 +9,6 @@ import it.polimi.ingsw.model.enums.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
 /**
  * The ClientData class contains the common data for all the players in the game.
  * The client must have every player's board, order of the cards, and resources.

@@ -8,7 +8,6 @@ import java.util.Arrays;
 /**
  * Represents an abstract class for cards with a center back resource (stdCards and goldCards) in the game.
  * Extends the base class Card and adds information about the resource on the back side of the card.
- * @author Samuele Franzese
  */
 
 public abstract class ColoredCard extends Card{

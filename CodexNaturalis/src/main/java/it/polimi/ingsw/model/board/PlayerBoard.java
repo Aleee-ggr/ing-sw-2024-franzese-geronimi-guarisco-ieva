@@ -16,7 +16,6 @@ import java.util.*;
  * @see Coordinates
  * @see Card
  * @see MockCard
- * @author Alessio Guarisco
  * */
 public class PlayerBoard {
     private final HashMap<Coordinates, Card> board = new HashMap<>();
@@ -241,6 +240,11 @@ public class PlayerBoard {
         }
     }
 
+    /**
+     * Removes resources from adjacent cards based on the placement of a new card.
+     *
+     * @param placedCoordinates the coordinates where the new card is placed
+     */
     private void removeResources(Coordinates placedCoordinates) {
         Corner[] corners;
         for(Coordinates c : placedCoordinates.getNeighbors()) {
@@ -264,6 +268,13 @@ public class PlayerBoard {
 
     }
 
+    /**
+     * Adjusts resources for adjacent cards based on the placement of the newly added card.
+     *
+     * @param placedCoordinates the coordinates where the new card is placed
+     * @param c                 the coordinates of an adjacent card
+     * @param corners           the corners of the adjacent card
+     */
     private void removeCornerResource(Coordinates placedCoordinates, Coordinates c, Corner[] corners) {
         if(board.containsKey(c)){
             switch (c.x() - placedCoordinates.x()){

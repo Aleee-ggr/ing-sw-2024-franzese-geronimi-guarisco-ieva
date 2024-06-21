@@ -6,7 +6,6 @@ import java.util.Collections;
 /**
  * Represents a generic deck of cards.
  * @param <CardType> The type of cards contained in the deck.
- * @author Daniele Ieva
  */
 
 public class Deck<CardType> {

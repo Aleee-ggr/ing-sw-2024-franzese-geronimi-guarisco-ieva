@@ -11,7 +11,6 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Represents the shared board in the game.
  * The shared board contains information about objectives, scores, visible cards, and decks of cards.
- * @author Daniele Ieva
  */
 
 public class SharedBoard {
