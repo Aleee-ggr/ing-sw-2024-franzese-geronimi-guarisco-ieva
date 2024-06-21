@@ -121,7 +121,6 @@
     -fx-translate-y: -10;
 }
 
-/* Stile per le carte selezionate */
 .card:pressed {
     -fx-border-color: #b89c6c;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75), 15, 0, 0, 0);

@@ -320,7 +320,6 @@ public class GameController implements Initializable {
         int i = 0;
         if (username.equals(client.getUsername())) {
             for (Card card: playerData.getClientHand()) {
-                System.out.println(card);
                 int id = card.getId();
                 i++;
                 if (frontSide) {
@@ -338,6 +337,7 @@ public class GameController implements Initializable {
                     image.setId(String.valueOf(-id));
                 }
 
+                image.getStyleClass().add("card");
                 handContainer.getChildren().add(image);
 
                 image.setOnMouseClicked(mouseEvent -> {
