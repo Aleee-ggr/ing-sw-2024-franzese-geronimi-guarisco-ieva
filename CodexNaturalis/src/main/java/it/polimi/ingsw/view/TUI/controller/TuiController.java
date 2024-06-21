@@ -111,22 +111,6 @@ public class TuiController {
         boolean done = false;
         PlayerData playerData = client.getPlayerData();
         int sel = 1;
-        while (!done) {
-            clear();
-            out.println(new StartingObjectiveView(playerData.getStartingObjectives().stream().map(ObjectiveCard::new).toArray(ObjectiveCard[]::new)));
-            out.println("Select starting objective: ");
-            sel = select(1, 2);
-            done = sel >= 0;
-        }
-
-        try {
-            client.choosePersonalObjective(playerData.getStartingObjectives().get(sel - 1).getId());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        done = false;
-
 
         while (!done) {
             clear();
@@ -154,6 +138,23 @@ public class TuiController {
 
         try {
             client.choosePlayerColor(playerData.getAvailableColors().get(sel - 1));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        done = false;
+
+
+        while (!done) {
+            clear();
+            out.println(new StartingObjectiveView(playerData.getStartingObjectives().stream().map(ObjectiveCard::new).toArray(ObjectiveCard[]::new)));
+            out.println("Select starting objective: ");
+            sel = select(1, 2);
+            done = sel >= 0;
+        }
+
+        try {
+            client.choosePersonalObjective(playerData.getStartingObjectives().get(sel - 1).getId());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

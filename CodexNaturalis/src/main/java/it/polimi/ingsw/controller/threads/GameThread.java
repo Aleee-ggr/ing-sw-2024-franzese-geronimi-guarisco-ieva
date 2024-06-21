@@ -151,6 +151,8 @@ public class GameThread extends Thread {
 
             turnMap.put(currentPlayer, WaitState.TURN_UPDATE);
 
+            controller.getGame().getPlayers().stream().filter(p -> p.getUsername().equals(currentPlayer)).toList().getFirst().drawFirstHand();
+
             while (!objChosen || !startChosen || !colorChosen) {
 
                 ThreadMessage msg = getMessage();
@@ -180,7 +182,6 @@ public class GameThread extends Thread {
                     colorChosen = true;
                 }
             }
-            controller.getGame().getPlayers().stream().filter(p -> p.getUsername().equals(currentPlayer)).toList().getFirst().drawFirstHand();
             turnMap.put(currentPlayer, WaitState.WAIT);
         }
         gameState = GameState.MAIN;
