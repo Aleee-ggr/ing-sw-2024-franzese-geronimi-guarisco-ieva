@@ -9,6 +9,7 @@ import it.polimi.ingsw.view.GUI.Gui;
 import it.polimi.ingsw.view.TUI.controller.TuiController;
 
 import java.rmi.RemoteException;
+import java.text.spi.NumberFormatProvider;
 import java.util.List;
 import java.util.Scanner;
 
@@ -34,7 +35,15 @@ public class App {
             }
             System.out.print("insert connection mode [Default: RMI]\n1) socket\n2) RMI\n");
             String input = scanner.next();
-            int mode = Integer.parseInt(input);
+            int mode;
+            try {
+                mode = Integer.parseInt(input);
+            } catch (NumberFormatException ignored) {
+                mode = 2;
+            }
+            if (mode != 1 && mode != 2) {
+                mode = 2;
+            }
 
             System.out.print("Insert server address [Default: 127.0.0.1]: ");
             input = scanner.next();
