@@ -742,6 +742,7 @@ public class GameController implements Initializable {
                     if (client.getGameState().equals(GameState.STOP)) {
                         running = false;
                     }
+                    Thread.sleep(1000);
                 }
                 return null;
             }

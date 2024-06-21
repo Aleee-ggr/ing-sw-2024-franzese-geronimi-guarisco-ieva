@@ -23,13 +23,11 @@ public class ClientUpdate extends Thread {
     public void run() {
         boolean running;
         WaitState state = null;
-        WaitState oldState = null;
         synchronized (client) {
             running = client.getGameState() != GameState.STOP;
         }
         while (running) {
             try {
-                oldState = state;
                 state = client.waitUpdate();
                 if (state == UPDATE || state == TURN_UPDATE) {
                     fetchData();

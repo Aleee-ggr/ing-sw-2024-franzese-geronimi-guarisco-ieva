@@ -5,9 +5,9 @@ import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.controller.SharedUpdate;
 
 public class ClientRenderUpdateThread extends Thread {
-    private ClientInterface client;
-    private SharedUpdate updater;
-    private GameController gameController;
+    private final ClientInterface client;
+    private final SharedUpdate updater;
+    private final GameController gameController;
 
     public ClientRenderUpdateThread(ClientInterface client, GameController gameController, SharedUpdate updater) {
         this.client = client;
@@ -28,6 +28,12 @@ public class ClientRenderUpdateThread extends Thread {
             gameController.updateView();
             synchronized (client) {
                 running = client.getGameState() != GameState.STOP;
+            }
+
+            try {
+                sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
     }
