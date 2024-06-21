@@ -22,7 +22,7 @@
       </ImageView>
       <Group StackPane.alignment="CENTER">
          <children>
-            <ScrollPane fx:id="listOfGames" hbarPolicy="NEVER" nodeOrientation="LEFT_TO_RIGHT" opacity="0.5" pannable="true" prefHeight="500.0" prefWidth="1000.0" style="-fx-border-color: #432918; -fx-border-width: 4;">
+            <ScrollPane fx:id="listOfGames" hbarPolicy="NEVER" nodeOrientation="LEFT_TO_RIGHT" opacity="0.5" pannable="true" prefHeight="500.0" prefWidth="1000.0" style="-fx-border-color: #432918; -fx-border-width: 4; -fx-border-radius: 10; -fx-background-radius: 10;" vbarPolicy="NEVER">
                <content>
                   <VBox fx:id="gameButtonsContainer" alignment="TOP_CENTER" minHeight="0.0" minWidth="0.0" prefHeight="500.0" prefWidth="1000.0" />
                </content>

@@ -35,9 +35,9 @@
                   </Label>
                   <Group>
                      <children>
-                        <VBox>
+                        <VBox prefHeight="236.0">
                            <children>
-                              <RadioButton id="twoPlayers" fx:id="twoPlayers" mnemonicParsing="false" text="2 PLAYERS" textFill="#432918" toggleGroup="$numPlayers" userData="2">
+                              <RadioButton id="twoPlayers" fx:id="twoPlayers" mnemonicParsing="false" selected="true" text="2 PLAYERS" textFill="#432918" toggleGroup="$numPlayers" userData="2">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="numPlayers" />
                                  </toggleGroup>

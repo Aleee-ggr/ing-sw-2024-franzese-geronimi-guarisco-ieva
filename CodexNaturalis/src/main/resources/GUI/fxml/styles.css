@@ -29,11 +29,11 @@
     -fx-background-color: #d9534f;
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
-    -fx-background-radius: 5px;
+    -fx-background-radius: 10px;
     -fx-font-size: 13px;
     -fx-border-color: #b52b27;
-    -fx-border-width: 2px;
-    -fx-border-radius: 5px;
+    -fx-border-width: 3px;
+    -fx-border-radius: 10px;
     -fx-text-fill: #ffffff;
     -fx-padding: 5px 10px;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 5, 0, 0, 0);
@@ -45,18 +45,18 @@
 
 .button-close:pressed {
     -fx-background-color: #c62828;
-    -fx-translate-y: 1px;
+    -fx-translate-y: 2px;
 }
 
 .button-send {
     -fx-background-color: #5cb85c;
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
-    -fx-background-radius: 5px;
+    -fx-background-radius: 10px;
     -fx-font-size: 13px;
     -fx-border-color: #4cae4c;
-    -fx-border-width: 2px;
-    -fx-border-radius: 5px;
+    -fx-border-width: 3px;
+    -fx-border-radius: 10px;
     -fx-text-fill: #ffffff;
     -fx-padding: 5px 10px;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 5, 0, 0, 0);
@@ -68,17 +68,17 @@
 
 .button-send:pressed {
     -fx-background-color: #4cae4c;
-    -fx-translate-y: 1px;
+    -fx-translate-y: 2px;
 }
 
 
 .choice-box {
     -fx-background-color: #d4c7a3;
-    -fx-background-radius: 5px;
+    -fx-background-radius: 10px;
     -fx-border-color: #6e4c1e;
-    -fx-border-width: 2px;
-    -fx-border-radius: 5px;
-    -fx-text-fill: #4a2e14;
+    -fx-border-width: 3px;
+    -fx-border-radius: 10px;
+    -fx-text-fill: #432918;
     -fx-padding: 5px;
 }
 
@@ -103,13 +103,13 @@
 .choice-box .menu-item > .label{
     -fx-font-family: Trattatello;
     -fx-font-size: 20px;
-    -fx-text-fill: #4a2e14;
+    -fx-text-fill: #432918;
 }
 
 .choice-box > .label {
     -fx-font-family: Trattatello;
     -fx-font-size: 20px;
-    -fx-text-fill: #4a2e14;
+    -fx-text-fill: #432918;
 }
 
 .choice-box .menu-item:focused {
@@ -125,4 +125,71 @@
     -fx-border-color: #b89c6c;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75), 15, 0, 0, 0);
     -fx-translate-y: -15;
+}
+
+.text-input {
+    -fx-background-color: #d4c7a3;
+    -fx-background-radius: 10px;
+    -fx-border-color: #6e4c1e;
+    -fx-border-width: 3px;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px;
+    -fx-text-fill: #432918;
+    -fx-prompt-text-fill: #a09484;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 0);
+}
+
+.text-input:hover {
+    -fx-background-color: #e5d8b7;
+}
+
+.text-input:focused {
+    -fx-background-color: #e5d8b7;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 0);
+}
+
+.tab {
+    -fx-border-color: #6e4c1e;
+    -fx-border-width: 3px;
+    -fx-border-radius: 10px;
+    -fx-background-color: #efedd6;
+    -fx-background-radius: 10px;
+}
+
+/* Stile base per il radio button */
+.radio-button .radio {
+    -fx-background-color: #eae0c8;
+    -fx-border-color: #6e4c1e;
+    -fx-border-width: 3px;
+    -fx-border-radius: 50%;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 0);
+}
+
+/* Effetto hover per il radio button */
+.radio-button:hover .radio {
+    -fx-background-color: #f0e5d3;
+    -fx-border-color: #b89c6c;
+}
+
+.radio-button:hover .radio > .dot {
+    -fx-background-color: #f0e5d3;
+    -fx-border-color: #b89c6c;
+}
+
+.radio-button:pressed {
+    -fx-translate-y: 2px;
+}
+/* Stile per il cerchio interno quando selezionato */
+.radio-button:selected .radio > .dot {
+    -fx-background-color: #6e4c1e;
+}
+
+/* Stile per il cerchio interno */
+.radio-button .radio > .dot {
+    -fx-background-color: transparent;
+    -fx-border-color: #6e4c1e;
+    -fx-border-width: 3px;
+    -fx-border-radius: 50%;
+    -fx-padding: 10px;
 }
