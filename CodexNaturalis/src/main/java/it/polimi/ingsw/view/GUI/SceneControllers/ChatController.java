@@ -67,6 +67,8 @@ public class ChatController implements Initializable, TabController {
         if (!messageInput.getText().isEmpty()) {
             try {
                 client.postChat(messageInput.getText(), !playerChoiceChat.getValue().equals("General") ? playerChoiceChat.getValue() : null);
+                client.fetchChat();
+                gameController.messages = client.getChat();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -180,3 +182,4 @@ public class ChatController implements Initializable, TabController {
         Platform.runLater(this::setChat);
     }
 }
+

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.GUI.SceneControllers;
 
 import it.polimi.ingsw.controller.threads.GameState;
+import it.polimi.ingsw.model.ChatMessage;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.client.ClientData;
@@ -34,6 +35,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -41,10 +43,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class GameController implements Initializable {
     private ClientInterface client;
@@ -61,6 +60,8 @@ public class GameController implements Initializable {
     private String activeTab;
 
     private ImageView selectedHandCard = null;
+
+    protected List<ChatMessage> messages = null;
 
     @FXML
     GridPane board;
@@ -119,6 +120,9 @@ public class GameController implements Initializable {
     @FXML
     Button flipButton;
 
+    @FXML
+    Circle newMessages;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         updater = new SharedUpdate();
@@ -141,6 +145,7 @@ public class GameController implements Initializable {
 
         setPersonalData();
         setEndGameThread();
+        setChatThread();
     }
 
     private void setupResources() {
@@ -234,6 +239,33 @@ public class GameController implements Initializable {
         }
 
         setupValidPlacements();
+    }
+
+    private void setChatThread() {
+        Task<Void> chatThread = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                boolean running = true;
+                while (running) {
+                    if (messages != null && client.getChat() != null) {
+                        if (!messages.equals(client.getChat())) {
+                            newMessages.setVisible(true);
+                            messages = client.getChat();
+                        }
+                    } else {
+                        messages = client.getChat();
+                    }
+
+                    if (client.getGameState().equals(GameState.STOP)) {
+                        running = false;
+                    }
+                    Thread.sleep(1000);
+                }
+                return null;
+            }
+        };
+
+        new Thread(chatThread).start();
     }
 
     public void setupOpponentData(String usernameOpponent) {
@@ -511,6 +543,7 @@ public class GameController implements Initializable {
     private void changeChatScene(ActionEvent event) {
         try {
             if (activeTab == null || !activeTab.equals("Chat")) {
+                newMessages.setVisible(false);
                 tabContainer.setPrefWidth(900);
                 tabContainer.setPrefHeight(500);
                 tabContainer.setTranslateX((tabContainer.getScene().getWindow().getWidth() - tabContainer.getPrefWidth()) / 2);

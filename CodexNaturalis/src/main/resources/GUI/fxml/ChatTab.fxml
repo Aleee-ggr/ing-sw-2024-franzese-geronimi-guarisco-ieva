@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="tabPane" prefHeight="500.0" prefWidth="900.0" style="-fx-background-color: efedd6;" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="tabPane" prefHeight="500.0" prefWidth="900.0" styleClass="tab" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeTab" styleClass="button-close" text="X" StackPane.alignment="TOP_RIGHT">
          <StackPane.margin>
@@ -19,7 +19,7 @@
          <font>
             <Font name="Trattatello" size="13.0" />
          </font></Button>
-      <ScrollPane fx:id="chatScrollPane" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="800.0" vbarPolicy="NEVER" StackPane.alignment="TOP_CENTER">
+      <ScrollPane fx:id="chatScrollPane" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" opacity="0.5" prefHeight="300.0" prefWidth="800.0" style="-fx-border-color: #432918; -fx-border-width: 4; -fx-border-radius: 10; -fx-background-radius: 10;" vbarPolicy="NEVER" StackPane.alignment="TOP_CENTER">
          <content>
             <VBox fx:id="chatContainer" alignment="BOTTOM_CENTER" prefHeight="300.0" prefWidth="800.0" spacing="10.0" />
          </content>
