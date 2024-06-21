@@ -147,7 +147,7 @@ public class TuiController {
 
         while (!done) {
             clear();
-            out.println(new StartingObjectiveView(playerData.getStartingObjectives().stream().map(ObjectiveCard::new).toArray(ObjectiveCard[]::new)));
+            out.println(new StartingObjectiveView(playerData));
             out.println("Select starting objective: ");
             sel = select(1, 2);
             done = sel >= 0;
@@ -242,6 +242,8 @@ public class TuiController {
             client.fetchStartingObjectives();
             client.fetchStartingCard();
             client.fetchAvailableColors();
+            client.fetchClientHand();
+            client.fetchCommonObjectives();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
