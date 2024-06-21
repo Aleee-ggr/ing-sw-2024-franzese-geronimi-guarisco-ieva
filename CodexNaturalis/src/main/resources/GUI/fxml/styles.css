@@ -5,10 +5,12 @@
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     -fx-background-radius: 10px;
+    -fx-font-family: Trattatello;
+    -fx-font-size: 30px;
+    -fx-text-fill: #432918;
     -fx-border-color: #6e4c1e;
     -fx-border-width: 3px;
     -fx-border-radius: 10px;
-    -fx-text-fill: #4a2e14;
     -fx-padding: 10px 20px;
     -fx-cursor: hand;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 0);
@@ -28,6 +30,7 @@
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     -fx-background-radius: 5px;
+    -fx-font-size: 13px;
     -fx-border-color: #b52b27;
     -fx-border-width: 2px;
     -fx-border-radius: 5px;
@@ -50,6 +53,7 @@
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     -fx-background-radius: 5px;
+    -fx-font-size: 13px;
     -fx-border-color: #4cae4c;
     -fx-border-width: 2px;
     -fx-border-radius: 5px;
@@ -112,4 +116,14 @@
     -fx-background-color: #e5d8b7;
 }
 
+.card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 0);
+    -fx-translate-y: -10;
+}
+
+/* Stile per le carte selezionate */
+.card:pressed {
+    -fx-border-color: #b89c6c;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75), 15, 0, 0, 0);
+    -fx-translate-y: -15;
 }
