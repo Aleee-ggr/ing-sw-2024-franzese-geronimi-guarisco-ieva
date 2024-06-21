@@ -6,8 +6,6 @@ import java.util.UUID;
  * Class representing a message from a client to join an existing game in network communication via sockets.
  * This class extends the `GenericRequestMessage` class, inheriting the username field.
  * It is used when a client wants to join an existing game specified by a game UUID.
- *
- * @author gloriageronimi
  */
 public class SocketClientJoinGameMessage extends GenericRequestMessage {
     private UUID gameUUID;

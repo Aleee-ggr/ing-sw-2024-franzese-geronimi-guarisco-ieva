@@ -7,9 +7,7 @@ import java.io.Serializable;
  * All messages exchanged in network communication via sockets should extend this class.
  * This class implements the `Serializable` interface to allow messages to be serialized
  * for transmission across the network.
- *
- * @author gloriageronimi
- */
+ **/
 public abstract class GenericRequestMessage implements Serializable {
     protected String username;
 

@@ -8,7 +8,6 @@ import java.util.UUID;
  * and the ID of the chosen objective.
  *
  * @see GenericRequestMessage
- * @author Samuele Franzese
  */
 public class SocketClientChoosePersonalObjectiveMessage extends GenericRequestMessage{
     private final UUID gameUUID;
