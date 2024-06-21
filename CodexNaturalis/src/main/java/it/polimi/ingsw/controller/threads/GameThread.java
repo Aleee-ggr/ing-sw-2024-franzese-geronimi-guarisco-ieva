@@ -457,6 +457,9 @@ public class GameThread extends Thread {
             case "getHandColor":
                 controller.getHandColor(msg.player(), msg.args()[0], msg.messageUUID());
                 break;
+            case "getHandType":
+                controller.getHandType(msg.player(), msg.args()[0], msg.messageUUID());
+                break;
             case "getPlacingOrder":
                 controller.getPlacingOrder(msg.player(), msg.args()[0], msg.messageUUID());
                 break;

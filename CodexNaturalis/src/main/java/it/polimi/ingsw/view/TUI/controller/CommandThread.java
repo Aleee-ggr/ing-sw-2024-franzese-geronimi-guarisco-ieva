@@ -333,6 +333,7 @@ public class CommandThread extends Thread {
             client.fetchGameState();
             client.fetchVisibleCardsAndDecks();
             client.fetchOpponentsHandColor();
+            client.fetchOpponentsHandType();
             client.fetchPlayersColors();
             client.fetchChat();
         } catch (IOException e) {

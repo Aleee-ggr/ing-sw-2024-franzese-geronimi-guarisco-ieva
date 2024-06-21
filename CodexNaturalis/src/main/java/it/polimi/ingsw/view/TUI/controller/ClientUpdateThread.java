@@ -91,6 +91,7 @@ public class ClientUpdateThread extends Thread {
             client.fetchGameState();
             client.fetchVisibleCardsAndDecks();
             client.fetchOpponentsHandColor();
+            client.fetchOpponentsHandType();
             client.fetchChat();
             client.fetchPlayersColors();
         } catch (IOException e) {

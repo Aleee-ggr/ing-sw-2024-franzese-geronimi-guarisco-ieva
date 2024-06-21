@@ -39,6 +39,7 @@ public enum GameState {
                                                                     "getValidPlacements",
                                                                     "getBoard",
                                                                     "getHandColor",
+                                                                    "getHandType",
                                                                     "getLastPlacedCards",
                                                                     "update",
                                                                     "getGameState");
@@ -58,6 +59,7 @@ public enum GameState {
                                                                         "getVisibleCard",
                                                                         "getBoard",
                                                                         "getHandColor",
+                                                                        "getHandType",
                                                                         "getLastPlacedCards",
                                                                         "getGameState");
 }

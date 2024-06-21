@@ -33,7 +33,7 @@ public class OpponentData extends ClientData{
     }
 
     public ArrayList<Boolean> getHandIsGold() {
-        return handIsGold;
+        return new ArrayList<>(handIsGold);
     }
 
     public Color getPlayerColor() {
