@@ -83,6 +83,7 @@ public class GameThread extends Thread {
                     gameLobby();
                     break;
                 case SETUP:
+                    controller.randomizePlayers();
                     setup();
                     break;
                 case MAIN:

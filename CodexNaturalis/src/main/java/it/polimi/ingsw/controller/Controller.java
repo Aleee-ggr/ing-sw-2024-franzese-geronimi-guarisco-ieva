@@ -80,6 +80,15 @@ public class Controller {
         }
     }
 
+    /**
+     * Controller Method to randomize the order of the players.
+     * Used to randomize the turn order of the players in the game.
+     */
+    public void randomizePlayers(){
+        game.randomizePlayers();
+    }
+
+
     public void update(String username, boolean playerTurn, UUID messageId) {
         messageQueue.add(ThreadMessage.updateResponse(username, playerTurn, messageId));
     }

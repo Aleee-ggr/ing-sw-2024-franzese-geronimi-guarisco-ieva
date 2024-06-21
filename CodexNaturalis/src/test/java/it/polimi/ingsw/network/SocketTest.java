@@ -79,6 +79,22 @@ public class SocketTest {
             clients.get(i).joinGame(game);
         }
 
+
+        ArrayList<String> playerOrder = clients.getFirst().getPlayers();
+
+        ArrayList<ClientInterface> orderedClients = new ArrayList<>();
+
+        for (String username : playerOrder) {
+            for (ClientInterface client : clients) {
+                if (client.getUsername().equals(username)) {
+                    orderedClients.add(client);
+                    break;
+                }
+            }
+        }
+
+        clients = orderedClients;
+
         for (ClientInterface client : clients) {
             fetchSetup(client);
             client.placeStartingCard(true);

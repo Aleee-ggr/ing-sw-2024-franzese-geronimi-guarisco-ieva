@@ -190,6 +190,13 @@ public class Game {
     }
 
     /**
+     * Method used to randomize the order of the players.<br/>
+     * Used to randomize the turn order of the players in the game.
+     */
+    public void randomizePlayers(){
+        Collections.shuffle(players);
+    }
+    /**
      * Method used to reset the SharedBoard. <br/>
      * It creates a new board with new shuffled decks.
      */
