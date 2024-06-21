@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.GUI.SceneControllers;
 
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.client.OpponentData;
 import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.model.enums.Color;
@@ -167,7 +166,7 @@ public class ScoreController implements Initializable, TabController {
                     scoreBoard.getChildren().add(scorePion);
 
                     Label nameLabel = new Label(entry.getKey());
-                    nameLabel.setStyle(String.format("-fx-font-weight: bold; -fx-text-fill: %s; -fx-font-family: Trattatello; -fx-font-size: 50px;", playerColor));
+                    nameLabel.setStyle(String.format("-fx-font-weight: bold; -fx-text-fill: %s; -fx-font-family: Trattatello; -fx-font-size: 50px;", !playerColor.equals(Color.YELLOW) ? playerColor : "#d5b343"));
 
                     Label scoreLabel = new Label(": " + entry.getValue());
                     scoreLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #432918; -fx-font-family: Trattatello; -fx-font-size: 50px;");
