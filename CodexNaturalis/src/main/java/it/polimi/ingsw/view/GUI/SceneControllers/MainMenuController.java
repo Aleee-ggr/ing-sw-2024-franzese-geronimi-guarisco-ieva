@@ -115,44 +115,44 @@ public class MainMenuController implements Initializable {
     private void updateGameButtons() {
         gameButtonsContainer.getChildren().clear();
         int i = 0;
-        for (Map.Entry<UUID, String> entry: client.getAvailableGames().entrySet()) { //TODO change uuids to game names
+        for (Map.Entry<UUID, String> entry: client.getAvailableGames().entrySet()) {
             i++;
             Button button = new Button(entry.getValue());
             button.setStyle("-fx-background-color: ffffff;" + "-fx-border-color: black;" + "-fx-border-width: 2;" + "-fx-border-style: solid;" + "-fx-pref-height: 100;" + "-fx-pref-width: 700;" + "-fx-text-fill: #432918;" + "-fx-font-family: Trattatello;" + "-fx-font-size: 30;" + "-fx-cursor: hand;");
             button.setOnAction(event -> {
                 try {
-                    client.joinGame(entry.getKey());
-                    stopFetchingGames();
+                    boolean joined = client.joinGame(entry.getKey());
+                    if (joined) {
+                        stopFetchingGames();
+                        try {
+                            client.fetchGameState();
+                            client.fetchPlayers();
+                            client.fetchPersonalObjective();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
 
-                    try {
-                        client.fetchGameState();
-                        client.fetchPlayers();
-                        client.fetchPersonalObjective();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                    FXMLLoader loader;
-                    switch (client.getGameState()) {
-                        case SETUP:
-                            loader = new FXMLLoader(getClass().getResource("/GUI/fxml/WaitingRoom.fxml"));
-                            WaitingRoomController controller = new WaitingRoomController();
-                            controller.setClient(client);
-                            loader.setController(controller);
-                            Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
-                            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                            stage.setScene(scene);
-                            break;
-                        case MAIN:
-                            loader = new FXMLLoader(getClass().getResource("/GUI/fxml/GameScene.fxml"));
-                            GameController gameController = new GameController();
-                            gameController.setClient(client);
-                            loader.setController(gameController);
-                            Scene scene1 = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
-                            Stage stage1 = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                            stage1.setScene(scene1);
-                            break;
-                        case ENDGAME:
+                        FXMLLoader loader;
+                        switch (client.getGameState()) {
+                            case SETUP:
+                                loader = new FXMLLoader(getClass().getResource("/GUI/fxml/WaitingRoom.fxml"));
+                                WaitingRoomController controller = new WaitingRoomController();
+                                controller.setClient(client);
+                                loader.setController(controller);
+                                Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
+                                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                                stage.setScene(scene);
+                                break;
+                            case MAIN:
+                                loader = new FXMLLoader(getClass().getResource("/GUI/fxml/GameScene.fxml"));
+                                GameController gameController = new GameController();
+                                gameController.setClient(client);
+                                loader.setController(gameController);
+                                Scene scene1 = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
+                                Stage stage1 = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                                stage1.setScene(scene1);
+                                break;
+                        }
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
