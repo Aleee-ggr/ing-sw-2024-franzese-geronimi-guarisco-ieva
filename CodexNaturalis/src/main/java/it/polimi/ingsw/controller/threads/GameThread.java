@@ -126,7 +126,6 @@ public class GameThread extends Thread {
         lobby.start();
         timer.start();
         while (gameState == GameState.LOBBY) {
-            System.out.println("New game state: " + gameState);
             try {
                 sleep(100);
             } catch (InterruptedException e) {

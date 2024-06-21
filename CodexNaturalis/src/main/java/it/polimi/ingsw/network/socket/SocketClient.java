@@ -323,7 +323,7 @@ public class SocketClient extends Client implements ClientInterface {
     }
 
     @Override
-    public boolean fetchOpponentsHandType() throws IOException {
+    public synchronized boolean fetchOpponentsHandType() throws IOException {
         for (String player : players) {
             if (player.equals(username)) {
                 continue;
