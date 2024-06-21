@@ -253,6 +253,10 @@ public class GameController implements Initializable {
 
             button.setOnMouseClicked(event -> {
                 setPersonalData();
+                centerBoard();
+                board.setScaleX(1.0);
+                board.setScaleY(1.0);
+                setActiveTab(null);
                 buttonsContainer.getChildren().remove(button);
                 buttonsContainer.getChildren().add(flipButton);
             });
@@ -663,7 +667,7 @@ public class GameController implements Initializable {
         }
     }
 
-    private void centerBoard() {
+    protected void centerBoard() {
         double hMax = scrollPane.getHmax();
         double vMax = scrollPane.getVmax();
 
