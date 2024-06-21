@@ -113,17 +113,17 @@ public class ChatController implements Initializable, TabController {
 
         Text sender = new Text(chatMessage.sender() + ":");
         sender.setStyle("-fx-font-family: Trattatello;" +
-                "-fx-font-size: 30;" +
+                "-fx-font-size: 20;" +
                 "-fx-text-fill: #432918;"
         );
         Text message = new Text(chatMessage.message());
         message.setStyle("-fx-font-family: Trattatello;" +
-                "-fx-font-size: 30;" +
+                "-fx-font-size: 20;" +
                 "-fx-text-fill: #432918;"
         );
         sender.setBoundsType(TextBoundsType.VISUAL);
         message.setBoundsType(TextBoundsType.VISUAL);
-        message.setWrappingWidth(chatContainer.getWidth() / 1.5);
+        message.setWrappingWidth(900 / 1.5);
         message.setLineSpacing(-10);
 
         if (!chatMessage.sender().equals(client.getUsername())) {
