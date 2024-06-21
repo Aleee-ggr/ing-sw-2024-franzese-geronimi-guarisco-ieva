@@ -41,6 +41,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -315,6 +316,7 @@ public class GameController implements Initializable {
         try {
             client.fetchClientHand();
             client.fetchOpponentsHandColor();
+            client.fetchOpponentsHandType();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -357,12 +359,23 @@ public class GameController implements Initializable {
                 });
             }
         } else {
-            for (Resource resource: ((OpponentData) client.getOpponentData().get(username)).getHandColor()) {
-                switch (resource) {
-                    case FUNGI -> imagePath = "GUI/images/cards.nogit/back/001.png";
-                    case PLANT -> imagePath = "GUI/images/cards.nogit/back/011.png";
-                    case ANIMAL -> imagePath = "GUI/images/cards.nogit/back/021.png";
-                    case INSECT -> imagePath = "GUI/images/cards.nogit/back/031.png";
+            ArrayList<Resource> handColor = ((OpponentData) client.getOpponentData().get(username)).getHandColor();
+            for (int j = 0; j < handColor.size(); j++) {
+                Resource resource = handColor.get(j);
+                if (!((OpponentData) client.getOpponentData().get(username)).getHandIsGold().get(j)) {
+                    switch (resource) {
+                        case FUNGI -> imagePath = "GUI/images/cards.nogit/back/001.png";
+                        case PLANT -> imagePath = "GUI/images/cards.nogit/back/011.png";
+                        case ANIMAL -> imagePath = "GUI/images/cards.nogit/back/021.png";
+                        case INSECT -> imagePath = "GUI/images/cards.nogit/back/031.png";
+                    }
+                } else {
+                    switch (resource) {
+                        case FUNGI -> imagePath = "GUI/images/cards.nogit/back/041.png";
+                        case PLANT -> imagePath = "GUI/images/cards.nogit/back/051.png";
+                        case ANIMAL -> imagePath = "GUI/images/cards.nogit/back/061.png";
+                        case INSECT -> imagePath = "GUI/images/cards.nogit/back/071.png";
+                    }
                 }
 
                 ImageView image = new ImageView(imagePath);
