@@ -145,10 +145,12 @@ public class MainMenuController implements Initializable {
                                 if (client.getPlayers().getFirst().equals(client.getUsername())) {
                                     client.fetchStartingObjectives();
                                     client.fetchStartingCard();
-                                    loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseObjectiveScene.fxml"));
-                                    ChooseObjectiveController chooseObjectiveController = new ChooseObjectiveController();
-                                    chooseObjectiveController.setClient(client);
-                                    loader.setController(chooseObjectiveController);
+                                    client.fetchClientHand();
+                                    client.fetchCommonObjectives();
+                                    loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseStartingCardSideScene.fxml"));
+                                    ChooseStartingCardSideController chooseStartingCardSideController = new ChooseStartingCardSideController();
+                                    chooseStartingCardSideController.setClient(client);
+                                    loader.setController(chooseStartingCardSideController);
                                 } else {
                                     loader = new FXMLLoader(getClass().getResource("/GUI/fxml/WaitingRoom.fxml"));
                                     WaitingRoomController waitingRoomController = new WaitingRoomController();
