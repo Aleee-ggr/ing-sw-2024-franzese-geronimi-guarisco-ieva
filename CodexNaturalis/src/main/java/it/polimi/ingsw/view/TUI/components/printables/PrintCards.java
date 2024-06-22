@@ -240,13 +240,4 @@ public class PrintCards implements Component {
 
         return out.toString();
     }
-
-
-    public static void main(String[] args) {
-        Card ncard = Game.getCardByID(50);
-        ncard.setFrontSideUp(true);
-        PrintCards print = new PrintCards(ncard);
-        System.out.print(print);
-    }
-
 }
