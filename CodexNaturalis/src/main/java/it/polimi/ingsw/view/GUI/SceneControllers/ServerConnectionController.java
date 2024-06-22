@@ -46,21 +46,33 @@ public class ServerConnectionController implements Initializable {
      */
     @FXML
     protected void changeLoginScene(ActionEvent event) {
-        ClientInterface client;
+        ClientInterface client = null;
 
-        if (event.getSource() == socketButton) {
-            client = new SocketClient(serverIp.getText(), 8000);
+        if (!serverIp.getText().isEmpty()) {
+            if (serverIp.getText().matches("^([0-9]{1,3}\\.){3}[0-9]{1,3}$") || serverIp.getText().equals("localhost")) {
+                try {
+                    if (event.getSource() == socketButton) {
+                        client = new SocketClient(serverIp.getText(), 8000);
+                    } else {
+                        client = new RmiClient(serverIp.getText(), 9000);
+                    }
+                } catch (Exception e) {
+                    ErrorMessageController.showErrorMessage("Impossible to connect to this server!", root);
+                }
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/LoginScene.fxml"));
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    stage.getScene().setRoot(loader.load());
+                    LoginController loginController = loader.getController();
+                    loginController.setClient(client);
+                } catch (IOException e) {
+                    ErrorMessageController.showErrorMessage("Error while loading login scene!", root);
+                }
+            } else {
+                ErrorMessageController.showErrorMessage("Insert valid ip address!", root);
+            }
         } else {
-            client = new RmiClient(serverIp.getText(), 9000);
-        }
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/LoginScene.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.getScene().setRoot(loader.load());
-            LoginController loginController = loader.getController();
-            loginController.setClient(client);
-        } catch (IOException e) {
-            e.printStackTrace();
+            ErrorMessageController.showErrorMessage("Insert server address first!", root);
         }
     }
 

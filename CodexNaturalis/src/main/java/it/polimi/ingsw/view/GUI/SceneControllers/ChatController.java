@@ -1,7 +1,9 @@
 package it.polimi.ingsw.view.GUI.SceneControllers;
 
 import it.polimi.ingsw.model.ChatMessage;
+import it.polimi.ingsw.model.client.OpponentData;
 import it.polimi.ingsw.model.client.PlayerData;
+import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.controller.SharedUpdate;
 import javafx.application.Platform;
@@ -87,7 +89,7 @@ public class ChatController implements Initializable, TabController {
                 client.fetchChat();
                 gameController.messages = client.getChat();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                ErrorMessageController.showErrorMessage("Impossible to fetch data from server!", gameController.root);
             }
         }
         setChat();
@@ -102,8 +104,9 @@ public class ChatController implements Initializable, TabController {
         chatContainer.getChildren().clear();
         try {
             client.fetchChat();
+            client.fetchPlayersColors();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            ErrorMessageController.showErrorMessage("Impossible to fetch data from server!", gameController.root);
         }
 
         String selectedPlayer = playerChoiceChat.getValue();
@@ -136,7 +139,7 @@ public class ChatController implements Initializable, TabController {
     private void addMessageToChat(ChatMessage chatMessage, boolean isGeneral) {
         HBox messageHBox = new HBox();
         VBox messageVBox = new VBox();
-        messageVBox.setPadding(new Insets(10, 0, 10, 0));
+        messageVBox.setPadding(new Insets(10, 0, 15, 0));
         messageVBox.setSpacing(10);
 
         Text sender = new Text(chatMessage.sender() + ":");
@@ -173,10 +176,10 @@ public class ChatController implements Initializable, TabController {
 
         if (chatMessage.sender().equals(client.getUsername())) {
             messageHBox.setAlignment(Pos.CENTER_RIGHT);
-            messageHBox.setPadding(new Insets(0, 7, 0, 0));
+            messageHBox.setPadding(new Insets(0, 15, 0, 0));
         } else {
             messageHBox.setAlignment(Pos.CENTER_LEFT);
-            messageHBox.setPadding(new Insets(0, 0, 0, 5));
+            messageHBox.setPadding(new Insets(0, 0, 0, 10));
         }
 
         messageHBox.getChildren().add(messageVBox);

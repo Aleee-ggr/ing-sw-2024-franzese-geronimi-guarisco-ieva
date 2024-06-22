@@ -125,7 +125,7 @@ public class ScoreController implements Initializable, TabController {
             client.fetchScoreMap();
             client.fetchPlayersColors();
         } catch (IOException e) {
-            e.printStackTrace();
+            ErrorMessageController.showErrorMessage("Impossible to fetch data from server!", gameController.root);
         }
 
         String imagePath = "GUI/images/score.nogit/plateau.png";

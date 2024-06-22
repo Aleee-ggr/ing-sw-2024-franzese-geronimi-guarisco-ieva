@@ -75,21 +75,26 @@ public class ChooseStartingCardSideController implements Initializable {
      *                  which contains information about which side was clicked
      */
     public void changeBoardScene(MouseEvent mouseEvent) {
+        boolean isValid = false;
         try {
             if (mouseEvent.getSource() == frontSide) {
-                client.placeStartingCard(true);
+                isValid = client.placeStartingCard(true);
             } else if (mouseEvent.getSource() == backSide) {
-                client.placeStartingCard(false);
+                isValid = client.placeStartingCard(false);
             }
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseColorScene.fxml"));
-            ChooseColorController controller = new ChooseColorController();
-            controller.setClient(client);
-            loader.setController(controller);
-            Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
-            stage.getScene().setRoot(loader.load());
+            if (isValid) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseColorScene.fxml"));
+                ChooseColorController controller = new ChooseColorController();
+                controller.setClient(client);
+                loader.setController(controller);
+                Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+                stage.getScene().setRoot(loader.load());
+            } else {
+                ErrorMessageController.showErrorMessage("Error choosing the starting card side!", root);
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+            ErrorMessageController.showErrorMessage("Error loading choose color scene!", root);
         }
     }
 }

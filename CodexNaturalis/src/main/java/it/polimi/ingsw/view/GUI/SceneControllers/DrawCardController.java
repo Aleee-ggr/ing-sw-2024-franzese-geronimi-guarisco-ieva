@@ -33,12 +33,6 @@ public class DrawCardController implements Initializable, TabController {
     StackPane tabPane;
 
     @FXML
-    StackPane root;
-
-    @FXML
-    ImageView backgroundImage;
-
-    @FXML
     private ImageView goldDeck;
 
     @FXML
@@ -98,7 +92,7 @@ public class DrawCardController implements Initializable, TabController {
             });
             pause.play();
         } catch (IOException e) {
-            e.printStackTrace();
+            ErrorMessageController.showErrorMessage("Impossible to fetch data from the server!", gameController.root);
         }
     }
 
@@ -159,34 +153,43 @@ public class DrawCardController implements Initializable, TabController {
             goldCard1.setOnMouseClicked(event -> {
                 goldCard1.setImage(null);
                 drawCard(0);
-                gameController.turnMessage.setText("Waiting for your Turn...");
+                changeTurn();
             });
             goldCard2.setOnMouseClicked(event -> {
                 goldCard2.setImage(null);
                 drawCard(1);
-                gameController.turnMessage.setText("Waiting for your Turn...");
+                changeTurn();
             });
             stdCard1.setOnMouseClicked(event -> {
                 stdCard1.setImage(null);
                 drawCard(2);
-                gameController.turnMessage.setText("Waiting for your Turn...");
+                changeTurn();
             });
             stdCard2.setOnMouseClicked(event -> {
                 stdCard2.setImage(null);
                 drawCard(3);
-                gameController.turnMessage.setText("Waiting for your Turn...");
+                changeTurn();
             });
             goldDeck.setOnMouseClicked(event -> {
                 goldDeck.setImage(null);
                 drawCard(4);
-                gameController.turnMessage.setText("Waiting for your Turn...");
+                changeTurn();
             });
             stdDeck.setOnMouseClicked(event -> {
                 stdDeck.setImage(null);
                 drawCard(5);
-                gameController.turnMessage.setText("Waiting for your Turn...");
+                changeTurn();
             });
         }
+    }
+
+    protected void changeTurn() {
+        gameController.turnMessage.setText("Waiting for your Turn...");
+        gameController.myTurn = false;
+    }
+
+    private void errorDraw() {
+        ErrorMessageController.showErrorMessage("It's not your turn to draw a card!", gameController.root);
     }
 
     /**

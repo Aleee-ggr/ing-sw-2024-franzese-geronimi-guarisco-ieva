@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -24,6 +25,9 @@ public class ChooseColorController implements Initializable {
     private PlayerData playerData;
 
     @FXML
+    StackPane root;
+
+    @FXML
     HBox pionsContainer;
 
     @Override
@@ -31,7 +35,7 @@ public class ChooseColorController implements Initializable {
         try {
             client.fetchAvailableColors();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            ErrorMessageController.showErrorMessage("Impossible to fetch data from server!", root);
         }
 
         for (Color playerColor: playerData.getAvailableColors()) {
@@ -49,23 +53,28 @@ public class ChooseColorController implements Initializable {
             pion.preserveRatioProperty();
 
             pion.setOnMouseClicked(event -> {
+                boolean isValid = false;
                 try {
-                    client.choosePlayerColor(playerColor);
+                    isValid = client.choosePlayerColor(playerColor);
 
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/GameScene.fxml"));
-                    GameController controller = new GameController();
-                    controller.setClient(client);
-                    loader.setController(controller);
-                    Stage stage = (Stage) pionsContainer.getScene().getWindow();
-                    stage.getScene().setRoot(loader.load());
-                    if (Screen.getPrimary().getVisualBounds().getWidth() <= 1920 || Screen.getPrimary().getVisualBounds().getHeight() <= 1080) {
-                        stage.setFullScreen(true);
+                    if (isValid) {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/GameScene.fxml"));
+                        GameController controller = new GameController();
+                        controller.setClient(client);
+                        loader.setController(controller);
+                        Stage stage = (Stage) pionsContainer.getScene().getWindow();
+                        stage.getScene().setRoot(loader.load());
+                        if (Screen.getPrimary().getVisualBounds().getWidth() <= 1920 || Screen.getPrimary().getVisualBounds().getHeight() <= 1080) {
+                            stage.setFullScreen(true);
+                        } else {
+                            stage.setMaxWidth(3840);
+                            stage.setMaxHeight(2160);
+                        }
                     } else {
-                        stage.setMaxWidth(3840);
-                        stage.setMaxHeight(2160);
+                        ErrorMessageController.showErrorMessage("Error choosing the color!", root);
                     }
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    ErrorMessageController.showErrorMessage("Error loading game scene!", root);
                 }
             });
 

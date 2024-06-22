@@ -53,7 +53,7 @@ public class MainMenuController implements Initializable {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.getScene().setRoot(loader.load());
         } catch (IOException e) {
-            e.printStackTrace();
+            ErrorMessageController.showErrorMessage("Error loading create game scene!", root);
         }
     }
 
@@ -92,14 +92,14 @@ public class MainMenuController implements Initializable {
             client.fetchAvailableGames();
             updateGameButtons();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            ErrorMessageController.showErrorMessage("Impossible fetching available games!", root);
         }
         fetchGamesTimeline = new Timeline(new KeyFrame(Duration.seconds(5), event -> {
             try {
                 client.fetchAvailableGames();
                 updateGameButtons();
             } catch (IOException e) {
-                e.printStackTrace();
+                ErrorMessageController.showErrorMessage("Impossible fetching available games!", root);
             }
         }));
         fetchGamesTimeline.setCycleCount(Timeline.INDEFINITE);
@@ -127,7 +127,7 @@ public class MainMenuController implements Initializable {
                             client.fetchPlayers();
                             client.fetchPersonalObjective();
                         } catch (IOException e) {
-                            throw new RuntimeException(e);
+                            ErrorMessageController.showErrorMessage("Impossible fetching game data!", root);
                         }
 
                         FXMLLoader loader;
@@ -155,9 +155,11 @@ public class MainMenuController implements Initializable {
                                 }
                                 break;
                         }
+                    } else {
+                        ErrorMessageController.showErrorMessage("Impossible to join selected game!", root);
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    ErrorMessageController.showErrorMessage("Error loading next scene!", root);
                 }
             });
             gameButtonsContainer.getChildren().add(button);

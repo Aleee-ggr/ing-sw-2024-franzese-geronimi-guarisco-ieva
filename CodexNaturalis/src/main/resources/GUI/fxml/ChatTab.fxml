@@ -19,9 +19,9 @@
          <font>
             <Font name="Trattatello" size="13.0" />
          </font></Button>
-      <ScrollPane fx:id="chatScrollPane" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" opacity="0.5" prefHeight="300.0" prefWidth="800.0" style="-fx-border-color: #432918; -fx-border-width: 4; -fx-border-radius: 10; -fx-background-radius: 10;" vbarPolicy="NEVER" StackPane.alignment="TOP_CENTER">
+      <ScrollPane fx:id="chatScrollPane" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="800.0" styleClass="custom-scrollPane" vbarPolicy="NEVER" StackPane.alignment="TOP_CENTER">
          <content>
-            <VBox fx:id="chatContainer" alignment="BOTTOM_CENTER" prefHeight="300.0" prefWidth="800.0" spacing="10.0" />
+            <VBox fx:id="chatContainer" alignment="BOTTOM_CENTER" prefHeight="300.0" prefWidth="800.0" spacing="10.0" style="-fx-background-color: #f1f0e5;" />
          </content>
          <StackPane.margin>
             <Insets top="75.0" />

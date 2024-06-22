@@ -77,21 +77,26 @@ public class ChooseObjectiveController implements Initializable {
      *                   which contains information about which objective was clicked
      */
     public void changeChooseStarting(MouseEvent mouseEvent) {
+        boolean isValid = false;
         try {
             if (mouseEvent.getSource() == firstObjective) {
-                client.choosePersonalObjective(playerData.getStartingObjectives().getFirst().getId());
+                isValid = client.choosePersonalObjective(playerData.getStartingObjectives().getFirst().getId());
             } else if (mouseEvent.getSource() == secondObjective) {
-                client.choosePersonalObjective(playerData.getStartingObjectives().getLast().getId());
+                isValid = client.choosePersonalObjective(playerData.getStartingObjectives().getLast().getId());
             }
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseStartingCardSideScene.fxml"));
-            ChooseStartingCardSideController controller = new ChooseStartingCardSideController();
-            controller.setClient(client);
-            loader.setController(controller);
-            Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
-            stage.getScene().setRoot(loader.load());
+            if (isValid) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseStartingCardSideScene.fxml"));
+                ChooseStartingCardSideController controller = new ChooseStartingCardSideController();
+                controller.setClient(client);
+                loader.setController(controller);
+                Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+                stage.getScene().setRoot(loader.load());
+            } else {
+                ErrorMessageController.showErrorMessage("Error choosing the personal objective!", root);
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+            ErrorMessageController.showErrorMessage("Error loading choose starting card side!", root);
         }
     }
 }

@@ -1,5 +1,3 @@
-/* styles.css */
-
 .button {
     -fx-background-color: #d4c7a3;
     -fx-background-size: cover;
@@ -156,7 +154,6 @@
     -fx-background-radius: 10px;
 }
 
-/* Stile base per il radio button */
 .radio-button .radio {
     -fx-background-color: #eae0c8;
     -fx-border-color: #6e4c1e;
@@ -166,7 +163,6 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 0);
 }
 
-/* Effetto hover per il radio button */
 .radio-button:hover .radio {
     -fx-background-color: #f0e5d3;
     -fx-border-color: #b89c6c;
@@ -180,16 +176,35 @@
 .radio-button:pressed {
     -fx-translate-y: 2px;
 }
-/* Stile per il cerchio interno quando selezionato */
 .radio-button:selected .radio > .dot {
     -fx-background-color: #6e4c1e;
 }
 
-/* Stile per il cerchio interno */
 .radio-button .radio > .dot {
     -fx-background-color: transparent;
     -fx-border-color: #6e4c1e;
     -fx-border-width: 3px;
     -fx-border-radius: 50%;
     -fx-padding: 10px;
+}
+
+.error-message {
+    -fx-background-color: #ffe6e6;
+    -fx-border-color: #b52b27;
+    -fx-border-width: 3px;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+}
+
+.error-message Line {
+    -fx-stroke: #b52b27;
+    -fx-stroke-width: 3;
+}
+
+.custom-scrollPane {
+    -fx-border-color: #6e4c1e;
+    -fx-border-width: 3px;
+    -fx-border-radius: 10px;
+    -fx-background-color: #f1f0e5;
+    -fx-background-radius: 10px;
 }

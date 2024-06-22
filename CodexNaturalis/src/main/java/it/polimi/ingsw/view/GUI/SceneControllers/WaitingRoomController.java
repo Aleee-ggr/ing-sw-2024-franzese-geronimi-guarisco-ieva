@@ -5,17 +5,13 @@ import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -40,26 +36,6 @@ public class WaitingRoomController implements Initializable {
 
     @FXML
     private VBox listOfPlayers;
-
-    /**
-     * Changes the scene back to the Main Menu when the user clicks "Back".
-     *
-     * @param event The ActionEvent triggered by the user's interaction.
-     */
-    @FXML
-    protected void changeGameScene(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/MainMenu.fxml"));
-            MainMenuController controller = new MainMenuController();
-            controller.setClient(client);
-            loader.setController(controller);
-            Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Sets the client for the controller.
@@ -98,14 +74,14 @@ public class WaitingRoomController implements Initializable {
             client.fetchPlayers();
             updatePlayersList();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            ErrorMessageController.showErrorMessage("Impossible to fetch data from the server!", root);
         }
         fetchPlayersTimeline = new Timeline(new KeyFrame(Duration.seconds(5), event -> {
             try {
                 client.fetchPlayers();
                 updatePlayersList();
             } catch (IOException e) {
-                e.printStackTrace();
+                ErrorMessageController.showErrorMessage("Impossible to fetch data from the server!", root);
             }
         }));
         fetchPlayersTimeline.setCycleCount(Timeline.INDEFINITE);
@@ -130,7 +106,7 @@ public class WaitingRoomController implements Initializable {
                 client.fetchPlayers();
                 updatePlayersList();
             } catch (IOException e) {
-                e.printStackTrace();
+                ErrorMessageController.showErrorMessage("Impossible to fetch data from the server!", root);
             }
 
             if (fetchPlayersTimeline != null) {
@@ -145,7 +121,7 @@ public class WaitingRoomController implements Initializable {
                     client.fetchStartingCard();
                     changeToChooseObjectiveScene();
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+                    ErrorMessageController.showErrorMessage("Impossible to fetch data from the server!", root);
                 }
             });
             pause.play();
@@ -166,7 +142,7 @@ public class WaitingRoomController implements Initializable {
             Stage stage = (Stage) listOfPlayers.getScene().getWindow();
             stage.getScene().setRoot(loader.load());
         } catch (IOException ex) {
-            ex.printStackTrace();
+            ErrorMessageController.showErrorMessage("Error loading choose personal objective scene!", root);
         }
     }
 

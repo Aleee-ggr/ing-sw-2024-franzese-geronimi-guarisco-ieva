@@ -67,12 +67,13 @@ public class LoginController implements Initializable {
                     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                     stage.getScene().setRoot(loader.load());
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    ErrorMessageController.showErrorMessage("Error loading main menu scene!", root);
                 }
             } else {
-                loginError.setVisible(true);
-                loginErrorMessage.setVisible(true);
+                ErrorMessageController.showErrorMessage("Invalid username and/or password!", root);
             }
+        } else {
+            ErrorMessageController.showErrorMessage("Insert username and password first!", root);
         }
     }
 

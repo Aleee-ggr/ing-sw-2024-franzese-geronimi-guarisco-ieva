@@ -81,6 +81,8 @@ public class GameController implements Initializable {
 
     protected List<ChatMessage> messages = null;
 
+    protected boolean myTurn = false;
+
     @FXML
     GridPane board;
 
@@ -382,7 +384,7 @@ public class GameController implements Initializable {
             client.fetchOpponentsHandColor();
             client.fetchAvailableColors();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            ErrorMessageController.showErrorMessage("Impossible to fetch data from server!", root);
         }
     }
 
@@ -599,7 +601,7 @@ public class GameController implements Initializable {
                 tabContainer.setVisible(false);
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            ErrorMessageController.showErrorMessage("Error loading draw tab!", root);
         }
     }
 
@@ -626,7 +628,7 @@ public class GameController implements Initializable {
                 tabContainer.setVisible(false);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            ErrorMessageController.showErrorMessage("Wait for everyone to setup!", root);
         }
     }
 
@@ -657,7 +659,7 @@ public class GameController implements Initializable {
                 tabContainer.setVisible(false);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            ErrorMessageController.showErrorMessage("Error loading chat tab!", root);
         }
     }
 
@@ -684,7 +686,7 @@ public class GameController implements Initializable {
                 tabContainer.setVisible(false);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            ErrorMessageController.showErrorMessage("Error loading objectives tab!", root);
         }
     }
 
@@ -712,7 +714,7 @@ public class GameController implements Initializable {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            ErrorMessageController.showErrorMessage("Wait for everyone to setup!", root);
         }
     }
 
@@ -727,41 +729,55 @@ public class GameController implements Initializable {
      */
     @FXML
     private boolean placeCard(StackPane stackPane, ImageView imageView, Coordinates boardCoordinates) {
-        boolean placed;
+        boolean placed = false;
         String imagePath;
-        try {
-            placed = client.placeCard(playerData.getValidPlacements().get(Integer.parseInt(imageView.getId())), Integer.parseInt(selectedHandCard.getId()));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
-        if (placed) {
-            if (Integer.parseInt(selectedHandCard.getId()) > 0) {
-                imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", Integer.parseInt(selectedHandCard.getId()));
+        if (myTurn && client.getPlayerData().getClientHand().size() == 3) {
+            if (selectedHandCard != null) {
+                try {
+                    placed = client.placeCard(playerData.getValidPlacements().get(Integer.parseInt(imageView.getId())), Integer.parseInt(selectedHandCard.getId()));
+                } catch (IOException e) {
+                    ErrorMessageController.showErrorMessage("Error placing the card!", root);
+                }
+
+                if (placed) {
+                    if (Integer.parseInt(selectedHandCard.getId()) > 0) {
+                        imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", Integer.parseInt(selectedHandCard.getId()));
+                    } else {
+                        imagePath = String.format("GUI/images/cards.nogit/back/%03d.png", -Integer.parseInt(selectedHandCard.getId()));
+                    }
+                    Image cardImage = new Image(imagePath);
+
+                    imageView.setImage(cardImage);
+                    stackPane.setStyle("");
+                    selectedHandCard = null;
+                    validPlacementPanes.remove(boardCoordinates);
+
+                    fetchData();
+                    setupResources();
+                    setHand(client.getUsername(), frontSide);
+
+                    turnMessage.setText("Your Turn: Draw a Card!");
+
+                    if (activeTab == null || !activeTab.equals("DrawCard")) {
+                        PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
+                        pause.setOnFinished(e -> { changeDrawCardScene(); });
+                        pause.play();
+                    }
+
+                    setupValidPlacements();
+                } else if (Integer.parseInt(selectedHandCard.getId()) < 0){
+                    ErrorMessageController.showErrorMessage("Requirements not met to place card!", root);
+                } else {
+                    ErrorMessageController.showErrorMessage("Card not placed correctly!", root);
+                }
             } else {
-                imagePath = String.format("GUI/images/cards.nogit/back/%03d.png", -Integer.parseInt(selectedHandCard.getId()));
+                ErrorMessageController.showErrorMessage("Choose the card to place first!", root);
             }
-            Image cardImage = new Image(imagePath);
-
-            imageView.setImage(cardImage);
-            stackPane.setStyle("");
-            selectedHandCard = null;
-            validPlacementPanes.remove(boardCoordinates);
-
-            fetchData();
-            setupResources();
-            setHand(client.getUsername(), frontSide);
-
-            turnMessage.setText("Your Turn: Draw a Card!");
-
-            if (activeTab == null || !activeTab.equals("DrawCard")) {
-                PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
-                pause.setOnFinished(e -> { changeDrawCardScene(); });
-                pause.play();
-            }
-
-            setupValidPlacements();
+        } else {
+            ErrorMessageController.showErrorMessage("It's not your turn to place a card!", root);
         }
+
 
         return placed;
     }
@@ -813,6 +829,7 @@ public class GameController implements Initializable {
      */
     protected void setTurn() {
         turnMessage.setText("Your Turn: Place a Card!");
+        myTurn = true;
     }
 
     /**

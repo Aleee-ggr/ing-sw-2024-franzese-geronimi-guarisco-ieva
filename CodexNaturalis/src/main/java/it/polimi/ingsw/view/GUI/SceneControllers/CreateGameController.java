@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 /**
  * Controller for the Create Game scene in the GUI.
@@ -52,20 +53,25 @@ public class CreateGameController implements Initializable {
     @FXML
     protected void changeWaitingRoomScene(ActionEvent event) {
         RadioButton selected = (RadioButton) numPlayers.getSelectedToggle();
-        if (selected != null && gameName.getText() != null) {
+        if (gameName.getText() != null) {
             try {
-                System.out.println(gameName.getText());
                 int numPlayer = Integer.parseInt((String) selected.getUserData());
-                client.newGame(numPlayer, gameName.getText());
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/WaitingRoom.fxml"));
-                WaitingRoomController controller = new WaitingRoomController();
-                controller.setClient(client);
-                loader.setController(controller);
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.getScene().setRoot(loader.load());
+                UUID uuid = client.newGame(numPlayer, gameName.getText());
+                if (uuid != null) {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/WaitingRoom.fxml"));
+                    WaitingRoomController controller = new WaitingRoomController();
+                    controller.setClient(client);
+                    loader.setController(controller);
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    stage.getScene().setRoot(loader.load());
+                } else {
+                    ErrorMessageController.showErrorMessage("There's already a game with this name!", root);
+                }
             } catch (IOException e) {
-                e.printStackTrace();
+                ErrorMessageController.showErrorMessage("Impossible to create the game!", root);
             }
+        } else {
+            ErrorMessageController.showErrorMessage("Insert game's name first!", root);
         }
     }
 
@@ -84,7 +90,7 @@ public class CreateGameController implements Initializable {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.getScene().setRoot(loader.load());
         } catch (IOException e) {
-            e.printStackTrace();
+            ErrorMessageController.showErrorMessage("Error loading main menu scene!", root);
         }
     }
 
