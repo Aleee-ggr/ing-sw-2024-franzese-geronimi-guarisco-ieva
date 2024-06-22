@@ -6,7 +6,6 @@ import it.polimi.ingsw.network.ClientInterface;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Screen;
@@ -57,12 +56,14 @@ public class ChooseColorController implements Initializable {
                     GameController controller = new GameController();
                     controller.setClient(client);
                     loader.setController(controller);
-                    Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
                     Stage stage = (Stage) pionsContainer.getScene().getWindow();
-                    stage.setScene(scene);
-                    stage.setMaxWidth(3840);
-                    stage.setMaxHeight(2160);
-                    stage.setFullScreen(true);
+                    stage.getScene().setRoot(loader.load());
+                    if (Screen.getPrimary().getVisualBounds().getWidth() <= 1920 || Screen.getPrimary().getVisualBounds().getHeight() <= 1080) {
+                        stage.setFullScreen(true);
+                    } else {
+                        stage.setMaxWidth(3840);
+                        stage.setMaxHeight(2160);
+                    }
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

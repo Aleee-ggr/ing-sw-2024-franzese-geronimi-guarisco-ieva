@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -51,9 +50,8 @@ public class MainMenuController implements Initializable {
             CreateGameController controller = new CreateGameController();
             controller.setClient(client);
             loader.setController(controller);
-            Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
+            stage.getScene().setRoot(loader.load());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -139,21 +137,22 @@ public class MainMenuController implements Initializable {
                                 WaitingRoomController controller = new WaitingRoomController();
                                 controller.setClient(client);
                                 loader.setController(controller);
-                                Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
                                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                                stage.setScene(scene);
+                                stage.getScene().setRoot(loader.load());
                                 break;
                             case MAIN:
                                 loader = new FXMLLoader(getClass().getResource("/GUI/fxml/GameScene.fxml"));
                                 GameController gameController = new GameController();
                                 gameController.setClient(client);
                                 loader.setController(gameController);
-                                Scene scene1 = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
                                 Stage stage1 = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                                stage1.setScene(scene1);
-                                stage1.setMaxWidth(3840);
-                                stage1.setMaxHeight(2160);
-                                stage1.setFullScreen(true);
+                                stage1.getScene().setRoot(loader.load());
+                                if (Screen.getPrimary().getVisualBounds().getWidth() <= 1920 || Screen.getPrimary().getVisualBounds().getHeight() <= 1080) {
+                                    stage1.setFullScreen(true);
+                                } else {
+                                    stage1.setMaxWidth(3840);
+                                    stage1.setMaxHeight(2160);
+                                }
                                 break;
                         }
                     }

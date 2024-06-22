@@ -37,8 +37,16 @@ public class Gui extends Application {
 
         stage.setMinWidth(1600);
         stage.setMinHeight(900);
-        stage.setWidth(sceneWidth);
-        stage.setHeight(sceneHeight);
+
+        if (screenWidth <= baseWidth || screenHeight <= baseHeight) {
+            stage.setFullScreen(true);
+        } else {
+            stage.setWidth(baseWidth);
+            stage.setHeight(baseHeight);
+        }
+
+        System.out.println(stage.getFullScreenExitHint());
+        System.out.println(stage.getFullScreenExitKeyCombination());
         stage.setMaxWidth(baseWidth);
         stage.setMaxHeight(baseHeight);
         stage.setTitle("Hello!");

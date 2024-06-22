@@ -163,9 +163,8 @@ public class WaitingRoomController implements Initializable {
             ChooseObjectiveController controller = new ChooseObjectiveController();
             controller.setClient(client);
             loader.setController(controller);
-            Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
             Stage stage = (Stage) listOfPlayers.getScene().getWindow();
-            stage.setScene(scene);
+            stage.getScene().setRoot(loader.load());
         } catch (IOException ex) {
             ex.printStackTrace();
         }
