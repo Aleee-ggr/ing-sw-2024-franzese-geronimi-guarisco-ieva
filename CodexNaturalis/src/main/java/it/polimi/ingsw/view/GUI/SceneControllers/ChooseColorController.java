@@ -9,7 +9,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -58,23 +57,17 @@ public class ChooseColorController implements Initializable {
                     isValid = client.choosePlayerColor(playerColor);
 
                     if (isValid) {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/GameScene.fxml"));
-                        GameController controller = new GameController();
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseObjectiveScene.fxml"));
+                        ChooseObjectiveController controller = new ChooseObjectiveController();
                         controller.setClient(client);
                         loader.setController(controller);
                         Stage stage = (Stage) pionsContainer.getScene().getWindow();
                         stage.getScene().setRoot(loader.load());
-                        if (Screen.getPrimary().getVisualBounds().getWidth() <= 1920 || Screen.getPrimary().getVisualBounds().getHeight() <= 1080) {
-                            stage.setFullScreen(true);
-                        } else {
-                            stage.setMaxWidth(3840);
-                            stage.setMaxHeight(2160);
-                        }
                     } else {
                         ErrorMessageController.showErrorMessage("Error choosing the color!", root);
                     }
                 } catch (IOException e) {
-                    ErrorMessageController.showErrorMessage("Error loading game scene!", root);
+                    ErrorMessageController.showErrorMessage("Error loading objectives scene!", root);
                 }
             });
 

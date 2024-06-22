@@ -119,7 +119,9 @@ public class WaitingRoomController implements Initializable {
                     stopFetchingPlayers();
                     client.fetchStartingObjectives();
                     client.fetchStartingCard();
-                    changeToChooseObjectiveScene();
+                    client.fetchClientHand();
+                    client.fetchCommonObjectives();
+                    changeToChooseStartingCardScene();
                 } catch (IOException ex) {
                     ErrorMessageController.showErrorMessage("Impossible to fetch data from the server!", root);
                 }
@@ -133,10 +135,10 @@ public class WaitingRoomController implements Initializable {
     /**
      * Transitions to the next scene where players choose their personal objective.
      */
-    private void changeToChooseObjectiveScene() {
+    private void changeToChooseStartingCardScene() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseObjectiveScene.fxml"));
-            ChooseObjectiveController controller = new ChooseObjectiveController();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseStartingCardSideScene.fxml"));
+            ChooseStartingCardSideController controller = new ChooseStartingCardSideController();
             controller.setClient(client);
             loader.setController(controller);
             Stage stage = (Stage) listOfPlayers.getScene().getWindow();

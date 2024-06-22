@@ -54,16 +54,20 @@ public class ChooseStartingCardSideController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        String path;
+        Image image;
+
         backgroundImage.fitWidthProperty().bind(root.widthProperty());
         backgroundImage.fitHeightProperty().bind(root.heightProperty());
-        int startingCard = playerData.getStartingCard().getId();
-        String imagePathFrontSide = String.format("GUI/images/cards.nogit/front/%03d.png", startingCard);
-        Image imageFrontSide = new Image(imagePathFrontSide);
-        frontSide.setImage(imageFrontSide);
 
-        String imagePathBackSide = String.format("GUI/images/cards.nogit/back/%03d.png", startingCard);
-        Image imageBackSide = new Image(imagePathBackSide);
-        backSide.setImage(imageBackSide);
+        int startingCard = playerData.getStartingCard().getId();
+        path = String.format("GUI/images/cards.nogit/front/%03d.png", startingCard);
+        image = new Image(path);
+        frontSide.setImage(image);
+
+        path = String.format("GUI/images/cards.nogit/back/%03d.png", startingCard);
+        image = new Image(path);
+        backSide.setImage(image);
     }
 
     /**
@@ -74,7 +78,7 @@ public class ChooseStartingCardSideController implements Initializable {
      * @param mouseEvent the mouse event that triggered this method,
      *                  which contains information about which side was clicked
      */
-    public void changeBoardScene(MouseEvent mouseEvent) {
+    public void changeColorScene(MouseEvent mouseEvent) {
         boolean isValid = false;
         try {
             if (mouseEvent.getSource() == frontSide) {
