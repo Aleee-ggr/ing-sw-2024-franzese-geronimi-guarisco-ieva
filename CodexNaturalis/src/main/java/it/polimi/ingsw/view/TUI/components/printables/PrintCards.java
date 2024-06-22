@@ -8,6 +8,10 @@ import it.polimi.ingsw.view.TUI.components.Component;
 
 import java.util.Map;
 
+/**
+ * Represents a printable card in the TUI.
+ * Supports different types of cards such as ColoredCard, StartingCard, StdCard, and GoldCard.
+ */
 public class PrintCards implements Component {
     public static final String ANSI_GOLD = "\u001B[38;5;220m";
     public static final String ANSI_RESET = "\u001B[0m";
@@ -16,16 +20,27 @@ public class PrintCards implements Component {
     public final static int width = 15;
     public final static int height = 7;
 
+    /**
+     * Constructs a printable card representation based on the provided card instance.
+     *
+     * @param card The card to be represented.
+     */
     public PrintCards(Card card) {
         cardString = setCard(card);
     }
-
 
     @Override
     public String toString()  {
         return cardString;
     }
 
+    /**
+     * Generates the string representation of the card based on its type and attributes.
+     *
+     * @param inCard The card instance to generate the representation for.
+     * @return The formatted string representation of the card.
+     * @throws RuntimeException If the type of card is not supported.
+     */
     private static String setCard(Card inCard) {
         Corner[] corners;
         StringBuilder out = new StringBuilder();
@@ -163,7 +178,6 @@ public class PrintCards implements Component {
             throw new RuntimeException("Card type not supported");
         }
 
-
         if(corners[1].isCoverable() && corners[3].isCoverable()){
             out.append("┣━┫\n");
         } else if (corners[1].isCoverable() && !corners[3].isCoverable()){
@@ -236,5 +250,3 @@ public class PrintCards implements Component {
     }
 
 }
-
-

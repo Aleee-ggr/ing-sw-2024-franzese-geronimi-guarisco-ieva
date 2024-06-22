@@ -6,6 +6,10 @@ import it.polimi.ingsw.network.ClientInterface;
 
 import java.util.ArrayList;
 
+/**
+ * Represents the scoreboard component in the TUI for the game.
+ * This component displays the scores of all players in a formatted manner.
+ */
 public class ScoreBoard implements Component {
     public static final int scoreHeight = 5;
     public static final int scoreWidth = 19;
@@ -13,11 +17,23 @@ public class ScoreBoard implements Component {
     private final ClientInterface client;
     private final ArrayList<String> players;
 
+    /**
+     * Constructs a ScoreBoard object initialized with a client interface.
+     *
+     * @param client The client interface used to fetch player and score information.
+     */
     public ScoreBoard(ClientInterface client) {
         this.client = client;
         this.players = client.getPlayers();
     }
 
+    /**
+     * Converts the ScoreBoard object to its string representation.
+     * This representation includes the formatted layout of the scoreboard with player names,
+     * their corresponding scores, and colors representing each player.
+     *
+     * @return The string representation of the ScoreBoard.
+     */
     @Override
     public String toString() {
         StringBuilder out = new StringBuilder();
@@ -58,6 +74,12 @@ public class ScoreBoard implements Component {
         return out.toString();
     }
 
+    /**
+     * Retrieves the ANSI escape code for coloring based on the player's color.
+     *
+     * @param color The color of the player.
+     * @return The ANSI escape code for the specified color.
+     */
     private String getColorCode(Color color) {
         return switch (color) {
             case RED -> "\u001b[1;31m"; // Rosso

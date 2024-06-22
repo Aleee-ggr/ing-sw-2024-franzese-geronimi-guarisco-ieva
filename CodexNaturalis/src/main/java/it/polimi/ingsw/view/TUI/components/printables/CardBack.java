@@ -5,6 +5,11 @@ import it.polimi.ingsw.model.enums.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Abstract class representing different card backs in a board game.
+ * Provides ASCII art representations for different resource types.
+ * Implements Iterable for easy iteration over its contents.
+ */
 public abstract class CardBack implements Iterable<String> {
     public static final int width = 15;
     public static final int height = 5;

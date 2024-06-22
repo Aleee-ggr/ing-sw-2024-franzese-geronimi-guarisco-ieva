@@ -6,6 +6,10 @@ import it.polimi.ingsw.view.TUI.Compositor;
 
 import java.util.ArrayList;
 
+/**
+ * Represents a component for displaying chat messages in the TUI.
+ * Implements the {@link Component} interface.
+ */
 public class Chat implements Component {
     public static final int chatHeight = 8;
     private final FixedSizeList<ChatMessage> chat = new FixedSizeList<>(chatHeight);
@@ -13,12 +17,22 @@ public class Chat implements Component {
     private final String firstPlayer;
     public int chatWidth;
 
+    /**
+     * Constructs a Chat component with the given client interface.
+     *
+     * @param client The client interface used to interact with the game server.
+     */
     public Chat(ClientInterface client) {
         this.client = client;
         this.chatWidth = Compositor.screenWidth - (client.getPlayerNum() - 1) * MiniBoard.boardWidth - ResourceView.width - (client.getPlayerNum() - 1) - 1;
         firstPlayer = client.getPlayers().getFirst();
     }
 
+    /**
+     * Converts the chat messages into a string array for display in the TUI.
+     *
+     * @return A string array representation of the chat messages.
+     */
     @Override
     public String[] toStringArray() {
         ArrayList<String> out = new ArrayList<>(chatHeight);
@@ -60,6 +74,9 @@ public class Chat implements Component {
         return out.toArray(new String[0]);
     }
 
+    /**
+     * Retrieves chat messages from the client interface and stores them in the chat list.
+     */
     public void getChat() {
         if (client.getChat() == null) {
             return;

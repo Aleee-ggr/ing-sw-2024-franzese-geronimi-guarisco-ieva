@@ -5,12 +5,15 @@ import it.polimi.ingsw.model.cards.StartingCard;
 import it.polimi.ingsw.view.TUI.components.printables.ObjectiveCard;
 import it.polimi.ingsw.view.TUI.components.printables.PrintCards;
 
+/**
+ * Represents the view for displaying starting card faces in a board game.
+ * This component displays the front and back sides of a starting card in a formatted manner suitable for the TUI.
+ */
 public class StartingCardView implements Component{
     public static final int width = 166;
     public static final int height = 39;
 
     private final static String HEADER="STARTING CARD FACES";
-
 
     private final StartingCard startingCard;
 
@@ -24,6 +27,11 @@ public class StartingCardView implements Component{
     private final int contentHeight;
     private final int marginTop;
 
+    /**
+     * Constructs a StartingCardView object based on the provided starting card.
+     *
+     * @param startingCard The starting card to display.
+     */
     public StartingCardView(StartingCard startingCard) {
         this.startingCard = startingCard;
         cardHeight = PrintCards.height;
@@ -36,6 +44,12 @@ public class StartingCardView implements Component{
         marginTop = (height - contentHeight) / 2;
     }
 
+    /**
+     * Converts the StartingCardView object to its string representation.
+     * This representation includes the formatted layout of the starting card with both front and back sides displayed.
+     *
+     * @return The string representation of the StartingCardView.
+     */
     @Override
     public String toString() {
         int header_padding = (contentWidth - HEADER.length()) / 2;

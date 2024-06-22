@@ -15,17 +15,30 @@ import java.io.PrintWriter;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * The TuiController class handles the flow of the game using the TUI.
+ * It interacts with the client and manages the different stages of the game
+ * including login, game selection, setup, and the main game loop.
+ */
 public class TuiController {
     private final ClientInterface client;
     BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     PrintWriter out = new PrintWriter(System.out, true);
     Compositor compositor = null;
 
+    /**
+     * Constructs a TuiController with the specified client interface.
+     *
+     * @param client The client interface to interact with.
+     */
     public TuiController(ClientInterface client) {
         this.client = client;
         client.setCredentials(String.valueOf(ThreadLocalRandom.current().nextInt(100, 1000)), "password");
     }
 
+    /**
+     * Starts the TUI controller, managing the flow from login to the main game loop.
+     */
     public void start() {
 
         login();
@@ -51,6 +64,9 @@ public class TuiController {
         }
     }
 
+    /**
+     * Handles the user login process.
+     */
     private void login() {
         try {
             boolean valid = false;
@@ -68,6 +84,9 @@ public class TuiController {
         }
     }
 
+    /**
+     * Handles game selection, allowing the user to join an existing game or create a new one.
+     */
     private void selectGame() { //TODO: change game selection for duplicate users
         try {
             client.fetchAvailableGames();
@@ -100,12 +119,18 @@ public class TuiController {
         }
     }
 
+    /**
+     * Waits in the lobby for other players to join.
+     */
     private void lobby() {
         clear();
         out.println("waiting for players...");
         waitUpdate();
     }
 
+    /**
+     * Handles the setup phase of the game, allowing the user to select starting cards, colors, and objectives.
+     */
     private void setup() {
         fetchSetup();
         boolean done = false;
@@ -160,6 +185,9 @@ public class TuiController {
         }
     }
 
+    /**
+     * Handles the main game loop.
+     */
     private void mainGame() {
         clear();
         fetchData();
@@ -180,6 +208,9 @@ public class TuiController {
         }
     }
 
+    /**
+     * Handles the end of the game, displaying the final scores.
+     */
     private void stop() {
         try {
             client.fetchScoreMap();
@@ -198,6 +229,13 @@ public class TuiController {
 
     }
 
+    /**
+     * Prompts the user to make a selection within a specified range.
+     *
+     * @param min The minimum valid selection.
+     * @param max The maximum valid selection.
+     * @return The selected value, or -1 if the selection is invalid.
+     */
     private int select(int min, int max) {
         int selection;
         try {
@@ -212,6 +250,9 @@ public class TuiController {
         return -1;
     }
 
+    /**
+     * Creates a new game with the specified number of players and game name.
+     */
     private void createGame() {
         try {
             int selection = 0;
@@ -236,6 +277,9 @@ public class TuiController {
         }
     }
 
+    /**
+     * Fetches the initial setup data required for the game.
+     */
     private void fetchSetup() {
         try {
             client.fetchPlayers();
@@ -249,6 +293,9 @@ public class TuiController {
         }
     }
 
+    /**
+     * Fetches the data required for the main game loop.
+     */
     private void fetchData() {
         try {
             client.fetchClientHand();
@@ -268,6 +315,9 @@ public class TuiController {
         }
     }
 
+    /**
+     * Waits for an update from the client.
+     */
     private void waitUpdate() {
         try {
             client.waitUpdate();
@@ -276,7 +326,9 @@ public class TuiController {
         }
     }
 
-
+    /**
+     * Clears the console screen using ansi escape characters.
+     */
     private void clear() {
         out.print("\033[H\033[2J");
         out.flush();

@@ -10,6 +10,10 @@ import it.polimi.ingsw.view.TUI.components.printables.PrintCards;
 
 import java.util.List;
 
+/**
+ * Represents a component for displaying the hand of cards for either the current player or opponents in the TUI.
+ * Implements the {@link Component} interface.
+ */
 public class HandView implements Component {
     public static final int panelHeight = 22;
     public static final int panelWidth = 19;
@@ -18,20 +22,35 @@ public class HandView implements Component {
 
     private String currentPlayer;
 
-    @Override
-    public String toString() {
-        return setHand();
-    }
-
-    public void setCurrentPlayer(String currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
-
+    /**
+     * Constructs a HandView object initialized with the provided client interface.
+     *
+     * @param client The client interface used to retrieve player and opponent data.
+     */
     public HandView(ClientInterface client) {
         this.client = client;
         currentPlayer = client.getUsername();
     }
 
+    @Override
+    public String toString() {
+        return setHand();
+    }
+
+    /**
+     * Sets the current player associated with the hand view.
+     *
+     * @param currentPlayer The username of the current player or opponent.
+     */
+    public void setCurrentPlayer(String currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    /**
+     * Generates the formatted string representation of the hand of cards for the current player or opponent.
+     *
+     * @return The formatted string representing the hand of cards.
+     */
     private String setHand() {
         StringBuilder out = new StringBuilder();
         int leftRightPadding = (panelWidth - PrintCards.width) / 2;

@@ -6,6 +6,10 @@ import it.polimi.ingsw.view.TUI.components.Component;
 
 import java.util.Map;
 
+/**
+ * Represents an objective card in a board game, formatted for display in the TUI.
+ * Supports two types of objectives: pattern-based and resource-based.
+ */
 public class ObjectiveCard implements Component {
     public static final int width = 15;
     public static final int height = 5;
@@ -29,6 +33,11 @@ public class ObjectiveCard implements Component {
 
     private final String card;
 
+    /**
+     * Constructs an ObjectiveCard with the specified objective.
+     *
+     * @param objective The objective to display on the card.
+     */
     public ObjectiveCard(Objective objective) {
         this.objective = objective;
         card = setCard(objective);
@@ -40,6 +49,13 @@ public class ObjectiveCard implements Component {
         return card;
     }
 
+    /**
+     * Sets the card representation based on the type of objective.
+     *
+     * @param objective The objective to format.
+     * @return The formatted string representation of the objective.
+     * @throws IllegalStateException if the objective type is unexpected.
+     */
     private static String setCard(Objective objective) {
         return switch (objective.getType()) {
             case "pattern" ->
@@ -50,6 +66,12 @@ public class ObjectiveCard implements Component {
         };
     }
 
+    /**
+     * Formats a pattern-based objective into the card template.
+     *
+     * @param objective The pattern-based objective.
+     * @return The formatted string representation of the pattern objective.
+     */
     private static String formatPattern(Objective objective) {
         char[][] pattern = new char[3][3];
         Resource[][] res_pattern = objective.getPattern();
@@ -65,6 +87,12 @@ public class ObjectiveCard implements Component {
         );
     }
 
+    /**
+     * Formats a resource-based objective into the card template.
+     *
+     * @param objective The resource-based objective.
+     * @return The formatted string representation of the resource objective.
+     */
     private static String formatResource(Objective objective) {
 
         char[][] resources = new char[2][3];

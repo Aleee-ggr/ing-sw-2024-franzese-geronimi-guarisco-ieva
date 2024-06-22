@@ -5,6 +5,11 @@ import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.view.TUI.components.printables.ObjectiveCard;
 import it.polimi.ingsw.view.TUI.components.printables.PrintCards;
 
+/**
+ * Represents the view for selecting starting objectives in a board game.
+ * This component displays the player's initial objectives and common objectives
+ * in a formatted manner suitable for the TUI.
+ */
 public class StartingObjectiveView implements Component {
     public static final int width = 166;
     public static final int height = 24;
@@ -29,6 +34,11 @@ public class StartingObjectiveView implements Component {
 
     private final PrintCards[] printCards;
 
+    /**
+     * Constructs a StartingObjectiveView object based on the provided player data.
+     *
+     * @param playerData The player data containing starting objectives, hand cards, and global objectives.
+     */
     public StartingObjectiveView(PlayerData playerData) {
         this.privateObjectives = playerData.getStartingObjectives().stream().map(ObjectiveCard::new).toArray(ObjectiveCard[]::new);
         this.commonObjectives = playerData.getGlobalObjectives().stream().map(ObjectiveCard::new).toArray(ObjectiveCard[]::new);
@@ -53,6 +63,13 @@ public class StartingObjectiveView implements Component {
         contentWidthTriple = ((GameConsts.firstHandDim) * cardWidth) + (cardSpacing * 3 - 1);
     }
 
+    /**
+     * Converts the StartingObjectiveView object to its string representation.
+     * This representation includes the formatted layout of player's hand cards,
+     * common objectives, and private objectives for selection.
+     *
+     * @return The string representation of the StartingObjectiveView.
+     */
     @Override
     public String toString() {
 

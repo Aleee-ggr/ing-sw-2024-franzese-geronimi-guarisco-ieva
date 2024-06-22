@@ -5,6 +5,10 @@ import it.polimi.ingsw.model.enums.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Represents a component for displaying available colors and allowing the user to choose one.
+ * Implements the {@link Component} interface.
+ */
 public class ColorView implements Component {
     public static final int width = 166;
     public static final int height = 39;
@@ -25,6 +29,11 @@ public class ColorView implements Component {
     private final int contentHeight;
     private final int marginTop;
 
+    /**
+     * Constructs a ColorView object with the given list of available colors.
+     *
+     * @param availableColors The list of available colors to display.
+     */
     public ColorView(ArrayList<Color> availableColors) {
         this.availableColors = availableColors;
         cardHeight = 2;
@@ -53,6 +62,12 @@ public class ColorView implements Component {
         rightSpacing.put(4, 4);
     }
 
+    /**
+     * Generates the string representation of the ColorView component.
+     * This includes the header, color selection options, and borders.
+     *
+     * @return The string representation of the ColorView component.
+     */
     @Override
     public String toString() {
         int header_padding = (contentWidth - HEADER.length()) / 2;
@@ -117,6 +132,12 @@ public class ColorView implements Component {
         return out.toString();
     }
 
+    /**
+     * Retrieves the ANSI color escape code for a given Color enumeration value.
+     *
+     * @param color The Color enumeration value.
+     * @return The ANSI color escape code.
+     */
     private String getColorCode(Color color) {
         return switch (color) {
             case RED -> "\u001b[1;31m";

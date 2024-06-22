@@ -11,7 +11,10 @@ import it.polimi.ingsw.view.TUI.RotateBoard;
 
 import java.util.Map;
 
-
+/**
+ * Represents a component for displaying a miniaturized board view in the TUI.
+ * Implements the {@link Component} interface.
+ */
 public class MiniBoard implements Component{
     public static final int boardHeight = 8;
     public static final int boardWidth = 29;
@@ -19,15 +22,32 @@ public class MiniBoard implements Component{
     private final ClientInterface client;
     private final String username;
 
+    /**
+     * Constructs a MiniBoard object with the specified username and client interface.
+     *
+     * @param username The username associated with the mini board.
+     * @param client   The client interface used to retrieve opponent data and rotate the board.
+     */
     public MiniBoard(String username, ClientInterface client) {
         this.username = username;
         this.client = client;
     }
 
+    /**
+     * Retrieves the username associated with the mini board.
+     *
+     * @return The username associated with the mini board.
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Sets the board configuration to be displayed based on the provided board data.
+     * Rotates the board using {@link RotateBoard} and prepares it for printing.
+     *
+     * @param board The board configuration represented as a map of coordinates to card IDs.
+     */
     public void setBoard(Map<Coordinates, Integer> board) {
         Map<Coordinates, Integer> rotatedBoard = RotateBoard.rotateBoard(board);
         boardToPrint = new Character[boardWidth][boardHeight];
@@ -49,6 +69,13 @@ public class MiniBoard implements Component{
         }
     }
 
+    /**
+     * Converts the MiniBoard object to its string representation.
+     * The string representation includes the formatted display of the mini board
+     * and the username colored according to the player's color.
+     *
+     * @return The string representation of the MiniBoard object.
+     */
     @Override
     public String toString() {
         StringBuilder out = new StringBuilder();
@@ -77,12 +104,25 @@ public class MiniBoard implements Component{
         return out.toString();
     }
 
+    /**
+     * Converts the given coordinates on the mini board to corresponding game board coordinates.
+     *
+     * @param x The x-coordinate on the mini board.
+     * @param y The y-coordinate on the mini board.
+     * @return The corresponding game board coordinates.
+     */
     private Coordinates getBoardCoords(int x, int y){
         int newX = x - (boardWidth - 1) / 2;
         int newY = (boardHeight - 1) / 2 - y;
         return new Coordinates(newX, newY);
     }
 
+    /**
+     * Retrieves the ANSI color code corresponding to the specified color.
+     *
+     * @param color The color enum value.
+     * @return The ANSI color code as a string.
+     */
     private String getColorCode(Color color) {
         return switch (color) {
             case RED -> "\u001b[1;31m"; // Rosso

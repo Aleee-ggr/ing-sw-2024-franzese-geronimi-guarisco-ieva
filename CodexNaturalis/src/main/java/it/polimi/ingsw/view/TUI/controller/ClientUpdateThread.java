@@ -10,11 +10,22 @@ import java.io.IOException;
 
 import static it.polimi.ingsw.controller.WaitState.*;
 
+/**
+ * This class represents a thread that listens for updates from the game server
+ * and updates the TUI accordingly.
+ */
 public class ClientUpdateThread extends Thread {
     private final ClientInterface client;
     private final SharedUpdate updater;
     private final Compositor compositor;
 
+    /**
+     * Constructs a new ClientUpdateThread.
+     *
+     * @param client     The client interface to communicate with the game server.
+     * @param updater    The shared updater instance to synchronize updates with the TUI.
+     * @param compositor The compositor instance to update the TUI components.
+     */
     public ClientUpdateThread(ClientInterface client, SharedUpdate updater, Compositor compositor) {
         this.client = client;
         this.updater = updater;

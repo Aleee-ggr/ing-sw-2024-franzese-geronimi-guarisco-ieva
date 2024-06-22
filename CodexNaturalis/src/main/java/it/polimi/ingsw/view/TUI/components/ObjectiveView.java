@@ -4,6 +4,10 @@ package it.polimi.ingsw.view.TUI.components;
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.view.TUI.components.printables.ObjectiveCard;
 
+/**
+ * Represents a view component displaying objective cards for a player and shared objectives.
+ * Implements the {@link Component} interface.
+ */
 public class ObjectiveView implements Component {
     public static final String PLAYER = "player";
     public static final String SHARED = "shared";
@@ -23,7 +27,12 @@ public class ObjectiveView implements Component {
     private final int contentHeight;
     private final int marginTop;
 
-
+    /**
+     * Constructs an ObjectiveView object with personal and shared objective cards.
+     *
+     * @param personal The personal objective card for the player.
+     * @param shared   An array of shared objective cards.
+     */
     public ObjectiveView(ObjectiveCard personal, ObjectiveCard[] shared) {
         assert shared.length == GameConsts.globalObjectives;
         this.personal = personal;
@@ -37,15 +46,31 @@ public class ObjectiveView implements Component {
         contentHeight = 5 + cardHeight;
         marginTop = (height - contentHeight) / 2;
     }
-    
+
+    /**
+     * Returns the width of the ObjectiveView component.
+     *
+     * @return The width of the ObjectiveView component.
+     */
     public static int getWidth() {
         return width;
     }
 
+    /**
+     * Returns the height of the ObjectiveView component.
+     *
+     * @return The height of the ObjectiveView component.
+     */
     public static int getHeight() {
         return height;
     }
 
+    /**
+     * Converts the ObjectiveView object to its string representation.
+     * The string representation includes formatted display of personal and shared objective cards.
+     *
+     * @return The string representation of the ObjectiveView object.
+     */
     @Override
     public String toString() {
         StringBuilder out =  new StringBuilder();

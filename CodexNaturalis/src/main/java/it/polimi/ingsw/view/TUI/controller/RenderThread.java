@@ -12,6 +12,10 @@ public class RenderThread extends Thread {
     private final Compositor compositor;
     private final SharedUpdate updater;
 
+    /**
+     * The RenderThread class handles the rendering of the TUI.
+     * It listens for updates and redraws the TUI accordingly.
+     */
     public RenderThread(ClientInterface client, SharedUpdate updater, Compositor compositor) {
         this.client = client;
         this.updater = updater;
@@ -19,8 +23,8 @@ public class RenderThread extends Thread {
     }
 
     /**
-     * Clears the screen and print the tui whenever an update is received from the given {@link #updater}, which will
-     * be called from
+     * Clears the screen and print the tui whenever an update is received from the given {@link #updater},
+     * which will be called from
      * {@link ClientUpdateThread} and {@link CommandThread}.
      */
     @Override

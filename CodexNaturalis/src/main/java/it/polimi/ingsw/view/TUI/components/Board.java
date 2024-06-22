@@ -13,6 +13,10 @@ import it.polimi.ingsw.view.TUI.RotateBoard;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents the board component for displaying card placements in the TUI.
+ * Implements the {@link Component} interface.
+ */
 public class Board implements Component {
     public static final int width = 147;
     public static final int height = 27;
@@ -25,26 +29,50 @@ public class Board implements Component {
 
     private String currentPlayer;
 
+    /**
+     * Constructs a Board component with the given client interface.
+     *
+     * @param client The client interface used to interact with the game server.
+     */
     public Board(ClientInterface client) {
         this.client = client;
         currentPlayer = client.getUsername();
         this.center = new Coordinates(0, 0);
     }
 
+    /**
+     * Sets the current player's username.
+     *
+     * @param currentPlayer The username of the current player.
+     */
     public void setCurrentPlayer(String currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
 
+    /**
+     * Sets the center coordinates of the board.
+     *
+     * @param center The coordinates representing the center of the board.
+     */
     public void setCenter(Coordinates center) {
         this.center = center;
     }
 
+    /**
+     * Moves the center coordinates of the board by the specified amounts.
+     *
+     * @param x The horizontal movement amount.
+     * @param y The vertical movement amount.
+     */
     public void moveCenter(int x, int y) {
         this.center = center
                 .horizontal(x)
                 .vertical(y);
     }
 
+    /**
+     * Computes the layout of the board by placing cards and valid positions.
+     */
     public void compute() {
         ;
         clear();
@@ -104,6 +132,11 @@ public class Board implements Component {
         }
     }
 
+    /**
+     * Converts the board layout into a string representation for display in the TUI.
+     *
+     * @return A string representation of the board layout.
+     */
     @Override
     public String toString() {
         compute();
@@ -118,6 +151,14 @@ public class Board implements Component {
         return sb.toString();
     }
 
+    /**
+     * Draws a card's ASCII art representation based on its corners, resource, and type.
+     *
+     * @param corners  Array of Corner objects representing the card's corners.
+     * @param resource The resource associated with the card.
+     * @param card     The Card object to draw.
+     * @return A 2D array of characters representing the ASCII art of the card.
+     */
     private Character[][] drawCard(Corner[] corners, Resource resource, Card card) {
 
         StringBuilder cardBuilder = new StringBuilder();
@@ -209,12 +250,24 @@ public class Board implements Component {
         return characterMatrix;
     }
 
+    /**
+     * Doubles the coordinates for a more accurate board placement calculation.
+     *
+     * @param coordinates The original coordinates to be doubled.
+     * @return Doubled coordinates for precise placement.
+     */
     private Coordinates doubleCoordinates(Coordinates coordinates) {
         return new Coordinates(
                 coordinates.x() * 6,
                 coordinates.y() * 2);
     }
 
+    /**
+     * Adjusts the given coordinates with rotation and scaling for board layout.
+     *
+     * @param coordinates The original coordinates to be adjusted.
+     * @return Adjusted coordinates based on board center and orientation.
+     */
     private Coordinates getOffsetCoordinates(Coordinates coordinates) {
         coordinates = RotateBoard.rotateCoordinates(coordinates, -45);
         coordinates = doubleCoordinates(coordinates);
@@ -223,6 +276,12 @@ public class Board implements Component {
                 -coordinates.y() + baseOffset_y - center.y());
     }
 
+    /**
+     * Checks if the given coordinates are within the visible board area.
+     *
+     * @param coordinates The coordinates to check.
+     * @return True if the coordinates are within the visible board area, false otherwise.
+     */
     private boolean isInView(Coordinates coordinates) {
         return (coordinates.x() >= 0 &&
                 coordinates.y() >= 0 &&
@@ -230,6 +289,9 @@ public class Board implements Component {
                 coordinates.y() < height);
     }
 
+    /**
+     * Clears the board by filling it with empty spaces (' ').
+     */
     private void clear() {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {

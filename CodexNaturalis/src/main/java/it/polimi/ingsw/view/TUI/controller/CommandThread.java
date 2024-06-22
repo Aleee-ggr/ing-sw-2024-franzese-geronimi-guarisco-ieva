@@ -12,6 +12,10 @@ import java.util.Arrays;
 
 import static java.lang.Math.abs;
 
+/**
+ * The CommandThread class handles user input commands and interacts with the server.
+ * Some commands are visual, while others affect the server and require updates.
+ */
 public class CommandThread extends Thread {
     private final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     private final ClientInterface client;
@@ -20,12 +24,25 @@ public class CommandThread extends Thread {
 
     boolean placed = false;
 
+    /**
+     * Constructs a CommandThread with the specified client, updater, and compositor.
+     *
+     * @param client The client interface to interact with the server.
+     * @param updater The SharedUpdate instance to check for updates.
+     * @param compositor The Compositor instance to render the TUI.
+     */
     public CommandThread(ClientInterface client, SharedUpdate updater, Compositor compositor) {
         this.client = client;
         this.updater = updater;
         this.compositor = compositor;
     }
 
+    /**
+     * Parses the offset from a string argument.
+     *
+     * @param arg The string argument.
+     * @return The parsed offset, or 0 if parsing fails.
+     */
     private static int getOffset(String arg) {
         try {
             return Integer.parseInt(arg);
@@ -283,6 +300,11 @@ public class CommandThread extends Thread {
         }
     }
 
+    /**
+     * Prints an error message to the console and waits for the user to press Enter.
+     *
+     * @param error the error message to print
+     */
     private void printError(String error) {
         System.out.println("Invalid input| %s".formatted(error));
         try {

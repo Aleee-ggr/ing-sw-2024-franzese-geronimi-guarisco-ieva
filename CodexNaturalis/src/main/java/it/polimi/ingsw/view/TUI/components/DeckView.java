@@ -10,6 +10,10 @@ import it.polimi.ingsw.view.TUI.components.printables.PrintCards;
 
 import java.util.ArrayList;
 
+/**
+ * Represents a component for displaying the deck of cards and visible cards in the TUI.
+ * Implements the {@link Component} interface.
+ */
 public class DeckView implements Component {
     private static final int width = 146;
     private static final int height = 27;
@@ -27,18 +31,40 @@ public class DeckView implements Component {
     private Card[] visibleCards = new Card[GameConsts.visibleCards];
     private ClientInterface client;
 
+    /**
+     * Constructs a DeckView with the given client interface.
+     *
+     * @param client The client interface used to retrieve deck and visible cards information.
+     */
     public DeckView(ClientInterface client) {
         this.client = client;
     }
 
+    /**
+     * Replaces the visible card at the specified index with a new card.
+     *
+     * @param index   The index of the visible card to replace.
+     * @param newCard The new card to be displayed as a visible card.
+     */
     public void replaceVisibleCard(int index, Card newCard) {
         this.visibleCards[index] = newCard;
     }
 
+    /**
+     * Replaces the deck card at the specified index with a new resource type.
+     *
+     * @param index       The index of the deck card to replace.
+     * @param newResource The new resource type to be displayed as the back of the deck card.
+     */
     public void replaceDeckCard(int index, Resource newResource) {
         this.backs[index] = newResource;
     }
 
+    /**
+     * Generates a string representation of the deck view, including visible cards and deck backs.
+     *
+     * @return A string representation of the deck view.
+     */
     @Override
     public String toString() {
         this.visibleCards = client.getVisibleCards().toArray(new Card[0]);
