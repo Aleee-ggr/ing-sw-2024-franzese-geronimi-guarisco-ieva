@@ -12,6 +12,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
@@ -87,8 +88,19 @@ public class RmiTest {
         }
 
         UUID game = clients.getFirst().newGame(2, "turnTestRMI");
+
+        clients.getFirst().fetchAvailableGames();
+
+        UUID fetchedGame = clients.getFirst().getAvailableGames().entrySet().stream()
+                .filter(entry -> entry.getValue().equals("turnTestRMI"))
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("'turnTestRMI' not found"));
+
+        assertEquals(game, fetchedGame);
+
         for (int i = 1; i < clients.size(); i++) {
-            clients.get(i).joinGame(game);
+            clients.get(i).joinGame(fetchedGame);
         }
         clients.getFirst().fetchPlayers();
         ArrayList<String> playerOrder = clients.getFirst().getPlayers();
@@ -162,6 +174,7 @@ public class RmiTest {
             client.fetchGameState();
             client.fetchVisibleCardsAndDecks();
             client.fetchOpponentsHandColor();
+            client.fetchOpponentsHandType();
             client.fetchPlayersColors();
         } catch (IOException e) {
             throw new RuntimeException(e);

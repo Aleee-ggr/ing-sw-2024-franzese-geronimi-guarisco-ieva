@@ -10,10 +10,10 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class SocketTest {
     private static SocketServer server;
@@ -75,8 +75,19 @@ public class SocketTest {
         }
 
         UUID game = clients.getFirst().newGame(2, "SocketTurnTest");
+
+        clients.getFirst().fetchAvailableGames();
+
+        UUID fetchedGame = clients.getFirst().getAvailableGames().entrySet().stream()
+                .filter(entry -> entry.getValue().equals("SocketTurnTest"))
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("'SocketTurnTest' not found"));
+
+        assertEquals(game, fetchedGame);
+
         for (int i = 1; i < clients.size(); i++) {
-            clients.get(i).joinGame(game);
+            clients.get(i).joinGame(fetchedGame);
         }
 
         clients.getFirst().fetchPlayers();
@@ -187,6 +198,7 @@ public class SocketTest {
             client.fetchGameState();
             client.fetchVisibleCardsAndDecks();
             client.fetchOpponentsHandColor();
+            client.fetchOpponentsHandType();
             client.fetchPlayersColors();
         } catch (IOException e) {
             throw new RuntimeException(e);
