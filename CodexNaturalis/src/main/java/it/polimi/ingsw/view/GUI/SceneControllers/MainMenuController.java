@@ -131,13 +131,31 @@ public class MainMenuController implements Initializable {
                         }
 
                         FXMLLoader loader;
+                        Stage stage;
                         switch (client.getGameState()) {
-                            case SETUP:
+                            case LOBBY:
                                 loader = new FXMLLoader(getClass().getResource("/GUI/fxml/WaitingRoom.fxml"));
                                 WaitingRoomController controller = new WaitingRoomController();
                                 controller.setClient(client);
                                 loader.setController(controller);
-                                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                                stage.getScene().setRoot(loader.load());
+                                break;
+                            case SETUP:
+                                if (client.getPlayers().getFirst().equals(client.getUsername())) {
+                                    client.fetchStartingObjectives();
+                                    client.fetchStartingCard();
+                                    loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseObjectiveScene.fxml"));
+                                    ChooseObjectiveController chooseObjectiveController = new ChooseObjectiveController();
+                                    chooseObjectiveController.setClient(client);
+                                    loader.setController(chooseObjectiveController);
+                                } else {
+                                    loader = new FXMLLoader(getClass().getResource("/GUI/fxml/WaitingRoom.fxml"));
+                                    WaitingRoomController waitingRoomController = new WaitingRoomController();
+                                    waitingRoomController.setClient(client);
+                                    loader.setController(waitingRoomController);
+                                }
+                                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                                 stage.getScene().setRoot(loader.load());
                                 break;
                             case MAIN:
@@ -145,13 +163,13 @@ public class MainMenuController implements Initializable {
                                 GameController gameController = new GameController();
                                 gameController.setClient(client);
                                 loader.setController(gameController);
-                                Stage stage1 = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                                stage1.getScene().setRoot(loader.load());
+                                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                                stage.getScene().setRoot(loader.load());
                                 if (Screen.getPrimary().getVisualBounds().getWidth() <= 1920 || Screen.getPrimary().getVisualBounds().getHeight() <= 1080) {
-                                    stage1.setFullScreen(true);
+                                    stage.setFullScreen(true);
                                 } else {
-                                    stage1.setMaxWidth(3840);
-                                    stage1.setMaxHeight(2160);
+                                    stage.setMaxWidth(3840);
+                                    stage.setMaxHeight(2160);
                                 }
                                 break;
                         }
@@ -159,7 +177,8 @@ public class MainMenuController implements Initializable {
                         ErrorMessageController.showErrorMessage("Impossible to join selected game!", root);
                     }
                 } catch (IOException e) {
-                    ErrorMessageController.showErrorMessage("Error loading next scene!", root);
+                    //ErrorMessageController.showErrorMessage("Error loading next scene!", root);
+                    e.printStackTrace();
                 }
             });
             gameButtonsContainer.getChildren().add(button);
