@@ -50,6 +50,7 @@ public class ChooseColorController implements Initializable {
             pion.setFitWidth(300);
             pion.setFitHeight(300);
             pion.preserveRatioProperty();
+            pion.getStyleClass().add("card");
 
             pion.setOnMouseClicked(event -> {
                 boolean isValid = false;
