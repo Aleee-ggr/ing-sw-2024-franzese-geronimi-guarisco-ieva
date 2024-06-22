@@ -90,7 +90,7 @@ public class RmiTest {
         for (int i = 1; i < clients.size(); i++) {
             clients.get(i).joinGame(game);
         }
-
+        clients.getFirst().fetchPlayers();
         ArrayList<String> playerOrder = clients.getFirst().getPlayers();
 
         ArrayList<ClientInterface> orderedClients = new ArrayList<>();

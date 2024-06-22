@@ -79,7 +79,7 @@ public class SocketTest {
             clients.get(i).joinGame(game);
         }
 
-
+        clients.getFirst().fetchPlayers();
         ArrayList<String> playerOrder = clients.getFirst().getPlayers();
 
         ArrayList<ClientInterface> orderedClients = new ArrayList<>();
