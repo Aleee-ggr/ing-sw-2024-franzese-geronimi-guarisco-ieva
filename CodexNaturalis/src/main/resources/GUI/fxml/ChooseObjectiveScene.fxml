@@ -4,33 +4,81 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: efedd6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: efedd6;" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fx:id="backgroundImage" fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/Background.png" />
          </image>
       </ImageView>
-      <Label text="CHOOSE YOUR PERSONAL OBJECTIVE" textFill="#432918">
-         <font>
-            <Font name="Trattatello" size="40.0" />
-         </font>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="250.0" prefWidth="855.0" StackPane.alignment="CENTER_LEFT">
+         <children>
+            <Label text="YOUR HAND" textFill="#432918">
+               <font>
+                  <Font name="Trattatello" size="40.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" maxWidth="-Infinity" prefWidth="855.0" spacing="25.0" style="-fx-border-color: #6e4c1e; -fx-border-width: 3; -fx-border-radius: 10;">
+               <children>
+                  <ImageView fx:id="firstHandCard" fitHeight="178.74" fitWidth="268.11" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="secondHandCard" fitHeight="178.74" fitWidth="268.11" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="thirdHandCard" fitHeight="178.74" fitWidth="268.11" pickOnBounds="true" preserveRatio="true" />
+               </children>
+               <padding>
+                  <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+               </padding>
+            </HBox>
+         </children>
          <StackPane.margin>
-            <Insets bottom="250.0" />
+            <Insets bottom="135.0" left="35.0" />
          </StackPane.margin>
-      </Label>
-      <ImageView fx:id="firstObjective" fitHeight="397.2" fitWidth="595.8" onMouseClicked="#changeChooseStarting" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_LEFT">
+      </VBox>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="250.0" prefWidth="530.0" StackPane.alignment="CENTER_RIGHT">
+         <children>
+            <Label text="COMMON OBJECTIVES" textFill="#432918">
+               <font>
+                  <Font name="Trattatello" size="40.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" maxWidth="-Infinity" prefWidth="530.0" spacing="50.0" style="-fx-border-color: #6e4c1e; -fx-border-width: 3; -fx-border-radius: 10;">
+               <children>
+                  <ImageView fx:id="firstCommonObjective" fitHeight="178.74" fitWidth="268.11" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="secondCommonObjective" fitHeight="178.74" fitWidth="268.11" pickOnBounds="true" preserveRatio="true" />
+               </children>
+               <padding>
+                  <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+               </padding>
+            </HBox>
+         </children>
          <StackPane.margin>
-            <Insets left="250.0" top="300.0" />
+            <Insets bottom="135.0" right="100.0" />
          </StackPane.margin>
-      </ImageView>
-      <ImageView fx:id="secondObjective" fitHeight="397.2" fitWidth="595.8" onMouseClicked="#changeChooseStarting" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_RIGHT">
+      </VBox>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="250.0" prefWidth="700.0" StackPane.alignment="BOTTOM_CENTER">
+         <children>
+            <Label text="CHOOSE YOUR OBJECTIVE" textFill="#432918">
+               <font>
+                  <Font name="Trattatello" size="40.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" maxWidth="-Infinity" prefWidth="700.0" spacing="50.0" style="-fx-border-color: #6e4c1e; -fx-border-width: 3; -fx-border-radius: 10;">
+               <children>
+                  <ImageView fx:id="firstObjective" fitHeight="218.46" fitWidth="327.69" onMouseClicked="#changeBoardScene" pickOnBounds="true" preserveRatio="true" styleClass="card" />
+                  <ImageView fx:id="secondObjective" fitHeight="218.46" fitWidth="327.69" onMouseClicked="#changeBoardScene" pickOnBounds="true" preserveRatio="true" styleClass="card" />
+               </children>
+               <padding>
+                  <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+               </padding>
+            </HBox>
+         </children>
          <StackPane.margin>
-            <Insets right="250.0" top="300.0" />
+            <Insets bottom="50.0" />
          </StackPane.margin>
-      </ImageView>
+      </VBox>
    </children>
 </StackPane>
