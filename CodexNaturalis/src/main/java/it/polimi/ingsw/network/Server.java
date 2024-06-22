@@ -22,10 +22,9 @@ import java.util.function.Predicate;
 
 /**
  * The abstract class Server serves as a base class for server implementations.
- * It manages games and their corresponding threads, as well as players and
- * messages. </p>
- * Each protocol-specific implementation of a server calls for general methods in Server.java. </p>
- * The class also contains a static initializer that starts a thread to monitor players disconnections. </p>
+ * It manages games and their corresponding threads, as well as players and messages.
+ * Each protocol-specific implementation of a server calls for general methods in Server.java.
+ * The class also contains a static initializer that starts a thread to monitor players disconnections.
  *
  * @see it.polimi.ingsw.network.rmi.RmiServer
  * @see it.polimi.ingsw.network.socket.SocketServer
@@ -41,7 +40,7 @@ public abstract class Server {
     protected static final Map<UUID, String> gameNames = new ConcurrentHashMap<>();
     protected static final Map<UUID, GameThread> gameThreads = new ConcurrentHashMap<>();
 
-    /*
+    /**
      * The static initializer starts a thread that monitors player disconnections.
      * The thread checks the status of each player every heartbeatInterval milliseconds.
      * If a player has been offline for more than disconnectionThreshold heartbeats, the player is considered disconnected.
@@ -454,6 +453,15 @@ public abstract class Server {
         }
     }
 
+    /**
+     * General Server method to get the hand types of a player.
+     * It's used to fetch the hand types of the opponents to show the type of the cards to the player.
+     *
+     * @param game                 the unique ID of the game
+     * @param username             the username of the player requesting the hand types
+     * @param usernameRequiredData the username of the player whose hand types are requested
+     * @return a list of booleans indicating if the cards are gold
+     */
     public static ArrayList<Boolean> getHandTypeServer(UUID game, String username, String usernameRequiredData) {
         ThreadMessage message = ThreadMessage.getHandType(username, usernameRequiredData);
         sendMessage(game, message);

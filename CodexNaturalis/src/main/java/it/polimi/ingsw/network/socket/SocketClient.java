@@ -1,6 +1,5 @@
 package it.polimi.ingsw.network.socket;
 
-
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.model.Game;
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.UUID;
-
 
 /**
  * The SocketClient class represents a client that uses sockets for network communication.
@@ -113,7 +111,6 @@ public class SocketClient extends Client implements ClientInterface {
         client.close();
         waitUpdateSocket.close();
     }
-
 
     /**
      * Sends the server the message to create a game.
@@ -338,7 +335,6 @@ public class SocketClient extends Client implements ClientInterface {
         return true;
     }
 
-
     @Override
     public synchronized boolean fetchPlayersColors() throws IOException {
         for (String player : players) {
@@ -432,7 +428,6 @@ public class SocketClient extends Client implements ClientInterface {
         return fetchVisibleCardsAndDecksClient(visibleCardsIds, visibleDecksIds);
     }
 
-
     @Override
     public void fetchTurnPlayer() throws IOException {
         this.turnPlayerName = "";
@@ -441,6 +436,9 @@ public class SocketClient extends Client implements ClientInterface {
 
     /**
      * Handles the server's response message.
+     *
+     * @return true if the response was successfully handled, false otherwise.
+     * @throws IOException if an I/O error occurs.
      */
     public synchronized boolean handleResponse() throws IOException {
         GenericResponseMessage response;

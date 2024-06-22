@@ -111,10 +111,29 @@ public interface ClientInterface {
      */
     boolean choosePersonalObjective(int objectiveId) throws IOException;
 
+    /**
+     * Method to ask the server to choose a player color.
+     *
+     * @param playerColor The color chosen by the player.
+     * @return True if the player color was chosen successfully, false otherwise.
+     * @throws IOException If an I/O error occurs.
+     */
     boolean choosePlayerColor(Color playerColor) throws IOException;
 
+    /**
+     * Method to ask the server to fetch player colors.
+     *
+     * @return True if the player colors were fetched successfully, false otherwise.
+     * @throws IOException If an I/O error occurs.
+     */
     boolean fetchPlayersColors() throws IOException;
 
+    /**
+     * Method to ask the server to fetch available colors.
+     *
+     * @return True if the available colors were fetched successfully, false otherwise.
+     * @throws IOException If an I/O error occurs.
+     */
     boolean fetchAvailableColors() throws IOException;
 
     /**
@@ -221,6 +240,12 @@ public interface ClientInterface {
      */
     boolean fetchOpponentsHandColor() throws IOException;
 
+    /**
+     * Method to fetch the opponent's hand type from the server.
+     *
+     * @return True if the opponent's hand type was fetched successfully, false otherwise.
+     * @throws IOException If an I/O error occurs.
+     */
     boolean fetchOpponentsHandType() throws IOException;
     /**
      * Method to fetch the starting objectives from the server.
@@ -240,8 +265,12 @@ public interface ClientInterface {
      */
     boolean fetchStartingCard() throws IOException;
 
+    /**
+     * Method to fetch the current turn player from the server.
+     *
+     * @throws IOException If an I/O error occurs.
+     */
     void fetchTurnPlayer() throws IOException;
-    //getters and setters
 
     /**
      * Method to get the visible cards from the client.

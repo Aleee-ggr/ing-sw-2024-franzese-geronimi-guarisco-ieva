@@ -9,8 +9,6 @@ import java.net.Socket;
 /**
  * The SocketServer class extends the Server class and represents a server that uses sockets
  * for communication with clients.
- *
- * @author Samuele Franzese
  */
 public class SocketServer extends Server {
     private ServerSocket server;

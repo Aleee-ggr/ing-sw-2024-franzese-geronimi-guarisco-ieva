@@ -291,6 +291,14 @@ public class Client {
         return success;
     }
 
+    /**
+     * Method used for choosing the player color.
+     * It receives the chosen color from the user interface and the success of the operation from the server.
+     *
+     * @param playerColor the color chosen by the player.
+     * @param success     a boolean value representing the success of the operation from the server.
+     * @return a boolean value representing the success of the choice locally.
+     */
     public boolean choosePlayerColorClient(Color playerColor, Boolean success) {
         if (success) {
             getPlayerData().setPlayerColor(playerColor);
@@ -298,6 +306,13 @@ public class Client {
         return success;
     }
 
+    /**
+     * Method used for fetching available colors from the server.
+     * It receives a list of available colors from the server and updates the player data accordingly.
+     *
+     * @param availableColors an ArrayList of Color objects representing available colors.
+     * @return true if available colors were successfully fetched and updated locally, false otherwise.
+     */
     public boolean fetchAvailableColorsClient(ArrayList<Color> availableColors) {
         if (availableColors == null) {
             return false;
