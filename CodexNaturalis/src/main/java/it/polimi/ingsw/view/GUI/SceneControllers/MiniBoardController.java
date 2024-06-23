@@ -13,10 +13,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
@@ -47,13 +47,13 @@ public class MiniBoardController implements Initializable, TabController {
     GridPane board3;
 
     @FXML
-    Text firstPlayerName;
+    Label firstPlayerName;
 
     @FXML
-    Text secondPlayerName;
+    Label secondPlayerName;
 
     @FXML
-    Text thirdPlayerName;
+    Label thirdPlayerName;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -124,7 +124,7 @@ public class MiniBoardController implements Initializable, TabController {
         }
 
         GridPane[] boards = {board1, board2, board3};
-        Text[] playersNames = {firstPlayerName, secondPlayerName, thirdPlayerName};
+        Label[] playersNames = {firstPlayerName, secondPlayerName, thirdPlayerName};
         int playerIndex = 0;
 
         for (Map.Entry<String, ClientData> entry: client.getOpponentData().entrySet()) {
@@ -184,6 +184,12 @@ public class MiniBoardController implements Initializable, TabController {
                         GridPane.setValignment(stackPane, VPos.CENTER);
                     }
                 }
+            }
+        }
+
+        for (int i = 0; i < playersNames.length; i++) {
+            if (!playersNames[i].getText().isEmpty()) {
+                playersNames[i].getStyleClass().add("label-miniboard");
             }
         }
     }

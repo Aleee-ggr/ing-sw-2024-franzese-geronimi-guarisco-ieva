@@ -18,8 +18,8 @@
       </ImageView>
       <Group opacity="0.5" StackPane.alignment="CENTER">
          <children>
-            <StackPane alignment="TOP_CENTER" prefHeight="350.0" prefWidth="1000.0" style="-fx-border-color: #432918; -fx-border-width: 4;">
-               <VBox fx:id="playerScoreContainer" alignment="TOP_CENTER" minHeight="0.0" minWidth="0.0" prefHeight="500.0" prefWidth="1000.0" spacing="20.0" />
+            <StackPane alignment="TOP_CENTER" prefHeight="450.0" prefWidth="1000.0" style="-fx-border-color: #432918; -fx-border-width: 4;">
+               <VBox fx:id="playerScoreContainer" alignment="TOP_CENTER" minHeight="0.0" minWidth="0.0" prefHeight="450.0" prefWidth="1000.0" spacing="20.0" />
             </StackPane>
          </children>
          <StackPane.margin>
@@ -31,7 +31,7 @@
             <Font name="Trattatello" size="100.0" />
          </font>
          <StackPane.margin>
-            <Insets top="100.0" />
+            <Insets top="75.0" />
          </StackPane.margin>
       </Label>
    </children>

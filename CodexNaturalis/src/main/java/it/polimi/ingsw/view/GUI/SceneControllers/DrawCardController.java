@@ -180,6 +180,25 @@ public class DrawCardController implements Initializable, TabController {
                 drawCard(5);
                 changeTurn();
             });
+        } else {
+            goldCard1.setOnMouseClicked(event -> {
+                ErrorMessageController.showErrorMessage("It's not your turn to draw a card!", gameController.root);
+            });
+            goldCard2.setOnMouseClicked(event -> {
+                ErrorMessageController.showErrorMessage("It's not your turn to draw a card!", gameController.root);
+            });
+            stdCard1.setOnMouseClicked(event -> {
+                ErrorMessageController.showErrorMessage("It's not your turn to draw a card!", gameController.root);
+            });
+            stdCard2.setOnMouseClicked(event -> {
+                ErrorMessageController.showErrorMessage("It's not your turn to draw a card!", gameController.root);
+            });
+            goldDeck.setOnMouseClicked(event -> {
+                ErrorMessageController.showErrorMessage("It's not your turn to draw a card!", gameController.root);
+            });
+            stdDeck.setOnMouseClicked(event -> {
+                ErrorMessageController.showErrorMessage("It's not your turn to draw a card!", gameController.root);
+            });
         }
     }
 

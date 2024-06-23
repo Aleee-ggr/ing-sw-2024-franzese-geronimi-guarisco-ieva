@@ -143,7 +143,7 @@ public class ScoreController implements Initializable, TabController {
                 .forEach(entry -> {
 
                     Image markerImage = null;
-                    Color playerColor = null;
+                    Color playerColor;
                     if (entry.getKey().equals(client.getUsername())) {
                         playerColor = playerData.getPlayerColor();
                     } else {
@@ -163,16 +163,18 @@ public class ScoreController implements Initializable, TabController {
                     int count = scoreCount.getOrDefault(entry.getValue(), 0);
                     scoreCount.put(entry.getValue(), count + 1);
 
-                    scorePion.setLayoutX(scoreCoordinates.get(entry.getValue()).getX());
-                    scorePion.setLayoutY(scoreCoordinates.get(entry.getValue()).getY() + count * -5);
+                    if (entry.getValue() < 30) {
+                        scorePion.setLayoutX(scoreCoordinates.get(entry.getValue()).getX());
+                        scorePion.setLayoutY(scoreCoordinates.get(entry.getValue()).getY() + count * -5);
 
-                    scoreBoard.getChildren().add(scorePion);
+                        scoreBoard.getChildren().add(scorePion);
+                    }
 
                     Label nameLabel = new Label(entry.getKey());
-                    nameLabel.setStyle(String.format("-fx-font-weight: bold; -fx-text-fill: %s; -fx-font-family: Trattatello; -fx-font-size: 50px;", !playerColor.equals(Color.YELLOW) ? playerColor : "#d5b343"));
+                    nameLabel.setStyle(String.format("-fx-font-weight: bold; -fx-text-fill: %s; -fx-font-family: Trattatello; -fx-font-size: 30px;", !playerColor.equals(Color.YELLOW) ? playerColor : "#d5b343"));
 
                     Label scoreLabel = new Label(": " + entry.getValue());
-                    scoreLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #432918; -fx-font-family: Trattatello; -fx-font-size: 50px;");
+                    scoreLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #432918; -fx-font-family: Trattatello; -fx-font-size: 30px;");
 
                     HBox playerInfo = new HBox(nameLabel, scoreLabel);
                     playerInfo.setAlignment(Pos.CENTER);

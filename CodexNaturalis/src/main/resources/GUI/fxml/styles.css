@@ -208,3 +208,10 @@
     -fx-background-color: #f1f0e5;
     -fx-background-radius: 10px;
 }
+
+.label-miniboard {
+    -fx-border-color: #6e4c1e;
+    -fx-border-width: 3px;
+    -fx-background-color: #efedd6;
+    -fx-padding: 0 5 0 5;
+}

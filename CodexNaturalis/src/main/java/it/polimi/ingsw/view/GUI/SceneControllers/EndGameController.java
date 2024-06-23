@@ -53,10 +53,10 @@ public class EndGameController implements Initializable {
                 }
 
                 Label nameLabel = new Label(entry.getKey());
-                nameLabel.setStyle(String.format("-fx-font-weight: bold; -fx-text-fill: %s; -fx-font-family: Trattatello; -fx-font-size: 50px;", playerColor));
+                nameLabel.setStyle(String.format("-fx-font-weight: bold; -fx-text-fill: %s; -fx-font-family: Trattatello; -fx-font-size: 40px;", !playerColor.equals(Color.YELLOW) ? playerColor : "#d5b343"));
 
                 Label scoreLabel = new Label(": " + entry.getValue());
-                scoreLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #432918; -fx-font-family: Trattatello; -fx-font-size: 50px;");
+                scoreLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #432918; -fx-font-family: Trattatello; -fx-font-size: 40px;");
 
                 HBox playerInfo = new HBox(nameLabel, scoreLabel);
                 playerInfo.setAlignment(Pos.CENTER);
