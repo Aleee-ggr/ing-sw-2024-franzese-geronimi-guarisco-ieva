@@ -58,6 +58,7 @@ public class ClientUpdateThread extends Thread {
             try {
                 oldState = state;
                 state = client.waitUpdate();
+                System.out.println("IDK");
                 if (state == UPDATE || state == TURN_UPDATE) {
                     fetchData();
                     updater.update();
@@ -81,6 +82,7 @@ public class ClientUpdateThread extends Thread {
                 running = client.getGameState() != GameState.STOP;
             }
         }
+        System.out.println("Here!");
     }
 
     /**

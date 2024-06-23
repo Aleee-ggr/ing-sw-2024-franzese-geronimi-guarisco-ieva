@@ -281,7 +281,7 @@ public class GameThread extends Thread {
     public void endGame() {
         for (String currentPlayer : controller.getGame().getPlayers().stream().map(Player::getUsername).toList()) {
             this.currentPlayer = currentPlayer;
-            turnMap.put(currentPlayer, WaitState.TURN);
+            turnMap.put(currentPlayer, WaitState.TURN_UPDATE);
             playerTurn(currentPlayer);
             turnMap.put(currentPlayer, WaitState.WAIT);
         }
@@ -298,12 +298,14 @@ public class GameThread extends Thread {
     }
 
     public void gameStop() {
-        sendUpdate();
+        for (Player player : controller.getGame().getPlayers()) {
+            turnMap.put(player.getUsername(), WaitState.UPDATE);
+        }
         Thread message = new Thread(() -> {
             ThreadMessage msg = getMessage();
 
             while (true) {
-                if (msg.type().equals("getScore")) {
+                if (msg.type().contains("get")) {
                     respond(msg);
                 } else {
                     messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), ("Invalid message for " + "context STOP: %s").formatted(msg.type())));
@@ -312,7 +314,7 @@ public class GameThread extends Thread {
         });
 
         try {
-            sleep(10000);
+            sleep(1000 * 60);
         } catch (InterruptedException ignored) {
         }
 
