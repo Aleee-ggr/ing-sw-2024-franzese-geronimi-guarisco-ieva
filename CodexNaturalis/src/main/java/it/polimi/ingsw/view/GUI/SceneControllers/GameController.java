@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.GUI.SceneControllers;
 
+import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.model.ChatMessage;
 import it.polimi.ingsw.model.board.Coordinates;
@@ -67,6 +68,7 @@ public class GameController implements Initializable {
     private ClientInterface client;
     private PlayerData playerData;
     private SharedUpdate updater;
+    private ClientUpdate clientUpdate;
     private Coordinates center;
     protected boolean frontSide = true;
     private final Map<Coordinates, StackPane> validPlacementPanes = new HashMap<>();
@@ -146,7 +148,8 @@ public class GameController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         updater = new SharedUpdate();
-        new ClientUpdate(client, this, updater).start();
+        clientUpdate = new ClientUpdate(client, this, updater);
+        clientUpdate.start();
         new ClientRenderUpdateThread(client, this, updater).start();
         tabControllers = new HashMap<>();
         tabControllers.put("DrawCard", new DrawCardController());
@@ -902,12 +905,12 @@ public class GameController implements Initializable {
         Task<Void> endGameThread = new Task<>() {
             @Override
             protected Void call() throws Exception {
-                boolean running = true;
-                while (running) {
-                    if (client.getGameState().equals(GameState.STOP)) {
-                        running = false;
+                try{
+                    while (clientUpdate.getWaitState() != WaitState.ENDGAME) {
+                        Thread.sleep(1000);
                     }
-                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
                 return null;
             }
@@ -915,7 +918,8 @@ public class GameController implements Initializable {
 
         endGameThread.setOnSucceeded(event -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/EndGameScene.fxml"));
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/EndScene.fxml"));
                 EndGameController controller = new EndGameController();
                 controller.setClient(client);
                 loader.setController(controller);

@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.controller.SharedUpdate;
+import it.polimi.ingsw.view.TUI.controller.View;
 
 import java.io.IOException;
 
@@ -18,7 +19,7 @@ public class ClientUpdate extends Thread {
     private final ClientInterface client;
     private final SharedUpdate updater;
     private final GameController gameController;
-
+    private volatile WaitState state;
     /**
      * Constructs a new ClientUpdate thread.
      *
@@ -32,19 +33,20 @@ public class ClientUpdate extends Thread {
         this.gameController = gameController;
     }
 
+    public WaitState getWaitState() {
+        return state;
+    }
+
     /**
      * Wait for updates from the server, using the function waitUpdate and waiting for a return from the call.
      * This function will set the state to either TURN or WAIT, and then wait for the server to change it to UPDATE
      * or TURN_UPDATE, if an update is received,
      * fetch necessary data from the server and update the view using the updater.
      */
+    @Override
     public void run() {
-        boolean running;
-        WaitState state = null;
-        synchronized (client) {
-            running = client.getGameState() != GameState.STOP;
-        }
-        while (running) {
+        state = null;
+        while (state != ENDGAME) {
             try {
                 state = client.waitUpdate();
                 if (state == UPDATE || state == TURN_UPDATE) {
@@ -61,9 +63,6 @@ public class ClientUpdate extends Thread {
 
             } catch (IOException | InterruptedException e) {
                 System.exit(1);
-            }
-            synchronized (client) {
-                running = client.getGameState() != GameState.STOP;
             }
         }
     }
