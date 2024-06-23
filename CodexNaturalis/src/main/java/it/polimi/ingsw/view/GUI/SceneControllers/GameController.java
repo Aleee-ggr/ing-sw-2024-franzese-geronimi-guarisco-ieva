@@ -311,16 +311,15 @@ public class GameController implements Initializable {
      *
      * @param usernameOpponent The username of the opponent whose data needs to be displayed.
      */
-    public void setupOpponentData(String usernameOpponent) {
+    public void setOpponentData(String usernameOpponent) {
         ClientData opponentData = client.getOpponentData().get(usernameOpponent);
 
-        if (buttonsContainer.getChildren().size() == 1) {
+        if (buttonsContainer.getChildren().isEmpty()) {
             Button button = new Button();
             button.setText("YOUR BOARD");
             button.setPrefWidth(250);
             button.setPrefHeight(78);
             button.setId("yourBoard");
-
             Glow glow = new Glow();
             glow.setLevel(0.3);
             button.setEffect(glow);
@@ -366,7 +365,7 @@ public class GameController implements Initializable {
             GridPane.setValignment(stackPane, VPos.CENTER);
         }
 
-        setHand(client.getUsername(), frontSide);
+        setHand(client.getUsername(), false);
     }
 
     /**
@@ -383,6 +382,7 @@ public class GameController implements Initializable {
             client.fetchPlayersBoards();
             client.fetchPlayersPlacingOrder();
             client.fetchPlayersResources();
+            client.fetchPlayersColors();
             client.fetchScoreMap();
             client.fetchGameState();
             client.fetchVisibleCardsAndDecks();
