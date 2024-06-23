@@ -188,7 +188,7 @@ public class GameController implements Initializable {
         for (Map.Entry<Resource, Integer> entry : playerData.getResources().entrySet()) {
             if (entry.getKey() != Resource.NONE && entry.getKey() != Resource.NONCOVERABLE) {
                 resourceText.get(entry.getKey()).setText(String.valueOf(entry.getValue()));
-                resourceText.get(entry.getKey()).setStyle("-fx-font-family: Trattatello;" + "-fx-font-weight: bold;" + "-fx-text-fill: #432918;" + "-fx-font-size: 20");
+                resourceText.get(entry.getKey()).setStyle("-fx-font-family: Trattatello;" + "-fx-font-weight: bold;" + "-fx-fill: #432918;" + "-fx-font-size: 20");
             }
         }
     }
@@ -771,7 +771,7 @@ public class GameController implements Initializable {
                     }
 
                     setupValidPlacements();
-                } else if (Integer.parseInt(selectedHandCard.getId()) < 0){
+                } else if (Integer.parseInt(selectedHandCard.getId()) > 0){
                     ErrorMessageController.showErrorMessage("Requirements not met to place card!", root);
                 } else {
                     ErrorMessageController.showErrorMessage("Card not placed correctly!", root);

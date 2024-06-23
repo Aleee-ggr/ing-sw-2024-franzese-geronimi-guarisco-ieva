@@ -31,16 +31,16 @@
          <children>
             <VBox fx:id="decksContainer" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="300.0" spacing="400.0">
                <children>
-                  <ImageView fx:id="goldDeck" fitHeight="151.425" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="stdDeck" fitHeight="151.425" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="goldDeck" fitHeight="151.425" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" styleClass="card" />
+                  <ImageView fx:id="stdDeck" fitHeight="151.425" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" styleClass="card" />
                </children>
             </VBox>
             <VBox fx:id="cardsContainer" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="300.0" spacing="32.0" HBox.hgrow="ALWAYS">
                <children>
-                  <ImageView fx:id="goldCard1" fitHeight="151.425" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="goldCard2" fitHeight="151.425" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="stdCard1" fitHeight="151.425" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="stdCard2" fitHeight="151.425" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="goldCard1" fitHeight="151.425" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" styleClass="card" />
+                  <ImageView fx:id="goldCard2" fitHeight="151.425" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" styleClass="card" />
+                  <ImageView fx:id="stdCard1" fitHeight="151.425" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" styleClass="card" />
+                  <ImageView fx:id="stdCard2" fitHeight="151.425" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" styleClass="card" />
                </children>
             </VBox>
          </children>

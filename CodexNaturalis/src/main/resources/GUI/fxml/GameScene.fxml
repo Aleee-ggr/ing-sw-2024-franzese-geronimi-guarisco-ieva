@@ -111,10 +111,10 @@
             <children>
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="RESOURCES" StackPane.alignment="TOP_CENTER">
                     <StackPane.margin>
-                        <Insets top="15.0" />
+                        <Insets top="10.0" />
                     </StackPane.margin>
                     <font>
-                        <Font name="Trattatello" size="13.0" />
+                        <Font name="Trattatello" size="20.0" />
                     </font>
                 </Text>
                 <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_LEFT">

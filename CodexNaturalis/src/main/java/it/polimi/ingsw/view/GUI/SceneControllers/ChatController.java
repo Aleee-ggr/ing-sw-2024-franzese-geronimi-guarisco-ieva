@@ -142,15 +142,23 @@ public class ChatController implements Initializable, TabController {
         messageVBox.setPadding(new Insets(10, 0, 15, 0));
         messageVBox.setSpacing(10);
 
+        Color playerColor;
+        if (chatMessage.sender().equals(client.getUsername())) {
+            playerColor = playerData.getPlayerColor();
+        } else {
+            playerColor = ((OpponentData) client.getOpponentData().get(chatMessage.sender())).getPlayerColor();
+        }
+
         Text sender = new Text(chatMessage.sender() + ":");
-        sender.setStyle("-fx-font-family: Trattatello;" +
+        sender.setStyle(String.format("-fx-font-family: Trattatello;" +
                 "-fx-font-size: 20;" +
-                "-fx-text-fill: #432918;"
+                "-fx-fill: %s;", !playerColor.equals(Color.YELLOW) ? playerColor : "#d5b343")
         );
+
         Text message = new Text(chatMessage.message());
         message.setStyle("-fx-font-family: Trattatello;" +
                 "-fx-font-size: 20;" +
-                "-fx-text-fill: #432918;"
+                "-fx-fill: #432918;"
         );
         sender.setBoundsType(TextBoundsType.VISUAL);
         message.setBoundsType(TextBoundsType.VISUAL);

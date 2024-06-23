@@ -9,7 +9,6 @@ import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -36,12 +35,6 @@ public class LoginController implements Initializable {
     @FXML
     private TextField passwordField;
 
-    @FXML
-    private Text loginError;
-
-    @FXML
-    private Text loginErrorMessage;
-
     /**
      * Changes the scene to the main menu scene when the corresponding button is clicked.
      * Sets the client credentials based on the entered username and password.
@@ -50,7 +43,7 @@ public class LoginController implements Initializable {
      */
     @FXML
     protected void changeMainMenuScene(ActionEvent event) {
-        boolean valid = false;
+        boolean valid;
         if (!usernameField.getText().isEmpty() && !passwordField.getText().isEmpty()) {
             try {
                 valid = client.checkCredentials(usernameField.getText(), passwordField.getText());
