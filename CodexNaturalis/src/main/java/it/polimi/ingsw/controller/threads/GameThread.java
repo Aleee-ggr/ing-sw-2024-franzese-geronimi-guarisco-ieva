@@ -113,7 +113,6 @@ public class GameThread extends Thread {
                 if (controller.getGame().getPlayers().size() == playerCount) {
                     gameState = GameState.SETUP;
                     controller.getGame().setGameState(GameState.SETUP);
-                    System.out.println("New game state: " + gameState);
                 }
             }
         });
@@ -298,9 +297,11 @@ public class GameThread extends Thread {
     }
 
     public void gameStop() {
+        System.out.println("!!!!STOP!!!!");
         for (Player player : controller.getGame().getPlayers()) {
-            turnMap.put(player.getUsername(), WaitState.UPDATE);
+            turnMap.put(player.getUsername(), WaitState.ENDGAME);
         }
+        
         Thread message = new Thread(() -> {
             ThreadMessage msg = getMessage();
 

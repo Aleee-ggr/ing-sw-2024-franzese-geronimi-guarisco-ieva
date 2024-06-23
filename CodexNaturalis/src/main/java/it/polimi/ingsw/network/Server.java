@@ -314,13 +314,11 @@ public abstract class Server {
      * @return the current state of the game
      */
     public static GameState getGameStateServer(UUID game, String username) {
-        ThreadMessage message = ThreadMessage.getGameState(username);
-        sendMessage(game, message);
-        ThreadMessage response = threadMessages.get(game).remove();
-
-        if (response.status() == Status.OK) {
-            return GameState.valueOf(response.args()[0]);
-        } else {
+        try {
+            System.out.println("getGameState: " + gameThreads.get(game).getGameState());
+            return gameThreads.get(game).getGameState();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
             return null;
         }
     }

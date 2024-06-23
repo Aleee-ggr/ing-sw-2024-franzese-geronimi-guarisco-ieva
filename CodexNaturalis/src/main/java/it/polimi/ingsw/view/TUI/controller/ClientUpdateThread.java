@@ -54,11 +54,10 @@ public class ClientUpdateThread extends Thread {
         synchronized (client) {
             running = client.getGameState() != GameState.STOP;
         }
-        while (running) {
+        while (state != ENDGAME) {
             try {
                 oldState = state;
                 state = client.waitUpdate();
-                System.out.println("IDK");
                 if (state == UPDATE || state == TURN_UPDATE) {
                     fetchData();
                     updater.update();
@@ -77,9 +76,6 @@ public class ClientUpdateThread extends Thread {
 
             } catch (IOException | InterruptedException e) {
                 System.exit(1);
-            }
-            synchronized (client) {
-                running = client.getGameState() != GameState.STOP;
             }
         }
         System.out.println("Here!");
