@@ -31,7 +31,7 @@ import java.util.function.Predicate;
  */
 public abstract class Server {
     protected static final Map<UUID, BlockingQueue<ThreadMessage>> threadMessages = new ConcurrentHashMap<>();
-    protected static final Map<UUID, Integer> games = new ConcurrentHashMap<>(); // TODO: remove game while closed
+    protected static final Map<UUID, Integer> games = new ConcurrentHashMap<>();
     protected static final Map<String, String> players = new ConcurrentHashMap<>();
     protected static final Map<String, AtomicInteger> playerStatus = new ConcurrentHashMap<>();
     protected static final Map<String, UUID> playerGame = new ConcurrentHashMap<>();
@@ -59,12 +59,9 @@ public abstract class Server {
                     }
 
                     for (Map.Entry<String, AtomicInteger> entry : playerStatus.entrySet()) {
-                        if (entry.getValue().get() >= 10) {
-                            continue;
-                        } else {
+                        if (entry.getValue().get() < 10) {
                             entry.getValue().incrementAndGet();
                         }
-                        System.out.println(entry.getKey() + " is now " + entry.getValue().get());
                     }
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
