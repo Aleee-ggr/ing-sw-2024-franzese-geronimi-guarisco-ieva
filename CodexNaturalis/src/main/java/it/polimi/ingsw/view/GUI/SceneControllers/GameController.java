@@ -284,7 +284,9 @@ public class GameController implements Initializable {
                 while (running) {
                     if (messages != null && client.getChat() != null) {
                         if (!messages.equals(client.getChat())) {
-                            newMessages.setVisible(true);
+                            if (activeTab == null || !activeTab.equals("Chat")) {
+                                newMessages.setVisible(true);
+                            }
                             messages = client.getChat();
                         }
                     } else {

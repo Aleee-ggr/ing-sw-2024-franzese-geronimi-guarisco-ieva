@@ -27,7 +27,7 @@ public class Prompt implements Component {
     @Override
     public String toString() {
         if(firstPlayer.equals(username))
-            return "\u001b[1;90m%s>\u001b[0m".formatted(username);
+            return "\u001b[1;90m%s> \u001b[0m".formatted(username);
         return "%s> ".formatted(username);
     }
 }
