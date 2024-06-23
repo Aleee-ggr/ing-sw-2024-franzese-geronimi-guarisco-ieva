@@ -36,7 +36,8 @@ public class TuiController {
     }
 
     /**
-     * Starts the TUI controller, managing the flow from login to the main game loop.
+     * Starts the TUI controller, managing the flow from login to the main game
+     * loop.
      */
     public void start() {
 
@@ -56,7 +57,7 @@ public class TuiController {
         switch (client.getGameState()) {
             case SETUP:
                 setup();
-            case MAIN:
+            case MAIN, ENDGAME:
                 mainGame();
             case STOP:
                 stop();
@@ -84,9 +85,10 @@ public class TuiController {
     }
 
     /**
-     * Handles game selection, allowing the user to join an existing game or create a new one.
+     * Handles game selection, allowing the user to join an existing game or create
+     * a new one.
      */
-    private void selectGame() { //TODO: change game selection for duplicate users
+    private void selectGame() { // TODO: change game selection for duplicate users
         try {
             client.fetchAvailableGames();
             int selected;
@@ -109,7 +111,8 @@ public class TuiController {
             } else {
                 UUID choice = games.get(selected - 1);
                 if (!client.joinGame(choice)) {
-                    out.println("Invalid Join! \n" + "Are you sure you don't already have a game open?\n" + "Are you sure you are not trying to join a different game than the one you are already in?");
+                    out.println("Invalid Join! \n" + "Are you sure you don't already have a game open?\n"
+                            + "Are you sure you are not trying to join a different game than the one you are already in?");
                     System.exit(0);
                 }
             }
@@ -128,7 +131,8 @@ public class TuiController {
     }
 
     /**
-     * Handles the setup phase of the game, allowing the user to select starting cards, colors, and objectives.
+     * Handles the setup phase of the game, allowing the user to select starting
+     * cards, colors, and objectives.
      */
     private void setup() {
         fetchSetup();
@@ -168,7 +172,6 @@ public class TuiController {
 
         done = false;
 
-
         while (!done) {
             clear();
             out.println(new StartingObjectiveView(playerData));
@@ -200,9 +203,8 @@ public class TuiController {
         render.start();
         try {
             update.join();
-            render.interrupt();
-            commands.interrupt();
-        } catch (InterruptedException e) {
+            client.fetchGameState();
+        } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
@@ -213,7 +215,8 @@ public class TuiController {
     private void stop() {
         try {
             client.fetchScoreMap();
-            List<Map.Entry<String, Integer>> entryList = client.getScoreMap().entrySet().stream().sorted((e1, e2) -> e2.getValue() - e1.getValue()).toList();
+            List<Map.Entry<String, Integer>> entryList = client.getScoreMap().entrySet().stream()
+                    .sorted((e1, e2) -> e2.getValue() - e1.getValue()).toList();
 
             for (int i = 0; i < entryList.size(); i++) {
                 out.print(i + 1);

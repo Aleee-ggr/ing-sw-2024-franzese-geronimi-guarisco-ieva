@@ -247,6 +247,7 @@ public interface ClientInterface {
      * @throws IOException If an I/O error occurs.
      */
     boolean fetchOpponentsHandType() throws IOException;
+
     /**
      * Method to fetch the starting objectives from the server.
      * The starting objectives are the ones the player needs to choose from at the start of the game.
@@ -292,7 +293,7 @@ public interface ClientInterface {
      * @return the GameState of the client.
      */
     GameState getGameState();
-
+    
     /**
      * Method to get the player number from the client.
      *

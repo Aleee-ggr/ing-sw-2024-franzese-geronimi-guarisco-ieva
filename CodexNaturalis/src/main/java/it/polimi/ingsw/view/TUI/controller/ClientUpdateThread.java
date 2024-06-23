@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.TUI.controller;
 
 import it.polimi.ingsw.controller.WaitState;
-import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.controller.threads.GameThread;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.Compositor;
@@ -48,12 +47,8 @@ public class ClientUpdateThread extends Thread {
      */
     @Override
     public void run() {
-        boolean running;
         WaitState state = null;
         WaitState oldState;
-        synchronized (client) {
-            running = client.getGameState() != GameState.STOP;
-        }
         while (state != ENDGAME) {
             try {
                 oldState = state;
@@ -78,7 +73,6 @@ public class ClientUpdateThread extends Thread {
                 System.exit(1);
             }
         }
-        System.out.println("Here!");
     }
 
     /**

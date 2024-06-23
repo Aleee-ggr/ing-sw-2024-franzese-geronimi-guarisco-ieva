@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.TUI.controller;
 
-import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.Compositor;
@@ -27,8 +26,8 @@ public class CommandThread extends Thread {
     /**
      * Constructs a CommandThread with the specified client, updater, and compositor.
      *
-     * @param client The client interface to interact with the server.
-     * @param updater The SharedUpdate instance to check for updates.
+     * @param client     The client interface to interact with the server.
+     * @param updater    The SharedUpdate instance to check for updates.
      * @param compositor The Compositor instance to render the TUI.
      */
     public CommandThread(ClientInterface client, SharedUpdate updater, Compositor compositor) {
@@ -59,15 +58,11 @@ public class CommandThread extends Thread {
      * {@link ClientUpdateThread}.
      *
      * @see #handleCommand(String) handleCommand("h") for a list of available
-     *      commands.
+     * commands.
      */
     @Override
     public void run() {
-        boolean running;
-        synchronized (client) {
-            running = client.getGameState() != GameState.STOP;
-        }
-        while (running) {
+        while (true) {
             try {
                 String command = in.readLine();
                 handleCommand(command);
@@ -75,9 +70,6 @@ public class CommandThread extends Thread {
                 updater.update();
             } catch (IOException e) {
                 throw new RuntimeException(e);
-            }
-            synchronized (client) {
-                running = client.getGameState() != GameState.STOP;
             }
         }
     }
@@ -228,19 +220,18 @@ public class CommandThread extends Thread {
 
                 case "h", "help":
                     updater.lock();
-                    System.out.println(
-                            """
-                                    List of available commands:
-                                      - place [card] [position]: place the card in the given position
-                                      - view [deck|objectives|board]: show the selected element
-                                      - switch [player]: show the view from the given player side
-                                      - draw [int index]: draw the card at the given position, 1 to 4 are visible cards, 5 & 6 are respectively gold and std deck
-                                      - w / a / s / d [int distance]: move the view of the board for the given distance
-                                      - center: center the board
-                                      - chat [message]: send a global message
-                                      - whisper [player]: send a private message to a player
-                                      - h: show this list
-                                      Press ENTER to continue""");
+                    System.out.println("""
+                            List of available commands:
+                              - place [card] [position]: place the card in the given position
+                              - view [deck|objectives|board]: show the selected element
+                              - switch [player]: show the view from the given player side
+                              - draw [int index]: draw the card at the given position, 1 to 4 are visible cards, 5 & 6 are respectively gold and std deck
+                              - w / a / s / d [int distance]: move the view of the board for the given distance
+                              - center: center the board
+                              - chat [message]: send a global message
+                              - whisper [player]: send a private message to a player
+                              - h: show this list
+                              Press ENTER to continue""");
                     in.readLine();
                     updater.unlock();
                     break;
@@ -250,7 +241,7 @@ public class CommandThread extends Thread {
             }
         } catch (IOException | NumberFormatException |
 
-                InterruptedException e) {
+                 InterruptedException e) {
             e.printStackTrace();
             System.exit(1);
         }
@@ -306,7 +297,7 @@ public class CommandThread extends Thread {
      * @param error the error message to print
      */
     private void printError(String error) {
-        System.out.println("Invalid input| %s".formatted(error));
+        System.out.printf("Invalid input| %s%n", error);
         try {
             in.readLine();
         } catch (IOException e) {
@@ -322,7 +313,7 @@ public class CommandThread extends Thread {
      * @param receiver either the username of a player in case of private message,
      *                 or null for a global message
      * @see it.polimi.ingsw.model.ChatMessage#ChatMessage(String, String, String)
-     *      ChatMessage
+     * ChatMessage
      * @see it.polimi.ingsw.model.ChatMessage#filterPlayer(String)
      * @see #handleCommand(String)
      */
