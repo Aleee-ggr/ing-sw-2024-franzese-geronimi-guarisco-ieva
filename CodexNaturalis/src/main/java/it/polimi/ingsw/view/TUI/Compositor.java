@@ -55,7 +55,7 @@ public class Compositor {
 
         this.hand = new HandView(client);
         this.scoreBoard = new ScoreBoard(client);
-        this.prompt = new Prompt(client.getUsername());
+        this.prompt = new Prompt(client.getUsername(), client.getPlayers().getFirst());
 
         mainComponent.put(View.BOARD, new Board(client));
         mainComponent.put(View.OBJECTIVES, createObjectiveView(client));

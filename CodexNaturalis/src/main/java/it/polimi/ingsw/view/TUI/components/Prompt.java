@@ -6,14 +6,16 @@ package it.polimi.ingsw.view.TUI.components;
  */
 public class Prompt implements Component {
     private final String username;
+    private final String firstPlayer;
 
     /**
      * Constructs a Prompt object initialized with a username.
      *
      * @param username The username to be displayed in the prompt.
      */
-    public Prompt(String username) {
+    public Prompt(String username, String firstPlayer) {
         this.username = username;
+        this.firstPlayer = firstPlayer;
     }
 
     /**
@@ -24,6 +26,8 @@ public class Prompt implements Component {
      */
     @Override
     public String toString() {
+        if(firstPlayer.equals(username))
+            return "\u001b[1;90m%s>\u001b[0m".formatted(username);
         return "%s> ".formatted(username);
     }
 }
