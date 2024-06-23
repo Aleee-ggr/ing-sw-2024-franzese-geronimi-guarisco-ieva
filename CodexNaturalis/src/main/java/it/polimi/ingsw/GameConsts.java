@@ -39,7 +39,7 @@ public abstract class GameConsts {
     public static final int totalPlayableCards = 80;
     public static final int notFillableId = 0;
     public static final int numberOfResourcesPerCorner = 1;
-    public static final int endingScore = 20;
+    public static final int endingScore = 1;
     public static final int maxUsernameLength = 16;
     public static final int heartbeatInterval = 2000;
     public static final int disconnectionThreshold = 5;

@@ -92,25 +92,25 @@ public abstract class Server {
     public static Map<UUID, String> getAvailableGamesServer(String username) {
         for (Map.Entry<UUID, GameThread> gameThread : gameThreads.entrySet()) {
             if (!gameThread.getValue().isAlive()) {
-                UUID toRemove =  gameThread.getKey();
+                UUID toRemove = gameThread.getKey();
                 removeGame(toRemove, gameThread.getValue(), username);
             } else {
                 boolean disconnected = true;
 
-                if(gameThread.getValue().getGameState().equals(GameState.LOBBY)){
+                if (gameThread.getValue().getGameState().equals(GameState.LOBBY)) {
                     continue;
                 }
 
-                for(String player : gameThread.getValue().getPlayers()){
+                for (String player : gameThread.getValue().getPlayers()) {
 
-                    if(!isOffline(player)){
+                    if (!isOffline(player)) {
                         disconnected = false;
                         break;
                     }
 
                 }
 
-                if(disconnected){
+                if (disconnected) {
                     removeGame(gameThread.getKey(), gameThread.getValue(), username);
                 }
 
@@ -122,12 +122,12 @@ public abstract class Server {
     /**
      * Remove the game if it is closed or if all the players disconnect.
      *
-     * @param game the UUID of the game to remove
+     * @param game       the UUID of the game to remove
      * @param gameThread the GameThread of the game to remove
      */
-    public static void removeGame(UUID game, GameThread gameThread, String playerUsername){
-        for(String player : gameThread.getPlayers()){
-            if(!player.equals(playerUsername)){
+    public static void removeGame(UUID game, GameThread gameThread, String playerUsername) {
+        for (String player : gameThread.getPlayers()) {
+            if (!player.equals(playerUsername)) {
                 playerGame.remove(player);
                 playerStatus.remove(player);
                 playerGame.remove(player);

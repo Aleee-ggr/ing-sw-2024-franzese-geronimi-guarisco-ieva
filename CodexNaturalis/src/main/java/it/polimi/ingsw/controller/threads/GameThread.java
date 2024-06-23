@@ -149,8 +149,7 @@ public class GameThread extends Thread {
             boolean startChosen = false;
             boolean colorChosen = false;
             this.currentPlayer = currentPlayer;
-
-            turnMap.put(currentPlayer, WaitState.TURN_UPDATE);
+            turnMap.put(currentPlayer, WaitState.SETUP_TURN);
 
             controller.getGame().getPlayers().stream().filter(p -> p.getUsername().equals(currentPlayer)).toList().getFirst().drawFirstHand();
 

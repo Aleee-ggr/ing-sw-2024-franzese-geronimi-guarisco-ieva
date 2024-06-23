@@ -50,7 +50,7 @@ public class ClientUpdateThread extends Thread {
     public void run() {
         boolean running;
         WaitState state = null;
-        WaitState oldState = null;
+        WaitState oldState;
         synchronized (client) {
             running = client.getGameState() != GameState.STOP;
         }

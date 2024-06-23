@@ -6,7 +6,6 @@ import it.polimi.ingsw.view.TUI.Compositor;
 import it.polimi.ingsw.view.TUI.components.ColorView;
 import it.polimi.ingsw.view.TUI.components.StartingCardView;
 import it.polimi.ingsw.view.TUI.components.StartingObjectiveView;
-import it.polimi.ingsw.view.TUI.components.printables.ObjectiveCard;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -200,8 +199,8 @@ public class TuiController {
         Thread render = new RenderThread(client, updater, compositor);
         render.start();
         try {
-            render.join();
-            update.interrupt();
+            update.join();
+            render.interrupt();
             commands.interrupt();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
