@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -113,30 +114,74 @@ public class MainMenuController implements Initializable {
      * This method clears the existing buttons and creates a new button for each available game.
      */
     private void updateGameButtons() {
-
         gameButtonsContainer.getChildren().clear();
         for (Map.Entry<UUID, String> entry : client.getAvailableGames().entrySet()) {
             Button button = new Button(entry.getValue());
             button.setStyle("-fx-background-color: ffffff;" + "-fx-border-color: black;" + "-fx-border-width: 2;" + "-fx-border-style: solid;" + "-fx-pref-height: 100;" + "-fx-pref-width: 700;" + "-fx-text-fill: #432918;" + "-fx-font-family: Trattatello;" + "-fx-font-size: 30;" + "-fx-cursor: hand;");
             button.setOnAction(event -> {
-                FXMLLoader loader;
-                Stage stage;
                 try {
                     boolean joined = client.joinGame(entry.getKey());
                     if (joined) {
                         stopFetchingGames();
+                        try {
+                            client.fetchGameState();
+                            client.fetchPlayers();
+                            client.fetchPersonalObjective();
+                        } catch (IOException e) {
+                            ErrorMessageController.showErrorMessage("Impossible fetching game data!", root);
+                        }
 
-                        loader = new FXMLLoader(getClass().getResource("/GUI/fxml/WaitingRoom.fxml"));
-                        WaitingRoomController controller = new WaitingRoomController();
-                        controller.setClient(client);
-                        loader.setController(controller);
-                        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                        stage.getScene().setRoot(loader.load());
+                        FXMLLoader loader;
+                        Stage stage;
+                        switch (client.getGameState()) {
+                            case LOBBY:
+                                loader = new FXMLLoader(getClass().getResource("/GUI/fxml/WaitingRoom.fxml"));
+                                WaitingRoomController controller = new WaitingRoomController();
+                                controller.setClient(client);
+                                loader.setController(controller);
+                                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                                stage.getScene().setRoot(loader.load());
+                                break;
+                            case SETUP:
+                                if (client.getPlayers().getFirst().equals(client.getUsername())) {
+                                    client.fetchStartingObjectives();
+                                    client.fetchStartingCard();
+                                    client.fetchClientHand();
+                                    client.fetchCommonObjectives();
+
+                                    loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseStartingCardSideScene.fxml"));
+                                    ChooseStartingCardSideController chooseStartingCardSideController = new ChooseStartingCardSideController();
+                                    chooseStartingCardSideController.setClient(client);
+                                    loader.setController(chooseStartingCardSideController);
+                                } else {
+                                    loader = new FXMLLoader(getClass().getResource("/GUI/fxml/WaitingRoom.fxml"));
+                                    WaitingRoomController waitingRoomController = new WaitingRoomController();
+                                    waitingRoomController.setClient(client);
+                                    loader.setController(waitingRoomController);
+                                }
+                                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                                stage.getScene().setRoot(loader.load());
+                                break;
+                            case MAIN:
+                                loader = new FXMLLoader(getClass().getResource("/GUI/fxml/GameScene.fxml"));
+                                GameController gameController = new GameController();
+                                gameController.setClient(client);
+                                loader.setController(gameController);
+                                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                                stage.getScene().setRoot(loader.load());
+                                if (Screen.getPrimary().getVisualBounds().getWidth() <= 1920 || Screen.getPrimary().getVisualBounds().getHeight() <= 1080) {
+                                    stage.setFullScreen(true);
+                                } else {
+                                    stage.setMaxWidth(3840);
+                                    stage.setMaxHeight(2160);
+                                }
+                                break;
+                        }
                     } else {
                         ErrorMessageController.showErrorMessage("Impossible to join selected game!", root);
                     }
                 } catch (IOException e) {
-                    ErrorMessageController.showErrorMessage("Error while loading waiting room scene!", root);
+                    ErrorMessageController.showErrorMessage("Error while loading next scene!", root);
                 }
             });
             gameButtonsContainer.getChildren().add(button);
