@@ -295,16 +295,6 @@ public class ControllerTest {
     }
 
     @Test
-    public void testJoinExistingPlayer() throws InterruptedException {
-        msgQueue.clear();
-        String username = "p1";
-        controller.join(username, null);
-        msgQueue.take();
-        controller.join(username, null);
-        assertEquals(msgQueue.take().status(), Status.ERROR);
-    }
-
-    @Test
     public void testUpdate() throws InterruptedException {
         msgQueue.clear();
         controller.update(null, true, null);

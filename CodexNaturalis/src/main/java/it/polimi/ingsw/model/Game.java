@@ -164,28 +164,21 @@ public class Game {
      *
      * @param playerUsername is the player username as a String
      * @throws TooManyPlayersException   while trying to add a player when the Game is full
-     * @throws ExistingUsernameException while there is already a player with the same username in game
-     *                                   the exceptions are managed by the caller.
      */
-    public void addPlayer(String playerUsername) throws TooManyPlayersException, ExistingUsernameException {
-        if (this.numPlayers >= maxPlayers) {
-            for (Player p : players) {
-                if (p.getUsername().equals(playerUsername)) {
+    public void addPlayer(String playerUsername) throws TooManyPlayersException, ExistingUsernameException{
+        if(this.numPlayers >= maxPlayers) {
+            for(Player p : players){
+                if(p.getUsername().equals(playerUsername)){
                     return;
                 }
             }
             throw new TooManyPlayersException("Too Many Players");
         }
-
-        for (Player p : players) {
-            if (p.getUsername().equals(playerUsername)) {
-                throw new ExistingUsernameException("Existing Username");
-            }
+        if(players.stream().noneMatch(p -> p.getUsername().equals(playerUsername))){
+            Player toAdd = new Player(playerUsername, this);
+            players.add(toAdd);
+            this.numPlayers += 1;
         }
-
-        Player toAdd = new Player(playerUsername, this);
-        players.add(toAdd);
-        this.numPlayers += 1;
     }
 
     /**

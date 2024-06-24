@@ -29,7 +29,7 @@ public class Player {
     private PlayerBoard board;
     private final ColoredCard[] hand = new ColoredCard[GameConsts.firstHandDim];
     private Objective hiddenObjective;
-    private Objective[] startingObjectives;
+    private Objective[] startingObjectives = new Objective[GameConsts.objectivesToChooseFrom];
     protected final ConcurrentHashMap<Resource, Integer> playerResources = new ConcurrentHashMap<>();
     private StartingCard startingCard;
     private final Game game;
@@ -145,7 +145,6 @@ public class Player {
      * @see Objective
      */
     public void setStartingObjectives() {
-        startingObjectives = new Objective[GameConsts.objectivesToChooseFrom];
         for(int i = 0; i < GameConsts.objectivesToChooseFrom; i++){
             startingObjectives[i] = game.getGameObjDeck().draw();
         }

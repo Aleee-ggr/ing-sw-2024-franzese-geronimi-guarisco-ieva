@@ -122,6 +122,7 @@ public class GameThread extends Thread {
             try {
                 sleep(10 * 1000 * 60);
                 gameState = GameState.STOP;
+                controller.getGame().setGameState(GameState.STOP);
             } catch (InterruptedException ignored) {
             }
         });
