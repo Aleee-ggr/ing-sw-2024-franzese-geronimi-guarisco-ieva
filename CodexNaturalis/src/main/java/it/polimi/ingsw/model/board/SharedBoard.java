@@ -22,8 +22,9 @@ public class SharedBoard {
 
     /**
      * Constructor for the SharedBoard class.
+     *
      * @param goldDeck The deck of gold cards.
-     * @param stdDeck The deck of standard cards.
+     * @param stdDeck  The deck of standard cards.
      */
     public SharedBoard(Deck<GoldCard> goldDeck, Deck<StdCard> stdDeck) {
         this.goldDeck = goldDeck;
@@ -36,6 +37,7 @@ public class SharedBoard {
 
     /**
      * Retrieves the deck of gold cards from the shared board.
+     *
      * @return The deck of gold cards.
      */
     public Deck<GoldCard> getGoldDeck() {
@@ -44,6 +46,7 @@ public class SharedBoard {
 
     /**
      * Retrieves the deck of standard cards from the shared board.
+     *
      * @return The deck of standard cards.
      */
     public Deck<StdCard> getStdDeck() {
@@ -52,37 +55,38 @@ public class SharedBoard {
 
     /**
      * Retrieves the visible cards on the shared board.
+     *
      * @return An array containing the visible cards.
      */
     public Card[] getVisibleCards() {
         return Arrays.copyOf(visibleCards, GameConsts.visibleCards);
     }
 
-    public void setObjectives(Objective[] obj){
+    public void setObjectives(Objective[] obj) {
         try {
             System.arraycopy(obj, 0, this.objectives, 0, objectives.length);
-        } catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("not enough obj");
         }
     }
 
     /**
      * Substitutes a card on the shared board at the specified position with a new card from the deck.
+     *
      * @param position The position of the card to be substituted.
-     * @param isGold Indicates whether the card to be substituted is a gold card.
+     * @param isGold   Indicates whether the card to be substituted is a gold card.
      */
     public void substituteCard(int position, boolean isGold) {
         if (isGold) {
-            if (!goldDeck.isEmpty()){
+            if (!goldDeck.isEmpty()) {
                 visibleCards[position] = goldDeck.draw();
                 return;
             }
             if (!stdDeck.isEmpty()) {
                 visibleCards[position] = stdDeck.draw();
-                return;
             }
         } else {
-            if (!stdDeck.isEmpty()){
+            if (!stdDeck.isEmpty()) {
                 visibleCards[position] = stdDeck.draw();
                 return;
             }
@@ -94,6 +98,7 @@ public class SharedBoard {
 
     /**
      * Checks if there are no cards left in the decks and on the shared board.
+     *
      * @return True if there are no cards left, otherwise false.
      */
     public boolean areCardsOver() {
@@ -112,6 +117,7 @@ public class SharedBoard {
 
     /**
      * Draws a card from the specified deck.
+     *
      * @param isGold Indicates whether the card should be drawn from the gold card deck.
      * @return The drawn card, or null if the deck is empty.
      */
@@ -127,6 +133,7 @@ public class SharedBoard {
 
     /**
      * Retrieves the card at the specified position from the visible cards.
+     *
      * @param position The position of the card to retrieve.
      * @return The card at the specified position, or null if no card is present.
      */
@@ -145,6 +152,7 @@ public class SharedBoard {
 
     /**
      * Checks if the game is over by verifying if any player has reached the ending score.
+     *
      * @return True if the game is over, otherwise false.
      */
     public boolean isOver() {
@@ -158,6 +166,7 @@ public class SharedBoard {
 
     /**
      * Retrieves a copy of the score map.
+     *
      * @return A copy of the score map.
      */
     public ConcurrentHashMap<Player, Integer> getScore() {
@@ -168,7 +177,7 @@ public class SharedBoard {
      * Updates the score of the specified player by the given value.
      *
      * @param player the player whose score needs to be updated
-     * @param value the value by which the score should be updated
+     * @param value  the value by which the score should be updated
      */
     public void updateScore(Player player, int value) {
         if (!scoreMap.containsKey(player)) {
@@ -176,10 +185,12 @@ public class SharedBoard {
             return;
         }
         scoreMap.put(player, scoreMap.get(player) + value);
+        System.out.println("player: " + player.getUsername() + " score: " + scoreMap.get(player));
     }
 
     /**
      * Retrieves the global objectives on the shared board.
+     *
      * @return An array containing the global objectives.
      */
     public Objective[] getGlobalObjectives() {
@@ -188,6 +199,7 @@ public class SharedBoard {
 
     /**
      * Draw a card in the given position, if available, else null
+     *
      * @param position the position of the card (0-3: visible, 4: stdDeck, 5: goldDeck)
      * @return the drawn card
      */

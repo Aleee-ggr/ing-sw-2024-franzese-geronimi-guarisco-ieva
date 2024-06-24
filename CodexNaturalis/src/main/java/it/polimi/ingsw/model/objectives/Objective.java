@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.objectives;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import it.polimi.ingsw.helpers.parsers.ObjectiveParser;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.player.Player;
@@ -16,26 +15,33 @@ import java.util.function.Function;
 public class Objective {
     private final Function<Player, Integer> pointCalculator;
     private final int id;
+    private final int points;
     private final String type;
     private Resource[][] pattern = null;
     private Map<Resource, Integer> resources = null;
-
     /**
      * Constructs a new Objective with the specified point calculator function.
+     *
      * @param pointCalculator The function to calculate points for the objective based on the player.
-     * @param id The unique identifier of the objective.
-     * @param type The type of the objective.
-     * @param requirements The requirements for the objective in JSON format.
+     * @param id              The unique identifier of the objective.
+     * @param type            The type of the objective.
+     * @param requirements    The requirements for the objective in JSON format.
      */
-    public Objective(Function<Player, Integer> pointCalculator, int id, String type, JsonElement requirements) {
+    public Objective(Function<Player, Integer> pointCalculator, int id, String type, JsonElement requirements, int points) {
         this.pointCalculator = pointCalculator;
         this.id = id;
         this.type = type;
+        this.points = points;
         setPatternAndResources(type, requirements);
+    }
+
+    public int getPoints() {
+        return points;
     }
 
     /**
      * Gets the unique identifier of the objective.
+     *
      * @return The unique identifier of the objective.
      */
     public int getId() {
@@ -44,6 +50,7 @@ public class Objective {
 
     /**
      * Gets the type of the objective.
+     *
      * @return The type of the objective.
      */
     public String getType() {
@@ -52,6 +59,7 @@ public class Objective {
 
     /**
      * Gets the pattern associated with the objective.
+     *
      * @return The pattern associated with the objective.
      */
     public Resource[][] getPattern() {
@@ -60,6 +68,7 @@ public class Objective {
 
     /**
      * Gets the resources associated with the objective.
+     *
      * @return The resources associated with the objective.
      */
     public Map<Resource, Integer> getResource() {
@@ -68,7 +77,8 @@ public class Objective {
 
     /**
      * Sets the pattern and resources for the objective based on the type and requirements.
-     * @param type The type of the objective.
+     *
+     * @param type         The type of the objective.
      * @param requirements The requirements for the objective in JSON format.
      */
     public void setPatternAndResources(String type, JsonElement requirements) {
@@ -86,10 +96,13 @@ public class Objective {
 
     /**
      * Calculates the points for the objective based on the player.
+     *
      * @param player The player for whom the points are calculated.
      * @return The calculated points for the objective.
      */
     public Integer getPoints(Player player) {
-        return this.pointCalculator.apply(player);
+        int points = pointCalculator.apply(player);
+        System.out.println("player" + player.getUsername() + ", id: " + id + ", points: " + points);
+        return points;
     }
 }

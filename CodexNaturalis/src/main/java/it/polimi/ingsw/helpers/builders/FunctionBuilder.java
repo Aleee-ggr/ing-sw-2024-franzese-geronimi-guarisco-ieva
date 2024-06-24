@@ -10,8 +10,6 @@ import it.polimi.ingsw.model.player.Player;
 import java.util.*;
 import java.util.function.Function;
 
-import static java.lang.Math.signum;
-
 public class FunctionBuilder {
     public static final String[] validTypes = {"none", "pattern", "resource", "resources", "cover",};
     private final Map<Coordinates, Resource> pattern = new HashMap<>(3);
@@ -35,15 +33,21 @@ public class FunctionBuilder {
      */
     private static Coordinates rotate(Coordinates coordinates) {
         Coordinates result;
-        int x = coordinates.x() - coordinates.y();
-        int y = coordinates.y() + coordinates.x();
-        if (x != 0) {
-            x = (int) (signum(x));
+        int x = coordinates.x();
+        int y = coordinates.y();
+        
+        if (x == 1 && y != 1) {
+            y++;
+        } else if (y == 1 && x != -1) {
+            x--;
+        } else if (x == -1 && y != -1) {
+            y--;
+        } else if (y == -1) {
+            x++;
         }
-        if (y != 0) {
-            y = (int) (signum(y));
-        }
-        result = new Coordinates(x, y);
+
+
+        result = new Coordinates(y, x);
         return result;
     }
 

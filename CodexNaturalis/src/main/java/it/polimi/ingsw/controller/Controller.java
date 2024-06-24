@@ -84,7 +84,7 @@ public class Controller {
      * Controller Method to randomize the order of the players.
      * Used to randomize the turn order of the players in the game.
      */
-    public void randomizePlayers(){
+    public void randomizePlayers() {
         game.randomizePlayers();
     }
 
@@ -477,7 +477,7 @@ public class Controller {
      * @param messageId the unique identifier of the message
      */
     public void getHandType(String username, String usernameRequiredData, UUID messageId) {
-        try{
+        try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(usernameRequiredData)).toArray()[0];
             ArrayList<Boolean> isGold = new ArrayList<>();
             for (ColoredCard c : user.getHand()) {
@@ -487,7 +487,7 @@ public class Controller {
                 isGold.add(c instanceof GoldCard);
             }
             messageQueue.add(ThreadMessage.getHandTypeResponse(username, isGold, messageId));
-        } catch (Exception e){
+        } catch (Exception e) {
             logError(username, messageId, e);
         }
     }

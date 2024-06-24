@@ -102,6 +102,7 @@ public class ParserTest {
         Player dummy = new PlayerBuilder().setUsername("").setResource(Resource.QUILL, 10).build();
 
         int score = goldCard.getScore(dummy);
+        System.out.println(goldCard.getScore(dummy));
 
         assertEquals(score, 10);
     }

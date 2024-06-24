@@ -117,7 +117,7 @@ public class ObjectiveParser implements JsonParser<Deck<Objective>> {
                 throw new JsonFormatException(e);
             }
 
-            objectives.add(new Objective(point_function, id, type, requirements));
+            objectives.add(new Objective(point_function, id, type, requirements, points));
         }
 
         return new Deck<>(objectives);

@@ -109,8 +109,7 @@ public class GameThread extends Thread {
                 if (GameState.lobby.contains(msg.type())) {
                     respond(msg);
                 } else {
-                    messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(),
-                            ("Invalid message for " + "LOBBY:%s").formatted(msg.type())));
+                    messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), ("Invalid message for " + "LOBBY:%s").formatted(msg.type())));
                 }
                 if (controller.getGame().getPlayers().size() == playerCount) {
                     gameState = GameState.SETUP;
@@ -153,8 +152,7 @@ public class GameThread extends Thread {
             this.currentPlayer = currentPlayer;
             turnMap.put(currentPlayer, WaitState.SETUP_TURN);
 
-            controller.getGame().getPlayers().stream().filter(p -> p.getUsername().equals(currentPlayer)).toList()
-                    .getFirst().drawFirstHand();
+            controller.getGame().getPlayers().stream().filter(p -> p.getUsername().equals(currentPlayer)).toList().getFirst().drawFirstHand();
 
             while (!objChosen || !startChosen || !colorChosen) {
 
@@ -179,8 +177,7 @@ public class GameThread extends Thread {
                 } else if (!msg.player().equals(currentPlayer)) {
                     messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "not player's turn."));
                 } else {
-                    messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(),
-                            "Invalid message for context: %s".formatted(msg.type())));
+                    messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "Invalid message for context: %s".formatted(msg.type())));
                 }
 
                 if (msg.type().equals("choosePersonalObjective")) {
@@ -252,8 +249,7 @@ public class GameThread extends Thread {
                 continue;
             }
 
-            messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(),
-                    "Invalid message for context PLACE: %s".formatted(msg.type())));
+            messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "Invalid message for context PLACE: %s".formatted(msg.type())));
         }
 
         while (!draw && !controller.getGame().getGameBoard().areCardsOver()) {
@@ -277,12 +273,10 @@ public class GameThread extends Thread {
                 continue;
             }
 
-            messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(),
-                    "Invalid message for context DRAW: %s".formatted(msg.type())));
+            messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "Invalid message for context DRAW: %s".formatted(msg.type())));
         }
 
-        Player player = controller.getGame().getPlayers().stream().filter(p -> p.getUsername().equals(playerName))
-                .toList().getFirst();
+        Player player = controller.getGame().getPlayers().stream().filter(p -> p.getUsername().equals(playerName)).toList().getFirst();
         return (player.getScore() >= GameConsts.endingScore);
     }
 
@@ -326,11 +320,18 @@ public class GameThread extends Thread {
         new Thread(() -> {
             while (running.get()) {
                 ThreadMessage msg = getMessage();
+                if (msg == null) {
+                    try {
+                        sleep(10);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    continue;
+                }
                 if (msg.type().contains("get")) {
                     respond(msg);
                 } else {
-                    messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(),
-                            ("Invalid message for " + "context STOP: %s").formatted(msg.type())));
+                    messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), ("Invalid message for " + "context STOP: %s").formatted(msg.type())));
                 }
             }
         }).start();
@@ -353,8 +354,8 @@ public class GameThread extends Thread {
      * @param thirdParam  Indicates if the player has chosen a player color.
      */
     private void disconnectionHandler(Boolean firstParam, Boolean secondParam, Boolean thirdParam) {
-        Player user = controller.getGame().getPlayers().stream().filter(p -> p.getUsername().equals(currentPlayer))
-                .toList().getFirst();
+        System.out.printf("Player %s is offline%n", currentPlayer);
+        Player user = controller.getGame().getPlayers().stream().filter(p -> p.getUsername().equals(currentPlayer)).toList().getFirst();
 
         switch (gameState) {
             case SETUP:
@@ -429,23 +430,18 @@ public class GameThread extends Thread {
     private boolean respond(ThreadMessage msg) {
         switch (msg.type()) {
             case "create":
-                controller.createGame(msg.player(), Integer.valueOf(msg.args()[0]), UUID.fromString(msg.args()[1]),
-                        msg.messageUUID());
+                controller.createGame(msg.player(), Integer.valueOf(msg.args()[0]), UUID.fromString(msg.args()[1]), msg.messageUUID());
                 break;
             case "join":
                 controller.join(msg.player(), msg.messageUUID());
                 break;
             case "place":
-                return controller.placeCard(msg.player(),
-                        new Coordinates(Integer.valueOf(msg.args()[0]), Integer.valueOf(msg.args()[1])),
-                        Integer.valueOf(msg.args()[2]), msg.messageUUID());
+                return controller.placeCard(msg.player(), new Coordinates(Integer.valueOf(msg.args()[0]), Integer.valueOf(msg.args()[1])), Integer.valueOf(msg.args()[2]), msg.messageUUID());
             case "update":
                 controller.update(msg.player(), currentPlayer.equals(msg.player()), msg.messageUUID());
                 break;
             case "draw":
-                return controller.draw(msg.player(),
-                        Arrays.stream(msg.args()).mapToInt(Integer::parseInt).findFirst().orElse(-1),
-                        msg.messageUUID());
+                return controller.draw(msg.player(), Arrays.stream(msg.args()).mapToInt(Integer::parseInt).findFirst().orElse(-1), msg.messageUUID());
             case "choosePersonalObjective":
                 controller.choosePersonalObjective(msg.player(), Integer.valueOf(msg.args()[0]), msg.messageUUID());
                 break;
@@ -520,8 +516,7 @@ public class GameThread extends Thread {
                 gameState = GameState.STOP;
                 break;
             default:
-                messageQueue.add(new ThreadMessage(Status.ERROR, msg.player(), "unknown", new String[] { msg.type() },
-                        msg.messageUUID()));
+                messageQueue.add(new ThreadMessage(Status.ERROR, msg.player(), "unknown", new String[]{msg.type()}, msg.messageUUID()));
         }
         return false;
     }

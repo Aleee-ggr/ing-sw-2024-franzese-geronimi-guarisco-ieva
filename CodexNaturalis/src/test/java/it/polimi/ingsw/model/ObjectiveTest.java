@@ -20,19 +20,14 @@ import static org.junit.Assert.assertNotNull;
 public class ObjectiveTest {
 
     public static Game game = new Game(4);
+    
     @Test
     public void testResources() throws InvalidTypeException {
         Map<Resource, Integer> requirements = new HashMap<>() {{
-                put(Resource.FUNGI, 1);
+            put(Resource.FUNGI, 1);
         }};
-        Function<Player, Integer> function = new FunctionBuilder()
-                .setPoints(1)
-                .setType("resources")
-                .setResources(requirements)
-                .build();
-        Player mockPlayer = new PlayerBuilder()
-                .setResource(Resource.FUNGI, 2)
-                .build();
+        Function<Player, Integer> function = new FunctionBuilder().setPoints(1).setType("resources").setResources(requirements).build();
+        Player mockPlayer = new PlayerBuilder().setResource(Resource.FUNGI, 2).build();
 
         int result = function.apply(mockPlayer);
         assertEquals(result, 2);
@@ -43,14 +38,8 @@ public class ObjectiveTest {
         Map<Resource, Integer> requirements = new HashMap<>() {{
             put(Resource.FUNGI, 2);
         }};
-        Function<Player, Integer> function = new FunctionBuilder()
-                .setPoints(1)
-                .setType("resources")
-                .setResources(requirements)
-                .build();
-        Player mockPlayer = new PlayerBuilder()
-                .setResource(Resource.FUNGI, 1)
-                .build();
+        Function<Player, Integer> function = new FunctionBuilder().setPoints(1).setType("resources").setResources(requirements).build();
+        Player mockPlayer = new PlayerBuilder().setResource(Resource.FUNGI, 1).build();
 
         int result = function.apply(mockPlayer);
         assertEquals(result, 0);
@@ -61,10 +50,7 @@ public class ObjectiveTest {
         Deck<StartingCard> startingCards = FullDeck.getFullStartingDeck();
         Player player = new Player("", game);
 
-        Function<Player, Integer> score = new FunctionBuilder()
-                .setPoints(2)
-                .setType("cover")
-                .build();
+        Function<Player, Integer> score = new FunctionBuilder().setPoints(2).setType("cover").build();
 
         player.drawStartingCard();
         player.setFirstCard(true);
@@ -86,36 +72,21 @@ public class ObjectiveTest {
 
     @Test
     public void testForDiagonalDownPattern() throws InvalidTypeException {
-        Deck<StartingCard> startingCards = FullDeck.getFullStartingDeck();
 
-        Resource[][] pattern = {
-                {Resource.NONE, Resource.NONE, Resource.FUNGI},
-                {Resource.NONE, Resource.FUNGI, Resource.NONE},
-                {Resource.FUNGI, Resource.NONE,  Resource.NONE}};
-        Function<Player, Integer> score = new FunctionBuilder()
-                .setPoints(3)
-                .setType("pattern")
-                .setPattern(pattern)
-                .build();
+        Resource[][] pattern = {{Resource.NONE, Resource.NONE, Resource.FUNGI}, {Resource.NONE, Resource.FUNGI, Resource.NONE}, {Resource.FUNGI, Resource.NONE, Resource.NONE}};
+        Function<Player, Integer> score = new FunctionBuilder().setPoints(3).setType("pattern").setPattern(pattern).build();
         Player player = new Player("", game);
 
         player.drawStartingCard();
         player.setFirstCard(true);
         PlayerBoard board = player.getPlayerBoard();
-        Card fungi = new StdCard(0, null, Resource.FUNGI, false);
-        Coordinates[] fungi_coord = {
-                board.getCenter().horizontal(-1),
-                board.getCenter().horizontal(-2),
-                board.getCenter().horizontal(-3),
-                board.getCenter().horizontal(-4),
-                board.getCenter().horizontal(-5),
-                board.getCenter().horizontal(-6),
-                board.getCenter().horizontal(-7)
-        };
+        Card fungi = new StdCard(1, null, Resource.FUNGI, false);
+        Coordinates[] fungi_coord = {board.getCenter().vertical(-1), board.getCenter().vertical(-2), board.getCenter().vertical(-3), board.getCenter().vertical(-4), board.getCenter().vertical(-5), board.getCenter().vertical(-6), board.getCenter().vertical(-7)};
         for (Coordinates coord : fungi_coord) {
             try {
                 board.placeCard(fungi, coord);
-            } catch (Throwable ignored) {}
+            } catch (Throwable ignored) {
+            }
         }
 
         int points = score.apply(player);
@@ -126,15 +97,8 @@ public class ObjectiveTest {
     public void testForLShapeDownPattern() throws InvalidTypeException {
         Deck<StartingCard> startingCards = FullDeck.getFullStartingDeck();
 
-        Resource[][] pattern = {
-                {Resource.FUNGI, Resource.NONE, Resource.NONE},
-                {Resource.NONE, Resource.FUNGI, Resource.NONE},
-                {Resource.NONE, Resource.FUNGI,  Resource.NONE}};
-        Function<Player, Integer> score = new FunctionBuilder()
-                .setPoints(3)
-                .setType("pattern")
-                .setPattern(pattern)
-                .build();
+        Resource[][] pattern = {{Resource.FUNGI, Resource.NONE, Resource.NONE}, {Resource.NONE, Resource.FUNGI, Resource.NONE}, {Resource.NONE, Resource.FUNGI, Resource.NONE}};
+        Function<Player, Integer> score = new FunctionBuilder().setPoints(3).setType("pattern").setPattern(pattern).build();
         Player player = new Player("", game);
 
         player.drawStartingCard();
@@ -142,18 +106,21 @@ public class ObjectiveTest {
         PlayerBoard board = player.getPlayerBoard();
         Card fungi = new StdCard(0, null, Resource.FUNGI, false);
         Card plant = new StdCard(0, null, Resource.PLANT, false);
-        Coordinates fungi1 = board.getCenter().vertical(1);
-        Coordinates fungi2 = board.getCenter().vertical(2);
-        Coordinates fungi3 = board.getCenter().vertical(3).horizontal(-1);
+        Coordinates fungi1 = board.getCenter().horizontal(1);
+        Coordinates fungi2 = board.getCenter().horizontal(2);
+        Coordinates fungi3 = board.getCenter().horizontal(3).vertical(-1);
         try {
             board.placeCard(fungi, fungi1);
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         try {
             board.placeCard(fungi, fungi2);
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         try {
             board.placeCard(fungi, fungi3);
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         int points = score.apply(player);
         assertEquals(3, points);
     }
@@ -162,30 +129,24 @@ public class ObjectiveTest {
     public void testForMissingPattern() throws InvalidTypeException {
         Deck<StartingCard> startingCards = FullDeck.getFullStartingDeck();
 
-        Resource[][] pattern = {
-                {Resource.FUNGI, Resource.NONE, Resource.NONE},
-                {Resource.NONE, Resource.FUNGI, Resource.NONE},
-                {Resource.NONE, Resource.NONE,  Resource.FUNGI}};
+        Resource[][] pattern = {{Resource.FUNGI, Resource.NONE, Resource.NONE}, {Resource.NONE, Resource.FUNGI, Resource.NONE}, {Resource.NONE, Resource.NONE, Resource.FUNGI}};
 
-        Function<Player, Integer> score = new FunctionBuilder()
-                .setPoints(3)
-                .setType("pattern")
-                .setPattern(pattern)
-                .build();
+        Function<Player, Integer> score = new FunctionBuilder().setPoints(3).setType("pattern").setPattern(pattern).build();
         Player player = new Player("", game);
 
         player.drawStartingCard();
         player.setFirstCard(true);
         PlayerBoard board = player.getPlayerBoard();
-        Card fungi = new StdCard(0, null, Resource.FUNGI, false);
-        Card plant = new StdCard(0, null, Resource.PLANT, false);
-        Coordinates fungi1 = board.getCenter().horizontal(-1);
-        Coordinates fungi2 = board.getCenter().vertical(-2);
-        Coordinates plant1 = board.getCenter().vertical(-3).horizontal(1);
+        Card fungi = new StdCard(1, null, Resource.FUNGI, false);
+        Card plant = new StdCard(1, null, Resource.PLANT, false);
+        Coordinates fungi1 = board.getCenter().vertical(-1);
+        Coordinates fungi2 = board.getCenter().horizontal(-2);
+        Coordinates plant1 = board.getCenter().horizontal(-3).vertical(1);
 
         try {
             board.placeCard(fungi, fungi1);
-        } catch (Throwable ignored) {}
+        } catch (Throwable ignored) {
+        }
         int points = score.apply(player);
         assertEquals(0, points);
     }
