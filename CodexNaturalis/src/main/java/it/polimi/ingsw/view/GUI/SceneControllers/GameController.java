@@ -910,7 +910,7 @@ public class GameController implements Initializable {
                 controller.setClient(client);
                 loader.setController(controller);
                 Stage stage = (Stage) board.getScene().getWindow();
-                stage.setScene(loader.load());
+                stage.getScene().setRoot(loader.load());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
