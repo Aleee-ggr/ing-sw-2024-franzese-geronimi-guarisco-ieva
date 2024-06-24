@@ -304,6 +304,13 @@ public class GameThread extends Thread {
         controller.getGame().setGameState(GameState.STOP);
     }
 
+    /**
+     * Initiates the process to stop the game, updates player states, and processes messages until timeout.
+     * <p>
+     * This method sets the game state to end for all players, starts a new thread to process incoming messages,
+     * and waits for a specified duration before stopping message processing. During this time, it responds to
+     * messages of type "get" and logs errors for other message types.
+     */
     public void gameStop() {
         for (Player player : controller.getGame().getPlayers()) {
             turnMap.put(player.getUsername(), WaitState.ENDGAME);
@@ -330,6 +337,16 @@ public class GameThread extends Thread {
         running.set(false);
     }
 
+    /**
+     * Handles disconnection scenarios for the current player in the game.
+     * <p>
+     * This method adjusts game state and player actions based on the current game state and the parameters
+     * indicating which actions were completed by the player before disconnection.
+     *
+     * @param firstParam  Indicates if the player has chosen the personal objective.
+     * @param secondParam Indicates if the player has drawn the starting card.
+     * @param thirdParam  Indicates if the player has chosen a player color.
+     */
     private void disconnectionHandler(Boolean firstParam, Boolean secondParam, Boolean thirdParam) {
         System.out.printf("Player %s is offline%n", currentPlayer);
         Player user = controller.getGame().getPlayers().stream().filter(p -> p.getUsername().equals(currentPlayer))
@@ -508,6 +525,17 @@ public class GameThread extends Thread {
         return false;
     }
 
+    /**
+     * Sends game state updates to players based on the current player and their respective states.
+     * <p>
+     * This method updates the turnMap for each player in the game, indicating whether each player
+     * needs a turn update or a general game state update.
+     * </p>
+     * <p>
+     * If currentPlayer is not null, it sets its corresponding entry in turnMap to
+     * TURN_UPDATE. All other players have their entries set to UPDATE.
+     * </p>
+     */
     public void sendUpdate() {
         System.out.println(currentPlayer);
         if (currentPlayer != null) {

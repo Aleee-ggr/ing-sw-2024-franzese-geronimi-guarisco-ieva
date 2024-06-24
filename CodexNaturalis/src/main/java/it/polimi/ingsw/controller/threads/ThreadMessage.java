@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.model.enums.Resource;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -91,6 +90,13 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         return new ThreadMessage(Status.REQUEST, username, "choosePersonalObjective", new String[]{objectiveId.toString()}, UUID.randomUUID());
     }
 
+    /**
+     * Creates a ThreadMessage to request choosing a color.
+     *
+     * @param username the username of the player
+     * @param playerColor the color chosen by the player
+     * @return a ThreadMessage encapsulating the request to choose a player color
+     */
     public static ThreadMessage choosePlayerColor(String username, Color playerColor) {
         return new ThreadMessage(Status.REQUEST, username, "choosePlayerColor", new String[]{playerColor.toString()}, UUID.randomUUID());
     }
@@ -145,10 +151,23 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         return new ThreadMessage(Status.REQUEST, username, "getStartingObjectives", null, UUID.randomUUID());
     }
 
+    /**
+     * Creates a ThreadMessage for requesting the available colors.
+     *
+     * @param username the username of the player making the request
+     * @return a ThreadMessage object encapsulating the request to get available colors
+     */
     public static ThreadMessage getAvailableColors(String username) {
         return new ThreadMessage(Status.REQUEST, username, "getAvailableColors", null, UUID.randomUUID());
     }
 
+    /**
+     * Creates a ThreadMessage requesting the color of a specific player.
+     *
+     * @param username the username of the player making the request
+     * @param usernameRequiredData the username of the player whose color is requested
+     * @return a ThreadMessage object encapsulating the request to get the player's color
+     */
     public static ThreadMessage getPlayerColor(String username, String usernameRequiredData) {
         return new ThreadMessage(Status.REQUEST, username, "getPlayerColor", new String[]{usernameRequiredData}, UUID.randomUUID());
     }
@@ -216,6 +235,13 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         return new ThreadMessage(Status.REQUEST, username, "getHandColor", new String[]{usernameRequiredData}, UUID.randomUUID());
     }
 
+    /**
+     * Creates a ThreadMessage requesting the hand type of the specific player.
+     *
+     * @param username the username of the player making the request
+     * @param usernameRequiredData the username of the player whose hand type is requested
+     * @return a ThreadMessage object encapsulating the request to get the player's hand type
+     */
     public static ThreadMessage getHandType(String username, String usernameRequiredData) {
         return new ThreadMessage(Status.REQUEST, username, "getHandType", new String[]{usernameRequiredData}, UUID.randomUUID());
     }
@@ -433,7 +459,7 @@ public record ThreadMessage(Status status, String player, String type, String[] 
     }
 
     /**
-     * Creates a ThreadMessage for a common objectives response.
+     * Creates a ThreadMessage for a common objectives' response.
      *
      * @param username              The username of the player.
      * @param startingObjectivesIds An ArrayList of starting objective IDs.
@@ -463,7 +489,7 @@ public record ThreadMessage(Status status, String player, String type, String[] 
     }
 
     /**
-     * Creates a ThreadMessage for a starting objectives response.
+     * Creates a ThreadMessage for a starting objectives' response.
      *
      * @param username              The username of the player.
      * @param startingObjectivesIds An ArrayList of starting objective IDs.
@@ -481,7 +507,7 @@ public record ThreadMessage(Status status, String player, String type, String[] 
     }
 
     /**
-     * Creates a ThreadMessage for a available colors response.
+     * Creates a ThreadMessage for available colors response.
      *
      * @param username        The username of the player.
      * @param availableColors An ArrayList of available colors.
@@ -626,7 +652,14 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         return new ThreadMessage(Status.OK, username, "getHandColorResponse", args, messageUUID);
     }
 
-
+    /**
+     * Creates a ThreadMessage for hand type information.
+     *
+     * @param username the username of the player responding to the request
+     * @param isGold a list indicating whether each player's hand type is gold (true) or not (false)
+     * @param messageUUID the unique identifier of the original request message
+     * @return a ThreadMessage object encapsulating the response with hand type information
+     */
     public static ThreadMessage getHandTypeResponse(String username, ArrayList<Boolean> isGold, UUID messageUUID) {
         String[] args = new String[isGold.size()];
 

@@ -89,6 +89,13 @@ public class Controller {
     }
 
 
+    /**
+     * Updates the message queue with a thread message representing an update response.
+     *
+     * @param username the username associated with the update
+     * @param playerTurn indicates if it's the player's turn
+     * @param messageId the unique identifier of the message
+     */
     public void update(String username, boolean playerTurn, UUID messageId) {
         messageQueue.add(ThreadMessage.updateResponse(username, playerTurn, messageId));
     }
@@ -149,6 +156,12 @@ public class Controller {
         return false;
     }
 
+    /**
+     * Retrieves the usernames of all players in the game and sends a response message.
+     *
+     * @param username the username initiating the request
+     * @param messageId the unique identifier of the message
+     */
     public void getPlayers(String username, UUID messageId) {
         try {
             ArrayList<String> players = new ArrayList<>();
@@ -178,6 +191,13 @@ public class Controller {
         }
     }
 
+    /**
+     * Allows a player to choose a color and updates the game accordingly.
+     *
+     * @param username the username of the player choosing the color
+     * @param playerColor the chosen color by the player
+     * @param messageId the unique identifier of the message
+     */
     public void choosePlayerColor(String username, Color playerColor, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
@@ -302,10 +322,23 @@ public class Controller {
         }
     }
 
+    /**
+     * Retrieves and sends the available colors in the game to the requesting player.
+     *
+     * @param username the username of the player requesting the available colors
+     * @param messageId the unique identifier of the message
+     */
     public void getAvailableColors(String username, UUID messageId) {
         messageQueue.add(ThreadMessage.getAvailableColorsResponse(username, game.getAvailableColors(), messageId));
     }
 
+    /**
+     * Retrieves and sends the color of a specified player to the requesting player.
+     *
+     * @param username the username of the player requesting the color
+     * @param usernameRequiredData the username of the player whose color is being requested
+     * @param messageId the unique identifier of the message
+     */
     public void getPlayerColor(String username, String usernameRequiredData, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(usernameRequiredData)).toArray()[0];
@@ -436,6 +469,13 @@ public class Controller {
         }
     }
 
+    /**
+     * Retrieves and sends the if the cards in the hand are gold or standard of a specified player to the requesting player.
+     *
+     * @param username the username of the player requesting the hand types
+     * @param usernameRequiredData the username of the player whose hand types are being requested
+     * @param messageId the unique identifier of the message
+     */
     public void getHandType(String username, String usernameRequiredData, UUID messageId) {
         try{
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(usernameRequiredData)).toArray()[0];
@@ -471,6 +511,12 @@ public class Controller {
         }
     }
 
+    /**
+     * Retrieves and sends the starting card of a specified player to the requesting player.
+     *
+     * @param username the username of the player requesting the starting card
+     * @param messageId the unique identifier of the message
+     */
     public void getStartingCards(String username, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];
@@ -483,6 +529,13 @@ public class Controller {
         }
     }
 
+    /**
+     * Sets the first card placement for a specified player and sends an OK response.
+     *
+     * @param username the username of the player setting the first card placement
+     * @param bool the boolean value indicating the first card placement status
+     * @param messageId the unique identifier of the message
+     */
     public void placeStartingCard(String username, boolean bool, UUID messageId) {
         try {
             Player user = (Player) game.getPlayers().stream().filter(player -> player.getUsername().equals(username)).toArray()[0];

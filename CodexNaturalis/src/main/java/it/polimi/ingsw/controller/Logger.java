@@ -6,9 +6,17 @@ import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.Arrays;
 
+/**
+ * Abstract logger class for logging thread messages.
+ */
 public abstract class Logger {
     static final PrintWriter out = new PrintWriter(System.out);
 
+    /**
+     * Logs a thread message.
+     *
+     * @param msg the ThreadMessage object containing the message details
+     */
     public static void log(ThreadMessage msg) {
 
         if (msg.status() == it.polimi.ingsw.controller.threads.Status.ERROR) {

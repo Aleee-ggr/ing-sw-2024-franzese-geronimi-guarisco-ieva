@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="tabPane" prefHeight="500.0" prefWidth="900.0" styleClass="tab" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="tabPane" prefHeight="500.0" prefWidth="900.0" styleClass="tab" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeTab" styleClass="button-close" text="X" StackPane.alignment="TOP_RIGHT">
          <StackPane.margin>
