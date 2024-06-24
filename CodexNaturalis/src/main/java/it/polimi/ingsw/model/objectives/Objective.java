@@ -19,6 +19,7 @@ public class Objective {
     private final String type;
     private Resource[][] pattern = null;
     private Map<Resource, Integer> resources = null;
+
     /**
      * Constructs a new Objective with the specified point calculator function.
      *
@@ -35,6 +36,11 @@ public class Objective {
         setPatternAndResources(type, requirements);
     }
 
+    /**
+     * Gets the standard points for the objective.
+     *
+     * @return The points for the objective.
+     */
     public int getPoints() {
         return points;
     }

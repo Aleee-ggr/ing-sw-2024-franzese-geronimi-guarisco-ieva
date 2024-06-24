@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.controller.threads.GameState;
-import it.polimi.ingsw.helpers.exceptions.model.ExistingUsernameException;
 import it.polimi.ingsw.helpers.exceptions.model.TooManyPlayersException;
 import it.polimi.ingsw.model.board.SharedBoard;
 import it.polimi.ingsw.model.cards.*;
@@ -43,7 +42,9 @@ public class Game {
     private final List<Player> players = Collections.synchronizedList(new ArrayList<>());
     private final int maxPlayers;
     private final ArrayList<Color> availableColors = new ArrayList<>();
-    /*Game-Specific Decks: not static decks for the instance of Game*/ Deck<GoldCard> gameGoldDeck;
+
+    //Game-Specific Decks: not static decks for the instance of Game
+    Deck<GoldCard> gameGoldDeck;
     Deck<StdCard> gameStdDeck;
     Deck<Objective> gameObjDeck;
     Deck<StartingCard> gameStartingDeck;
@@ -134,14 +135,6 @@ public class Game {
         return gameStartingDeck;
     }
 
-    /**
-     * Getter for the max number of players in the game.
-     *
-     * @return the max number of players in the game
-     */
-    public int getMaxPlayers() {
-        return maxPlayers;
-    }
 
     /**
      * Getter for the GameState of the Game.
@@ -163,18 +156,18 @@ public class Game {
      * Method used to add a Player in Game
      *
      * @param playerUsername is the player username as a String
-     * @throws TooManyPlayersException   while trying to add a player when the Game is full
+     * @throws TooManyPlayersException while trying to add a player when the Game is full
      */
-    public void addPlayer(String playerUsername) throws TooManyPlayersException, ExistingUsernameException{
-        if(this.numPlayers >= maxPlayers) {
-            for(Player p : players){
-                if(p.getUsername().equals(playerUsername)){
+    public void addPlayer(String playerUsername) throws TooManyPlayersException {
+        if (this.numPlayers >= maxPlayers) {
+            for (Player p : players) {
+                if (p.getUsername().equals(playerUsername)) {
                     return;
                 }
             }
             throw new TooManyPlayersException("Too Many Players");
         }
-        if(players.stream().noneMatch(p -> p.getUsername().equals(playerUsername))){
+        if (players.stream().noneMatch(p -> p.getUsername().equals(playerUsername))) {
             Player toAdd = new Player(playerUsername, this);
             players.add(toAdd);
             this.numPlayers += 1;
@@ -185,7 +178,7 @@ public class Game {
      * Method used to randomize the order of the players.<br/>
      * Used to randomize the turn order of the players in the game.
      */
-    public void randomizePlayers(){
+    public void randomizePlayers() {
         Collections.shuffle(players);
     }
 
@@ -219,6 +212,12 @@ public class Game {
         gameBoard.setObjectives(objectiveToAdd);
     }
 
+    /**
+     * Method used to manage the available colors of the game. <br/>
+     * It removes the color of the player from the available colors.
+     *
+     * @param playerColor the color of the player
+     */
     public void updateAvailableColors(Color playerColor) {
         availableColors.remove(playerColor);
     }

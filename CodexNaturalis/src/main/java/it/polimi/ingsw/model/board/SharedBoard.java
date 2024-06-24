@@ -62,6 +62,11 @@ public class SharedBoard {
         return Arrays.copyOf(visibleCards, GameConsts.visibleCards);
     }
 
+    /**
+     * Sets the objectives on the shared board.
+     *
+     * @param obj An array containing the objectives to set.
+     */
     public void setObjectives(Objective[] obj) {
         try {
             System.arraycopy(obj, 0, this.objectives, 0, objectives.length);
@@ -148,20 +153,6 @@ public class SharedBoard {
             return card;
         }
         return null;
-    }
-
-    /**
-     * Checks if the game is over by verifying if any player has reached the ending score.
-     *
-     * @return True if the game is over, otherwise false.
-     */
-    public boolean isOver() {
-        for (int score : scoreMap.values()) {
-            if (score >= GameConsts.endingScore) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

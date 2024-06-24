@@ -62,10 +62,20 @@ public class Player {
         return username;
     }
 
+    /**
+     * Getter for the player color.
+     *
+     * @return the Color of the player
+     */
     public Color getPlayerColor() {
         return playerColor;
     }
 
+    /**
+     * Getter for the available colors of the Player.
+     *
+     * @return an ArrayList of Color.
+     */
     public ArrayList<Color> getAvailableColors() {
         return game.getAvailableColors();
     }

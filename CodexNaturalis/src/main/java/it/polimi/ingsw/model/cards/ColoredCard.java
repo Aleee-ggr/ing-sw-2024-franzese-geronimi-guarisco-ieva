@@ -10,7 +10,7 @@ import java.util.Arrays;
  * Extends the base class Card and adds information about the resource on the back side of the card.
  */
 
-public abstract class ColoredCard extends Card{
+public abstract class ColoredCard extends Card {
     private final Resource backResource;
     private static final Corner[] backCorners = {
             new Corner(Resource.NONE, true),
@@ -21,7 +21,8 @@ public abstract class ColoredCard extends Card{
 
     /**
      * Constructor for the ColoredCard class.
-     * @param id Unique identifier of the card.
+     *
+     * @param id           Unique identifier of the card.
      * @param frontCorners Array of corners on the front side of the card.
      * @param backResource Resource on the back side of the card.
      */
@@ -32,6 +33,7 @@ public abstract class ColoredCard extends Card{
 
     /**
      * Retrieves the resource on the back side of the card.
+     *
      * @return The resource on the back side of the card.
      */
     public Resource getBackResource() {
@@ -40,6 +42,7 @@ public abstract class ColoredCard extends Card{
 
     /**
      * Retrieves the back corners of the card.
+     *
      * @return Array of back corners of the card.
      */
     public Corner[] getBackCorners() {

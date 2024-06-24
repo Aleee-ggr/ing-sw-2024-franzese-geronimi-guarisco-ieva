@@ -12,11 +12,12 @@ import java.util.*;
  * PlayerBoard has a 2D array that represent the main play board for a Player. <br/>
  * It manages placement of cards and check valid positions for placing cards. <br/>
  * it also checks if a card can be played.
+ *
  * @see Player
  * @see Coordinates
  * @see Card
  * @see MockCard
- * */
+ */
 public class PlayerBoard {
     private final HashMap<Coordinates, Card> board = new HashMap<>();
     private final Player boardOwner;
@@ -27,6 +28,7 @@ public class PlayerBoard {
 
     /**
      * Constructor for the PlayerBoard class.
+     *
      * @param firstCard first card played.
      */
     public PlayerBoard(Card firstCard, Player player) {
@@ -35,15 +37,8 @@ public class PlayerBoard {
     }
 
     /**
-     * Getter for the last placed card on the board.
-     * @return the last placed Card obj.
-     */
-    public Card getLastPlacedCard() {
-        return lastPlacedCards.peekLast();
-    }
-
-    /**
      * Getter for the position of the last placed card on the board.
+     *
      * @return the coordinates of the last placed card on the board.
      */
     public Coordinates getLastPlacedPosition() {
@@ -52,6 +47,7 @@ public class PlayerBoard {
 
     /**
      * Getter for the HashSet of the valid Placements of Cards.
+     *
      * @return the HashSet of validPlacements.
      */
     public Set<Coordinates> getValidPlacements() {
@@ -60,6 +56,7 @@ public class PlayerBoard {
 
     /**
      * Method getCenter, returns the Coordinates of the center of the board.
+     *
      * @return Coordinates of the center of the board.
      */
     public Coordinates getCenter() {
@@ -68,6 +65,7 @@ public class PlayerBoard {
 
     /**
      * Method getCard, returns the Card for specified Coordinate.
+     *
      * @param coordinates Coordinates for returning a card.
      * @return Card for the specified coordinates.
      */
@@ -77,6 +75,7 @@ public class PlayerBoard {
 
     /**
      * Method getBoard, returns the HashMap of the Board.
+     *
      * @return Hashmap of coordinates and cards.
      */
     public HashMap<Coordinates, Card> getBoard() {
@@ -85,23 +84,13 @@ public class PlayerBoard {
 
     /**
      * Method getLastPlacedCards, returns the Deque of the last placed Cards.
+     *
      * @return Deque of the last placed Cards.
      */
     public Deque<Card> getLastPlacedCards() {
         return lastPlacedCards;
     }
 
-    /**
-     * Method that returns the possible positions for placing a Card on the board. <br/>
-     * it's used if a player is disconnected. <br/>
-     * in normal execution of the game the validPlacements hashset is updated while placing a card.<br/>
-     * it calls the private method {@link #dfs(Coordinates, Set) dfs}.
-     * @see Coordinates
-     */
-    public void checkPositionsIfDisconnected(){
-        Set<Coordinates> visited = new HashSet<>();
-        dfs(new Coordinates(0,0), visited);
-    }
 
     /**
      * Private Method dfs, a Recursive Depth First Search algorithm. <br/>
@@ -109,18 +98,19 @@ public class PlayerBoard {
      * it visits each cell up, down, right and left from the given coordinates. <br/>
      * if it finds a null pointer it has found a valid position for a card, adding the coordinates to a list and returning.<br/>
      * if it finds a notFillable object it means the position is not valid.<br/>
-     * @see MockCard
+     *
      * @param cellCoordinates the starting cell from which the depth first search starts.
-     * @param visited a 2D array of boolean used to search every cell once without repetitions.
+     * @param visited         a 2D array of boolean used to search every cell once without repetitions.
+     * @see MockCard
      */
-    private void dfs(Coordinates cellCoordinates, Set<Coordinates> visited){
-        if(!visited.contains(cellCoordinates)){
+    private void dfs(Coordinates cellCoordinates, Set<Coordinates> visited) {
+        if (!visited.contains(cellCoordinates)) {
             visited.add(cellCoordinates);
             if (board.get(cellCoordinates) == null) {
                 validPlacements.add(cellCoordinates);
                 return;
             }
-            if(board.get(cellCoordinates)==notFillable) {
+            if (board.get(cellCoordinates) == notFillable) {
                 return;
             }
 
@@ -133,13 +123,14 @@ public class PlayerBoard {
     /**
      * Method placeCard, used to place a given card on the board at specified Coordinates. <br/>
      * it calls the private method {@link #markNotCoverable(Coordinates, Corner[]) markNotCoverable} for checks and placing notFillable.
-     * @param card Card obj to add
+     *
+     * @param card        Card obj to add
      * @param coordinates Coordinates for adding the Card
      * @throws IndexOutOfBoundsException when trying to place a card out of bound
      * @throws UnrecognisedCardException when a card is not recognised
      * @see Coordinates
      */
-    public void placeCard(Card card, Coordinates coordinates) throws IndexOutOfBoundsException, UnrecognisedCardException{
+    public void placeCard(Card card, Coordinates coordinates) throws IndexOutOfBoundsException, UnrecognisedCardException {
         board.put(coordinates, card);
 
         lastPlacedPosition = coordinates;
@@ -148,11 +139,11 @@ public class PlayerBoard {
 
         Corner[] corners;
 
-        if(card.isFrontSideUp()){
+        if (card.isFrontSideUp()) {
             corners = card.getFrontCorners();
 
-            if(card instanceof StartingCard){
-                for (Resource r : ((StartingCard) card).getFrontResources()){
+            if (card instanceof StartingCard) {
+                for (Resource r : ((StartingCard) card).getFrontResources()) {
                     boardOwner.updateResourcesValue(r, GameConsts.numberOfResourcesPerCorner);
                 }
             }
@@ -161,7 +152,7 @@ public class PlayerBoard {
             removeResources(coordinates);
         }
 
-        if(!card.isFrontSideUp()){
+        if (!card.isFrontSideUp()) {
 
             if (card instanceof StartingCard) {
                 corners = ((StartingCard) card).getBackCorners();
@@ -184,8 +175,9 @@ public class PlayerBoard {
      * Private Method markNotCoverable, <br/>
      * called by {@link #placeCard(Card, Coordinates) placeCard}, it calls
      * {@link #handleCase(Coordinates, Corner, int, int) handleCase} to handle the four corners of a card.
+     *
      * @param coordinates Coordinates of the placed Card
-     * @param c Array of Corner of Resources of the card
+     * @param c           Array of Corner of Resources of the card
      * @see Coordinates
      * @see Resource
      * @see Corner
@@ -212,29 +204,30 @@ public class PlayerBoard {
      * mark cells of the board as not Fillable[deprecated]<br/>
      * add values to the player Resource hashmap <br/>
      * add Coordinates to the Set of validPlacements for cards.
+     *
      * @param coordinates Coordinates of the placed Card
-     * @param corner specific Corner of the card
-     * @param dX delta x
-     * @param dY delta y
+     * @param corner      specific Corner of the card
+     * @param dX          delta x
+     * @param dY          delta y
      * @see Coordinates
      * @see Resource
      * @see Corner
      */
     private void handleCase(Coordinates coordinates, Corner corner, int dX, int dY) {
         Coordinates c = new Coordinates(coordinates.x() + dX, coordinates.y() + dY);
-        if(corner.getCornerResource() == Resource.NONCOVERABLE || !corner.isCoverable()) {
+        if (corner.getCornerResource() == Resource.NONCOVERABLE || !corner.isCoverable()) {
 
-            if(!board.containsKey(c)){
+            if (!board.containsKey(c)) {
                 board.put(coordinates.horizontal(dX).vertical(dY), notFillable);
             }
             validPlacements.remove(c);
 
         } else {
 
-            if(corner.getCornerResource() != Resource.NONE) {
+            if (corner.getCornerResource() != Resource.NONE) {
                 boardOwner.updateResourcesValue(corner.getCornerResource(), GameConsts.numberOfResourcesPerCorner);
             }
-            if(!board.containsKey(c)){
+            if (!board.containsKey(c)) {
                 validPlacements.add(c);
             }
         }
@@ -247,11 +240,11 @@ public class PlayerBoard {
      */
     private void removeResources(Coordinates placedCoordinates) {
         Corner[] corners;
-        for(Coordinates c : placedCoordinates.getNeighbors()) {
-            if(!board.containsKey(c)){
+        for (Coordinates c : placedCoordinates.getNeighbors()) {
+            if (!board.containsKey(c)) {
                 continue;
             }
-            if(board.get(c) instanceof MockCard){
+            if (board.get(c) instanceof MockCard) {
                 continue;
             }
 
@@ -276,14 +269,18 @@ public class PlayerBoard {
      * @param corners           the corners of the adjacent card
      */
     private void removeCornerResource(Coordinates placedCoordinates, Coordinates c, Corner[] corners) {
-        if(board.containsKey(c)){
-            switch (c.x() - placedCoordinates.x()){
-                case -1 -> boardOwner.updateResourcesValue(corners[3].getCornerResource(), - GameConsts.numberOfResourcesPerCorner);
-                case 1 -> boardOwner.updateResourcesValue(corners[0].getCornerResource(), - GameConsts.numberOfResourcesPerCorner);
+        if (board.containsKey(c)) {
+            switch (c.x() - placedCoordinates.x()) {
+                case -1 ->
+                        boardOwner.updateResourcesValue(corners[3].getCornerResource(), -GameConsts.numberOfResourcesPerCorner);
+                case 1 ->
+                        boardOwner.updateResourcesValue(corners[0].getCornerResource(), -GameConsts.numberOfResourcesPerCorner);
             }
-            switch (c.y() - placedCoordinates.y()){
-                case -1 -> boardOwner.updateResourcesValue(corners[1].getCornerResource(), - GameConsts.numberOfResourcesPerCorner);
-                case 1 -> boardOwner.updateResourcesValue(corners[2].getCornerResource(), - GameConsts.numberOfResourcesPerCorner);
+            switch (c.y() - placedCoordinates.y()) {
+                case -1 ->
+                        boardOwner.updateResourcesValue(corners[1].getCornerResource(), -GameConsts.numberOfResourcesPerCorner);
+                case 1 ->
+                        boardOwner.updateResourcesValue(corners[2].getCornerResource(), -GameConsts.numberOfResourcesPerCorner);
             }
         }
     }

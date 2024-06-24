@@ -11,17 +11,19 @@ import java.util.function.Function;
  * Represents a gold card in the game.
  * Extends the ColoredCard class and adds information about requirements and a function to calculate the score.
  */
-public class GoldCard extends ColoredCard{
+public class GoldCard extends ColoredCard {
     private final ConcurrentHashMap<Resource, Integer> requirements;
     private final Function<Player, Integer> calculateScore;
     private final int score;
     private final String type;
+
     /**
      * Constructor for the GoldCard class.
-     * @param id Unique identifier of the card.
-     * @param frontCorners Array of corners on the front side of the card.
-     * @param backResource Resource on the back side of the card.
-     * @param requirements Map of resource requirements for the card.
+     *
+     * @param id             Unique identifier of the card.
+     * @param frontCorners   Array of corners on the front side of the card.
+     * @param backResource   Resource on the back side of the card.
+     * @param requirements   Map of resource requirements for the card.
      * @param calculateScore Function to calculate the score based on the player.
      */
     public GoldCard(int id, Corner[] frontCorners, Resource backResource, Map<Resource, Integer> requirements,
@@ -33,13 +35,24 @@ public class GoldCard extends ColoredCard{
         this.type = type;
     }
 
+    /**
+     * Getter for the score of the card.
+     *
+     * @return The score for the card.
+     */
     public int getScore() {
         return score;
     }
 
+    /**
+     * Getter for the type of the card.
+     *
+     * @return The String type of the card.
+     */
     public String getType() {
         return type;
     }
+
     /**
      * Checks if the specified player meets the requirements to place this gold card.
      * Returns true if the player satisfies all resource requirements specified for this card,
@@ -60,6 +73,7 @@ public class GoldCard extends ColoredCard{
 
     /**
      * Calculates the score for the player based on the card's requirements using the strategy.
+     *
      * @param player The player for whom the score is calculated.
      * @return The calculated score.
      */
@@ -69,6 +83,7 @@ public class GoldCard extends ColoredCard{
 
     /**
      * Retrieves the requirements for the card.
+     *
      * @return The requirements for the card.
      */
     public ConcurrentHashMap<Resource, Integer> getRequirements() {

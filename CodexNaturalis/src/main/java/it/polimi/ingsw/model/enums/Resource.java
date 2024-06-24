@@ -5,14 +5,14 @@ package it.polimi.ingsw.model.enums;
  * These resources include FUNGI, PLANT, ANIMAL, INSECT, INKWELL, QUILL, and MANUSCRIPT.
  * The NONE value is used when no specific resource is assigned.
  * The NONCOVERABLE value is used to represent a non-coverable corner.
- *
  */
 public enum Resource {
     FUNGI, PLANT, ANIMAL, INSECT, INKWELL, QUILL, MANUSCRIPT, NONE, NONCOVERABLE;
 
     /**
      * Converts a string to a corresponding Resource enum value.
-     * @param string The string representation of the resource (case insensitive).
+     *
+     * @param string The string representation of the resource (case-insensitive).
      * @return The corresponding Resource enum value.
      */
     public static Resource fromString(String string) {
@@ -21,6 +21,7 @@ public enum Resource {
 
     /**
      * Converts the resource to a character representation.
+     *
      * @return The character representation of the resource.
      */
     public char toChar() {
@@ -39,6 +40,7 @@ public enum Resource {
 
     /**
      * Converts the resource to a centered character representation.
+     *
      * @return The centered character representation of the resource.
      */
     public char toCharCenter() {
@@ -53,6 +55,7 @@ public enum Resource {
 
     /**
      * Converts the resource to a colored block representation.
+     *
      * @return The colored block representation of the resource.
      */
     public String toColorBlock() {
@@ -61,6 +64,7 @@ public enum Resource {
 
     /**
      * Converts the resource to a colored character representation.
+     *
      * @param character The character to be colored.
      * @return The colored character representation of the resource.
      */
@@ -80,6 +84,7 @@ public enum Resource {
 
     /**
      * Converts the resource to a centered colored character representation.
+     *
      * @return The centered colored character representation of the resource.
      */
     public String toColorCenter() {
