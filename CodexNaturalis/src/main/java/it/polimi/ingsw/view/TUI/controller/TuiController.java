@@ -111,8 +111,7 @@ public class TuiController {
             } else {
                 UUID choice = games.get(selected - 1);
                 if (!client.joinGame(choice)) {
-                    out.println("Invalid Join! \n" + "Are you sure you don't already have a game open?\n"
-                            + "Are you sure you are not trying to join a different game than the one you are already in?");
+                    out.println("Invalid Join! \n" + "Are you sure you don't already have a game open?\n" + "Are you sure you are not trying to join a different game than the one you are already in?");
                     System.exit(0);
                 }
             }
@@ -160,7 +159,7 @@ public class TuiController {
             clear();
             out.println(new ColorView(playerData.getAvailableColors()));
             out.println("Select color: ");
-            sel = select(1, 4);
+            sel = select(1, playerData.getAvailableColors().size() - 1);
             done = sel >= 0;
         }
 
@@ -215,8 +214,7 @@ public class TuiController {
     private void stop() {
         try {
             client.fetchScoreMap();
-            List<Map.Entry<String, Integer>> entryList = client.getScoreMap().entrySet().stream()
-                    .sorted((e1, e2) -> e2.getValue() - e1.getValue()).toList();
+            List<Map.Entry<String, Integer>> entryList = client.getScoreMap().entrySet().stream().sorted((e1, e2) -> e2.getValue() - e1.getValue()).toList();
 
             for (int i = 0; i < entryList.size(); i++) {
                 out.print(i + 1);
