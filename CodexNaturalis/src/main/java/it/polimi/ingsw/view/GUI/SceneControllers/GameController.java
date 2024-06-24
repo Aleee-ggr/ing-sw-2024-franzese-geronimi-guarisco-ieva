@@ -509,6 +509,11 @@ public class GameController implements Initializable {
      * creates ImageView objects for each valid placement.
      */
     private void setupValidPlacements() {
+        try {
+            client.fetchValidPlacements();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         for (StackPane pane : validPlacementPanes.values()) {
             board.getChildren().remove(pane);
         }
@@ -530,6 +535,8 @@ public class GameController implements Initializable {
             GridPane.setHalignment(stackPane, HPos.CENTER);
             GridPane.setValignment(stackPane, VPos.CENTER);
             validPlacementPanes.put(boardCoordinates, stackPane);
+
+            System.out.println(validPlacementPanes);
         }
     }
 
@@ -547,6 +554,8 @@ public class GameController implements Initializable {
 
         stackPane.setOnMouseClicked(event -> {
             placeCard(stackPane, imageView, boardCoordinates);
+            stackPane.setOnMouseClicked(null);
+            stackPane.setOnDragDropped(null);
         });
 
         stackPane.setOnDragOver(event -> {
@@ -563,6 +572,8 @@ public class GameController implements Initializable {
 
             event.setDropCompleted(placed);
             event.consume();
+            stackPane.setOnDragDropped(null);
+            stackPane.setOnMouseClicked(null);
         });
         return stackPane;
     }

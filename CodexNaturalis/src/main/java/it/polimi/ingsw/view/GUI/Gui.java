@@ -21,6 +21,10 @@ public class Gui extends Application {
         launch();
     }
 
+    public static void main(String[] args) {
+        launch();
+    }
+
     /**
      * Initializes and starts the primary stage of the GUI.
      *
