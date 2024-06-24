@@ -55,6 +55,7 @@ public abstract class Server {
                     Thread.sleep(GameConsts.heartbeatInterval);
 
                     if (playerStatus.isEmpty()) {
+                        Thread.sleep(100);
                         continue;
                     }
 
@@ -124,11 +125,11 @@ public abstract class Server {
      */
     public static void removeGame(UUID game, GameThread gameThread, String playerUsername) {
         for (String player : gameThread.getPlayers()) {
-            if (!player.equals(playerUsername)) {
+            /*if (!player.equals(playerUsername)) {
                 playerGame.remove(player);
                 playerStatus.remove(player);
                 playerGame.remove(player);
-            }
+            }*/
         }
         threadMessages.remove(game);
         games.remove(game);

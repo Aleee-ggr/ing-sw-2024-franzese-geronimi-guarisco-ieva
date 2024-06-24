@@ -161,16 +161,14 @@ public class SocketClient extends Client implements ClientInterface {
     }
 
     @Override
-    public void pingServer() throws IOException {
+    public synchronized void pingServer() throws IOException {
         heartbeatOutput.writeObject(new SocketClientHeartbeatMessage(username, gameId));
-        GenericResponseMessage message;
-        do {
             try {
-                message = (GenericResponseMessage) heartbeatInput.readObject();
-            } catch (ClassNotFoundException e) {
+                Thread.sleep(200);
+                GenericResponseMessage message = (GenericResponseMessage) heartbeatInput.readObject();
+            } catch (ClassNotFoundException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
-        } while (message == null);
     }
 
     @Override

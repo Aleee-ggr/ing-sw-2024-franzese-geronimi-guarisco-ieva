@@ -165,10 +165,15 @@ public class GameThread extends Thread {
                     break;
                 }
 
-                if (msg.type().contains("get")) {
+                if(msg == null) {
+                    continue;
+                }
+
+                if (msg.type().contains("get") || msg.type().contains("join")) {
                     respond(msg);
                     continue;
                 }
+
                 if (GameState.setup.contains(msg.type()) && msg.player().equals(currentPlayer)) {
                     respond(msg);
                 } else if (!msg.player().equals(currentPlayer)) {
@@ -348,21 +353,17 @@ public class GameThread extends Thread {
      * @param thirdParam  Indicates if the player has chosen a player color.
      */
     private void disconnectionHandler(Boolean firstParam, Boolean secondParam, Boolean thirdParam) {
-        System.out.printf("Player %s is offline%n", currentPlayer);
         Player user = controller.getGame().getPlayers().stream().filter(p -> p.getUsername().equals(currentPlayer))
                 .toList().getFirst();
 
         switch (gameState) {
             case SETUP:
-                turnMap.put(currentPlayer, WaitState.TURN);
                 Random rand = new Random();
 
                 if (!firstParam) { // if the player has not chosen the personal objective
                     int index = rand.nextInt() % 2;
 
-                    if (user.getStartingObjectives().isEmpty()) {
-                        user.setStartingObjectives();
-                    }
+                    user.setStartingObjectives();
 
                     ArrayList<Objective> startingObjectives = user.getStartingObjectives();
                     user.choosePersonalObjective(startingObjectives.get(abs(index)).getId());
