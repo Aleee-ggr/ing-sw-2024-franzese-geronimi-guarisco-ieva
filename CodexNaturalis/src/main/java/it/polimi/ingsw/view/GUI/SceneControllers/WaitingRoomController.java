@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -129,14 +130,49 @@ public class WaitingRoomController implements Initializable {
         PauseTransition pause = new PauseTransition(Duration.seconds(2));
         pause.setOnFinished(e -> {
             try {
-                stopFetchingPlayers();
-                client.fetchStartingObjectives();
-                client.fetchStartingCard();
-                client.fetchClientHand();
-                client.fetchCommonObjectives();
-                changeToChooseStartingCardScene();
+                try {
+                    client.fetchGameState();
+                    client.fetchPlayers();
+                    client.fetchPersonalObjective();
+                } catch (IOException exception) {
+                    ErrorMessageController.showErrorMessage("Impossible fetching game data!", root);
+                }
+
+                FXMLLoader loader;
+                Stage stage;
+                switch (client.getGameState()) {
+                    case SETUP:
+                        client.fetchPlayers();
+                        client.fetchStartingObjectives();
+                        client.fetchStartingCard();
+                        client.fetchAvailableColors();
+                        client.fetchClientHand();
+                        client.fetchCommonObjectives();
+
+                        loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseStartingCardSideScene.fxml"));
+                        ChooseStartingCardSideController chooseStartingCardSideController = new ChooseStartingCardSideController();
+                        chooseStartingCardSideController.setClient(client);
+                        loader.setController(chooseStartingCardSideController);
+                        stage = (Stage) root.getScene().getWindow();
+                        stage.getScene().setRoot(loader.load());
+                        break;
+                    case MAIN, ENDGAME:
+                        loader = new FXMLLoader(getClass().getResource("/GUI/fxml/GameScene.fxml"));
+                        GameController gameController = new GameController();
+                        gameController.setClient(client);
+                        loader.setController(gameController);
+                        stage = (Stage) root.getScene().getWindow();
+                        stage.getScene().setRoot(loader.load());
+                        if (Screen.getPrimary().getVisualBounds().getWidth() <= 1920 || Screen.getPrimary().getVisualBounds().getHeight() <= 1080) {
+                            stage.setFullScreen(true);
+                        } else {
+                            stage.setMaxWidth(3840);
+                            stage.setMaxHeight(2160);
+                        }
+                        break;
+                }
             } catch (IOException ex) {
-                ErrorMessageController.showErrorMessage("Impossible to fetch data from the server!", root);
+                ErrorMessageController.showErrorMessage("Error while loading choose starting card!", root);
             }
         });
         return pause;
