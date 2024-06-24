@@ -27,10 +27,10 @@ Advanced Features:
 
 ## Compile and Execute
 
-The group worked with a Unix-first mindset, the game is fully reliable on Linux and MacOS but for W*ndows it need a little more of a setup.
+The group worked with a Unix-first mindset, the game is fully reliable on Linux and MacOS but for Windows it may not work as expected.
 ### Requirements:
 to work correctly the project needs:  
-- `Java 22` or above  
+- `Java 22` or above with javaFX  
 - `mvn` and `shade` for compiling
 - the `trattatello` font
   
@@ -38,15 +38,20 @@ to work correctly the project needs:
 to run on Windows you should use the new [windows terminal](https://github.com/microsoft/terminal), default terminal from windows 11.  
 to run the TUI you should:
 - enable UNICODE characters in the terminal
+- use a font that support UTF-8
 - adjust the font size depending on your screen
 
-the fastest way to enable UTF-8 on your windows terminal is to enable `Use Unicode UTF-8 for worldwide language support` in your OS language settings.  
-before running the game typing 
+the safest way to enable UTF-8 on your windows terminal is to enable `Use Unicode UTF-8 for worldwide language support` in your OS language settings.  
+on some systems typing on the terminal before running the game:
 ```
 chcp 65001
 ```
 should also work.  
-Alternatively you could use WSL using Ubuntu.
+Because those steps may vary depending on your configurations the safe bet is always using WSL with Ubuntu or a UNIX-based system.
+
+### macOS apple silicon pre-setup:
+If you are running a MacBook with apple silicon you should use a supported version of javaFX.  
+we recomend [azul](https://www.azul.com/downloads/?version=java-22&os=macos&architecture=arm-64-bit&package=jdk-fx#zulu) sdk version 22
 
 ### Every OS:
 to compile the project move into the root project folder use the command:
