@@ -22,7 +22,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.Glow;
@@ -38,7 +37,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -58,10 +56,10 @@ import java.util.*;
  * - Displaying chat messages and indicating new messages with a visual cue.
  * - Managing opponent data display and setup.
  * - Implementing game-specific UI elements such as buttons for flipping cards and centering the board.
- *
+ * <p>
  * This controller class uses JavaFX for UI components and threading mechanisms for real-time updates.
  * It interacts with a ClientInterface for game data and manages data updates through SharedUpdate and other helper classes.
- *
+ * <p>
  * The game-specific logic for placing cards, updating game state, and handling turns is embedded in this class.
  */
 public class GameController implements Initializable {
@@ -166,6 +164,7 @@ public class GameController implements Initializable {
             centerBoardButton();
         });
 
+        turnMessage.setText("Waiting for your Turn...");
         setPersonalData();
         setEndGameThread();
         setChatThread();
@@ -199,7 +198,6 @@ public class GameController implements Initializable {
      */
     private void setPersonalData() {
         username.setText(client.getUsername());
-        turnMessage.setText("Waiting for your Turn...");
         board.getChildren().clear();
         backgroundImage.fitWidthProperty().bind(root.widthProperty());
         backgroundImage.fitHeightProperty().bind(root.heightProperty());
@@ -214,7 +212,6 @@ public class GameController implements Initializable {
                     board.setScaleX(newScaleX);
                     board.setScaleY(newScaleY);
                 }
-
                 event.consume();
             }
         });
@@ -225,19 +222,7 @@ public class GameController implements Initializable {
         setHand(client.getUsername(), frontSide);
 
         if (playerData.getBoard().isEmpty()) {
-            int startingCard = playerData.getStartingCard().getId();
-            String pathSide;
-            if (startingCard > 0) {
-                pathSide = String.format("GUI/images/cards.nogit/front/%03d.png", startingCard);
-            } else {
-                pathSide = String.format("GUI/images/cards.nogit/back/%03d.png", -startingCard);
-            }
-            ImageView image = new ImageView(pathSide);
-            image.setFitHeight(100.95);
-            image.setFitWidth(150);
-            image.preserveRatioProperty();
-
-            StackPane stackPane = new StackPane(image);
+            StackPane stackPane = getStackPane(playerData.getStartingCard().getId());
             setPion(client.getUsername(), stackPane);
 
             board.add(stackPane, center.x(), center.y());
@@ -246,19 +231,7 @@ public class GameController implements Initializable {
         } else {
             for (Card card: playerData.getOrder()) {
                 Coordinates coordinates = playerData.getBoard().inverse().get(card);
-                int id = card.getId();
-                String pathSide;
-                if (id > 0) {
-                    pathSide = String.format("GUI/images/cards.nogit/front/%03d.png", id);
-                } else {
-                    pathSide = String.format("GUI/images/cards.nogit/back/%03d.png", -id);
-                }
-                ImageView image = new ImageView(pathSide);
-                image.setFitHeight(100.95);
-                image.setFitWidth(150);
-                image.preserveRatioProperty();
-
-                StackPane stackPane = new StackPane(image);
+                StackPane stackPane = getStackPane(card.getId());
                 if (card.equals(playerData.getOrder().getFirst())) {
                     setPion(client.getUsername(), stackPane);
                 }
@@ -268,8 +241,29 @@ public class GameController implements Initializable {
                 GridPane.setValignment(stackPane, VPos.CENTER);
             }
         }
-
         setupValidPlacements();
+    }
+
+    /**
+     * Generates a StackPane containing an image of a card based on the provided player data.
+     * If the player data is positive, the front of the card is shown. If the player data is negative, the back of the card is shown.
+     *
+     * @param playerData an integer representing the player data; positive for the front of the card, negative for the back
+     * @return a StackPane containing the ImageView of the card
+     */
+    private StackPane getStackPane(int playerData) {
+        String pathSide;
+        if (playerData > 0) {
+            pathSide = String.format("GUI/images/cards.nogit/front/%03d.png", playerData);
+        } else {
+            pathSide = String.format("GUI/images/cards.nogit/back/%03d.png", -playerData);
+        }
+        ImageView image = new ImageView(pathSide);
+        image.setFitHeight(100.95);
+        image.setFitWidth(150);
+        image.preserveRatioProperty();
+
+        return new StackPane(image);
     }
 
     /**
@@ -342,20 +336,7 @@ public class GameController implements Initializable {
 
         for (Card card: opponentData.getOrder()) {
             Coordinates coordinates = opponentData.getBoard().inverse().get(card);
-            int id = card.getId();
-            String pathSide;
-
-            if (id > 0) {
-                pathSide = String.format("GUI/images/cards.nogit/front/%03d.png", id);
-            } else {
-                pathSide = String.format("GUI/images/cards.nogit/back/%03d.png", -id);
-            }
-            ImageView image = new ImageView(pathSide);
-            image.setFitHeight(100.95);
-            image.setFitWidth(150);
-            image.preserveRatioProperty();
-
-            StackPane stackPane = new StackPane(image);
+            StackPane stackPane = getStackPane(card.getId());
             if (card.equals(opponentData.getOrder().getFirst())) {
                 setPion(usernameOpponent, stackPane);
             }
@@ -413,12 +394,9 @@ public class GameController implements Initializable {
         }
         String imagePath = "";
         handContainer.getChildren().clear();
-        int size = playerData.getClientHand().size();
-        int i = 0;
         if (username.equals(client.getUsername())) {
             for (Card card: playerData.getClientHand()) {
                 int id = card.getId();
-                i++;
                 if (frontSide) {
                     imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", id);
                 } else {
@@ -437,9 +415,7 @@ public class GameController implements Initializable {
                 image.getStyleClass().add("card");
                 handContainer.getChildren().add(image);
 
-                image.setOnMouseClicked(mouseEvent -> {
-                    selectedHandCard = image;
-                });
+                image.setOnMouseClicked(mouseEvent -> selectedHandCard = image);
 
                 image.setOnDragDetected(event -> {
                     selectedHandCard = image;
@@ -451,6 +427,7 @@ public class GameController implements Initializable {
             }
         } else {
             ArrayList<Resource> handColor = ((OpponentData) client.getOpponentData().get(username)).getHandColor();
+
             for (int j = 0; j < handColor.size(); j++) {
                 Resource resource = handColor.get(j);
                 if (!((OpponentData) client.getOpponentData().get(username)).getHandIsGold().get(j)) {
@@ -529,8 +506,7 @@ public class GameController implements Initializable {
     /**
      * Sets up valid placements on the board for player's cards.
      * This method clears existing placement panes, calculates board coordinates,
-     * creates ImageView objects for each valid placement, and sets up event handlers
-     * for mouse clicks and drag-and-drop operations.
+     * creates ImageView objects for each valid placement.
      */
     private void setupValidPlacements() {
         for (StackPane pane : validPlacementPanes.values()) {
@@ -548,34 +524,47 @@ public class GameController implements Initializable {
             imageView.setFitWidth(150);
             imageView.preserveRatioProperty();
 
-            StackPane stackPane = new StackPane(imageView);
-            stackPane.setStyle("-fx-border-color: #432918; -fx-border-width: 4;");
-
-            stackPane.setOnMouseClicked(event -> {
-                placeCard(stackPane, imageView, boardCoordinates);
-            });
-
-            stackPane.setOnDragOver(event -> {
-                if (event.getGestureSource() != stackPane && event.getDragboard().hasString()) {
-                    event.acceptTransferModes(TransferMode.MOVE);
-                }
-                event.consume();
-            });
-
-            stackPane.setOnDragDropped(event -> {
-                boolean placed;
-
-                placed = placeCard(stackPane, imageView, boardCoordinates);
-
-                event.setDropCompleted(placed);
-                event.consume();
-            });
+            StackPane stackPane = getStackPane(imageView, boardCoordinates);
 
             board.add(stackPane, boardCoordinates.x(), boardCoordinates.y());
             GridPane.setHalignment(stackPane, HPos.CENTER);
             GridPane.setValignment(stackPane, VPos.CENTER);
             validPlacementPanes.put(boardCoordinates, stackPane);
         }
+    }
+
+    /**
+     * Creates a StackPane containing the given ImageView and sets up event handlers for mouse clicks and drag-and-drop operations.
+     * The StackPane will have a border style applied and will handle placing a card on the board when clicked or dropped.
+     *
+     * @param imageView the ImageView to be added to the StackPane
+     * @param boardCoordinates the coordinates on the board where the card will be placed
+     * @return a StackPane containing the ImageView with event handlers for interaction
+     */
+    private StackPane getStackPane(ImageView imageView, Coordinates boardCoordinates) {
+        StackPane stackPane = new StackPane(imageView);
+        stackPane.setStyle("-fx-border-color: #432918; -fx-border-width: 4;");
+
+        stackPane.setOnMouseClicked(event -> {
+            placeCard(stackPane, imageView, boardCoordinates);
+        });
+
+        stackPane.setOnDragOver(event -> {
+            if (event.getGestureSource() != stackPane && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+        });
+
+        stackPane.setOnDragDropped(event -> {
+            boolean placed;
+
+            placed = placeCard(stackPane, imageView, boardCoordinates);
+
+            event.setDropCompleted(placed);
+            event.consume();
+        });
+        return stackPane;
     }
 
     /**
@@ -592,7 +581,7 @@ public class GameController implements Initializable {
                 updateTabDimensions();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/DrawCardTab.fxml"));
                 DrawCardController controller = (DrawCardController) tabControllers.get("DrawCard");
-                controller.setClient(client, this, updater);
+                controller.setClient(client, this);
                 loader.setController(controller);
                 StackPane drawPane = loader.load();
                 tabContainer.setPrefWidth(600);
@@ -606,7 +595,7 @@ public class GameController implements Initializable {
                 tabContainer.setVisible(false);
             }
         } catch (IOException e) {
-            ErrorMessageController.showErrorMessage("Error loading draw tab!", root);
+            ErrorMessageController.showErrorMessage("Error while loading draw tab!", root);
         }
     }
 
@@ -622,7 +611,7 @@ public class GameController implements Initializable {
                 updateTabDimensions();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ScoreTab.fxml"));
                 ScoreController controller = (ScoreController) tabControllers.get("Score");
-                controller.setClient(client, this, updater);
+                controller.setClient(client, this);
                 loader.setController(controller);
                 StackPane scorePane = loader.load();
                 tabPane.getChildren().setAll(scorePane);
@@ -652,7 +641,7 @@ public class GameController implements Initializable {
                 tabContainer.setTranslateX((tabContainer.getScene().getWindow().getWidth() - tabContainer.getPrefWidth()) / 2);
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChatTab.fxml"));
                 ChatController controller = (ChatController) tabControllers.get("Chat");
-                controller.setClient(client, this, updater);
+                controller.setClient(client, this);
                 loader.setController(controller);
                 StackPane chatPane = loader.load();
                 tabPane.getChildren().setAll(chatPane);
@@ -664,7 +653,7 @@ public class GameController implements Initializable {
                 tabContainer.setVisible(false);
             }
         } catch (IOException e) {
-            ErrorMessageController.showErrorMessage("Error loading chat tab!", root);
+            ErrorMessageController.showErrorMessage("Error while loading chat tab!", root);
         }
     }
 
@@ -691,7 +680,7 @@ public class GameController implements Initializable {
                 tabContainer.setVisible(false);
             }
         } catch (IOException e) {
-            ErrorMessageController.showErrorMessage("Error loading objectives tab!", root);
+            ErrorMessageController.showErrorMessage("Error while loading objectives tab!", root);
         }
     }
 
@@ -707,7 +696,7 @@ public class GameController implements Initializable {
                 updateTabDimensions();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/MiniBoardTab.fxml"));
                 MiniBoardController controller = (MiniBoardController) tabControllers.get("MiniBoard");
-                controller.setClient(client, this, updater);
+                controller.setClient(client, this);
                 loader.setController(controller);
                 StackPane miniBoardPane = loader.load();
                 tabPane.getChildren().setAll(miniBoardPane);
@@ -717,7 +706,6 @@ public class GameController implements Initializable {
                 setActiveTab(null);
                 tabContainer.setVisible(false);
             }
-
         } catch (IOException e) {
             ErrorMessageController.showErrorMessage("Wait for everyone to setup!", root);
         }
@@ -782,7 +770,6 @@ public class GameController implements Initializable {
         } else {
             ErrorMessageController.showErrorMessage("It's not your turn to place a card!", root);
         }
-
 
         return placed;
     }
@@ -864,9 +851,7 @@ public class GameController implements Initializable {
             Glow glow = new Glow();
             glow.setLevel(0.3);
             centerBoardButton.setEffect(glow);
-
             centerBoardButton.getStyleClass().add("button");
-
             buttonsContainer.getChildren().add(centerBoardButton);
         }
     }
@@ -920,18 +905,15 @@ public class GameController implements Initializable {
 
         endGameThread.setOnSucceeded(event -> {
             try {
-
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/EndScene.fxml"));
                 EndGameController controller = new EndGameController();
                 controller.setClient(client);
                 loader.setController(controller);
-                Scene scene = new Scene(loader.load(), Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
                 Stage stage = (Stage) board.getScene().getWindow();
-                stage.setScene(scene);
+                stage.setScene(loader.load());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
         });
 
         new Thread(endGameThread).start();
@@ -947,7 +929,7 @@ public class GameController implements Initializable {
     private void setPion(String username, StackPane stackPane) {
         ImageView pion = null;
         Color playerColor;
-        Integer startingCardId;
+        int startingCardId;
 
         if (username.equals(client.getUsername())) {
             playerColor = playerData.getPlayerColor();

@@ -53,25 +53,24 @@ public class ChooseColorController implements Initializable {
             pion.getStyleClass().add("card");
 
             pion.setOnMouseClicked(event -> {
-                boolean isValid = false;
+                boolean isValid;
                 try {
                     isValid = client.choosePlayerColor(playerColor);
 
                     if (isValid) {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseObjectiveScene.fxml"));
-                        ChooseObjectiveController controller = new ChooseObjectiveController();
-                        controller.setClient(client);
-                        loader.setController(controller);
+                        ChooseObjectiveController chooseObjectiveController = new ChooseObjectiveController();
+                        chooseObjectiveController.setClient(client);
+                        loader.setController(chooseObjectiveController);
                         Stage stage = (Stage) pionsContainer.getScene().getWindow();
                         stage.getScene().setRoot(loader.load());
                     } else {
                         ErrorMessageController.showErrorMessage("Error choosing the color!", root);
                     }
                 } catch (IOException e) {
-                    ErrorMessageController.showErrorMessage("Error loading objectives scene!", root);
+                    ErrorMessageController.showErrorMessage("Error while loading objectives scene!", root);
                 }
             });
-
             pionsContainer.getChildren().add(pion);
         }
     }

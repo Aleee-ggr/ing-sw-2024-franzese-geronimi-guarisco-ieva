@@ -59,6 +59,7 @@ public class ServerConnectionController implements Initializable {
                 } catch (Exception e) {
                     ErrorMessageController.showErrorMessage("Impossible to connect to this server!", root);
                 }
+
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/LoginScene.fxml"));
                     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -88,7 +89,7 @@ public class ServerConnectionController implements Initializable {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.getScene().setRoot(loader.load());
         } catch (IOException e) {
-            e.printStackTrace();
+            ErrorMessageController.showErrorMessage("Error while loading game introduction!", root);
         }
     }
 

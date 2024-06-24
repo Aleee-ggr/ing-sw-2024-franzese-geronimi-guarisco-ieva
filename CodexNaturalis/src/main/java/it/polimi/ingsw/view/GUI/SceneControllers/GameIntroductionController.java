@@ -24,19 +24,20 @@ public class GameIntroductionController implements Initializable {
 
     @FXML
     ImageView backgroundImage;
+
     /**
      * Changes the scene to the connection scene when the corresponding button is clicked.
      *
      * @param event The action event triggered by the button click.
      */
     @FXML
-    protected void changeConnectionScene(ActionEvent event){
+    protected void changeConnectionScene(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ConnectionScene.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.getScene().setRoot(loader.load());
         } catch (IOException e) {
-            e.printStackTrace();
+            ErrorMessageController.showErrorMessage("Error while loading connection scene!", root);
         }
     }
 

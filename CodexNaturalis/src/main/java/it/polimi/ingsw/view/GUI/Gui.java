@@ -13,14 +13,20 @@ import java.io.IOException;
  * This class is the entry point for the GUI.
  */
 public class Gui extends Application {
+    /**
+     * Starts the GUI application.
+     * This method is automatically called when launching the application.
+     */
     public static void start() {
         launch();
     }
 
-    public static void main(String[] args) {
-        launch();
-    }
-
+    /**
+     * Initializes and starts the primary stage of the GUI.
+     *
+     * @param stage the primary stage for the application
+     * @throws IOException if an error occurs while loading the FXML file
+     */
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Gui.class.getResource("/GUI/fxml/GameIntroduction.fxml"));
@@ -36,12 +42,8 @@ public class Gui extends Application {
         } else {
             stage.setWidth(baseWidth);
             stage.setHeight(baseHeight);
+            stage.setResizable(false);
         }
-
-        stage.setMaxWidth(baseWidth);
-        stage.setMaxHeight(baseHeight);
-        stage.setMinWidth(1600);
-        stage.setMinHeight(900);
 
         stage.setTitle("Codex Naturalis");
         stage.setOnCloseRequest(event -> {

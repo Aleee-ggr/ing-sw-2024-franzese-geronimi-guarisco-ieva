@@ -3,7 +3,6 @@ package it.polimi.ingsw.view.GUI.SceneControllers;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.network.ClientInterface;
-import it.polimi.ingsw.view.TUI.controller.SharedUpdate;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -27,7 +26,6 @@ public class DrawCardController implements Initializable, TabController {
     private ClientInterface client;
     private PlayerData playerData;
     private GameController gameController;
-    private SharedUpdate updater;
 
     @FXML
     StackPane tabPane;
@@ -61,13 +59,11 @@ public class DrawCardController implements Initializable, TabController {
      *
      * @param client        the client interface to communicate with the server
      * @param gameController the game controller that manages the game view
-     * @param updater       the shared updater that triggers view updates
      */
-    public void setClient(ClientInterface client, GameController gameController, SharedUpdate updater) {
+    public void setClient(ClientInterface client, GameController gameController) {
         this.client = client;
         this.playerData = client.getPlayerData();
         this.gameController = gameController;
-        this.updater = updater;
     }
 
     @Override
@@ -149,66 +145,68 @@ public class DrawCardController implements Initializable, TabController {
             }
         }
 
-        if (playerData.getClientHand().size() != 3) {
-            goldCard1.setOnMouseClicked(event -> {
-                goldCard1.setImage(null);
-                drawCard(0);
-                changeTurn();
-            });
-            goldCard2.setOnMouseClicked(event -> {
-                goldCard2.setImage(null);
-                drawCard(1);
-                changeTurn();
-            });
-            stdCard1.setOnMouseClicked(event -> {
-                stdCard1.setImage(null);
-                drawCard(2);
-                changeTurn();
-            });
-            stdCard2.setOnMouseClicked(event -> {
-                stdCard2.setImage(null);
-                drawCard(3);
-                changeTurn();
-            });
-            goldDeck.setOnMouseClicked(event -> {
-                goldDeck.setImage(null);
-                drawCard(4);
-                changeTurn();
-            });
-            stdDeck.setOnMouseClicked(event -> {
-                stdDeck.setImage(null);
-                drawCard(5);
-                changeTurn();
-            });
+        boolean isPlayerTurn = playerData.getClientHand().size() != 3;
+
+        setPlayerTurnActionOrError(goldCard1, 0, isPlayerTurn);
+        setPlayerTurnActionOrError(goldCard2, 1, isPlayerTurn);
+        setPlayerTurnActionOrError(stdCard1, 2, isPlayerTurn);
+        setPlayerTurnActionOrError(stdCard2, 3, isPlayerTurn);
+        setPlayerTurnActionOrError(goldDeck, 4, isPlayerTurn);
+        setPlayerTurnActionOrError(stdDeck, 5, isPlayerTurn);
+    }
+
+    /**
+     * Sets the action to be performed when a player clicks on a card during their turn.
+     * When the card is clicked, the card's image is cleared, a new card is drawn,
+     * and the turn is changed to the next player.
+     *
+     * @param card the ImageView representing the card
+     * @param cardIndex the index of the card being interacted with
+     */
+    private void setPlayerTurnAction(ImageView card, int cardIndex) {
+        card.setOnMouseClicked(event -> {
+            card.setImage(null);
+            drawCard(cardIndex);
+            changeTurn();
+        });
+    }
+
+    /**
+     * Sets the action to be performed when a player attempts to click on a card
+     * when it's not their turn. Displays an error message indicating it's not their turn.
+     *
+     * @param card the ImageView representing the card
+     */
+    private void setErrorMessageAction(ImageView card) {
+        card.setOnMouseClicked(event -> {
+            ErrorMessageController.showErrorMessage("It's not your turn to draw a card!", gameController.root);
+        });
+    }
+
+    /**
+     * Sets the appropriate action for a card based on whether it is the player's turn.
+     * If it is the player's turn, the card will perform the turn action. Otherwise,
+     * it will display an error message.
+     *
+     * @param card the ImageView representing the card
+     * @param cardIndex the index of the card being interacted with
+     * @param isPlayerTurn a boolean indicating if it is the player's turn
+     */
+    private void setPlayerTurnActionOrError(ImageView card, int cardIndex, boolean isPlayerTurn) {
+        if (isPlayerTurn) {
+            setPlayerTurnAction(card, cardIndex);
         } else {
-            goldCard1.setOnMouseClicked(event -> {
-                ErrorMessageController.showErrorMessage("It's not your turn to draw a card!", gameController.root);
-            });
-            goldCard2.setOnMouseClicked(event -> {
-                ErrorMessageController.showErrorMessage("It's not your turn to draw a card!", gameController.root);
-            });
-            stdCard1.setOnMouseClicked(event -> {
-                ErrorMessageController.showErrorMessage("It's not your turn to draw a card!", gameController.root);
-            });
-            stdCard2.setOnMouseClicked(event -> {
-                ErrorMessageController.showErrorMessage("It's not your turn to draw a card!", gameController.root);
-            });
-            goldDeck.setOnMouseClicked(event -> {
-                ErrorMessageController.showErrorMessage("It's not your turn to draw a card!", gameController.root);
-            });
-            stdDeck.setOnMouseClicked(event -> {
-                ErrorMessageController.showErrorMessage("It's not your turn to draw a card!", gameController.root);
-            });
+            setErrorMessageAction(card);
         }
     }
 
-    protected void changeTurn() {
+    /**
+     * Changes the turn to the next player by updating the game state.
+     * Displays a message indicating the player should wait for their turn and sets the turn flag to false.
+     */
+    private void changeTurn() {
         gameController.turnMessage.setText("Waiting for your Turn...");
         gameController.myTurn = false;
-    }
-
-    private void errorDraw() {
-        ErrorMessageController.showErrorMessage("It's not your turn to draw a card!", gameController.root);
     }
 
     /**

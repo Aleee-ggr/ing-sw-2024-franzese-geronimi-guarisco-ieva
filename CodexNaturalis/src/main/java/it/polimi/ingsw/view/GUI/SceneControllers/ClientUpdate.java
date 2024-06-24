@@ -1,10 +1,8 @@
 package it.polimi.ingsw.view.GUI.SceneControllers;
 
 import it.polimi.ingsw.controller.WaitState;
-import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.controller.SharedUpdate;
-import it.polimi.ingsw.view.TUI.controller.View;
 
 import java.io.IOException;
 
@@ -20,6 +18,7 @@ public class ClientUpdate extends Thread {
     private final SharedUpdate updater;
     private final GameController gameController;
     private volatile WaitState state;
+
     /**
      * Constructs a new ClientUpdate thread.
      *
@@ -60,7 +59,6 @@ public class ClientUpdate extends Thread {
                 }
 
                 sleep(500);
-
             } catch (IOException | InterruptedException e) {
                 System.exit(1);
             }
@@ -89,7 +87,7 @@ public class ClientUpdate extends Thread {
             client.fetchPlayersColors();
             client.fetchChat();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Impossible to fetch data from server!");
             System.exit(1);
         }
     }

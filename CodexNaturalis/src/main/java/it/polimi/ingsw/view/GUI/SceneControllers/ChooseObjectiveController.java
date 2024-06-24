@@ -68,47 +68,29 @@ public class ChooseObjectiveController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        String imagePath;
-        Image image;
-        int id;
-
         backgroundImage.fitWidthProperty().bind(root.widthProperty());
         backgroundImage.fitHeightProperty().bind(root.heightProperty());
 
-        id = playerData.getStartingObjectives().getFirst().getId();
-        imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", id);
-        image = new Image(imagePath);
-        firstObjective.setImage(image);
+        setCardImage(firstObjective, playerData.getStartingObjectives().getFirst().getId());
+        setCardImage(secondObjective, playerData.getStartingObjectives().getLast().getId());
+        setCardImage(firstHandCard, playerData.getClientHand().getFirst().getId());
+        setCardImage(secondHandCard, playerData.getClientHand().get(1).getId());
+        setCardImage(thirdHandCard, playerData.getClientHand().getLast().getId());
+        setCardImage(firstCommonObjective, playerData.getGlobalObjectives().getFirst().getId());
+        setCardImage(secondCommonObjective, playerData.getGlobalObjectives().getLast().getId());
+    }
 
-        id = playerData.getStartingObjectives().getLast().getId();
-        imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", id);
-        image = new Image(imagePath);
-        secondObjective.setImage(image);
-
-        id = playerData.getClientHand().getFirst().getId();
-        imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", id);
-        image = new Image(imagePath);
-        firstHandCard.setImage(image);
-
-        id = playerData.getClientHand().get(1).getId();
-        imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", id);
-        image = new Image(imagePath);
-        secondHandCard.setImage(image);
-
-        id = playerData.getClientHand().getLast().getId();
-        imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", id);
-        image = new Image(imagePath);
-        thirdHandCard.setImage(image);
-
-        id = playerData.getGlobalObjectives().getFirst().getId();
-        imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", id);
-        image = new Image(imagePath);
-        firstCommonObjective.setImage(image);
-
-        id = playerData.getGlobalObjectives().getLast().getId();
-        imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", id);
-        image = new Image(imagePath);
-        secondCommonObjective.setImage(image);
+    /**
+     * Sets the image of a card on the given ImageView based on the provided card ID.
+     * The image is loaded from the specified path format using the card ID.
+     *
+     * @param imageView the ImageView on which the card image will be set
+     * @param id the ID of the card whose image is to be displayed
+     */
+    private void setCardImage(ImageView imageView, int id) {
+        String imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", id);
+        Image image = new Image(imagePath);
+        imageView.setImage(image);
     }
 
     /**
@@ -130,9 +112,9 @@ public class ChooseObjectiveController implements Initializable {
 
             if (isValid) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/GameScene.fxml"));
-                GameController controller = new GameController();
-                controller.setClient(client);
-                loader.setController(controller);
+                GameController gameController = new GameController();
+                gameController.setClient(client);
+                loader.setController(gameController);
                 Stage stage = (Stage) firstObjective.getScene().getWindow();
                 stage.getScene().setRoot(loader.load());
                 if (Screen.getPrimary().getVisualBounds().getWidth() <= 1920 || Screen.getPrimary().getVisualBounds().getHeight() <= 1080) {
@@ -145,7 +127,7 @@ public class ChooseObjectiveController implements Initializable {
                 ErrorMessageController.showErrorMessage("Error choosing the personal objective!", root);
             }
         } catch (IOException e) {
-            ErrorMessageController.showErrorMessage("Error loading game scene!", root);
+            ErrorMessageController.showErrorMessage("Error while loading game scene!", root);
         }
     }
 }

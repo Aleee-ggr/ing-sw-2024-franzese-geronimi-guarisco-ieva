@@ -3,10 +3,8 @@ package it.polimi.ingsw.view.GUI.SceneControllers;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.client.ClientData;
-import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.RotateBoard;
-import it.polimi.ingsw.view.TUI.controller.SharedUpdate;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,8 +27,6 @@ import java.util.ResourceBundle;
  */
 public class MiniBoardController implements Initializable, TabController {
     private ClientInterface client;
-    private PlayerData playerData;
-    private SharedUpdate updater;
     private Coordinates center;
     private GameController gameController;
 
@@ -65,13 +61,10 @@ public class MiniBoardController implements Initializable, TabController {
      *
      * @param client        the client interface to communicate with the server
      * @param gameController the game controller managing the game view
-     * @param updater       the shared updater triggering view updates
      */
-    public void setClient(ClientInterface client, GameController gameController, SharedUpdate updater) {
+    public void setClient(ClientInterface client, GameController gameController) {
         this.client = client;
-        this.playerData = client.getPlayerData();
         this.gameController = gameController;
-        this.updater = updater;
     }
 
     /**
@@ -144,19 +137,7 @@ public class MiniBoardController implements Initializable, TabController {
                 });
 
                 if (entry.getValue().getBoard().isEmpty()) {
-                    int startingCard = entry.getValue().getOrder().getFirst().getId();
-                    String pathSide;
-                    if (startingCard > 0) {
-                        pathSide = String.format("GUI/images/cards.nogit/front/%03d.png", startingCard);
-                    } else {
-                        pathSide = String.format("GUI/images/cards.nogit/back/%03d.png", -startingCard);
-                    }
-                    ImageView image = new ImageView(pathSide);
-                    image.setFitHeight(50.475);
-                    image.setFitWidth(75);
-                    image.preserveRatioProperty();
-
-                    StackPane stackPane = new StackPane(image);
+                    StackPane stackPane = getStackPane(entry.getValue().getOrder().getFirst());
 
                     currentBoard.add(stackPane, center.x(), center.y());
                     GridPane.setHalignment(stackPane, HPos.CENTER);
@@ -164,20 +145,7 @@ public class MiniBoardController implements Initializable, TabController {
                 } else {
                     for (Card card: entry.getValue().getOrder()) {
                         Coordinates coordinates = entry.getValue().getBoard().inverse().get(card);
-                        int id = card.getId();
-                        String pathSide;
-
-                        if (id > 0) {
-                            pathSide = String.format("GUI/images/cards.nogit/front/%03d.png", id);
-                        } else {
-                            pathSide = String.format("GUI/images/cards.nogit/back/%03d.png", -id);
-                        }
-                        ImageView image = new ImageView(pathSide);
-                        image.setFitHeight(50.475);
-                        image.setFitWidth(75);
-                        image.preserveRatioProperty();
-
-                        StackPane stackPane = new StackPane(image);
+                        StackPane stackPane = getStackPane(card);
 
                         currentBoard.add(stackPane, calculateBoardCoordinates(coordinates).x(), calculateBoardCoordinates(coordinates).y());
                         GridPane.setHalignment(stackPane, HPos.CENTER);
@@ -187,11 +155,34 @@ public class MiniBoardController implements Initializable, TabController {
             }
         }
 
-        for (int i = 0; i < playersNames.length; i++) {
-            if (!playersNames[i].getText().isEmpty()) {
-                playersNames[i].getStyleClass().add("label-miniboard");
+        for (Label playersName : playersNames) {
+            if (!playersName.getText().isEmpty()) {
+                playersName.getStyleClass().add("label-miniboard");
             }
         }
+    }
+
+    /**
+     * Creates a StackPane containing an image of a card based on the provided card entry.
+     * If the card ID is positive, the front of the card is shown. If the card ID is negative, the back of the card is shown.
+     *
+     * @param entry the Card object containing the card ID
+     * @return a StackPane containing the ImageView of the card
+     */
+    private static StackPane getStackPane(Card entry) {
+        int startingCard = entry.getId();
+        String pathSide;
+        if (startingCard > 0) {
+            pathSide = String.format("GUI/images/cards.nogit/front/%03d.png", startingCard);
+        } else {
+            pathSide = String.format("GUI/images/cards.nogit/back/%03d.png", -startingCard);
+        }
+        ImageView image = new ImageView(pathSide);
+        image.setFitHeight(50.475);
+        image.setFitWidth(75);
+        image.preserveRatioProperty();
+
+        return new StackPane(image);
     }
 
     @Override

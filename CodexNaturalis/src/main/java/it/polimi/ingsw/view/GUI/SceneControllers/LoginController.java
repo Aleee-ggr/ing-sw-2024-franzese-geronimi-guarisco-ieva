@@ -54,13 +54,13 @@ public class LoginController implements Initializable {
                 client.setCredentials(usernameField.getText(), passwordField.getText());
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/MainMenu.fxml"));
-                    MainMenuController controller = new MainMenuController();
-                    controller.setClient(client);
-                    loader.setController(controller);
+                    MainMenuController mainMenuController = new MainMenuController();
+                    mainMenuController.setClient(client);
+                    loader.setController(mainMenuController);
                     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                     stage.getScene().setRoot(loader.load());
                 } catch (IOException e) {
-                    ErrorMessageController.showErrorMessage("Error loading main menu scene!", root);
+                    ErrorMessageController.showErrorMessage("Error while loading main menu scene!", root);
                 }
             } else {
                 ErrorMessageController.showErrorMessage("Invalid username and/or password!", root);
@@ -82,7 +82,7 @@ public class LoginController implements Initializable {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.getScene().setRoot(loader.load());
         } catch (IOException e) {
-            e.printStackTrace();
+            ErrorMessageController.showErrorMessage("Error while loading connection scene!", root);
         }
     }
 

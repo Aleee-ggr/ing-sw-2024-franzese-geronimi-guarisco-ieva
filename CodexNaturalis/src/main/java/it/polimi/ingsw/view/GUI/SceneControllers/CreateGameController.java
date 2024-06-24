@@ -24,11 +24,14 @@ import java.util.UUID;
  * It allows the user to specify the number of players for a new game and initiates the creation of the game accordingly.
  */
 public class CreateGameController implements Initializable {
+    private ClientInterface client;
+
     @FXML
     StackPane root;
+
     @FXML
     ImageView backgroundImage;
-    private ClientInterface client;
+
     @FXML
     private RadioButton twoPlayers;
 
@@ -59,9 +62,9 @@ public class CreateGameController implements Initializable {
                 UUID uuid = client.newGame(numPlayer, gameName.getText());
                 if (uuid != null) {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/WaitingRoom.fxml"));
-                    WaitingRoomController controller = new WaitingRoomController();
-                    controller.setClient(client);
-                    loader.setController(controller);
+                    WaitingRoomController waitingRoomController = new WaitingRoomController();
+                    waitingRoomController.setClient(client);
+                    loader.setController(waitingRoomController);
                     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                     stage.getScene().setRoot(loader.load());
                 } else {
@@ -84,13 +87,13 @@ public class CreateGameController implements Initializable {
     private void goBack(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/MainMenu.fxml"));
-            MainMenuController controller = new MainMenuController();
-            controller.setClient(client);
-            loader.setController(controller);
+            MainMenuController mainMenuController = new MainMenuController();
+            mainMenuController.setClient(client);
+            loader.setController(mainMenuController);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.getScene().setRoot(loader.load());
         } catch (IOException e) {
-            ErrorMessageController.showErrorMessage("Error loading main menu scene!", root);
+            ErrorMessageController.showErrorMessage("Error while loading main menu scene!", root);
         }
     }
 

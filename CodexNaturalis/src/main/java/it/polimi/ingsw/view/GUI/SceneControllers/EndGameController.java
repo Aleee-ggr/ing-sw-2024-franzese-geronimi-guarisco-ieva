@@ -52,19 +52,32 @@ public class EndGameController implements Initializable {
                     playerColor = ((OpponentData) client.getOpponentData().get(entry.getKey())).getPlayerColor();
                 }
 
-                Label nameLabel = new Label(entry.getKey());
-                nameLabel.setStyle(String.format("-fx-font-weight: bold; -fx-text-fill: %s; -fx-font-family: Trattatello; -fx-font-size: 40px;", !playerColor.equals(Color.YELLOW) ? playerColor : "#d5b343"));
-
-                Label scoreLabel = new Label(": " + entry.getValue());
-                scoreLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #432918; -fx-font-family: Trattatello; -fx-font-size: 40px;");
-
-                HBox playerInfo = new HBox(nameLabel, scoreLabel);
-                playerInfo.setAlignment(Pos.CENTER);
+                HBox playerInfo = getHBox(entry, playerColor);
                 playerScoreContainer.getChildren().add(playerInfo);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Creates an HBox containing a player's name and score, with the specified color applied to the name.
+     * The color for the player's name will be adjusted if it is yellow to ensure better visibility.
+     *
+     * @param entry a Map.Entry containing the player's name as the key and the player's score as the value
+     * @param playerColor the color to be used for the player's name
+     * @return an HBox containing the player's name and score
+     */
+    private static HBox getHBox(Map.Entry<String, Integer> entry, Color playerColor) {
+        Label nameLabel = new Label(entry.getKey());
+        nameLabel.setStyle(String.format("-fx-font-weight: bold; -fx-text-fill: %s; -fx-font-family: Trattatello; -fx-font-size: 40px;", !playerColor.equals(Color.YELLOW) ? playerColor : "#d5b343"));
+
+        Label scoreLabel = new Label(": " + entry.getValue());
+        scoreLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #432918; -fx-font-family: Trattatello; -fx-font-size: 40px;");
+
+        HBox playerInfo = new HBox(nameLabel, scoreLabel);
+        playerInfo.setAlignment(Pos.CENTER);
+        return playerInfo;
     }
 
     /**

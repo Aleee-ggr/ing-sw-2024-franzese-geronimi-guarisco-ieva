@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.client.OpponentData;
 import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.network.ClientInterface;
-import it.polimi.ingsw.view.TUI.controller.SharedUpdate;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -33,8 +32,6 @@ public class ScoreController implements Initializable, TabController {
     private ClientInterface client;
     private PlayerData playerData;
     private GameController gameController;
-    private SharedUpdate updater;
-    protected Thread updateThread;
     private Map<Integer, Point2D> scoreCoordinates;
 
     @FXML
@@ -70,11 +67,10 @@ public class ScoreController implements Initializable, TabController {
      *
      * @param client The client interface to set.
      */
-    public void setClient(ClientInterface client, GameController gameController, SharedUpdate updater) {
+    public void setClient(ClientInterface client, GameController gameController) {
         this.client = client;
         this.playerData = client.getPlayerData();
         this.gameController = gameController;
-        this.updater = updater;
     }
     /**
      * Initializes the score coordinates for positioning markers on the scoreboard.
@@ -113,7 +109,7 @@ public class ScoreController implements Initializable, TabController {
     }
 
     /**
-     * Initializes the scoreboard, including loading the plateau image and positioning score markers and player information.
+     * Initializes the scoreboard, including loading the plateau image and positioning score markers.
      */
     @FXML
     private void setPlateau() {
@@ -170,19 +166,35 @@ public class ScoreController implements Initializable, TabController {
                         scoreBoard.getChildren().add(scorePion);
                     }
 
-                    Label nameLabel = new Label(entry.getKey());
-                    nameLabel.setStyle(String.format("-fx-font-weight: bold; -fx-text-fill: %s; -fx-font-family: Trattatello; -fx-font-size: 30px;", !playerColor.equals(Color.YELLOW) ? playerColor : "#d5b343"));
-
-                    Label scoreLabel = new Label(": " + entry.getValue());
-                    scoreLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #432918; -fx-font-family: Trattatello; -fx-font-size: 30px;");
-
-                    HBox playerInfo = new HBox(nameLabel, scoreLabel);
-                    playerInfo.setAlignment(Pos.CENTER);
+                    HBox playerInfo = getHBox(entry, playerColor);
                     listOfPlayers.getChildren().add(playerInfo);
                 });
-
     }
 
+    /**
+     * Creates an HBox containing a player's name and score, with the specified color applied to the name.
+     * The color for the player's name will be adjusted if it is yellow to ensure better visibility.
+     *
+     * @param entry a Map.Entry containing the player's name as the key and the player's score as the value
+     * @param playerColor the color to be used for the player's name
+     * @return an HBox containing the player's name and score
+     */
+    private static HBox getHBox(Map.Entry<String, Integer> entry, Color playerColor) {
+        Label nameLabel = new Label(entry.getKey());
+        nameLabel.setStyle(String.format("-fx-font-weight: bold; -fx-text-fill: %s; -fx-font-family: Trattatello; -fx-font-size: 30px;", !playerColor.equals(Color.YELLOW) ? playerColor : "#d5b343"));
+
+        Label scoreLabel = new Label(": " + entry.getValue());
+        scoreLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #432918; -fx-font-family: Trattatello; -fx-font-size: 30px;");
+
+        HBox playerInfo = new HBox(nameLabel, scoreLabel);
+        playerInfo.setAlignment(Pos.CENTER);
+        return playerInfo;
+    }
+
+    /**
+     * Updates the view after receiving updates from the server.
+     * Executes on the JavaFX Application Thread to ensure UI safety.
+     */
     @Override
     public void update() {
         Platform.runLater(this::setPlateau);

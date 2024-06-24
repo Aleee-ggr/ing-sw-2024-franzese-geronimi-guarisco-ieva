@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.client.OpponentData;
 import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.network.ClientInterface;
-import it.polimi.ingsw.view.TUI.controller.SharedUpdate;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -36,7 +35,6 @@ public class ChatController implements Initializable, TabController {
     private ClientInterface client;
     private PlayerData playerData;
     private GameController gameController;
-    private SharedUpdate updater;
 
     @FXML
     VBox chatContainer;
@@ -61,13 +59,11 @@ public class ChatController implements Initializable, TabController {
      *
      * @param client         the client interface to communicate with the server
      * @param gameController the game controller to manage game state
-     * @param updater        the shared updater to synchronize updates
      */
-    public void setClient(ClientInterface client, GameController gameController, SharedUpdate updater) {
+    public void setClient(ClientInterface client, GameController gameController) {
         this.client = client;
         this.playerData = client.getPlayerData();
         this.gameController = gameController;
-        this.updater = updater;
     }
 
     @Override
@@ -123,11 +119,7 @@ public class ChatController implements Initializable, TabController {
             }
         }
 
-        Platform.runLater(() -> {
-            chatContainer.layoutBoundsProperty().addListener((observable, oldValue, newValue) -> {
-                chatScrollPane.setVvalue(1.0);
-            });
-        });
+        Platform.runLater(() -> chatContainer.layoutBoundsProperty().addListener((observable, oldValue, newValue) -> chatScrollPane.setVvalue(1.0)));
     }
 
     /**
@@ -181,7 +173,6 @@ public class ChatController implements Initializable, TabController {
             messageVBox.getChildren().add(message);
         }
 
-
         if (chatMessage.sender().equals(client.getUsername())) {
             messageHBox.setAlignment(Pos.CENTER_RIGHT);
             messageHBox.setPadding(new Insets(0, 15, 0, 0));
@@ -225,6 +216,10 @@ public class ChatController implements Initializable, TabController {
         gameController.setActiveTab(null);
     }
 
+    /**
+     * Updates the view after receiving updates from the server.
+     * Executes on the JavaFX Application Thread to ensure UI safety.
+     */
     @Override
     public void update() {
         Platform.runLater(this::setChat);

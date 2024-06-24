@@ -29,17 +29,20 @@ import java.util.UUID;
  * the list of available games from the server.
  */
 public class MainMenuController implements Initializable {
-    @FXML
-    StackPane root;
-    @FXML
-    ImageView backgroundImage;
     private ClientInterface client;
     private Timeline fetchGamesTimeline;
+
+    @FXML
+    StackPane root;
+
+    @FXML
+    ImageView backgroundImage;
+
     @FXML
     private VBox gameButtonsContainer;
 
     /**
-     * Changes the scene to the create game scene when the corresponding button is clicked.
+     * Changes the scene to create game scene when the corresponding button is clicked.
      *
      * @param event the action event that triggered the method
      */
@@ -47,9 +50,9 @@ public class MainMenuController implements Initializable {
     protected void changeCreateGameScene(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/CreateGameScene.fxml"));
-            CreateGameController controller = new CreateGameController();
-            controller.setClient(client);
-            loader.setController(controller);
+            CreateGameController createGameController = new CreateGameController();
+            createGameController.setClient(client);
+            loader.setController(createGameController);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.getScene().setRoot(loader.load());
         } catch (IOException e) {
@@ -112,9 +115,7 @@ public class MainMenuController implements Initializable {
      */
     private void updateGameButtons() {
         gameButtonsContainer.getChildren().clear();
-        int i = 0;
-        for (Map.Entry<UUID, String> entry: client.getAvailableGames().entrySet()) {
-            i++;
+        for (Map.Entry<UUID, String> entry : client.getAvailableGames().entrySet()) {
             Button button = new Button(entry.getValue());
             button.setStyle("-fx-background-color: ffffff;" + "-fx-border-color: black;" + "-fx-border-width: 2;" + "-fx-border-style: solid;" + "-fx-pref-height: 100;" + "-fx-pref-width: 700;" + "-fx-text-fill: #432918;" + "-fx-font-family: Trattatello;" + "-fx-font-size: 30;" + "-fx-cursor: hand;");
             button.setOnAction(event -> {
@@ -147,6 +148,7 @@ public class MainMenuController implements Initializable {
                                     client.fetchStartingCard();
                                     client.fetchClientHand();
                                     client.fetchCommonObjectives();
+
                                     loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseStartingCardSideScene.fxml"));
                                     ChooseStartingCardSideController chooseStartingCardSideController = new ChooseStartingCardSideController();
                                     chooseStartingCardSideController.setClient(client);
@@ -179,8 +181,7 @@ public class MainMenuController implements Initializable {
                         ErrorMessageController.showErrorMessage("Impossible to join selected game!", root);
                     }
                 } catch (IOException e) {
-                    //ErrorMessageController.showErrorMessage("Error loading next scene!", root);
-                    e.printStackTrace();
+                    ErrorMessageController.showErrorMessage("Error while loading next scene!", root);
                 }
             });
             gameButtonsContainer.getChildren().add(button);

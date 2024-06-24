@@ -38,7 +38,7 @@ public class ObjectivesController implements Initializable, TabController {
         try{
             client.fetchCommonObjectives();
         } catch (IOException e) {
-            e.printStackTrace();
+            ErrorMessageController.showErrorMessage("Impossible to fetch data from server!", gameController.root);
         }
 
         String imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", playerData.getGlobalObjectives().getFirst().getId());

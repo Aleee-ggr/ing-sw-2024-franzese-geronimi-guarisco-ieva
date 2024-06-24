@@ -89,16 +89,16 @@ public class ChooseStartingCardSideController implements Initializable {
 
             if (isValid) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseColorScene.fxml"));
-                ChooseColorController controller = new ChooseColorController();
-                controller.setClient(client);
-                loader.setController(controller);
+                ChooseColorController chooseColorController = new ChooseColorController();
+                chooseColorController.setClient(client);
+                loader.setController(chooseColorController);
                 Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
                 stage.getScene().setRoot(loader.load());
             } else {
-                ErrorMessageController.showErrorMessage("Error choosing the starting card side!", root);
+                ErrorMessageController.showErrorMessage("Error while choosing the starting card side!", root);
             }
         } catch (IOException e) {
-            ErrorMessageController.showErrorMessage("Error loading choose color scene!", root);
+            ErrorMessageController.showErrorMessage("Error while loading choose color scene!", root);
         }
     }
 }

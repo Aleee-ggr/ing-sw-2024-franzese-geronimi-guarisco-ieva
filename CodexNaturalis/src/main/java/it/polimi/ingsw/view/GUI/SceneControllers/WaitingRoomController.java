@@ -113,23 +113,33 @@ public class WaitingRoomController implements Initializable {
                 fetchPlayersTimeline.stop();
             }
 
-            PauseTransition pause = new PauseTransition(Duration.seconds(2));
-            pause.setOnFinished(e -> {
-                try {
-                    stopFetchingPlayers();
-                    client.fetchStartingObjectives();
-                    client.fetchStartingCard();
-                    client.fetchClientHand();
-                    client.fetchCommonObjectives();
-                    changeToChooseStartingCardScene();
-                } catch (IOException ex) {
-                    ErrorMessageController.showErrorMessage("Impossible to fetch data from the server!", root);
-                }
-            });
+            PauseTransition pause = getPauseTransition();
             pause.play();
         });
 
         new Thread(waitUpdateTask).start();
+    }
+
+    /**
+     * Creates a PauseTransition that triggers a sequence of client data fetch operations after a delay.
+     *
+     * @return a PauseTransition configured with a 2-second delay and data fetch operations
+     */
+    private PauseTransition getPauseTransition() {
+        PauseTransition pause = new PauseTransition(Duration.seconds(2));
+        pause.setOnFinished(e -> {
+            try {
+                stopFetchingPlayers();
+                client.fetchStartingObjectives();
+                client.fetchStartingCard();
+                client.fetchClientHand();
+                client.fetchCommonObjectives();
+                changeToChooseStartingCardScene();
+            } catch (IOException ex) {
+                ErrorMessageController.showErrorMessage("Impossible to fetch data from the server!", root);
+            }
+        });
+        return pause;
     }
 
     /**
@@ -138,13 +148,13 @@ public class WaitingRoomController implements Initializable {
     private void changeToChooseStartingCardScene() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseStartingCardSideScene.fxml"));
-            ChooseStartingCardSideController controller = new ChooseStartingCardSideController();
-            controller.setClient(client);
-            loader.setController(controller);
+            ChooseStartingCardSideController chooseStartingCardSideController = new ChooseStartingCardSideController();
+            chooseStartingCardSideController.setClient(client);
+            loader.setController(chooseStartingCardSideController);
             Stage stage = (Stage) listOfPlayers.getScene().getWindow();
             stage.getScene().setRoot(loader.load());
         } catch (IOException ex) {
-            ErrorMessageController.showErrorMessage("Error loading choose personal objective scene!", root);
+            ErrorMessageController.showErrorMessage("Error while loading choose personal objective scene!", root);
         }
     }
 
@@ -153,6 +163,7 @@ public class WaitingRoomController implements Initializable {
      */
     private void updatePlayersList() {
         ArrayList<String> playersList = client.getPlayers();
+
         listOfPlayers.getChildren().clear();
         for (String player : playersList) {
             Label playerLabel = new Label(player);
