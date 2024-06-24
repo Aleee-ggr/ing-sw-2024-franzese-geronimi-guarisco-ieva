@@ -354,7 +354,6 @@ public class GameThread extends Thread {
      * @param thirdParam  Indicates if the player has chosen a player color.
      */
     private void disconnectionHandler(Boolean firstParam, Boolean secondParam, Boolean thirdParam) {
-        System.out.printf("Player %s is offline%n", currentPlayer);
         Player user = controller.getGame().getPlayers().stream().filter(p -> p.getUsername().equals(currentPlayer)).toList().getFirst();
 
         switch (gameState) {

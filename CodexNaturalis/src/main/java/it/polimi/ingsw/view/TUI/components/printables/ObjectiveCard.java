@@ -17,14 +17,14 @@ public class ObjectiveCard implements Component {
 
     private static final String resourceObjective = """
             ┏━━━━━━━━━━━━━┓
-            ┃     %c %c     ┃
+            ┃ %d   %c %c     ┃
             ┃     %c %c     ┃
             ┃     %c %c     ┃
             ┗━━━━━━━━━━━━━┛""";
 
     private static final String patternObjective = """
             ┏━━━━━━━━━━━━━┓
-            ┃     %c%c%c     ┃
+            ┃ %d   %c%c%c     ┃
             ┃     %c%c%c     ┃
             ┃     %c%c%c     ┃
             ┗━━━━━━━━━━━━━┛""";
@@ -45,7 +45,7 @@ public class ObjectiveCard implements Component {
     }
 
     @Override
-    public String toString()  {
+    public String toString() {
         return card;
     }
 
@@ -58,10 +58,8 @@ public class ObjectiveCard implements Component {
      */
     private static String setCard(Objective objective) {
         return switch (objective.getType()) {
-            case "pattern" ->
-                    formatPattern(objective);
-            case "resources" ->
-                    formatResource(objective);
+            case "pattern" -> formatPattern(objective);
+            case "resources" -> formatResource(objective);
             default -> throw new IllegalStateException("Unexpected value: " + objective.getType());
         };
     }
@@ -81,6 +79,7 @@ public class ObjectiveCard implements Component {
             }
         }
         return patternObjective.formatted(
+                objective.getPoints(),
                 pattern[0][0], pattern[0][1], pattern[0][2],
                 pattern[1][0], pattern[1][1], pattern[1][2],
                 pattern[2][0], pattern[2][1], pattern[2][2]
@@ -102,11 +101,12 @@ public class ObjectiveCard implements Component {
             resources[1][y] = entry.getValue().toString().toCharArray()[0];
             y++;
         }
-        for (;y < 3; y++) {
+        for (; y < 3; y++) {
             resources[0][y] = ' ';
             resources[1][y] = ' ';
         }
         return resourceObjective.formatted(
+                objective.getPoints(),
                 resources[0][0], resources[1][0],
                 resources[0][1], resources[1][1],
                 resources[0][2], resources[1][2]
