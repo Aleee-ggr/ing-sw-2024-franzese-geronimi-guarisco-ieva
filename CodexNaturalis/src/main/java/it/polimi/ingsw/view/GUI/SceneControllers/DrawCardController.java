@@ -16,6 +16,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -109,13 +110,14 @@ public class DrawCardController implements Initializable, TabController {
      */
     @FXML
     private void setCards() {
+        clearCards();
         try {
             client.fetchVisibleCardsAndDecks();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        for (Card card: client.getDecksBacks()) {
+        for (Card card : client.getDecksBacks()) {
             int id = card.getId();
             String imagePath = String.format("GUI/images/cards.nogit/back/%03d.png", id);
             Image image = new Image(imagePath);
@@ -126,22 +128,30 @@ public class DrawCardController implements Initializable, TabController {
             }
         }
 
-        for (int i = 0; i < client.getVisibleCards().size(); i++) {
-            int id = client.getVisibleCards().get(i).getId();
+        List<Card> visibleCards = client.getVisibleCards();
+        int totalVisibleCards = visibleCards.size();
+
+        for (int i = 0; i < totalVisibleCards; i++) {
+            Card card = visibleCards.get(i);
+            int id = card.getId();
             String imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", id);
             Image image = new Image(imagePath);
-            if (id <= 40) {
-                if (stdCard1.getImage() == null) {
-                    stdCard1.setImage(image);
-                } else {
-                    stdCard2.setImage(image);
-                }
-            } else {
-                if (goldCard1.getImage() == null) {
+
+            switch (i) {
+                case 0:
                     goldCard1.setImage(image);
-                } else {
+                    break;
+                case 1:
                     goldCard2.setImage(image);
-                }
+                    break;
+                case 2:
+                    stdCard1.setImage(image);
+                    break;
+                case 3:
+                    stdCard2.setImage(image);
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -153,6 +163,15 @@ public class DrawCardController implements Initializable, TabController {
         setPlayerTurnActionOrError(stdCard2, 3, isPlayerTurn);
         setPlayerTurnActionOrError(goldDeck, 4, isPlayerTurn);
         setPlayerTurnActionOrError(stdDeck, 5, isPlayerTurn);
+    }
+
+    private void clearCards() {
+        stdDeck.setImage(null);
+        goldDeck.setImage(null);
+        stdCard1.setImage(null);
+        stdCard2.setImage(null);
+        goldCard1.setImage(null);
+        goldCard2.setImage(null);
     }
 
     /**

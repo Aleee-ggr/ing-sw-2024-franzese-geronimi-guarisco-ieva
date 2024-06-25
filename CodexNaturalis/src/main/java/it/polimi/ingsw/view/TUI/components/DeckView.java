@@ -67,11 +67,23 @@ public class DeckView implements Component {
      */
     @Override
     public String toString() {
+        boolean noGold = false;
+        boolean noStd = false;
         this.visibleCards = client.getVisibleCards().toArray(new Card[0]);
         ArrayList<Resource> res = new ArrayList<>();
         for (Card card : client.getDecksBacks()) {
-            ColoredCard colored = (ColoredCard) card;
-            res.add(colored.getBackResource());
+            if (client.getDecksBacks().size() == 1 && card.getId() <= 40) {
+                ColoredCard colored = (ColoredCard) card;
+                res.add(colored.getBackResource());
+                noGold = true;
+            } else if (client.getDecksBacks().size() == 1 && card.getId() > 40) {
+                ColoredCard colored = (ColoredCard) card;
+                res.add(colored.getBackResource());
+                noStd = true;
+            } else {
+                ColoredCard colored = (ColoredCard) card;
+                res.add(colored.getBackResource());
+            }
         }
         this.backs = res.toArray(new Resource[0]);
 
@@ -136,23 +148,44 @@ public class DeckView implements Component {
             out.append(" ".repeat(paddingLeft))
                     .append("│");
 
-            if(i == 0){
-                out.append("5.");
+            if (!noGold && !noStd) {
+                if(i == 0){
+                    out.append("5.");
+                } else {
+                    out.append(" ".repeat(hSpacing/2));
+                }
+
+                out.append(CardBack.resourcesGold.get(backs[0]).split("\n")[i]);
+
+                if(i == 0){
+                    out.append(" ".repeat(CardBack.width * 2 + hSpacing * 3 - 2))
+                            .append("6.");
+                } else {
+                    out.append(" ".repeat(CardBack.width * 2 + hSpacing * 3));
+                }
+
+                out.append(CardBack.resources.get(backs[1]).split("\n")[i]);
+            } else if (!noGold) {
+                if(i == 0){
+                    out.append("5.");
+                } else {
+                    out.append(" ".repeat(hSpacing/2));
+                }
+
+                out.append(CardBack.resourcesGold.get(backs[0]).split("\n")[i])
+                        .append(" ".repeat(CardBack.width * 3 + hSpacing * 3));
             } else {
-                out.append(" ".repeat(hSpacing/2));
+                if(i == 0){
+                    out.append(" ".repeat(17 + CardBack.width * 2 + hSpacing * 3 - 2))
+                            .append("6.");
+                } else {
+                    out.append(" ".repeat(17 + CardBack.width * 2 + hSpacing * 3));
+                }
+
+                out.append(CardBack.resources.get(backs[0]).split("\n")[i]);
             }
 
-            out.append(CardBack.resourcesGold.get(backs[0]).split("\n")[i]);
-
-            if(i == 0){
-                out.append(" ".repeat(CardBack.width * 2 + hSpacing * 3 - 2))
-                        .append("6.");
-            } else {
-                out.append(" ".repeat(CardBack.width * 2 + hSpacing * 3));
-            }
-
-            out.append(CardBack.resources.get(backs[1]).split("\n")[i])
-                .append(" ".repeat(hSpacing/2))
+            out.append(" ".repeat(hSpacing/2))
                 .append("│\n");
         }
 

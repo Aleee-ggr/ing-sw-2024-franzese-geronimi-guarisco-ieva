@@ -521,7 +521,6 @@ public class GameController implements Initializable {
 
         for (int i = 0; i < playerData.getValidPlacements().size(); i++) {
             Coordinates boardCoordinates = calculateBoardCoordinates(playerData.getValidPlacements().get(i));
-            System.out.println(boardCoordinates);
 
             ImageView imageView = new ImageView();
             imageView.setId(String.valueOf(i));
@@ -535,8 +534,6 @@ public class GameController implements Initializable {
             GridPane.setHalignment(stackPane, HPos.CENTER);
             GridPane.setValignment(stackPane, VPos.CENTER);
             validPlacementPanes.put(boardCoordinates, stackPane);
-
-            System.out.println(validPlacementPanes);
         }
     }
 

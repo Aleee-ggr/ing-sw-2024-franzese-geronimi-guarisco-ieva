@@ -394,8 +394,15 @@ public class Controller {
     public void getBackSideDecks(String username, UUID messageId) {
         try {
             ArrayList<Integer> cardIds = new ArrayList<>();
-            cardIds.add(game.getGameBoard().getGoldDeck().peekFirstCard().getId());
-            cardIds.add(game.getGameBoard().getStdDeck().peekFirstCard().getId());
+            ColoredCard goldDeck = game.getGameBoard().getGoldDeck().peekFirstCard();
+            ColoredCard stdCard = game.getGameBoard().getStdDeck().peekFirstCard();
+            if (goldDeck != null) {
+                cardIds.add(goldDeck.getId());
+            }
+            if (stdCard != null) {
+                cardIds.add(stdCard.getId());
+            }
+            System.out.println(cardIds);
             messageQueue.add(ThreadMessage.getBackSideDecksResponse(username, cardIds, messageId));
         } catch (Exception e) {
             logError(username, messageId, e);
