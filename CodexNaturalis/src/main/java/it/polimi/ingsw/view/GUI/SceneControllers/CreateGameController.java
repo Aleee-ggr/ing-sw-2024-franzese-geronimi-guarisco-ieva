@@ -56,7 +56,7 @@ public class CreateGameController implements Initializable {
     @FXML
     protected void changeWaitingRoomScene(ActionEvent event) {
         RadioButton selected = (RadioButton) numPlayers.getSelectedToggle();
-        if (gameName.getText() != null) {
+        if (!gameName.getText().isEmpty()) {
             try {
                 int numPlayer = Integer.parseInt((String) selected.getUserData());
                 UUID uuid = client.newGame(numPlayer, gameName.getText());
