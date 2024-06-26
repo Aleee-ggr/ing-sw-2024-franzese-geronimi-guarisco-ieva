@@ -93,23 +93,6 @@ public class ClientUpdateThread extends Thread {
      * @see Compositor
      */
     private void fetchData() {
-        try {
-            client.fetchClientHand();
-            client.fetchCommonObjectives();
-            client.fetchValidPlacements();
-            client.fetchPlayersBoards();
-            client.fetchPlayersPlacingOrder();
-            client.fetchPlayersResources();
-            client.fetchScoreMap();
-            client.fetchGameState();
-            client.fetchVisibleCardsAndDecks();
-            client.fetchOpponentsHandColor();
-            client.fetchOpponentsHandType();
-            client.fetchChat();
-            client.fetchPlayersColors();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
+        TuiController.fetchData(client);
     }
 }

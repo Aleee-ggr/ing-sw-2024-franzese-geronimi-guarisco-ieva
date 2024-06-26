@@ -41,6 +41,26 @@ public class TuiController {
         this.client = client;
     }
 
+    public static void fetchData(ClientInterface client) {
+        try {
+            client.fetchClientHand();
+            client.fetchCommonObjectives();
+            client.fetchValidPlacements();
+            client.fetchPlayersBoards();
+            client.fetchPlayersPlacingOrder();
+            client.fetchPlayersResources();
+            client.fetchScoreMap();
+            client.fetchGameState();
+            client.fetchVisibleCardsAndDecks();
+            client.fetchOpponentsHandColor();
+            client.fetchOpponentsHandType();
+            client.fetchPlayersColors();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            System.exit(1);
+        }
+    }
+
     /**
      * Starts the TUI controller, managing the flow from login to the main game
      * loop.
@@ -140,8 +160,7 @@ public class TuiController {
                 List<UUID> games = client.getAvailableGames().keySet().stream().toList();
                 UUID choice = games.get(selectedGame - 1);
                 if (!client.joinGame(choice)) {
-                    out.println("Invalid Join! \n" + "Are you sure you don't already have a game open?\n"
-                            + "Are you sure you are not trying to join a different game than the one you are already in?");
+                    out.println("Invalid Join! \n" + "Are you sure you don't already have a game open?\n" + "Are you sure you are not trying to join a different game than the one you are already in?");
                     System.exit(0);
                 }
             }
@@ -346,18 +365,7 @@ public class TuiController {
      */
     private void fetchData() {
         try {
-            client.fetchClientHand();
-            client.fetchCommonObjectives();
-            client.fetchValidPlacements();
-            client.fetchPlayersBoards();
-            client.fetchPlayersPlacingOrder();
-            client.fetchPlayersResources();
-            client.fetchScoreMap();
-            client.fetchGameState();
-            client.fetchVisibleCardsAndDecks();
-            client.fetchOpponentsHandColor();
-            client.fetchOpponentsHandType();
-            client.fetchPlayersColors();
+            fetchData(client);
         } catch (IOException e) {
             System.out.println(e.getMessage());
             System.exit(1);

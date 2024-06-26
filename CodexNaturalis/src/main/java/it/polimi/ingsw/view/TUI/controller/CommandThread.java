@@ -371,18 +371,7 @@ public class CommandThread extends Thread {
      */
     private void fetchData() {
         try {
-            client.fetchClientHand();
-            client.fetchCommonObjectives();
-            client.fetchValidPlacements();
-            client.fetchPlayersBoards();
-            client.fetchPlayersPlacingOrder();
-            client.fetchPlayersResources();
-            client.fetchScoreMap();
-            client.fetchGameState();
-            client.fetchVisibleCardsAndDecks();
-            client.fetchOpponentsHandColor();
-            client.fetchOpponentsHandType();
-            client.fetchPlayersColors();
+            TuiController.fetchData(client);
             client.fetchChat();
         } catch (IOException e) {
             e.printStackTrace();
