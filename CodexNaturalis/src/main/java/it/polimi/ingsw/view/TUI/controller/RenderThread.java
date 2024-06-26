@@ -1,25 +1,24 @@
 package it.polimi.ingsw.view.TUI.controller;
 
-import it.polimi.ingsw.controller.threads.GameState;
-import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.Compositor;
 
 import java.io.PrintWriter;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RenderThread extends Thread {
     private final PrintWriter out = new PrintWriter(System.out, true);
-    private final ClientInterface client;
     private final Compositor compositor;
     private final SharedUpdate updater;
+    private final AtomicBoolean running;
 
     /**
      * The RenderThread class handles the rendering of the TUI.
      * It listens for updates and redraws the TUI accordingly.
      */
-    public RenderThread(ClientInterface client, SharedUpdate updater, Compositor compositor) {
-        this.client = client;
+    public RenderThread(SharedUpdate updater, Compositor compositor, AtomicBoolean running) {
         this.updater = updater;
         this.compositor = compositor;
+        this.running = running;
     }
 
     /**
@@ -29,11 +28,7 @@ public class RenderThread extends Thread {
      */
     @Override
     public void run() {
-        boolean running;
-        synchronized (client) {
-            running = client.getGameState() != GameState.STOP;
-        }
-        while (running) {
+        while (running.get()) {
             boolean update = false;
             while (!update) {
                 update = updater.getUpdate();
@@ -41,9 +36,6 @@ public class RenderThread extends Thread {
             clear();
             out.print(compositor);
             out.flush();
-            synchronized (client) {
-                running = client.getGameState() != GameState.STOP;
-            }
         }
     }
 

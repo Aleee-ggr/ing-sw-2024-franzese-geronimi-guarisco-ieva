@@ -63,6 +63,7 @@ public class SocketClient extends Client implements ClientInterface {
             System.out.println("Connected to the socket server.");
         } else {
             System.out.println("Error while connecting to the socket server.");
+            System.exit(1);
         }
     }
 
@@ -163,12 +164,12 @@ public class SocketClient extends Client implements ClientInterface {
     @Override
     public synchronized void pingServer() throws IOException {
         heartbeatOutput.writeObject(new SocketClientHeartbeatMessage(username, gameId));
-            try {
-                Thread.sleep(200);
-                GenericResponseMessage message = (GenericResponseMessage) heartbeatInput.readObject();
-            } catch (ClassNotFoundException | InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+        try {
+            Thread.sleep(200);
+            GenericResponseMessage message = (GenericResponseMessage) heartbeatInput.readObject();
+        } catch (ClassNotFoundException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -460,7 +461,7 @@ public class SocketClient extends Client implements ClientInterface {
                 if (id == null) {
                     return false;
                 }
-                if(!joinGame(id)){
+                if (!joinGame(id)) {
                     System.out.println("You can't join a game while in another game!");
                     System.exit(0);
                 }

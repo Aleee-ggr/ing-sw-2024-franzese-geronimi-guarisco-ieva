@@ -48,11 +48,15 @@ public class RmiClient extends Client implements ClientInterface {
     public RmiClient(String serverAddress, int serverPort) {
         super(serverAddress, serverPort);
 
+        RmiServerInterface tmp = null;
         try {
             Registry registry = LocateRegistry.getRegistry(serverAddress, serverPort);
-            remoteObject = (RmiServerInterface) registry.lookup(RmiServer.getName());
+            tmp = (RmiServerInterface) registry.lookup(RmiServer.getName());
         } catch (RemoteException | NotBoundException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
+            System.exit(1);
+        } finally {
+            remoteObject = tmp;
         }
     }
 
@@ -68,7 +72,7 @@ public class RmiClient extends Client implements ClientInterface {
     public UUID newGame(int players, String gameName) throws RemoteException {
         UUID game = remoteObject.newGame(players, gameName);
         if (game != null) {
-            if(!joinGame(game)){
+            if (!joinGame(game)) {
                 System.out.println("You can't join a game while in another game!");
                 System.exit(0);
             }

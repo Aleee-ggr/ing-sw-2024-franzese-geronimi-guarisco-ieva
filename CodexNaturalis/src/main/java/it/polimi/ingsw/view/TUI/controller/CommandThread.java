@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.lang.Math.abs;
 
@@ -20,6 +21,7 @@ public class CommandThread extends Thread {
     private final ClientInterface client;
     private final SharedUpdate updater;
     private final Compositor compositor;
+    private final AtomicBoolean running;
 
     boolean placed = false;
 
@@ -30,10 +32,11 @@ public class CommandThread extends Thread {
      * @param updater    The SharedUpdate instance to check for updates.
      * @param compositor The Compositor instance to render the TUI.
      */
-    public CommandThread(ClientInterface client, SharedUpdate updater, Compositor compositor) {
+    public CommandThread(ClientInterface client, SharedUpdate updater, Compositor compositor, AtomicBoolean running) {
         this.client = client;
         this.updater = updater;
         this.compositor = compositor;
+        this.running = running;
     }
 
     /**
@@ -62,12 +65,14 @@ public class CommandThread extends Thread {
      */
     @Override
     public void run() {
-        while (true) {
+        while (running.get()) {
             try {
                 String command = in.readLine();
-                handleCommand(command);
-                fetchData();
-                updater.update();
+                if (running.get()) {
+                    handleCommand(command);
+                    fetchData();
+                    updater.update();
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -98,7 +103,7 @@ public class CommandThread extends Thread {
      * @see #postChat(String[], String)
      */
     private void handleCommand(String command) {
-        if (command.strip() == "" || command == null) {
+        if (command == null || command.strip().equals("")) {
             return;
         }
         String[] cmd = command.split(" ");

@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * The TuiController class handles the flow of the game using the TUI.
@@ -120,7 +121,8 @@ public class TuiController {
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            System.exit(1);
         }
     }
 
@@ -170,7 +172,8 @@ public class TuiController {
         try {
             client.choosePlayerColor(playerData.getAvailableColors().get(sel - 1));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
+            System.exit(1);
         }
 
         done = false;
@@ -186,7 +189,8 @@ public class TuiController {
         try {
             client.choosePersonalObjective(playerData.getStartingObjectives().get(sel - 1).getId());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
+            System.exit(1);
         }
     }
 
@@ -197,18 +201,20 @@ public class TuiController {
         clear();
         fetchData();
         compositor = new Compositor(client);
+        AtomicBoolean running = new AtomicBoolean(true);
         SharedUpdate updater = new SharedUpdate();
-        Thread commands = new CommandThread(client, updater, compositor);
+        Thread commands = new CommandThread(client, updater, compositor, running);
         commands.start();
-        Thread update = new ClientUpdateThread(client, updater, compositor);
+        Thread update = new ClientUpdateThread(client, updater, compositor, running);
         update.start();
-        Thread render = new RenderThread(client, updater, compositor);
+        Thread render = new RenderThread(updater, compositor, running);
         render.start();
         try {
             update.join();
             client.fetchGameState();
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
+            System.exit(1);
         }
     }
 
@@ -219,7 +225,7 @@ public class TuiController {
         try {
             client.fetchScoreMap();
             List<Map.Entry<String, Integer>> entryList = client.getScoreMap().entrySet().stream().sorted((e1, e2) -> e2.getValue() - e1.getValue()).toList();
-
+            clear();
             for (int i = 0; i < entryList.size(); i++) {
                 out.print(i + 1);
                 out.print(": ");
@@ -228,7 +234,8 @@ public class TuiController {
                 out.println(entryList.get(i).getValue());
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
+            System.exit(1);
         }
 
     }
@@ -249,7 +256,8 @@ public class TuiController {
             }
         } catch (NumberFormatException ignored) {
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
+            System.exit(1);
         }
         return -1;
     }
@@ -277,7 +285,8 @@ public class TuiController {
 
             client.newGame(selection, gameName);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
+            System.exit(1);
         }
     }
 
@@ -293,7 +302,8 @@ public class TuiController {
             client.fetchClientHand();
             client.fetchCommonObjectives();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
+            System.exit(1);
         }
     }
 
@@ -315,7 +325,8 @@ public class TuiController {
             client.fetchOpponentsHandType();
             client.fetchPlayersColors();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
+            System.exit(1);
         }
     }
 
@@ -326,7 +337,8 @@ public class TuiController {
         try {
             client.waitUpdate();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
+            System.exit(1);
         }
     }
 

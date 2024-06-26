@@ -6,6 +6,7 @@ import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.Compositor;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static it.polimi.ingsw.controller.WaitState.*;
 
@@ -17,6 +18,7 @@ public class ClientUpdateThread extends Thread {
     private final ClientInterface client;
     private final SharedUpdate updater;
     private final Compositor compositor;
+    private final AtomicBoolean running;
 
     /**
      * Constructs a new ClientUpdateThread.
@@ -25,10 +27,11 @@ public class ClientUpdateThread extends Thread {
      * @param updater    The shared updater instance to synchronize updates with the TUI.
      * @param compositor The compositor instance to update the TUI components.
      */
-    public ClientUpdateThread(ClientInterface client, SharedUpdate updater, Compositor compositor) {
+    public ClientUpdateThread(ClientInterface client, SharedUpdate updater, Compositor compositor, AtomicBoolean running) {
         this.client = client;
         this.updater = updater;
         this.compositor = compositor;
+        this.running = running;
     }
 
     /**
@@ -73,6 +76,7 @@ public class ClientUpdateThread extends Thread {
                 System.exit(1);
             }
         }
+        running.set(false);
     }
 
     /**
