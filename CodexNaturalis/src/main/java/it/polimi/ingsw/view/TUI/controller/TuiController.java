@@ -180,7 +180,8 @@ public class TuiController {
         try {
             client.placeStartingCard(sel == 1);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
+            System.exit(1);
         }
 
         done = false;
