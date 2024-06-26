@@ -179,7 +179,12 @@ public class CommandThread extends Thread {
 
                 case "draw":
                     if (cmd.length == 2) {
-                        position = Integer.parseInt(cmd[1]) - 1;
+                        try {
+                            position = Integer.parseInt(cmd[1]) - 1;
+                        } catch (NumberFormatException ignored) {
+                            printError("Invalid position");
+                            break;
+                        }
                         if (placed) {
                             if (!client.getDecksBacks().isEmpty()) {
                                 if (position < 0 || position > 5) {
