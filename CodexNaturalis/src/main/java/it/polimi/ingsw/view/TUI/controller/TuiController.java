@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * The TuiController class handles the flow of the game using the TUI.
@@ -32,7 +31,6 @@ public class TuiController {
      */
     public TuiController(ClientInterface client) {
         this.client = client;
-        client.setCredentials(String.valueOf(ThreadLocalRandom.current().nextInt(100, 1000)), "password");
     }
 
     /**
@@ -71,10 +69,16 @@ public class TuiController {
         try {
             boolean valid = false;
             do {
-                out.println("Insert username: ");
-                String username = in.readLine();
-                out.println("Insert password: ");
-                String password = in.readLine();
+                String username;
+                do {
+                    out.println("Insert username: ");
+                    username = in.readLine();
+                } while (!username.matches("^[\\w\\d]{1,16}$"));
+                String password;
+                do {
+                    out.println("Insert password: ");
+                    password = in.readLine();
+                } while (!password.matches("^" + "\\S{1,16}$"));
 
                 valid = client.checkCredentials(username, password);
             } while (!valid);
