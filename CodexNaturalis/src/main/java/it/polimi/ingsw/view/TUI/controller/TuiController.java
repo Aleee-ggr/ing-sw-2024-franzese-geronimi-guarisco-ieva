@@ -189,7 +189,7 @@ public class TuiController {
             clear();
             out.println(new ColorView(playerData.getAvailableColors()));
             out.println("Select color: ");
-            sel = select(1, playerData.getAvailableColors().size() - 1);
+            sel = select(1, playerData.getAvailableColors().size());
             done = sel >= 0;
         }
 
