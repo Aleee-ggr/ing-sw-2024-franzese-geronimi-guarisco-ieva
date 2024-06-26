@@ -570,7 +570,11 @@ public record ThreadMessage(Status status, String player, String type, String[] 
         String[] args = new String[cardId.size()];
 
         for (int i = 0; i < cardId.size(); i++) {
-            args[i] = cardId.get(i).toString();
+            if (cardId.get(i) != null) {
+                args[i] = cardId.get(i).toString();
+            } else {
+                args[i] = "0";
+            }
         }
 
         return new ThreadMessage(Status.OK, username, "getVisibleCardResponse", args, messageUUID);

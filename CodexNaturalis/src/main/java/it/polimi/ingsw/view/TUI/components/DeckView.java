@@ -72,24 +72,34 @@ public class DeckView implements Component {
         this.visibleCards = client.getVisibleCards().toArray(new Card[0]);
         ArrayList<Resource> res = new ArrayList<>();
         for (Card card : client.getDecksBacks()) {
-            if (client.getDecksBacks().size() == 1 && card.getId() <= 40) {
-                ColoredCard colored = (ColoredCard) card;
-                res.add(colored.getBackResource());
-                noGold = true;
-            } else if (client.getDecksBacks().size() == 1 && card.getId() > 40) {
-                ColoredCard colored = (ColoredCard) card;
-                res.add(colored.getBackResource());
-                noStd = true;
-            } else {
-                ColoredCard colored = (ColoredCard) card;
-                res.add(colored.getBackResource());
+            int id = card.getId();
+            ColoredCard colored = (ColoredCard) card;
+            Resource resource = colored.getBackResource();
+
+            if (client.getDecksBacks().size() == 1) {
+                res.add(resource);
+                if (id <= 40) {
+                    noGold = true;
+                } else {
+                    noStd = true;
+                }
+            } else if (client.getDecksBacks().size() == 2) {
+                res.add(resource);
             }
         }
+
+        if (client.getDecksBacks().isEmpty()) {
+            noGold = true;
+            noStd = true;
+        }
+
         this.backs = res.toArray(new Resource[0]);
 
         PrintCards[] printCards = new PrintCards[visibleCards.length];
         for (int i = 0; i < visibleCards.length; i++) {
-            printCards[i] = new PrintCards(visibleCards[i]);
+            if (visibleCards[i] != null) {
+                printCards[i] = new PrintCards(visibleCards[i]);
+            }
         }
         StringBuilder out = new StringBuilder()
                 .append(" \n".repeat(paddingTop))
@@ -115,32 +125,48 @@ public class DeckView implements Component {
                     .append("│\n");
         }
 
-
         // Print Visible cards
         for (int i = 0; i < PrintCards.height; i++) {
             out.append(" ".repeat(paddingLeft))
                     .append("│");
 
-            if(i == 0){
-                out.append("1.");
-            } else {
-                out.append(" ".repeat(hSpacing/2));
-            }
+            int cardNumber = 1; // Start numbering from 1
+            boolean firstPrinted = false; // To track if the first card is printed
 
-            for (int j = 0; j < visibleCards.length - 1; j++) {
-                if(i==0){
-                    out.append(printCards[j].toStringArray()[i])
-                            .append(" ".repeat(hSpacing-2))
-                            .append(j+2)
-                            .append(".");
+            for (int j = 0; j < visibleCards.length; j++) {
+                if (i == 0) {
+                    if (printCards[j] != null) {
+                        if (!firstPrinted) {
+                            firstPrinted = true;
+                            out.append(cardNumber)
+                                    .append(".")
+                                    .append(printCards[j].toStringArray()[i])
+                                    .append(" ".repeat(hSpacing - 2));
+                            cardNumber++;
+                        } else {
+                            out.append(cardNumber)
+                                    .append(".")
+                                    .append(printCards[j].toStringArray()[i])
+                                    .append(" ".repeat(hSpacing - 2));
+                            cardNumber++;
+                        }
+                    } else {
+                        out.append(" ".repeat(CardBack.width + hSpacing ));
+                    }
                 } else {
-                    out.append(printCards[j].toStringArray()[i])
-                            .append(" ".repeat(hSpacing));
+                    if (printCards[j] != null) {
+                        out.append(" ".repeat(hSpacing - 2))
+                                .append(printCards[j].toStringArray()[i])
+                                .append(" ".repeat(hSpacing - 2));
+                    } else {
+                        out.append(" ".repeat(CardBack.width + hSpacing));
+                    }
                 }
             }
-            out.append(printCards[visibleCards.length - 1].toStringArray()[i]);
-            out.append(" ".repeat(hSpacing/2))
-            .append("│\n");
+
+            // Add remaining spacing after the last card
+            out.append(" ".repeat((hSpacing / 2) - 2))
+                    .append("│\n");
         }
 
         // Print decks
@@ -149,15 +175,15 @@ public class DeckView implements Component {
                     .append("│");
 
             if (!noGold && !noStd) {
-                if(i == 0){
+                if (i == 0) {
                     out.append("5.");
                 } else {
-                    out.append(" ".repeat(hSpacing/2));
+                    out.append(" ".repeat(hSpacing / 2));
                 }
 
                 out.append(CardBack.resourcesGold.get(backs[0]).split("\n")[i]);
 
-                if(i == 0){
+                if (i == 0) {
                     out.append(" ".repeat(CardBack.width * 2 + hSpacing * 3 - 2))
                             .append("6.");
                 } else {
@@ -166,16 +192,16 @@ public class DeckView implements Component {
 
                 out.append(CardBack.resources.get(backs[1]).split("\n")[i]);
             } else if (!noGold) {
-                if(i == 0){
+                if (i == 0) {
                     out.append("5.");
                 } else {
-                    out.append(" ".repeat(hSpacing/2));
+                    out.append(" ".repeat(hSpacing / 2));
                 }
 
                 out.append(CardBack.resourcesGold.get(backs[0]).split("\n")[i])
                         .append(" ".repeat(CardBack.width * 3 + hSpacing * 3));
-            } else {
-                if(i == 0){
+            } else if (!noStd) {
+                if (i == 0) {
                     out.append(" ".repeat(17 + CardBack.width * 2 + hSpacing * 3 - 2))
                             .append("6.");
                 } else {
@@ -183,10 +209,12 @@ public class DeckView implements Component {
                 }
 
                 out.append(CardBack.resources.get(backs[0]).split("\n")[i]);
+            } else {
+                out.append(" ".repeat(CardBack.width * 4 + hSpacing * 4 - 2));
             }
 
-            out.append(" ".repeat(hSpacing/2))
-                .append("│\n");
+            out.append(" ".repeat(hSpacing / 2))
+                    .append("│\n");
         }
 
         for (int i = 0; i < vSpacing; i++) {

@@ -132,10 +132,13 @@ public class DrawCardController implements Initializable, TabController {
         int totalVisibleCards = visibleCards.size();
 
         for (int i = 0; i < totalVisibleCards; i++) {
+            Image image = null;
             Card card = visibleCards.get(i);
-            int id = card.getId();
-            String imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", id);
-            Image image = new Image(imagePath);
+            if (card != null) {
+                int id = card.getId();
+                String imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", id);
+                image = new Image(imagePath);
+            }
 
             switch (i) {
                 case 0:

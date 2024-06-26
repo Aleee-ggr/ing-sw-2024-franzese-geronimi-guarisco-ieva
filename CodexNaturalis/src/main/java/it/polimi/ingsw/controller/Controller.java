@@ -370,10 +370,19 @@ public class Controller {
     public void getVisibleCards(String username, UUID messageId) {
         try {
             ColoredCard[] visibleCards = (ColoredCard[]) game.getGameBoard().getVisibleCards();
+            for (ColoredCard card : visibleCards) {
+                if (card != null) {
+                    card.getId();
+                }
+            }
             ArrayList<Integer> cardIds = new ArrayList<>();
 
             for (ColoredCard card : visibleCards) {
-                cardIds.add(card.getId());
+                if (card != null) {
+                    cardIds.add(card.getId());
+                } else {
+                    cardIds.add(null);
+                }
             }
 
             messageQueue.add(ThreadMessage.getVisibleCardsResponse(username, cardIds, messageId));

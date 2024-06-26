@@ -89,6 +89,8 @@ public class SharedBoard {
             }
             if (!stdDeck.isEmpty()) {
                 visibleCards[position] = stdDeck.draw();
+            } else {
+                visibleCards[position] = null;
             }
         } else {
             if (!stdDeck.isEmpty()) {
@@ -97,6 +99,8 @@ public class SharedBoard {
             }
             if (!goldDeck.isEmpty()) {
                 visibleCards[position] = goldDeck.draw();
+            } else {
+                visibleCards[position] = null;
             }
         }
     }

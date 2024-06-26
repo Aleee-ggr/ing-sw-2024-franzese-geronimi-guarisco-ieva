@@ -204,7 +204,7 @@ public class GameThread extends Thread {
         for (Player player : controller.getGame().getPlayers()) {
             this.currentPlayer = player.getUsername();
             turnMap.put(player.getUsername(), WaitState.TURN_UPDATE);
-            if (playerTurn(player.getUsername()) || controller.getGame().getGameBoard().areCardsOver()) {
+            if (playerTurn(player.getUsername()) || (controller.getGame().getGameBoard().getStdDeck().isEmpty() && controller.getGame().getGameBoard().getGoldDeck().isEmpty())) {
                 gameState = GameState.ENDGAME;
                 controller.getGame().setGameState(GameState.ENDGAME);
             }

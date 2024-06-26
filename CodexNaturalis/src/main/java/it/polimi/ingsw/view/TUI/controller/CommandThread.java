@@ -176,7 +176,32 @@ public class CommandThread extends Thread {
                     if (cmd.length == 2) {
                         position = Integer.parseInt(cmd[1]) - 1;
                         if (placed) {
-                            client.drawCard(position);
+                            if (!client.getDecksBacks().isEmpty()) {
+                                if (position < 0 || position > 5) {
+                                    defaultCommand();
+                                    break;
+                                } else {
+                                    client.drawCard(position);
+                                }
+                            } else {
+                                int availableCount = 0;
+                                int drawPosition = -1;
+                                for (int i = 0; i < client.getVisibleCards().size(); i++) {
+                                    if (client.getVisibleCards().get(i) != null) {
+                                        availableCount++;
+                                        if (availableCount == position + 1) {
+                                            drawPosition = i;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (position < 0 || position >= availableCount) {
+                                    defaultCommand();
+                                    break;
+                                } else {
+                                    client.drawCard(drawPosition);
+                                }
+                            }
                             placed = false;
                             compositor.setTopBar("Waiting for your Turn...");
                         } else {
