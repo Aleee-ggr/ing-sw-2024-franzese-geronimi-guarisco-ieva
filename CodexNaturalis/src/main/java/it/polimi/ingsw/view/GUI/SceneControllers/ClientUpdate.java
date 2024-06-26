@@ -48,13 +48,17 @@ public class ClientUpdate extends Thread {
         while (state != ENDGAME) {
             try {
                 state = client.waitUpdate();
+                System.out.println(state);
                 if (state == UPDATE || state == TURN_UPDATE) {
                     fetchData();
                     updater.update();
                 }
                 if (state == TURN || state == TURN_UPDATE) {
+                    sleep(500);
                     fetchData();
-                    gameController.setTurn();
+                    if (!gameController.myTurn) {
+                        gameController.setTurn();
+                    }
                     updater.update();
                 }
 
