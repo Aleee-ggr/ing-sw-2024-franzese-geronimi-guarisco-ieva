@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static java.lang.Thread.sleep;
 
 /**
  * The TuiController class handles the flow of the game using the TUI.
@@ -97,28 +100,45 @@ public class TuiController {
      * Handles game selection, allowing the user to join an existing game or create
      * a new one.
      */
-    private void selectGame() { // TODO: change game selection for duplicate users
+    private void selectGame() {
         try {
-            client.fetchAvailableGames();
-            int selected;
-            List<UUID> games = client.getAvailableGames().keySet().stream().toList();
-
-            do {
-                clear();
-                out.println("Available games: ");
-
-                for (int i = 0; i < games.size(); i++) {
-                    out.printf("%d.\t%s\n", i + 1, client.getAvailableGames().get(games.get(i)));
+            final AtomicBoolean selected = new AtomicBoolean(false);
+            final AtomicInteger gameCount = new AtomicInteger(0);
+            new Thread(() -> {
+                while (!selected.get()) {
+                    try {
+                        client.fetchAvailableGames();
+                    } catch (IOException e) {
+                        System.err.println(e.getMessage());
+                        System.exit(1);
+                    }
+                    List<UUID> games = client.getAvailableGames().keySet().stream().toList();
+                    clear();
+                    for (int i = 0; i < games.size(); i++) {
+                        out.printf("%d.\t%s\n", i + 1, client.getAvailableGames().get(games.get(i)));
+                    }
+                    out.println("Available games: ");
+                    out.println("Select game to play (0 to create a new game)");
+                    try {
+                        sleep(1000);
+                    } catch (InterruptedException ignored) {
+                    }
+                    gameCount.set(games.size());
                 }
-                out.println("Select game to play (0 to create a new game)");
+            }).start();
+            int selectedGame;
+            do {
 
-                selected = select(0, client.getAvailableGames().size());
-            } while (selected < 0);
+                selectedGame = atomicSelect(0, gameCount);
+            } while (selectedGame < 0);
 
-            if (selected == 0) {
+            selected.set(true);
+
+            if (selectedGame == 0) {
                 createGame();
             } else {
-                UUID choice = games.get(selected - 1);
+                List<UUID> games = client.getAvailableGames().keySet().stream().toList();
+                UUID choice = games.get(selectedGame - 1);
                 if (!client.joinGame(choice)) {
                     out.println("Invalid Join! \n" + "Are you sure you don't already have a game open?\n" + "Are you sure you are not trying to join a different game than the one you are already in?");
                     System.exit(0);
@@ -249,6 +269,21 @@ public class TuiController {
         try {
             selection = Integer.parseInt(in.readLine());
             if (min <= selection && selection <= max) {
+                return selection;
+            }
+        } catch (NumberFormatException ignored) {
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            System.exit(1);
+        }
+        return -1;
+    }
+
+    private int atomicSelect(int min, final AtomicInteger max) {
+        int selection;
+        try {
+            selection = Integer.parseInt(in.readLine());
+            if (min <= selection && selection <= max.get()) {
                 return selection;
             }
         } catch (NumberFormatException ignored) {
