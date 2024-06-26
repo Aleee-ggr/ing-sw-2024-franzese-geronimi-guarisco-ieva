@@ -74,7 +74,7 @@ public class CommandThread extends Thread {
                     updater.update();
                 }
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                System.exit(1);
             }
         }
     }
