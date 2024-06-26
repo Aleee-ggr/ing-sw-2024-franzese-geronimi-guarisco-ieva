@@ -120,7 +120,7 @@ public class TuiController {
                     out.println("Available games: ");
                     out.println("Select game to play (0 to create a new game)");
                     try {
-                        sleep(1000);
+                        sleep(5000);
                     } catch (InterruptedException ignored) {
                     }
                     gameCount.set(games.size());
@@ -140,7 +140,8 @@ public class TuiController {
                 List<UUID> games = client.getAvailableGames().keySet().stream().toList();
                 UUID choice = games.get(selectedGame - 1);
                 if (!client.joinGame(choice)) {
-                    out.println("Invalid Join! \n" + "Are you sure you don't already have a game open?\n" + "Are you sure you are not trying to join a different game than the one you are already in?");
+                    out.println("Invalid Join! \n" + "Are you sure you don't already have a game open?\n"
+                            + "Are you sure you are not trying to join a different game than the one you are already in?");
                     System.exit(0);
                 }
             }
