@@ -143,22 +143,7 @@ public class SocketClient extends Client implements ClientInterface {
             return false;
         }
         output.writeObject(new SocketClientJoinGameMessage(username, gameUUID));
-        boolean response = handleResponse();
-
-        if (response) {
-            new Thread(() -> {
-                while (true) {
-                    try {
-                        Thread.sleep(GameConsts.heartbeatInterval);
-                        pingServer();
-                    } catch (IOException | InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }).start();
-        }
-
-        return response;
+        return handleResponse();
     }
 
     @Override
@@ -198,7 +183,20 @@ public class SocketClient extends Client implements ClientInterface {
     @Override
     public synchronized boolean checkCredentials(String username, String password) throws IOException {
         output.writeObject(new SocketValidateCredentialsMessage(username, password));
-        return handleResponse();
+        boolean response = handleResponse();
+        if (response) {
+            new Thread(() -> {
+                while (true) {
+                    try {
+                        Thread.sleep(GameConsts.heartbeatInterval);
+                        pingServer();
+                    } catch (IOException | InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }).start();
+        }
+        return response;
     }
 
     //TODO: not implemented -> there is no socket message for this

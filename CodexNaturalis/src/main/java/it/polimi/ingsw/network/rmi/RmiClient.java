@@ -97,20 +97,6 @@ public class RmiClient extends Client implements ClientInterface {
         boolean success = remoteObject.join(game, this.username);
 
         if (success) {
-            new Thread(() -> {
-                while (true) {
-                    try {
-                        Thread.sleep(GameConsts.heartbeatInterval);
-                        pingServer();
-                    } catch (IOException | InterruptedException e) {
-                        System.out.println(e.getMessage());
-                        System.exit(1);
-                    }
-                }
-            }).start();
-        }
-
-        if (success) {
             this.setGameId(game);
         }
         return success;
@@ -125,6 +111,18 @@ public class RmiClient extends Client implements ClientInterface {
     @Override
     public boolean checkCredentials(String username, String password) throws RemoteException {
         if (remoteObject.checkCredentials(username, password)) {
+            new Thread(() -> {
+                while (true) {
+                    try {
+                        Thread.sleep(GameConsts.heartbeatInterval);
+                        pingServer();
+                    } catch (IOException | InterruptedException e) {
+                        System.out.println(e.getMessage());
+                        System.exit(1);
+                    }
+                }
+            }).start();
+            
             this.username = username;
             this.password = password;
             return true;

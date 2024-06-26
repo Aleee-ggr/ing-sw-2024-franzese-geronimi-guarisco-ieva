@@ -364,12 +364,7 @@ public class TuiController {
      * Fetches the data required for the main game loop.
      */
     private void fetchData() {
-        try {
-            fetchData(client);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            System.exit(1);
-        }
+        fetchData(client);
     }
 
     /**
