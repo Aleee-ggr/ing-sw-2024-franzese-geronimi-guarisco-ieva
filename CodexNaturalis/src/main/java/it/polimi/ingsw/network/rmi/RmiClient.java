@@ -103,7 +103,8 @@ public class RmiClient extends Client implements ClientInterface {
                         Thread.sleep(GameConsts.heartbeatInterval);
                         pingServer();
                     } catch (IOException | InterruptedException e) {
-                        throw new RuntimeException(e);
+                        System.out.println(e.getMessage());
+                        System.exit(1);
                     }
                 }
             }).start();

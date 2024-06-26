@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.network.ClientInterface;
 import it.polimi.ingsw.view.TUI.Compositor;
 import it.polimi.ingsw.view.TUI.components.ColorView;
+import it.polimi.ingsw.view.TUI.components.EndGameTUI;
 import it.polimi.ingsw.view.TUI.components.StartingCardView;
 import it.polimi.ingsw.view.TUI.components.StartingObjectiveView;
 
@@ -11,7 +12,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -224,15 +228,8 @@ public class TuiController {
     private void stop() {
         try {
             client.fetchScoreMap();
-            List<Map.Entry<String, Integer>> entryList = client.getScoreMap().entrySet().stream().sorted((e1, e2) -> e2.getValue() - e1.getValue()).toList();
             clear();
-            for (int i = 0; i < entryList.size(); i++) {
-                out.print(i + 1);
-                out.print(": ");
-                out.print(entryList.get(i).getKey());
-                out.print(": ");
-                out.println(entryList.get(i).getValue());
-            }
+            System.out.println(new EndGameTUI(client.getScoreMap()));
         } catch (IOException e) {
             System.out.println(e.getMessage());
             System.exit(1);
