@@ -229,7 +229,7 @@ public class GameController implements Initializable {
             GridPane.setHalignment(stackPane, HPos.CENTER);
             GridPane.setValignment(stackPane, VPos.CENTER);
         } else {
-            for (Card card: playerData.getOrder()) {
+            for (Card card : playerData.getOrder()) {
                 Coordinates coordinates = playerData.getBoard().inverse().get(card);
                 StackPane stackPane = getStackPane(card.getId());
                 if (card.equals(playerData.getOrder().getFirst())) {
@@ -334,7 +334,7 @@ public class GameController implements Initializable {
 
         board.getChildren().clear();
 
-        for (Card card: opponentData.getOrder()) {
+        for (Card card : opponentData.getOrder()) {
             Coordinates coordinates = opponentData.getBoard().inverse().get(card);
             StackPane stackPane = getStackPane(card.getId());
             if (card.equals(opponentData.getOrder().getFirst())) {
@@ -379,9 +379,9 @@ public class GameController implements Initializable {
      * If the username matches the client's username, displays the client's hand with card images.
      * If the username does not match, displays the opponent's hand with generic card backs.
      *
-     * @param username   The username of the player whose hand is to be displayed.
-     * @param frontSide  Boolean flag indicating whether to display card fronts (true) or backs (false).
-     *                   Fronts are displayed for the client's hand, backs for opponents.
+     * @param username  The username of the player whose hand is to be displayed.
+     * @param frontSide Boolean flag indicating whether to display card fronts (true) or backs (false).
+     *                  Fronts are displayed for the client's hand, backs for opponents.
      * @throws RuntimeException If there is an error in fetching data from the server during initialization.
      */
     protected void setHand(String username, boolean frontSide) {
@@ -395,7 +395,7 @@ public class GameController implements Initializable {
         String imagePath = "";
         handContainer.getChildren().clear();
         if (username.equals(client.getUsername())) {
-            for (Card card: playerData.getClientHand()) {
+            for (Card card : playerData.getClientHand()) {
                 int id = card.getId();
                 if (frontSide) {
                     imagePath = String.format("GUI/images/cards.nogit/front/%03d.png", id);
@@ -541,7 +541,7 @@ public class GameController implements Initializable {
      * Creates a StackPane containing the given ImageView and sets up event handlers for mouse clicks and drag-and-drop operations.
      * The StackPane will have a border style applied and will handle placing a card on the board when clicked or dropped.
      *
-     * @param imageView the ImageView to be added to the StackPane
+     * @param imageView        the ImageView to be added to the StackPane
      * @param boardCoordinates the coordinates on the board where the card will be placed
      * @return a StackPane containing the ImageView with event handlers for interaction
      */
@@ -723,8 +723,8 @@ public class GameController implements Initializable {
      * Places a card on the board based on the selected hand card and board coordinates.
      * Updates the UI with the placed card's image, adjusts styles, and handles subsequent game actions.
      *
-     * @param stackPane The StackPane representing the placement area on the board.
-     * @param imageView The ImageView displaying the card's image.
+     * @param stackPane        The StackPane representing the placement area on the board.
+     * @param imageView        The ImageView displaying the card's image.
      * @param boardCoordinates The Coordinates object specifying the board position.
      * @return true if the card was successfully placed, false otherwise.
      */
@@ -762,12 +762,14 @@ public class GameController implements Initializable {
 
                     if (activeTab == null || !activeTab.equals("DrawCard")) {
                         PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
-                        pause.setOnFinished(e -> { changeDrawCardScene(); });
+                        pause.setOnFinished(e -> {
+                            changeDrawCardScene();
+                        });
                         pause.play();
                     }
 
                     setupValidPlacements();
-                } else if (Integer.parseInt(selectedHandCard.getId()) > 0){
+                } else if (Integer.parseInt(selectedHandCard.getId()) > 0) {
                     ErrorMessageController.showErrorMessage("Requirements not met to place card!", root);
                 } else {
                     ErrorMessageController.showErrorMessage("Card not placed correctly!", root);
@@ -830,6 +832,10 @@ public class GameController implements Initializable {
     protected void setTurn() {
         turnMessage.setText("Your Turn: Place a Card!");
         myTurn = true;
+    }
+
+    protected void setStandby() {
+        turnMessage.setText("No other players are connected\nYou will win in 1 minute!");
     }
 
     /**
@@ -900,7 +906,7 @@ public class GameController implements Initializable {
         Task<Void> endGameThread = new Task<>() {
             @Override
             protected Void call() throws Exception {
-                try{
+                try {
                     while (clientUpdate.getWaitState() != WaitState.ENDGAME) {
                         Thread.sleep(1000);
                     }
@@ -931,7 +937,7 @@ public class GameController implements Initializable {
      * Sets a player's pawn image on the provided StackPane based on the player's username and color.
      * Determines the appropriate pawn image based on the player's color and starting card.
      *
-     * @param username The username of the player.
+     * @param username  The username of the player.
      * @param stackPane The StackPane on which to set the pawn image.
      */
     private void setPion(String username, StackPane stackPane) {

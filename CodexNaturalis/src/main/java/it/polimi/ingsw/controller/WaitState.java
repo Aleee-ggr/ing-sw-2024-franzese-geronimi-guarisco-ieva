@@ -5,5 +5,5 @@ package it.polimi.ingsw.controller;
  * These states dictate the actions players can perform and the notifications they receive.
  */
 public enum WaitState {
-    UPDATE, TURN_UPDATE, TURN, WAIT, SETUP_TURN, ENDGAME
+    UPDATE, TURN_UPDATE, TURN, WAIT, SETUP_TURN, STANDBY, ENDGAME
 }

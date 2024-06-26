@@ -22,9 +22,9 @@ public class ClientUpdate extends Thread {
     /**
      * Constructs a new ClientUpdate thread.
      *
-     * @param client        the client interface to communicate with the server
+     * @param client         the client interface to communicate with the server
      * @param gameController the game controller that manages the game view
-     * @param updater       the shared updater that triggers view updates
+     * @param updater        the shared updater that triggers view updates
      */
     public ClientUpdate(ClientInterface client, GameController gameController, SharedUpdate updater) {
         this.client = client;
@@ -45,8 +45,10 @@ public class ClientUpdate extends Thread {
     @Override
     public void run() {
         state = null;
+        WaitState oldState;
         while (state != ENDGAME) {
             try {
+                oldState = state;
                 state = client.waitUpdate();
                 System.out.println(state);
                 if (state == UPDATE || state == TURN_UPDATE) {
@@ -59,6 +61,11 @@ public class ClientUpdate extends Thread {
                     if (!gameController.myTurn) {
                         gameController.setTurn();
                     }
+                    updater.update();
+                }
+
+                if (oldState != STANDBY && state == STANDBY) {
+                    gameController.setStandby();
                     updater.update();
                 }
 

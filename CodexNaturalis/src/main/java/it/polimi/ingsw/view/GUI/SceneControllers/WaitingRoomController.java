@@ -51,8 +51,8 @@ public class WaitingRoomController implements Initializable {
      * Initializes the Waiting Room scene.
      * Fetches the list of players from the server and displays them.
      *
-     * @param location The location used to resolve relative paths for the root object,
-     *                 or null if the location is not known.
+     * @param location  The location used to resolve relative paths for the root object,
+     *                  or null if the location is not known.
      * @param resources The resources used to localize the root object,
      *                  or null if the root object was not localized.
      */
@@ -157,7 +157,7 @@ public class WaitingRoomController implements Initializable {
                         stage = (Stage) root.getScene().getWindow();
                         stage.getScene().setRoot(loader.load());
                         break;
-                    case MAIN, ENDGAME:
+                    case MAIN, ENDGAME, STANDBY:
                         fetchData();
                         loader = new FXMLLoader(getClass().getResource("/GUI/fxml/GameScene.fxml"));
                         GameController gameController = new GameController();

@@ -93,6 +93,9 @@ public class GameThread extends Thread {
                 case ENDGAME:
                     endGame();
                     break;
+                case STANDBY:
+                    standby();
+                    break;
             }
         }
         gameStop();
@@ -163,7 +166,7 @@ public class GameThread extends Thread {
                     break;
                 }
 
-                if(msg == null) {
+                if (msg == null) {
                     continue;
                 }
 
@@ -201,6 +204,32 @@ public class GameThread extends Thread {
      * It calls the playerTurn method for each player.
      */
     public void mainGame() {
+        int onlinePlayers = 0;
+        Player onlinePlayer = null;
+        for (Player player : controller.getGame().getPlayers()) {
+            if (!Server.isOffline(player.getUsername())) {
+                onlinePlayers++;
+            }
+        }
+
+        if (onlinePlayers == 1) {
+
+            for (Player player : controller.getGame().getPlayers()) {
+                if (!Server.isOffline(player.getUsername())) {
+                    onlinePlayer = player;
+                }
+            }
+
+            if (onlinePlayer == null) {
+                return;
+            }
+
+            turnMap.put(onlinePlayer.getUsername(), WaitState.STANDBY);
+            gameState = GameState.STANDBY;
+            controller.getGame().setGameState(GameState.STANDBY);
+            return;
+        }
+
         for (Player player : controller.getGame().getPlayers()) {
             this.currentPlayer = player.getUsername();
             turnMap.put(player.getUsername(), WaitState.TURN_UPDATE);
@@ -210,6 +239,61 @@ public class GameThread extends Thread {
             }
             turnMap.put(player.getUsername(), WaitState.WAIT);
         }
+    }
+
+    public void standby() {
+        int onlinePlayers = 1;
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(1000 * 60);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            int online = 0;
+            for (Player player : controller.getGame().getPlayers()) {
+                if (!Server.isOffline(player.getUsername())) {
+                    online++;
+                }
+            }
+            if (online != 1) {
+                return;
+            }
+            gameState = GameState.ENDGAME;
+            controller.getGame().setGameState(GameState.ENDGAME);
+            for (Player player : controller.getGame().getPlayers()) {
+                turnMap.put(player.getUsername(), WaitState.ENDGAME);
+            }
+        }).start();
+
+        while (onlinePlayers == 1) {
+            onlinePlayers = 0;
+            for (Player player : controller.getGame().getPlayers()) {
+                if (!Server.isOffline(player.getUsername())) {
+                    onlinePlayers++;
+                }
+            }
+
+            if (onlinePlayers != 1) {
+                continue;
+            }
+
+            ThreadMessage msg = getMessage();
+
+            if (msg == null) {
+                continue;
+            }
+
+            if (GameState.standby.contains(msg.type())) {
+                respond(msg);
+            } else {
+                messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), ("Invalid message for " + "STANDBY:%s").formatted(msg.type())));
+            }
+        }
+
+        gameState = GameState.MAIN;
+        controller.getGame().setGameState(GameState.MAIN);
     }
 
     /**
@@ -285,11 +369,16 @@ public class GameThread extends Thread {
      * It calculates the final score of each player and sends it to the clients.
      */
     public void endGame() {
-        for (String currentPlayer : controller.getGame().getPlayers().stream().map(Player::getUsername).toList()) {
-            this.currentPlayer = currentPlayer;
-            turnMap.put(currentPlayer, WaitState.TURN_UPDATE);
-            playerTurn(currentPlayer);
-            turnMap.put(currentPlayer, WaitState.WAIT);
+
+        if (controller.getGame().getPlayers().stream().filter(p -> !Server.isOffline(p.getUsername())).toList().size() != 1) {
+
+            for (String currentPlayer : controller.getGame().getPlayers().stream().map(Player::getUsername).toList()) {
+                this.currentPlayer = currentPlayer;
+                turnMap.put(currentPlayer, WaitState.TURN_UPDATE);
+                playerTurn(currentPlayer);
+                turnMap.put(currentPlayer, WaitState.WAIT);
+            }
+
         }
 
         for (Player player : controller.getGame().getPlayers()) {

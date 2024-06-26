@@ -70,6 +70,12 @@ public class ClientUpdateThread extends Thread {
                     }
                 }
 
+                if (oldState != STANDBY && state == STANDBY) {
+                    compositor.setTopBar("No other players are connected, you will win in 1 minute!");
+                    updater.update();
+                    compositor.switchView(View.BOARD);
+                }
+
                 sleep(500);
 
             } catch (IOException | InterruptedException e) {

@@ -63,7 +63,7 @@ public class TuiController {
         switch (client.getGameState()) {
             case SETUP:
                 setup();
-            case MAIN, ENDGAME:
+            case MAIN, ENDGAME, STANDBY:
                 mainGame();
             case STOP:
                 stop();
