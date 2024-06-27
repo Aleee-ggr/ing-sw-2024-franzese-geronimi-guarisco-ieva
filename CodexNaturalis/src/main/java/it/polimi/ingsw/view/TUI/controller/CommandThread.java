@@ -280,7 +280,6 @@ public class CommandThread extends Thread {
         } catch (IOException | NumberFormatException |
 
                  InterruptedException e) {
-            e.printStackTrace();
             System.exit(1);
         }
     }
@@ -324,7 +323,6 @@ public class CommandThread extends Thread {
         try {
             in.readLine();
         } catch (IOException e) {
-            e.printStackTrace();
             System.exit(1);
         }
     }
@@ -339,7 +337,6 @@ public class CommandThread extends Thread {
         try {
             in.readLine();
         } catch (IOException e) {
-            e.printStackTrace();
             System.exit(1);
         }
     }
@@ -360,7 +357,6 @@ public class CommandThread extends Thread {
         try {
             client.postChat(msg, receiver);
         } catch (IOException e) {
-            e.printStackTrace();
             System.exit(1);
         }
     }
@@ -377,7 +373,6 @@ public class CommandThread extends Thread {
             Fetch.fetchData(client);
             client.fetchChat();
         } catch (IOException e) {
-            e.printStackTrace();
             System.exit(1);
         }
     }

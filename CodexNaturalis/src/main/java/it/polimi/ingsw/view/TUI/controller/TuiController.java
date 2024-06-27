@@ -148,7 +148,6 @@ public class TuiController {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
             exit(1);
         }
     }

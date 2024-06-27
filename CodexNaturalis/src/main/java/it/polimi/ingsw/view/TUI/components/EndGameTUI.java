@@ -7,13 +7,27 @@ import java.util.Map;
 
 import static it.polimi.ingsw.view.TUI.components.printables.Alphabet.alphabet;
 
+/**
+ * Represents a component for displaying the end game scoreboard in the TUI.
+ * Implements the {@link Component} interface.
+ */
 public class EndGameTUI {
     private final List<Pair<String, Integer>> scoreboard;
 
+    /**
+     * Constructs an EndGameTUI component with the given scoreboard.
+     *
+     * @param scoreboard The scoreboard to display.
+     */
     public EndGameTUI(Map<String, Integer> scoreboard) {
         this.scoreboard = scoreboard.entrySet().stream().sorted((e1, e2) -> e2.getValue() - e1.getValue()).map(e -> Pair.of(e.getKey(), e.getValue())).toList();
     }
 
+    /**
+     * Converts the scoreboard into a string for display in the TUI.
+     *
+     * @return A string representation of the scoreboard.
+     */
     @Override
     public String toString() {
         StringBuilder out = new StringBuilder();

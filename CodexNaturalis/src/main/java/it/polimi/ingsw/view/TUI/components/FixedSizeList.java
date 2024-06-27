@@ -69,6 +69,11 @@ public class FixedSizeList<T> implements Iterable<T> {
         list.clear();
     }
 
+    /**
+     * Returns an iterator over the elements in the list.
+     *
+     * @return An iterator over the elements in the list.
+     */
     @Override
     public Iterator<T> iterator() {
         return list.iterator();

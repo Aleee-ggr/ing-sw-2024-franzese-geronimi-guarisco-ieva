@@ -92,19 +92,17 @@ public class HandView implements Component {
                 out.append(" ".repeat(panelWidth))
                         .append("\n");
             }
-        }
-
-        else {
+        } else {
             OpponentData data = (OpponentData) client.getOpponentData().get(currentPlayer);
             List<Resource> cardsToPrint = data.getHandColor();
-            for (int i = 0; i<cardsToPrint.size(); i++) {
+            for (int i = 0; i < cardsToPrint.size(); i++) {
                 out.append(cardNum)
                         .append(".");
                 out.append(" ".repeat(panelWidth - (Integer.toString(cardNum).length()) - 1));
                 out.append("\n");
                 String[] cardBack;
 
-                if(data.getHandIsGold().get(i)){
+                if (data.getHandIsGold().get(i)) {
                     cardBack = CardBack.resourcesGold.get(cardsToPrint.get(i)).split("\n");
                 } else {
                     cardBack = CardBack.resources.get(cardsToPrint.get(i)).split("\n");
