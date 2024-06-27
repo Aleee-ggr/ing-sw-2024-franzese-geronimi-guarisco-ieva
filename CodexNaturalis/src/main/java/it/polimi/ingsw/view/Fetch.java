@@ -15,29 +15,9 @@ public abstract class Fetch {
             client.fetchPersonalObjective();
             client.fetchCommonObjectives();
             client.fetchClientHand();
+            client.fetchValidPlacements();
             client.fetchPlayersBoards();
             client.fetchPlayersPlacingOrder();
-            client.fetchValidPlacements();
-            client.fetchPlayersResources();
-            client.fetchScoreMap();
-            client.fetchVisibleCardsAndDecks();
-            client.fetchOpponentsHandColor();
-            client.fetchOpponentsHandType();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            exit(1);
-        }
-    }
-
-    public static void fetchAllDataGUI(ClientInterface client) {
-        try {
-            client.fetchGameState();
-            client.fetchPersonalObjective();
-            client.fetchCommonObjectives();
-            client.fetchClientHand();
-            client.fetchPlayersBoards();
-            client.fetchPlayersPlacingOrder();
-            client.fetchValidPlacements();
             client.fetchPlayersResources();
             client.fetchScoreMap();
             client.fetchVisibleCardsAndDecks();
