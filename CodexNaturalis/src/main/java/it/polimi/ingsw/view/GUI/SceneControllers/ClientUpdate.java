@@ -2,8 +2,8 @@ package it.polimi.ingsw.view.GUI.SceneControllers;
 
 import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.network.ClientInterface;
+import it.polimi.ingsw.view.Fetch;
 import it.polimi.ingsw.view.TUI.controller.SharedUpdate;
-import it.polimi.ingsw.view.TUI.controller.TuiController;
 
 import java.io.IOException;
 
@@ -84,7 +84,7 @@ public class ClientUpdate extends Thread {
      */
     private void fetchData() {
         try {
-            TuiController.fetchData(client);
+            Fetch.fetchData(client);
             client.fetchChat();
         } catch (IOException e) {
             System.out.println("Impossible to fetch data from server!");

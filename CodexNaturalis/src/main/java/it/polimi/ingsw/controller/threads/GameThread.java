@@ -294,6 +294,7 @@ public class GameThread extends Thread {
 
         gameState = GameState.MAIN;
         controller.getGame().setGameState(GameState.MAIN);
+        sendUpdate();
     }
 
     /**
