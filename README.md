@@ -1,6 +1,8 @@
 # Prova Finale Ingegneria del Software - AA 2023-2024  
 ### Politecnico di Milano, Group 11
 
+![alt text](CodexNaturalis/src/main/resources/images/codex_naturalis.jpeg)
+
 ## Team Members
 
 - [Franzese Samuele](https://github.com/SamueleFranzese02)
@@ -8,22 +10,64 @@
 - [Guarisco Alessio](https://github.com/Aleee-ggr)
 - [Ieva Daniele](https://github.com/daniele-ieva)
 
+## Documentation
 
+### UML
+
+- [Initial UML](deliverables/initial/UML.png)
+- [Final UML](deliverables/final/UML.png)
+
+### Sequence diagrams
+
+- [Draw a card](deliverables/final/draw_card.png)
+- [Place a card](deliverables/final/place_card.png)
+- [Player login](deliverables/final/player_login.png)
+
+### JavaDoc
+
+The docs are available here: [JavaDoc report]()
+
+### Testing
+
+| Package    | Classes      | Methods       | Lines          |
+|------------|--------------|---------------|----------------|
+| Model      | 100% (24/24) | 85% (143/167) | 83% (377/452)  |
+| Controller | 100% (8/8)   | 86% (100/115) | 68% (395/573)  |
+| Network    | 91% (66/72)  | 90% (303/334) | 83% (998/1189) |
+
+For further information about testing coverage, look [here]().
+
+
+### Tools
+
+| Library/Plugin | Description                                                     |
+|----------------|-----------------------------------------------------------------|
+| __Maven__      | Build automation tool used primarily for Java projects.         |
+| __JUnit__      | Unit testing framework for the Java programming language.       |
+| __JavaFX__     | Software platform for creating and delivering GUI applications. |
 
 ## Functionalities 
 
-Game Specific:  
+### Game Specific:  
 - Full Rule-set
 
-Game Agnostic:  
+### Game Agnostic:  
 - Server and Client implemented in JavaRMI and Socket
 - TUI without external libraries
 - GUI in JavaFX
   
-Advanced Features: 
-  - simultaneous games
-  - disconnection resiliency
-  - game chat
+### Advanced Features:
+
+| Function                 | Implemented         |
+|--------------------------|---------------------|
+| Multiple games           | :white_check_mark:  |
+| Disconnection resilience | :white_check_mark:  |
+| Chat                     | :white_check_mark:  |
+| Persistence              | :x:                 |
+
+Legend:
+- :white_check_mark: : implemented;
+- :x: : not implemented;
 
 ## Compile and Execute
 
