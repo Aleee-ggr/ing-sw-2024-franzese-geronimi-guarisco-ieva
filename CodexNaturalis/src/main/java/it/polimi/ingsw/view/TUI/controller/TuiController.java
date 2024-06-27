@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.TUI.controller;
 
 import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.network.ClientInterface;
+import it.polimi.ingsw.view.Fetch;
 import it.polimi.ingsw.view.TUI.Compositor;
 import it.polimi.ingsw.view.TUI.components.ColorView;
 import it.polimi.ingsw.view.TUI.components.EndGameTUI;
@@ -19,6 +20,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static java.lang.System.exit;
 import static java.lang.Thread.sleep;
 
 /**
@@ -41,25 +43,6 @@ public class TuiController {
         this.client = client;
     }
 
-    public static void fetchData(ClientInterface client) {
-        try {
-            client.fetchClientHand();
-            client.fetchCommonObjectives();
-            client.fetchValidPlacements();
-            client.fetchPlayersBoards();
-            client.fetchPlayersPlacingOrder();
-            client.fetchPlayersResources();
-            client.fetchScoreMap();
-            client.fetchGameState();
-            client.fetchVisibleCardsAndDecks();
-            client.fetchOpponentsHandColor();
-            client.fetchOpponentsHandType();
-            client.fetchPlayersColors();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            System.exit(1);
-        }
-    }
 
     /**
      * Starts the TUI controller, managing the flow from login to the main game
@@ -73,18 +56,18 @@ public class TuiController {
 
         try {
             client.fetchGameState();
-            client.fetchPlayers();
-            client.fetchPersonalObjective();
-            client.fetchPlayersColors();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
+            exit(1);
         }
 
         switch (client.getGameState()) {
             case SETUP:
                 setup();
+
             case MAIN, ENDGAME, STANDBY:
                 mainGame();
+
             case STOP:
                 stop();
         }
@@ -130,7 +113,7 @@ public class TuiController {
                         client.fetchAvailableGames();
                     } catch (IOException e) {
                         System.err.println(e.getMessage());
-                        System.exit(1);
+                        exit(1);
                     }
                     List<UUID> games = client.getAvailableGames().keySet().stream().toList();
                     gameCount.set(games.size());
@@ -161,12 +144,12 @@ public class TuiController {
                 UUID choice = games.get(selectedGame - 1);
                 if (!client.joinGame(choice)) {
                     out.println("Invalid Join! \n" + "Are you sure you don't already have a game open?\n" + "Are you sure you are not trying to join a different game than the one you are already in?");
-                    System.exit(0);
+                    exit(0);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
-            System.exit(1);
+            exit(1);
         }
     }
 
@@ -184,7 +167,7 @@ public class TuiController {
      * cards, colors, and objectives.
      */
     private void setup() {
-        fetchSetup();
+        Fetch.fetchSetup(client);
         boolean done = false;
         PlayerData playerData = client.getPlayerData();
         int sel = 1;
@@ -201,7 +184,7 @@ public class TuiController {
             client.placeStartingCard(sel == 1);
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            System.exit(1);
+            exit(1);
         }
 
         done = false;
@@ -218,7 +201,7 @@ public class TuiController {
             client.choosePlayerColor(playerData.getAvailableColors().get(sel - 1));
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            System.exit(1);
+            exit(1);
         }
 
         done = false;
@@ -235,7 +218,7 @@ public class TuiController {
             client.choosePersonalObjective(playerData.getStartingObjectives().get(sel - 1).getId());
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            System.exit(1);
+            exit(1);
         }
     }
 
@@ -244,7 +227,7 @@ public class TuiController {
      */
     private void mainGame() {
         clear();
-        fetchData();
+        Fetch.fetchAllData(client);
         compositor = new Compositor(client);
         AtomicBoolean running = new AtomicBoolean(true);
         SharedUpdate updater = new SharedUpdate();
@@ -259,7 +242,7 @@ public class TuiController {
             client.fetchGameState();
         } catch (IOException | InterruptedException e) {
             System.out.println(e.getMessage());
-            System.exit(1);
+            exit(1);
         }
     }
 
@@ -273,7 +256,7 @@ public class TuiController {
             System.out.println(new EndGameTUI(client.getScoreMap()));
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            System.exit(1);
+            exit(1);
         }
 
     }
@@ -295,7 +278,7 @@ public class TuiController {
         } catch (NumberFormatException ignored) {
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            System.exit(1);
+            exit(1);
         }
         return -1;
     }
@@ -310,7 +293,7 @@ public class TuiController {
         } catch (NumberFormatException ignored) {
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            System.exit(1);
+            exit(1);
         }
         return -1;
     }
@@ -339,32 +322,8 @@ public class TuiController {
             client.newGame(selection, gameName);
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            System.exit(1);
+            exit(1);
         }
-    }
-
-    /**
-     * Fetches the initial setup data required for the game.
-     */
-    private void fetchSetup() {
-        try {
-            client.fetchPlayers();
-            client.fetchStartingObjectives();
-            client.fetchStartingCard();
-            client.fetchAvailableColors();
-            client.fetchClientHand();
-            client.fetchCommonObjectives();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            System.exit(1);
-        }
-    }
-
-    /**
-     * Fetches the data required for the main game loop.
-     */
-    private void fetchData() {
-        fetchData(client);
     }
 
     /**
@@ -375,7 +334,7 @@ public class TuiController {
             client.waitUpdate();
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            System.exit(1);
+            exit(1);
         }
     }
 

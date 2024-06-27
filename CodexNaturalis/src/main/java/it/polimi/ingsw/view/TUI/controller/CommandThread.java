@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.TUI.controller;
 
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.network.ClientInterface;
+import it.polimi.ingsw.view.Fetch;
 import it.polimi.ingsw.view.TUI.Compositor;
 
 import java.io.BufferedReader;
@@ -123,7 +124,7 @@ public class CommandThread extends Thread {
                         if (!placed) {
                             placed = place(id, position);
                             if (placed) {
-                                fetchData();
+                                Fetch.fetchPlace(client);
                                 updater.update();
                                 sleep(1000);
                                 compositor.setTopBar("Your Turn: Draw a Card!");
@@ -171,6 +172,7 @@ public class CommandThread extends Thread {
 
                 case "switch":
                     if (cmd.length == 2 && client.getPlayers().contains(cmd[1])) {
+                        Fetch.fetchSwitch(client);
                         compositor.setViewPlayer(cmd[1]);
                     } else {
                         defaultCommand();
@@ -192,6 +194,7 @@ public class CommandThread extends Thread {
                                     break;
                                 } else {
                                     client.drawCard(position);
+                                    Fetch.fetchDraw(client);
                                 }
                             } else {
                                 int availableCount = 0;
@@ -371,7 +374,7 @@ public class CommandThread extends Thread {
      */
     private void fetchData() {
         try {
-            TuiController.fetchData(client);
+            Fetch.fetchData(client);
             client.fetchChat();
         } catch (IOException e) {
             e.printStackTrace();

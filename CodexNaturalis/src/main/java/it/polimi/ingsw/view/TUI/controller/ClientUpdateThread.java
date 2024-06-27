@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.TUI.controller;
 import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.controller.threads.GameThread;
 import it.polimi.ingsw.network.ClientInterface;
+import it.polimi.ingsw.view.Fetch;
 import it.polimi.ingsw.view.TUI.Compositor;
 
 import java.io.IOException;
@@ -45,7 +46,6 @@ public class ClientUpdateThread extends Thread {
      *
      * @see SharedUpdate
      * @see WaitState
-     * @see ClientUpdateThread#fetchData()
      * @see GameThread#sendUpdate()
      */
     @Override
@@ -57,23 +57,30 @@ public class ClientUpdateThread extends Thread {
                 oldState = state;
                 state = client.waitUpdate();
                 if (state == UPDATE || state == TURN_UPDATE) {
-                    fetchData();
+                    Fetch.fetchData(client);
                     updater.update();
                 }
-                if (state == TURN || state == TURN_UPDATE) {
-                    fetchData();
+                if ((state == TURN || state == TURN_UPDATE) && (oldState != TURN_UPDATE && oldState != TURN)) {
+                    Fetch.fetchStartTurn(client);
                     compositor.setTopBar("Your Turn!");
                     updater.update();
-
-                    if (oldState == UPDATE || oldState == WAIT) {
-                        compositor.switchView(View.BOARD);
-                    }
+                    compositor.switchView(View.BOARD);
                 }
 
                 if (oldState != STANDBY && state == STANDBY) {
                     compositor.setTopBar("No other players are connected, you will win in 1 minute!");
                     updater.update();
                     compositor.switchView(View.BOARD);
+                }
+
+                if (oldState == STANDBY && state != STANDBY) {
+                    if (state == TURN || state == TURN_UPDATE) {
+                        compositor.setTopBar("Your Turn!");
+                        updater.update();
+                    } else {
+                        compositor.setTopBar("Waiting for your turn...");
+                        updater.update();
+                    }
                 }
 
                 sleep(500);
@@ -83,16 +90,5 @@ public class ClientUpdateThread extends Thread {
             }
         }
         running.set(false);
-    }
-
-    /**
-     * Fetch all the required data from the server in order to render the tui
-     * interface,
-     *
-     * @see ClientInterface
-     * @see Compositor
-     */
-    private void fetchData() {
-        TuiController.fetchData(client);
     }
 }

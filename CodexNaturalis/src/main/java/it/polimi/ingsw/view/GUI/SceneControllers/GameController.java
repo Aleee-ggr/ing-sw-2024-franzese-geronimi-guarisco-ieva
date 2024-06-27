@@ -837,6 +837,9 @@ public class GameController implements Initializable {
         myTurn = true;
     }
 
+    /**
+     * Sets the turn message to indicate that the player is entering standby.
+     */
     protected void setStandby() {
         turnMessage.setText("No other players are connected\nYou will win in 1 minute!");
     }
