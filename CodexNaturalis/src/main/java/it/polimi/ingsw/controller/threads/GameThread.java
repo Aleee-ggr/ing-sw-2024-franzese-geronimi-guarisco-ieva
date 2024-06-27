@@ -394,10 +394,13 @@ public class GameThread extends Thread {
     }
 
     /**
-     * Initiates the process to stop the game, updates player states, and processes messages until timeout.
+     * Initiates the process to stop the game, updates player states, and processes
+     * messages until timeout.
      * <p>
-     * This method sets the game state to end for all players, starts a new thread to process incoming messages,
-     * and waits for a specified duration before stopping message processing. During this time, it responds to
+     * This method sets the game state to end for all players, starts a new thread
+     * to process incoming messages,
+     * and waits for a specified duration before stopping message processing. During
+     * this time, it responds to
      * messages of type "get" and logs errors for other message types.
      */
     public void gameStop() {
@@ -436,7 +439,8 @@ public class GameThread extends Thread {
     /**
      * Handles disconnection scenarios for the current player in the game.
      * <p>
-     * This method adjusts game state and player actions based on the current game state and the parameters
+     * This method adjusts game state and player actions based on the current game
+     * state and the parameters
      * indicating which actions were completed by the player before disconnection.
      *
      * @param firstParam  Indicates if the player has chosen the personal objective.
@@ -523,6 +527,9 @@ public class GameThread extends Thread {
                 break;
             case "join":
                 controller.join(msg.player(), msg.messageUUID());
+                if (gameState != GameState.LOBBY && gameState != GameState.SETUP) {
+                    turnMap.put(msg.player(), WaitState.REJOIN);
+                }
                 break;
             case "place":
                 return controller.placeCard(msg.player(), new Coordinates(Integer.valueOf(msg.args()[0]), Integer.valueOf(msg.args()[1])), Integer.valueOf(msg.args()[2]), msg.messageUUID());
@@ -611,9 +618,11 @@ public class GameThread extends Thread {
     }
 
     /**
-     * Sends game state updates to players based on the current player and their respective states.
+     * Sends game state updates to players based on the current player and their
+     * respective states.
      * <p>
-     * This method updates the turnMap for each player in the game, indicating whether each player
+     * This method updates the turnMap for each player in the game, indicating
+     * whether each player
      * needs a turn update or a general game state update.
      * </p>
      * <p>
