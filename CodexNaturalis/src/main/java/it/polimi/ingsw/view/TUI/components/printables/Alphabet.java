@@ -302,6 +302,15 @@ public abstract class Alphabet {
                 ██
                 ░░
                 """);
+
+        put(':', """
+                ██
+                ░░
+                ░░
+                ░░
+                ██
+                ░░
+                """);
     }};
 
     public static String getLetter(char c) {

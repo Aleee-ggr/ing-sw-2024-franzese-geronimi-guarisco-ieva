@@ -20,15 +20,26 @@ public class EndGameTUI {
 
         byte position = 1;
         for (Pair<String, Integer> p : scoreboard) {
+            String strScore = String.valueOf(p.second());
             for (int i = 0; i < Alphabet.letterHeight; i++) {
                 // Print placing position
                 out.append(alphabet.get((char) ('0' + position)).split("\n")[i]);
                 out.append(Alphabet.space());
                 out.append(alphabet.get('.').split("\n")[i]);
                 out.append(Alphabet.space());
-
+                out.append(Alphabet.space());
                 // Print username
                 for (char c : p.first().toCharArray()) {
+                    out.append(Alphabet.getLetter(c).split("\n")[i]);
+                    out.append(Alphabet.space());
+                }
+
+                // Print semicolon
+                out.append(Alphabet.space());
+                out.append(Alphabet.getLetter(':').split("\n")[i]);
+                out.append(Alphabet.space());
+                out.append(Alphabet.space());
+                for (char c : strScore.toCharArray()) {
                     out.append(Alphabet.getLetter(c).split("\n")[i]);
                     out.append(Alphabet.space());
                 }
