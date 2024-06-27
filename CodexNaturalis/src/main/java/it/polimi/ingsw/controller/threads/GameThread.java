@@ -19,13 +19,13 @@ import static java.lang.Math.abs;
  * GameThread Class, used to manage the thread-side logic for the controller.
  * Instantiate a new thread for each game to work simultaneously with the same
  * server.
+ * It manages the turns and the game flow.
  */
 public class GameThread extends Thread {
     private final BlockingQueue<ThreadMessage> messageQueue;
     private final Integer playerCount;
     private final Controller controller;
     private final Map<String, WaitState> turnMap;
-    private final boolean running = true;
     private String currentPlayer;
     private volatile GameState gameState = GameState.LOBBY;
 
@@ -100,12 +100,16 @@ public class GameThread extends Thread {
 
     /**
      * GameLobby method, manages the game lobby state.
-     * It waits for the game to be full and then changes the game state to SETUP.
+     * It waits for the game to be full and then changes the gameState to SETUP.
+     * It creates a new thread to manage the lobby and a timer thread to delete the lobby if it is empty for more than 10 minutes.
      */
     public void gameLobby() {
         Thread lobby = new Thread(() -> {
             while (gameState == GameState.LOBBY) {
                 ThreadMessage msg = getMessage();
+                if (msg == null) {
+                    continue;
+                }
                 if (GameState.lobby.contains(msg.type())) {
                     respond(msg);
                 } else {
@@ -141,7 +145,7 @@ public class GameThread extends Thread {
 
     /**
      * Setup method, manages the game setup state.
-     * It waits for all players to choose their personal objectives and starting
+     * It waits for all players to choose their personal objectives, colors and starting
      * cards.
      */
     public void setup() {
@@ -180,12 +184,10 @@ public class GameThread extends Thread {
                     messageQueue.add(ThreadMessage.genericError(msg.player(), msg.messageUUID(), "Invalid message for context: %s".formatted(msg.type())));
                 }
 
-                if (msg.type().equals("choosePersonalObjective")) {
-                    objChosen = true;
-                } else if (msg.type().equals("placeStartingCard")) {
-                    startChosen = true;
-                } else if (msg.type().equals("choosePlayerColor")) {
-                    colorChosen = true;
+                switch (msg.type()) {
+                    case "choosePersonalObjective" -> objChosen = true;
+                    case "placeStartingCard" -> startChosen = true;
+                    case "choosePlayerColor" -> colorChosen = true;
                 }
             }
             turnMap.put(currentPlayer, WaitState.WAIT);
@@ -238,12 +240,17 @@ public class GameThread extends Thread {
         }
     }
 
+    /**
+     * Standby method, manages the standby state.
+     * It waits for a minute to check if there is only one player online.
+     * If there is only one player online, it changes the gameState to ENDGAME.
+     */
     public void standby() {
         int onlinePlayers = 1;
 
         new Thread(() -> {
             try {
-                Thread.sleep(1000 * 60);
+                Thread.sleep(1000 * 15);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -364,7 +371,8 @@ public class GameThread extends Thread {
 
     /**
      * EndGame method, manages the end game state.
-     * It calculates the final score of each player and sends it to the clients.
+     * It waits for all players to finish their turns, then
+     * calculates the final score of each player and sends it to the clients.
      */
     public void endGame() {
 
@@ -436,8 +444,10 @@ public class GameThread extends Thread {
      * This method adjusts game state and player actions based on the current game state and the parameters
      * indicating which actions were completed by the player before disconnection.
      *
-     * @param firstParam  Indicates if the player has chosen the personal objective.
+     * @param firstParam  Indicates if the player has chosen the personal objective in setup,
+     *                    Indicates if the player has placed the card in the main game.
      * @param secondParam Indicates if the player has drawn the starting card.
+     *                    Indicates if the player has drawn a card in the main game.
      * @param thirdParam  Indicates if the player has chosen a player color.
      */
     private void disconnectionHandler(Boolean firstParam, Boolean secondParam, Boolean thirdParam) {
@@ -507,7 +517,7 @@ public class GameThread extends Thread {
     }
 
     /**
-     * Respond method, processes the message and calls the appropriate method in the
+     * Respond method, processes the message from the server and calls the appropriate method in the
      * controller.
      *
      * @param msg the message to be processed.

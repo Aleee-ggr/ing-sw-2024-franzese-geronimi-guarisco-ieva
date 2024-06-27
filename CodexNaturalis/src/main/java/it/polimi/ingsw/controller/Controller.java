@@ -389,7 +389,6 @@ public class Controller {
         }
     }
 
-
     /**
      * Controller Method to get the back side resource of decks.
      *
@@ -479,7 +478,7 @@ public class Controller {
     }
 
     /**
-     * Retrieves and sends the if the cards in the hand are gold or standard of a specified player to the requesting player.
+     * Retrieves and sends if the cards in the hand are gold or standard of a specified player to the requesting player.
      *
      * @param username             the username of the player requesting the hand types
      * @param usernameRequiredData the username of the player whose hand types are being requested
