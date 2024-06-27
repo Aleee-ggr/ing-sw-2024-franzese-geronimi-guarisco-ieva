@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.client.OpponentData;
+import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.network.Client;
@@ -564,8 +565,11 @@ public class SocketClient extends Client implements ClientInterface {
                 if (playerColor == null) {
                     return false;
                 }
-
-                ((OpponentData) playerData.get(player)).setPlayerColor(playerColor);
+                if (player.equals(username)) {
+                    ((PlayerData) playerData.get(player)).setPlayerColor(playerColor);
+                } else {
+                    ((OpponentData) playerData.get(player)).setPlayerColor(playerColor);
+                }
 
                 return true;
             }
