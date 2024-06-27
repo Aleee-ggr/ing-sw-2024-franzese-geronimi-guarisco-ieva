@@ -6,14 +6,14 @@ import java.util.Deque;
  * This class represents a response message containing the placing order of players.
  * It extends the GenericResponseMessage class.
  */
-public class GetPlacingOrderResponseMessage extends GenericResponseMessage{
+public class GetPlacingOrderResponseMessage extends GenericResponseMessage {
     private final Deque<Integer> placingOrder;
     private final String usernameRequiredData;
 
     /**
      * Constructs a new GetPlacingOrderResponseMessage with the specified placing order and username data.
      *
-     * @param placingOrder a deque representing the placing order of players.
+     * @param placingOrder         a deque representing the placing order of players.
      * @param usernameRequiredData the username of the player for whom the data is required.
      */
     public GetPlacingOrderResponseMessage(Deque<Integer> placingOrder, String usernameRequiredData) {

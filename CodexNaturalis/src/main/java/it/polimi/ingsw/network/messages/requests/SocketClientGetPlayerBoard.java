@@ -7,6 +7,8 @@ import java.util.UUID;
  * via socket network communication.
  * This class extends the GenericRequestMessage class and contains the username of the client making the request,
  * the UUID of the game, and the username of the player whose board information is being requested.
+ *
+ * @see GenericRequestMessage
  */
 public class SocketClientGetPlayerBoard extends GenericRequestMessage {
     private final UUID gameUUID;
@@ -15,8 +17,9 @@ public class SocketClientGetPlayerBoard extends GenericRequestMessage {
     /**
      * Constructs a new SocketClientGetPlayerBoard with the specified username, game UUID, and the username of the player
      * whose board information is being requested.
-     * @param username The username of the client making the request.
-     * @param gameUUID The UUID of the game from which to retrieve the player's board information.
+     *
+     * @param username             The username of the client making the request.
+     * @param gameUUID             The UUID of the game from which to retrieve the player's board information.
      * @param usernameRequiredData The username of the player whose board information is being requested.
      */
     public SocketClientGetPlayerBoard(String username, UUID gameUUID, String usernameRequiredData) {
@@ -27,6 +30,7 @@ public class SocketClientGetPlayerBoard extends GenericRequestMessage {
 
     /**
      * Gets the UUID of the game from which to retrieve the player's board information.
+     *
      * @return The UUID of the game.
      */
     public UUID getGameUUID() {
@@ -35,6 +39,7 @@ public class SocketClientGetPlayerBoard extends GenericRequestMessage {
 
     /**
      * Gets the username of the player whose board information is being requested.
+     *
      * @return The username of the player.
      */
     public String getUsernameRequiredData() {

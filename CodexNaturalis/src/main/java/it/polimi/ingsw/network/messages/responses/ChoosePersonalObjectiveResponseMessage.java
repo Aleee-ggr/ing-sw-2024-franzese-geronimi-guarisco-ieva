@@ -4,7 +4,7 @@ package it.polimi.ingsw.network.messages.responses;
  * Represents a response message indicating the result of choosing a starting objective.
  * Extends GenericResponseMessage.
  */
-public class ChoosePersonalObjectiveResponseMessage extends GenericResponseMessage{
+public class ChoosePersonalObjectiveResponseMessage extends GenericResponseMessage {
     private final boolean correct;
 
     /**

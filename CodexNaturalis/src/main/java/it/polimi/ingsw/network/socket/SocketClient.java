@@ -190,7 +190,6 @@ public class SocketClient extends Client implements ClientInterface {
         return response;
     }
 
-    //TODO: not implemented -> there is no socket message for this
     @Override
     public synchronized void postChat(String message, String receiver) throws IOException {
         output.writeObject(new SocketClientPostChatMessage(username, gameId, message, receiver));
@@ -416,7 +415,6 @@ public class SocketClient extends Client implements ClientInterface {
     @Override
     public void fetchTurnPlayer() throws IOException {
         this.turnPlayerName = "";
-        //TODO implement socket version
     }
 
     /**

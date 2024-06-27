@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Represents a response message containing the common objectives' ids.
  * Extends GenericResponseMessage.
  */
-public class GetCommonObjectivesResponseMessage extends GenericResponseMessage{
+public class GetCommonObjectivesResponseMessage extends GenericResponseMessage {
     private final ArrayList<Integer> commonObjectives;
 
     /**

@@ -5,6 +5,8 @@ import java.util.UUID;
 /**
  * Represents a message from a socket client requesting to fetch chat messages for a specific game.
  * Extends GenericRequestMessage to inherit basic message properties like the sender's username.
+ *
+ * @see GenericRequestMessage
  */
 public class SocketClientFetchChatMessage extends GenericRequestMessage {
     private final UUID gameUUID;
@@ -15,7 +17,7 @@ public class SocketClientFetchChatMessage extends GenericRequestMessage {
      * @param username The username of the client sending the message.
      * @param gameUUID The UUID of the game for which chat messages are requested.
      */
-    public SocketClientFetchChatMessage(String username, UUID gameUUID){
+    public SocketClientFetchChatMessage(String username, UUID gameUUID) {
         this.gameUUID = gameUUID;
         this.username = username;
     }

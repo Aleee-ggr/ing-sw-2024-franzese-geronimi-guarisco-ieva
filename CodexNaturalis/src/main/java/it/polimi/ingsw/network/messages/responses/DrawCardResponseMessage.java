@@ -4,7 +4,7 @@ package it.polimi.ingsw.network.messages.responses;
  * This class represents a response message indicating the result of drawing a card.
  * It extends the GenericResponseMessage class.
  */
-public class DrawCardResponseMessage extends GenericResponseMessage{
+public class DrawCardResponseMessage extends GenericResponseMessage {
     private final Integer cardID;
 
     /**

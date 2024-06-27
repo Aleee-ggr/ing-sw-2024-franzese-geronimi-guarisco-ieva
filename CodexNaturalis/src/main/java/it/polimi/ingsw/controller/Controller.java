@@ -392,8 +392,6 @@ public class Controller {
     }
 
 
-    //TODO: return an Arraylist of String of Resources, not cardIds
-
     /**
      * Controller Method to get the back side resource of decks.
      *

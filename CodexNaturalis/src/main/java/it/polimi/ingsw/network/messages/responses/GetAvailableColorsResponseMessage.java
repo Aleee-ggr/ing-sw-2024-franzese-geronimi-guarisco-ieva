@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * This class represents a response message containing a list of available colors.
  * It extends the GenericResponseMessage class.
  */
-public class GetAvailableColorsResponseMessage extends GenericResponseMessage{
+public class GetAvailableColorsResponseMessage extends GenericResponseMessage {
     private final ArrayList<Color> availableColors;
 
     /**

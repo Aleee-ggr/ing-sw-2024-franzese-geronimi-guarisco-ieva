@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Represents a response message containing the visible cards' information.
  * Extends GenericResponseMessage.
  */
-public class GetVisibleCardsResponseMessage extends GenericResponseMessage{
+public class GetVisibleCardsResponseMessage extends GenericResponseMessage {
     private final ArrayList<Integer> visibleCards;
 
     /**

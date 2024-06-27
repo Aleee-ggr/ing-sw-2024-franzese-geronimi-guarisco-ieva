@@ -7,6 +7,8 @@ import java.util.UUID;
  * via socket network communication.
  * This class extends the GenericRequestMessage class and contains the username of the client making the request
  * and the UUID of the game.
+ *
+ * @see GenericRequestMessage
  */
 public class SocketClientGetVisibleCardsMessage extends GenericRequestMessage {
     private final UUID gameUUID;
@@ -17,13 +19,14 @@ public class SocketClientGetVisibleCardsMessage extends GenericRequestMessage {
      * @param username The username of the client making the request.
      * @param gameUUID The UUID of the game from which to retrieve the visible cards.
      */
-    public SocketClientGetVisibleCardsMessage(String username, UUID gameUUID){
+    public SocketClientGetVisibleCardsMessage(String username, UUID gameUUID) {
         this.username = username;
         this.gameUUID = gameUUID;
     }
 
     /**
      * Gets the UUID of the game from which to retrieve the visible cards.
+     *
      * @return The UUID of the game.
      */
     public UUID getGameUUID() {

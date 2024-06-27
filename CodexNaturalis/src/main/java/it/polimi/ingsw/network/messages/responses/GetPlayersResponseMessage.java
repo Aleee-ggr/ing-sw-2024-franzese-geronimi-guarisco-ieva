@@ -6,11 +6,12 @@ import java.util.ArrayList;
  * Represents a response message containing a list of players in a game.
  * This message is sent in response to a request for the list of players in a game.
  */
-public class GetPlayersResponseMessage extends GenericResponseMessage{
+public class GetPlayersResponseMessage extends GenericResponseMessage {
     private final ArrayList<String> players;
 
     /**
      * Constructs a new GetPlayersResponseMessage with the specified list of players.
+     *
      * @param players the list of players in the game.
      */
     public GetPlayersResponseMessage(ArrayList<String> players) {
@@ -19,6 +20,7 @@ public class GetPlayersResponseMessage extends GenericResponseMessage{
 
     /**
      * Returns the list of players in the game.
+     *
      * @return the list of players.
      */
     public ArrayList<String> getPlayers() {

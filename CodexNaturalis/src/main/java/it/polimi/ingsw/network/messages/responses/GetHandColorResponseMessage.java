@@ -15,7 +15,7 @@ public class GetHandColorResponseMessage extends GenericResponseMessage {
     /**
      * Constructs a GetHandColorResponseMessage with the specified hand color and the username of the player.
      *
-     * @param handColor the list of resources representing the hand color
+     * @param handColor            the list of resources representing the hand color
      * @param usernameRequiredData the username of the list of resources
      */
     public GetHandColorResponseMessage(ArrayList<Resource> handColor, String usernameRequiredData) {

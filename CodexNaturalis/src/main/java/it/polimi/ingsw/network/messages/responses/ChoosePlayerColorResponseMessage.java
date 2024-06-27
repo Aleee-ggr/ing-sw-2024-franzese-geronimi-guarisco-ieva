@@ -4,7 +4,7 @@ package it.polimi.ingsw.network.messages.responses;
  * This class represents a response message indicating the result of choosing a player color.
  * It extends the GenericResponseMessage class.
  */
-public class ChoosePlayerColorResponseMessage extends GenericResponseMessage{
+public class ChoosePlayerColorResponseMessage extends GenericResponseMessage {
     private final boolean correct;
 
     /**

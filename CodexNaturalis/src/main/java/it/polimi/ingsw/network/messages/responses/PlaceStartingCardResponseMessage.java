@@ -4,7 +4,7 @@ package it.polimi.ingsw.network.messages.responses;
  * This class represents a response message indicating whether a starting card was successfully placed.
  * It extends the GenericResponseMessage class.
  */
-public class PlaceStartingCardResponseMessage extends GenericResponseMessage{
+public class PlaceStartingCardResponseMessage extends GenericResponseMessage {
     private final boolean isPlaced;
 
     /**

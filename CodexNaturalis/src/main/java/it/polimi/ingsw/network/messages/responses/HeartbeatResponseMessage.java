@@ -6,7 +6,7 @@ import java.util.UUID;
  * This class represents a response message confirming a heartbeat with a game UUID.
  * It extends the GenericResponseMessage class.
  */
-public class HeartbeatResponseMessage extends GenericResponseMessage{
+public class HeartbeatResponseMessage extends GenericResponseMessage {
     private final UUID gameUUID;
 
     /**

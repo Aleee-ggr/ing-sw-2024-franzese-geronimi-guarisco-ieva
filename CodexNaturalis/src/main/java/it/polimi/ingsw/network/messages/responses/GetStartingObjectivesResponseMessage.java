@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Represents a response message containing the starting objectives' information.
  * Extends GenericResponseMessage.
  */
-public class GetStartingObjectivesResponseMessage extends GenericResponseMessage{
+public class GetStartingObjectivesResponseMessage extends GenericResponseMessage {
     private final ArrayList<Integer> startingObjectives;
 
     /**

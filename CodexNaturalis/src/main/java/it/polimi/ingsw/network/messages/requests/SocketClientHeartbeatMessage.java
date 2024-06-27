@@ -5,6 +5,8 @@ import java.util.UUID;
 /**
  * Represents a heartbeat message sent from a socket client to indicate its presence and status.
  * Extends GenericRequestMessage to inherit basic message properties like the sender's username.
+ *
+ * @see GenericRequestMessage
  */
 public class SocketClientHeartbeatMessage extends GenericRequestMessage {
     private final String username;

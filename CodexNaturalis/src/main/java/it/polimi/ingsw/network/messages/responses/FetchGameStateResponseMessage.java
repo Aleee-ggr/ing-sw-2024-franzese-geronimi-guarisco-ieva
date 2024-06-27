@@ -6,7 +6,7 @@ import it.polimi.ingsw.controller.threads.GameState;
  * This class represents a response message containing the current game state.
  * It extends the GenericResponseMessage class.
  */
-public class FetchGameStateResponseMessage extends GenericResponseMessage{
+public class FetchGameStateResponseMessage extends GenericResponseMessage {
     private final GameState gameState;
 
     /**
@@ -14,7 +14,7 @@ public class FetchGameStateResponseMessage extends GenericResponseMessage{
      *
      * @param gameState the current game state.
      */
-    public FetchGameStateResponseMessage(GameState gameState){
+    public FetchGameStateResponseMessage(GameState gameState) {
         this.gameState = gameState;
     }
 

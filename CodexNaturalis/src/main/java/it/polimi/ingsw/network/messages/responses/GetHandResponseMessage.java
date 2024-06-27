@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Represents a response message containing the hand's information.
  * Extends GenericResponseMessage.
  */
-public class GetHandResponseMessage extends GenericResponseMessage{
+public class GetHandResponseMessage extends GenericResponseMessage {
     private final ArrayList<Integer> handIds;
 
     /**

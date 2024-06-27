@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Represents a response message containing the back side information of the decks.
  * Extends GenericResponseMessage.
  */
-public class GetBackSideDecksResponseMessage extends GenericResponseMessage{
+public class GetBackSideDecksResponseMessage extends GenericResponseMessage {
     private final ArrayList<Integer> backSideDecks;
 
     /**

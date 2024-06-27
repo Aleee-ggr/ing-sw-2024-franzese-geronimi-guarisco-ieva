@@ -5,16 +5,18 @@ import java.util.UUID;
 /**
  * Represents a message from a socket client requesting the player color information for a game.
  * Extends GenericRequestMessage to inherit basic message properties like the sender's username.
+ *
+ * @see GenericRequestMessage
  */
-public class SocketClientGetPlayerColorMessage extends GenericRequestMessage{
+public class SocketClientGetPlayerColorMessage extends GenericRequestMessage {
     private final UUID gameUUID;
     private final String usernameRequiredData;
 
     /**
      * Constructs a SocketClientGetPlayerColorMessage object.
      *
-     * @param username The username of the client sending the message.
-     * @param gameUUID The UUID of the game for which the player color is requested.
+     * @param username             The username of the client sending the message.
+     * @param gameUUID             The UUID of the game for which the player color is requested.
      * @param usernameRequiredData The username for which player color data is requested.
      */
     public SocketClientGetPlayerColorMessage(String username, UUID gameUUID, String usernameRequiredData) {

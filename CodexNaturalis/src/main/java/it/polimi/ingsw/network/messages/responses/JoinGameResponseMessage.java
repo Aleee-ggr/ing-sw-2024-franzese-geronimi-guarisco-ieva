@@ -13,7 +13,8 @@ public class JoinGameResponseMessage extends GenericResponseMessage {
 
     /**
      * Constructs a new JoinGameResponseMessage instance with the specified properties.
-     * @param gameUUID The UUID of the game that the player is attempting to join.
+     *
+     * @param gameUUID   The UUID of the game that the player is attempting to join.
      * @param joinedGame Indicates whether the join attempt was successful.
      */
     public JoinGameResponseMessage(UUID gameUUID, boolean joinedGame) {
@@ -23,6 +24,7 @@ public class JoinGameResponseMessage extends GenericResponseMessage {
 
     /**
      * Returns the UUID of the game that the player attempted to join.
+     *
      * @return The UUID of the game.
      */
     public UUID getGameUUID() {
@@ -31,6 +33,7 @@ public class JoinGameResponseMessage extends GenericResponseMessage {
 
     /**
      * Returns a boolean indicating whether the player successfully joined the game.
+     *
      * @return true if the player successfully joined the game, otherwise false.
      */
     public boolean isJoinedGame() {

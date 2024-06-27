@@ -5,8 +5,10 @@ import java.util.UUID;
 /**
  * Represents a message from a socket client requesting to fetch the personal objective for a specific game.
  * Extends GenericRequestMessage to inherit basic message properties like the sender's username.
+ *
+ * @see GenericRequestMessage
  */
-public class SocketClientFetchPersonalObjectiveMessage extends GenericRequestMessage{
+public class SocketClientFetchPersonalObjectiveMessage extends GenericRequestMessage {
     private final UUID gameUUID;
 
     /**
@@ -22,6 +24,7 @@ public class SocketClientFetchPersonalObjectiveMessage extends GenericRequestMes
 
     /**
      * Gets the UUID of the game for which to retrieve the common objectives.
+     *
      * @return The UUID of the game.
      */
     public UUID getGameUUID() {

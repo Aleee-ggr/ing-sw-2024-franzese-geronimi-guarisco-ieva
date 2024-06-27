@@ -13,7 +13,7 @@ public class GetHandTypeResponseMessage extends GenericResponseMessage {
     /**
      * Constructs a new GetHandTypeResponseMessage with the specified hand type and username data.
      *
-     * @param isGold a list indicating whether each card in the hand is gold.
+     * @param isGold               a list indicating whether each card in the hand is gold.
      * @param usernameRequiredData the username of the player for whom the data is required.
      */
     public GetHandTypeResponseMessage(ArrayList<Boolean> isGold, String usernameRequiredData) {

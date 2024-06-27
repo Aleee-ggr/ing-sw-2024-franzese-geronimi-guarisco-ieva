@@ -6,7 +6,7 @@ import java.util.HashMap;
  * This class represents a response message containing a map of player scores.
  * It extends the GenericResponseMessage class.
  */
-public class GetScoreMapResponseMessage extends GenericResponseMessage{
+public class GetScoreMapResponseMessage extends GenericResponseMessage {
     private final HashMap<String, Integer> scoreMap;
 
     /**

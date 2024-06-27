@@ -28,6 +28,11 @@ public class SocketClientCreateGameMessage extends GenericRequestMessage {
         return numPlayers;
     }
 
+    /**
+     * Returns the name of the game to be created.
+     *
+     * @return The name of the game.
+     */
     public String getGameName() {
         return gameName;
     }

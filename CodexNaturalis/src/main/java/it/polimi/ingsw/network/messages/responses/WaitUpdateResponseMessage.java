@@ -6,7 +6,7 @@ import it.polimi.ingsw.controller.WaitState;
  * This class represents a response message containing an update about the wait state.
  * It extends the GenericResponseMessage class.
  */
-public class WaitUpdateResponseMessage extends GenericResponseMessage{
+public class WaitUpdateResponseMessage extends GenericResponseMessage {
     private final WaitState waitState;
 
     /**

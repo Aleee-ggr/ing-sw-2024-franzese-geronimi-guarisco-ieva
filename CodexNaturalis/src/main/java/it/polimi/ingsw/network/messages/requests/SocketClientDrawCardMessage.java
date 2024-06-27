@@ -6,6 +6,8 @@ import java.util.UUID;
  * Represents a message from a client to request drawing a card in a game via socket network communication.
  * This class extends the `GenericRequestMessage` class and contains the username of the client making the request,
  * the position of the card to be drawn, and the UUID of the game.
+ *
+ * @see GenericRequestMessage
  */
 public class SocketClientDrawCardMessage extends GenericRequestMessage {
     private final int position;
@@ -27,6 +29,7 @@ public class SocketClientDrawCardMessage extends GenericRequestMessage {
 
     /**
      * Gets the position of the card to be drawn.
+     *
      * @return The position of the card.
      */
     public int getPosition() {
@@ -35,6 +38,7 @@ public class SocketClientDrawCardMessage extends GenericRequestMessage {
 
     /**
      * Gets the UUID of the game in which the card will be drawn.
+     *
      * @return The UUID of the game.
      */
     public UUID getGameUUID() {

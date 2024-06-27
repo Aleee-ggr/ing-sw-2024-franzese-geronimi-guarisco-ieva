@@ -176,9 +176,7 @@ public class Board implements Component {
                     .append(Resource.NONE.toChar())
                     .append("▁▁▁▁▁")
                     .append(Resource.NONE.toChar());
-        }
-
-        else {
+        } else {
             cardBuilder.append(corners[0].getCornerResource().toChar())
                     .append("▔▔▔▔▔")
                     .append(corners[1].getCornerResource().toChar())
@@ -186,7 +184,7 @@ public class Board implements Component {
 
             cardBuilder.append("▏");
 
-            if (card instanceof StartingCard) { // TODO: needs refactor
+            if (card instanceof StartingCard) {
                 if (!((StartingCard) card).isFrontSideUp()) {
                     cardBuilder.append("  ")
                             .append("❖")

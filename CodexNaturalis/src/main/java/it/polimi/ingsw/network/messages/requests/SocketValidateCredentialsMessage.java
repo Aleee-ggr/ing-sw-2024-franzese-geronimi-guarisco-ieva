@@ -5,6 +5,8 @@ package it.polimi.ingsw.network.messages.requests;
  * via socket network communication.
  * This class extends the GenericRequestMessage class and contains the username and password of the player
  * whose credentials are being validated.
+ *
+ * @see GenericRequestMessage
  */
 public class SocketValidateCredentialsMessage extends GenericRequestMessage {
     private final String password;
@@ -22,6 +24,7 @@ public class SocketValidateCredentialsMessage extends GenericRequestMessage {
 
     /**
      * Gets the password of the player whose credentials are being validated.
+     *
      * @return The password of the player.
      */
     public String getPassword() {
