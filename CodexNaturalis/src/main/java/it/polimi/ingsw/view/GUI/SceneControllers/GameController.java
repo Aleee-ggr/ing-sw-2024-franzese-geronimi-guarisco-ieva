@@ -550,9 +550,10 @@ public class GameController implements Initializable {
         stackPane.setStyle("-fx-border-color: #432918; -fx-border-width: 4;");
 
         stackPane.setOnMouseClicked(event -> {
-            placeCard(stackPane, imageView, boardCoordinates);
-            stackPane.setOnMouseClicked(null);
-            stackPane.setOnDragDropped(null);
+            if (myTurn && placeCard(stackPane, imageView, boardCoordinates)) {
+                stackPane.setOnMouseClicked(null);
+                stackPane.setOnDragDropped(null);
+            }
         });
 
         stackPane.setOnDragOver(event -> {
@@ -569,8 +570,10 @@ public class GameController implements Initializable {
 
             event.setDropCompleted(placed);
             event.consume();
-            stackPane.setOnDragDropped(null);
-            stackPane.setOnMouseClicked(null);
+            if (myTurn && placed) {
+                stackPane.setOnDragDropped(null);
+                stackPane.setOnMouseClicked(null);
+            }
         });
         return stackPane;
     }

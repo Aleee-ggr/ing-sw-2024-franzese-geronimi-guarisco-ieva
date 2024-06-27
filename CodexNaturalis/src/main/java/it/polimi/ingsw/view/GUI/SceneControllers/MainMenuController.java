@@ -125,8 +125,6 @@ public class MainMenuController implements Initializable {
                     boolean joined = client.joinGame(entry.getKey());
                     if (joined) {
                         stopFetchingGames();
-                        System.out.println(true);
-
                         loader = new FXMLLoader(getClass().getResource("/GUI/fxml/WaitingRoom.fxml"));
                         WaitingRoomController controller = new WaitingRoomController();
                         controller.setClient(client);

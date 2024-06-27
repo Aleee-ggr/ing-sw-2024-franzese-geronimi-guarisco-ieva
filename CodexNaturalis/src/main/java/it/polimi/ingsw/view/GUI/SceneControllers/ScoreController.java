@@ -129,7 +129,6 @@ public class ScoreController implements Initializable, TabController {
         plateau.setImage(image);
 
         Map<String, Integer> scoreMap = client.getScoreMap();
-        System.out.println(scoreMap);
         listOfPlayers.getChildren().clear();
         Map<Integer, Integer> scoreCount = new HashMap<>();
 

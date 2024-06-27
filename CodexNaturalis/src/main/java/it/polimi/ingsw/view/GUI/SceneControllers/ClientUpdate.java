@@ -51,7 +51,6 @@ public class ClientUpdate extends Thread {
             try {
                 oldState = state;
                 state = client.waitUpdate();
-                System.out.println(state);
                 if (state == UPDATE || state == TURN_UPDATE) {
                     fetchData();
                     updater.update();
