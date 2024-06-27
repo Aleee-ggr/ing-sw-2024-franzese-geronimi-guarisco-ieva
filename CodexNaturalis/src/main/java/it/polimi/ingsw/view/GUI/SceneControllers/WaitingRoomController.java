@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.GUI.SceneControllers;
 
 import it.polimi.ingsw.network.ClientInterface;
+import it.polimi.ingsw.view.Fetch;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
@@ -143,13 +144,7 @@ public class WaitingRoomController implements Initializable {
                 Stage stage;
                 switch (client.getGameState()) {
                     case SETUP:
-                        client.fetchPlayers();
-                        client.fetchStartingObjectives();
-                        client.fetchStartingCard();
-                        client.fetchAvailableColors();
-                        client.fetchClientHand();
-                        client.fetchCommonObjectives();
-
+                        Fetch.fetchSetup(client);
                         loader = new FXMLLoader(getClass().getResource("/GUI/fxml/ChooseStartingCardSideScene.fxml"));
                         ChooseStartingCardSideController chooseStartingCardSideController = new ChooseStartingCardSideController();
                         chooseStartingCardSideController.setClient(client);
@@ -158,7 +153,6 @@ public class WaitingRoomController implements Initializable {
                         stage.getScene().setRoot(loader.load());
                         break;
                     case MAIN, ENDGAME, STANDBY:
-                        fetchData();
                         loader = new FXMLLoader(getClass().getResource("/GUI/fxml/GameScene.fxml"));
                         GameController gameController = new GameController();
                         gameController.setClient(client);
@@ -207,35 +201,6 @@ public class WaitingRoomController implements Initializable {
             Label playerLabel = new Label(player);
             playerLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #432918; -fx-font-family: Trattatello; -fx-font-size: 30px;");
             listOfPlayers.getChildren().add(playerLabel);
-        }
-    }
-
-    /**
-     * Stops periodic fetching of player list.
-     */
-    private void stopFetchingPlayers() {
-        if (fetchPlayersTimeline != null) {
-            fetchPlayersTimeline.stop();
-        }
-    }
-
-    private void fetchData() {
-        try {
-            client.fetchClientHand();
-            client.fetchStartingCard();
-            client.fetchCommonObjectives();
-            client.fetchValidPlacements();
-            client.fetchPlayersBoards();
-            client.fetchPlayersPlacingOrder();
-            client.fetchPlayersResources();
-            client.fetchScoreMap();
-            client.fetchGameState();
-            client.fetchVisibleCardsAndDecks();
-            client.fetchOpponentsHandColor();
-            client.fetchOpponentsHandType();
-            client.fetchPlayersColors();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 }

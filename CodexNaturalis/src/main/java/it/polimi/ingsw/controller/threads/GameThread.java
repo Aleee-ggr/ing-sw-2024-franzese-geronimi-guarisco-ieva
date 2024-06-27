@@ -294,6 +294,7 @@ public class GameThread extends Thread {
 
         gameState = GameState.MAIN;
         controller.getGame().setGameState(GameState.MAIN);
+        sendUpdate();
     }
 
     /**
@@ -306,7 +307,6 @@ public class GameThread extends Thread {
     public boolean playerTurn(String playerName) {
         boolean draw = false;
         boolean place = false;
-        System.out.println("\001B[31m Player: " + playerName + "\001B[0m");
 
         if (Server.isOffline(currentPlayer)) {
             disconnectionHandler(place, draw, true);

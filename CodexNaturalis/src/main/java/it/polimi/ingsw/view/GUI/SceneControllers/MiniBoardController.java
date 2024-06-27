@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.client.ClientData;
 import it.polimi.ingsw.network.ClientInterface;
+import it.polimi.ingsw.view.Fetch;
 import it.polimi.ingsw.view.TUI.RotateBoard;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -16,7 +17,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -59,7 +59,7 @@ public class MiniBoardController implements Initializable, TabController {
     /**
      * Sets the client interface, game controller, and updater for the mini board controller.
      *
-     * @param client        the client interface to communicate with the server
+     * @param client         the client interface to communicate with the server
      * @param gameController the game controller managing the game view
      */
     public void setClient(ClientInterface client, GameController gameController) {
@@ -109,18 +109,13 @@ public class MiniBoardController implements Initializable, TabController {
     @FXML
     private void setBoards() {
         calculateBoardCenterCoordinates();
-        try {
-            client.fetchPlayersBoards();
-            client.fetchPlayersPlacingOrder();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        Fetch.fetchSwitch(client);
 
         GridPane[] boards = {board1, board2, board3};
         Label[] playersNames = {firstPlayerName, secondPlayerName, thirdPlayerName};
         int playerIndex = 0;
 
-        for (Map.Entry<String, ClientData> entry: client.getOpponentData().entrySet()) {
+        for (Map.Entry<String, ClientData> entry : client.getOpponentData().entrySet()) {
             if (!entry.getKey().equals(client.getUsername())) {
                 GridPane currentBoard = boards[playerIndex % boards.length];
                 playersNames[playerIndex % boards.length].setText(entry.getKey());
@@ -143,7 +138,7 @@ public class MiniBoardController implements Initializable, TabController {
                     GridPane.setHalignment(stackPane, HPos.CENTER);
                     GridPane.setValignment(stackPane, VPos.CENTER);
                 } else {
-                    for (Card card: entry.getValue().getOrder()) {
+                    for (Card card : entry.getValue().getOrder()) {
                         Coordinates coordinates = entry.getValue().getBoard().inverse().get(card);
                         StackPane stackPane = getStackPane(card);
 

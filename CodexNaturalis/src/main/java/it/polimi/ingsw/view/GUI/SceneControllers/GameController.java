@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.client.PlayerData;
 import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.network.ClientInterface;
+import it.polimi.ingsw.view.Fetch;
 import it.polimi.ingsw.view.TUI.RotateBoard;
 import it.polimi.ingsw.view.TUI.controller.SharedUpdate;
 import javafx.animation.PauseTransition;
@@ -145,6 +146,7 @@ public class GameController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        Fetch.fetchAllDataGUI(client);
         updater = new SharedUpdate();
         clientUpdate = new ClientUpdate(client, this, updater);
         clientUpdate.start();
@@ -215,8 +217,6 @@ public class GameController implements Initializable {
                 event.consume();
             }
         });
-
-        fetchData();
         setupResources();
         calculateBoardCenterCoordinates();
         setHand(client.getUsername(), frontSide);
@@ -349,30 +349,6 @@ public class GameController implements Initializable {
         setHand(client.getUsername(), false);
     }
 
-    /**
-     * Fetches initial game data from the server.
-     * Fetches various game-related data such as player hands, objectives, valid placements, etc.
-     *
-     * @throws RuntimeException If there is an error in fetching data from the server.
-     */
-    private void fetchData() {
-        try {
-            client.fetchClientHand();
-            client.fetchCommonObjectives();
-            client.fetchValidPlacements();
-            client.fetchPlayersBoards();
-            client.fetchPlayersPlacingOrder();
-            client.fetchPlayersResources();
-            client.fetchPlayersColors();
-            client.fetchScoreMap();
-            client.fetchGameState();
-            client.fetchVisibleCardsAndDecks();
-            client.fetchOpponentsHandColor();
-            client.fetchAvailableColors();
-        } catch (IOException e) {
-            ErrorMessageController.showErrorMessage("Impossible to fetch data from server!", root);
-        }
-    }
 
     /**
      * Sets up the display of cards in the hand container based on the player's or opponent's hand.
@@ -385,13 +361,6 @@ public class GameController implements Initializable {
      * @throws RuntimeException If there is an error in fetching data from the server during initialization.
      */
     protected void setHand(String username, boolean frontSide) {
-        try {
-            client.fetchClientHand();
-            client.fetchOpponentsHandColor();
-            client.fetchOpponentsHandType();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         String imagePath = "";
         handContainer.getChildren().clear();
         if (username.equals(client.getUsername())) {
@@ -509,16 +478,12 @@ public class GameController implements Initializable {
      * creates ImageView objects for each valid placement.
      */
     private void setupValidPlacements() {
-        try {
-            client.fetchValidPlacements();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         for (StackPane pane : validPlacementPanes.values()) {
             board.getChildren().remove(pane);
         }
         validPlacementPanes.clear();
 
+        System.out.println(playerData.getValidPlacements());
         for (int i = 0; i < playerData.getValidPlacements().size(); i++) {
             Coordinates boardCoordinates = calculateBoardCoordinates(playerData.getValidPlacements().get(i));
 
@@ -664,6 +629,7 @@ public class GameController implements Initializable {
                 tabContainer.setVisible(false);
             }
         } catch (IOException e) {
+            e.printStackTrace();
             ErrorMessageController.showErrorMessage("Error while loading chat tab!", root);
         }
     }
@@ -757,7 +723,7 @@ public class GameController implements Initializable {
                     selectedHandCard = null;
                     validPlacementPanes.remove(boardCoordinates);
 
-                    fetchData();
+                    Fetch.fetchPlace(client);
                     setupResources();
                     setHand(client.getUsername(), frontSide);
 
@@ -812,6 +778,7 @@ public class GameController implements Initializable {
         if (activeTab != null && !activeTab.equals("Objectives")) {
             tabControllers.get(activeTab).update();
         }
+        setPersonalData();
     }
 
     /**

@@ -2,8 +2,8 @@ package it.polimi.ingsw.view.GUI.SceneControllers;
 
 import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.network.ClientInterface;
+import it.polimi.ingsw.view.Fetch;
 import it.polimi.ingsw.view.TUI.controller.SharedUpdate;
-import it.polimi.ingsw.view.TUI.controller.TuiController;
 
 import java.io.IOException;
 
@@ -45,22 +45,19 @@ public class ClientUpdate extends Thread {
      */
     @Override
     public void run() {
-        state = null;
+        WaitState state = null;
         WaitState oldState;
         while (state != ENDGAME) {
             try {
                 oldState = state;
                 state = client.waitUpdate();
                 if (state == UPDATE || state == TURN_UPDATE) {
-                    fetchData();
+                    Fetch.fetchData(client);
                     updater.update();
                 }
-                if (state == TURN || state == TURN_UPDATE) {
-                    sleep(500);
-                    fetchData();
-                    if (!gameController.myTurn) {
-                        gameController.setTurn();
-                    }
+                if ((state == TURN || state == TURN_UPDATE) && (oldState != TURN_UPDATE && oldState != TURN)) {
+                    Fetch.fetchStartTurn(client);
+                    gameController.setTurn();
                     updater.update();
                 }
 
@@ -69,26 +66,21 @@ public class ClientUpdate extends Thread {
                     updater.update();
                 }
 
+                if (oldState == STANDBY && state != STANDBY) {
+                    if (state == TURN || state == TURN_UPDATE) {
+                        gameController.setTurn();
+                        updater.update();
+                    } else {
+                        gameController.turnMessage.setText("Waiting for your Turn...");
+                        updater.update();
+                    }
+                }
+
                 sleep(500);
+
             } catch (IOException | InterruptedException e) {
                 System.exit(1);
             }
-        }
-    }
-
-    /**
-     * Fetches all necessary game data from the server.
-     * This includes hand data, common objectives, valid placements, player boards,
-     * player order, resources, score map, game state, visible cards and decks,
-     * opponent hand color and type, player colors, and chat messages.
-     */
-    private void fetchData() {
-        try {
-            TuiController.fetchData(client);
-            client.fetchChat();
-        } catch (IOException e) {
-            System.out.println("Impossible to fetch data from server!");
-            System.exit(1);
         }
     }
 }
