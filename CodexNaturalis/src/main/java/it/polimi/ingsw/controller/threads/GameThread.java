@@ -19,9 +19,6 @@ import static java.lang.Math.abs;
  * GameThread Class, used to manage the thread-side logic for the controller.
  * Instantiate a new thread for each game to work simultaneously with the same
  * server.
- *
- * @author Daniele Ieva
- * @author ALessio Guarisco
  */
 public class GameThread extends Thread {
     private final BlockingQueue<ThreadMessage> messageQueue;

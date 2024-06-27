@@ -25,9 +25,6 @@ import java.util.*;
  * Client class, baseline for building a client that can connect to a server to participate in a game.
  * Contains the generic methods that a client with any protocol can use to interact with the server.
  * The client can be extended to implement specific methods for each protocol.
- *
- * @author Alessio Guarisco
- * @author Daniele Ieva
  */
 public class Client {
     protected final String serverAddress;

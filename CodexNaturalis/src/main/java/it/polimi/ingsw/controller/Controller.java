@@ -20,8 +20,6 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Main Controller class.
  * It gets messages from the GameThread and calls and changes the model.
- *
- * @author Alessio Guarisco
  */
 public class Controller {
     private final BlockingQueue<ThreadMessage> messageQueue;
