@@ -51,8 +51,6 @@ public enum GameState {
                     "update",
                     "getGameState");
 
-    public static final ImmutableSet<String> endgame = main;
-
     public static final ImmutableSet<String> standby =
             ImmutableSet.of("join",
                     "getPlayers",
@@ -72,23 +70,4 @@ public enum GameState {
                     "getGameState");
 
     public static final ImmutableSet<String> stop = ImmutableSet.of("update");
-
-    public static final ImmutableSet<String> getters =
-            ImmutableSet.of("getHand",
-                    "getStartingObjectives",
-                    "getPlayers",
-                    "getCommonObjectives",
-                    "getStartingCard",
-                    "getScoreMap",
-                    "getPlacingOrder",
-                    "getPlayerResources",
-                    "getVisibleCards",
-                    "getBackSideDecks",
-                    "getValidPlacements",
-                    "getVisibleCard",
-                    "getBoard",
-                    "getHandColor",
-                    "getHandType",
-                    "getLastPlacedCards",
-                    "getGameState");
 }
