@@ -177,7 +177,7 @@ public class RmiServer extends Server implements RmiServerInterface {
     }
 
     @Override
-    public ArrayList<Boolean> getHandType (UUID game, String name, String nameRequiredData) throws RemoteException {
+    public ArrayList<Boolean> getHandType(UUID game, String name, String nameRequiredData) throws RemoteException {
         return getHandTypeServer(game, name, nameRequiredData);
     }
 

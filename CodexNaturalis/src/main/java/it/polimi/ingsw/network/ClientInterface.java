@@ -267,13 +267,6 @@ public interface ClientInterface {
     boolean fetchStartingCard() throws IOException;
 
     /**
-     * Method to fetch the current turn player from the server.
-     *
-     * @throws IOException If an I/O error occurs.
-     */
-    void fetchTurnPlayer() throws IOException;
-
-    /**
      * Method to get the visible cards from the client.
      *
      * @return The ArrayList of visible cards.
@@ -293,7 +286,7 @@ public interface ClientInterface {
      * @return the GameState of the client.
      */
     GameState getGameState();
-    
+
     /**
      * Method to get the player number from the client.
      *

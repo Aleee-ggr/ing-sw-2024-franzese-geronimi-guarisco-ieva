@@ -12,7 +12,6 @@ import it.polimi.ingsw.model.board.Coordinates;
 import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.model.enums.Resource;
 
-import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -40,7 +39,7 @@ public abstract class Server {
     protected static final Map<UUID, String> gameNames = new ConcurrentHashMap<>();
     protected static final Map<UUID, GameThread> gameThreads = new ConcurrentHashMap<>();
 
-    /**
+    /*
      * The static initializer starts a thread that monitors player disconnections.
      * The thread checks the status of each player every heartbeatInterval milliseconds.
      * If a player has been offline for more than disconnectionThreshold heartbeats, the player is considered disconnected.
@@ -91,7 +90,7 @@ public abstract class Server {
         for (Map.Entry<UUID, GameThread> gameThread : gameThreads.entrySet()) {
             if (!gameThread.getValue().isAlive()) {
                 UUID toRemove = gameThread.getKey();
-                removeGame(toRemove, gameThread.getValue(), username);
+                removeGame(toRemove, gameThread.getValue());
             } else {
                 boolean disconnected = true;
 
@@ -109,7 +108,7 @@ public abstract class Server {
                 }
 
                 if (disconnected) {
-                    removeGame(gameThread.getKey(), gameThread.getValue(), username);
+                    removeGame(gameThread.getKey(), gameThread.getValue());
                 }
 
             }
@@ -123,14 +122,7 @@ public abstract class Server {
      * @param game       the UUID of the game to remove
      * @param gameThread the GameThread of the game to remove
      */
-    public static void removeGame(UUID game, GameThread gameThread, String playerUsername) {
-        for (String player : gameThread.getPlayers()) {
-            /*if (!player.equals(playerUsername)) {
-                playerGame.remove(player);
-                playerStatus.remove(player);
-                playerGame.remove(player);
-            }*/
-        }
+    public static void removeGame(UUID game, GameThread gameThread) {
         threadMessages.remove(game);
         games.remove(game);
         gameTurns.remove(game);
@@ -216,7 +208,7 @@ public abstract class Server {
      * @param position the index of the card to draw
      * @return the ID of the drawn card, or null if the card could not be drawn
      */
-    public static Integer drawCardServer(UUID game, String player, Integer position) throws RemoteException {
+    public static Integer drawCardServer(UUID game, String player, Integer position) {
         ThreadMessage message = ThreadMessage.draw(player, position);
 
         sendMessage(game, message);
@@ -238,7 +230,7 @@ public abstract class Server {
      * @param cardId      the ID of the card to place
      * @return true if the card was successfully placed, false otherwise
      */
-    public static Boolean placeCardServer(UUID game, String player, Coordinates coordinates, Integer cardId) throws RemoteException {
+    public static Boolean placeCardServer(UUID game, String player, Coordinates coordinates, Integer cardId) {
         ThreadMessage message = ThreadMessage.placeCard(player, coordinates, cardId);
 
         sendMessage(game, message);
@@ -357,20 +349,7 @@ public abstract class Server {
      */
     public static ArrayList<Integer> getHandServer(UUID game, String username) {
         ThreadMessage message = ThreadMessage.getHand(username);
-        sendMessage(game, message);
-        ThreadMessage response = threadMessages.get(game).remove();
-
-        if (response.status() == Status.OK) {
-            ArrayList<Integer> hand = new ArrayList<>();
-
-            for (String arg : response.args()) {
-                hand.add(Integer.parseInt(arg));
-            }
-
-            return hand;
-        } else {
-            return null;
-        }
+        return getIntegers(game, message);
     }
 
     /**
@@ -538,19 +517,7 @@ public abstract class Server {
      */
     public static ArrayList<Integer> getCommonObjectivesServer(UUID game, String username) {
         ThreadMessage message = ThreadMessage.getCommonObjectives(username);
-        sendMessage(game, message);
-        ThreadMessage response = threadMessages.get(game).remove();
-
-        if (response.status() == Status.OK) {
-            ArrayList<Integer> commonObjectives = new ArrayList<>();
-            for (String arg : response.args()) {
-                commonObjectives.add(Integer.parseInt(arg));
-            }
-
-            return commonObjectives;
-        } else {
-            return null;
-        }
+        return getIntegers(game, message);
     }
 
     /**
@@ -605,19 +572,7 @@ public abstract class Server {
      */
     public static ArrayList<Integer> getStartingObjectivesServer(UUID game, String username) {
         ThreadMessage message = ThreadMessage.getStartingObjectives(username);
-        sendMessage(game, message);
-        ThreadMessage response = threadMessages.get(game).remove();
-
-        if (response.status() == Status.OK) {
-            ArrayList<Integer> startingObjectives = new ArrayList<>();
-            for (String arg : response.args()) {
-                startingObjectives.add(Integer.parseInt(arg));
-            }
-
-            return startingObjectives;
-        } else {
-            return null;
-        }
+        return getIntegers(game, message);
     }
 
     /**
@@ -680,19 +635,7 @@ public abstract class Server {
      */
     public static ArrayList<Integer> getVisibleCardsServer(UUID game, String username) {
         ThreadMessage message = ThreadMessage.getVisibleCards(username);
-        sendMessage(game, message);
-        ThreadMessage response = threadMessages.get(game).remove();
-
-        if (response.status() == Status.OK) {
-            ArrayList<Integer> visibleCards = new ArrayList<>();
-            for (String arg : response.args()) {
-                visibleCards.add(Integer.parseInt(arg));
-            }
-
-            return visibleCards;
-        } else {
-            return null;
-        }
+        return getIntegers(game, message);
     }
 
     /**
@@ -705,6 +648,17 @@ public abstract class Server {
      */
     public static ArrayList<Integer> getBackSideDecksServer(UUID game, String username) {
         ThreadMessage message = ThreadMessage.getBackSideDecks(username);
+        return getIntegers(game, message);
+    }
+
+    /**
+     * Private Server method to manage the integers from a message.
+     *
+     * @param game    the unique ID of the game
+     * @param message the message to fetch the integers from
+     * @return a list of integers
+     */
+    private static ArrayList<Integer> getIntegers(UUID game, ThreadMessage message) {
         sendMessage(game, message);
         ThreadMessage response = threadMessages.get(game).remove();
 

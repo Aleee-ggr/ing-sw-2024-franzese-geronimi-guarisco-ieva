@@ -15,7 +15,7 @@ import java.util.*;
  * The RmiServerInterface defines methods for interacting with a remote game server using RMI.
  * This interface includes various operations related to managing and participating in a game, such as drawing and placing cards,
  * creating and joining games, choosing starting objectives, posting chat messages, and verifying player credentials.
- *
+ * <p>
  * The interface extends the Remote class, which means that all of its methods can be invoked by remote clients via RMI.
  * As a result, each method throws a RemoteException in case of communication errors or other issues related to RMI.
  */
@@ -59,9 +59,9 @@ public interface RmiServerInterface extends Remote {
     /**
      * Get the color of the player in the specified game.
      *
-     * @param game               the ID of the game
-     * @param name               the name of the player
-     * @param nameRequiredData   the name of the player whose color is requested
+     * @param game             the ID of the game
+     * @param name             the name of the player
+     * @param nameRequiredData the name of the player whose color is requested
      * @return the color of the player
      * @throws RemoteException If an RMI error occurs.
      */
@@ -202,9 +202,9 @@ public interface RmiServerInterface extends Remote {
     /**
      * Get the colors of the hand cards of a player in the specified game.
      *
-     * @param game                 the ID of the game
-     * @param name                 the name of the player
-     * @param nameRequiredData     the name of the player whose hand colors are requested
+     * @param game             the ID of the game
+     * @param name             the name of the player
+     * @param nameRequiredData the name of the player whose hand colors are requested
      * @return a list of resources representing the colors of the hand cards
      * @throws RemoteException If an RMI error occurs.
      */
@@ -213,19 +213,19 @@ public interface RmiServerInterface extends Remote {
     /**
      * Get the types of the hand cards of a player in the specified game.
      *
-     * @param game                 the ID of the game
-     * @param name                 the name of the player
-     * @param nameRequiredData     the name of the player whose hand types are requested
+     * @param game             the ID of the game
+     * @param name             the name of the player
+     * @param nameRequiredData the name of the player whose hand types are requested
      * @return a list of booleans representing whether the cards are gold
      * @throws RemoteException If an RMI error occurs.
      */
-    ArrayList<Boolean> getHandType (UUID game, String name, String nameRequiredData) throws RemoteException;
+    ArrayList<Boolean> getHandType(UUID game, String name, String nameRequiredData) throws RemoteException;
 
     /**
      * Choose a personal objective for the player in the specified game.
      *
-     * @param game       the ID of the game
-     * @param username   the name of the player
+     * @param game        the ID of the game
+     * @param username    the name of the player
      * @param objectiveId the ID of the personal objective to choose
      * @return true if the operation was successful, false otherwise
      * @throws RemoteException If an RMI error occurs.
@@ -267,9 +267,9 @@ public interface RmiServerInterface extends Remote {
     /**
      * Set the starting card for the player in the specified game.
      *
-     * @param game         the ID of the game
-     * @param username     the name of the player
-     * @param frontSideUp  true if the front side of the card is up, false if the back side is up
+     * @param game        the ID of the game
+     * @param username    the name of the player
+     * @param frontSideUp true if the front side of the card is up, false if the back side is up
      * @return true if the operation was successful, false otherwise
      * @throws RemoteException If an RMI error occurs.
      */

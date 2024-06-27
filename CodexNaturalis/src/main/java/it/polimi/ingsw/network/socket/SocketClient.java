@@ -412,11 +412,6 @@ public class SocketClient extends Client implements ClientInterface {
         return fetchVisibleCardsAndDecksClient(visibleCardsIds, visibleDecksIds);
     }
 
-    @Override
-    public void fetchTurnPlayer() throws IOException {
-        this.turnPlayerName = "";
-    }
-
     /**
      * Handles the server's response message.
      *
@@ -647,9 +642,8 @@ public class SocketClient extends Client implements ClientInterface {
                 return this.chat != null;
             }
 
-            default -> {
-                throw new RuntimeException("Error while handling the response from the server.");
-            }
+            default -> throw new RuntimeException("Error while handling the response from the server.");
+
         }
     }
 
