@@ -10,6 +10,9 @@ import it.polimi.ingsw.model.player.Player;
 import java.util.*;
 import java.util.function.Function;
 
+/**
+ * A builder class to create a function that calculates objectives score and goldCard points
+ */
 public class FunctionBuilder {
     public static final String[] validTypes = {"none", "pattern", "resource", "resources", "cover",};
     private final Map<Coordinates, Resource> pattern = new HashMap<>(3);
@@ -35,7 +38,7 @@ public class FunctionBuilder {
         Coordinates result;
         int x = coordinates.x();
         int y = coordinates.y();
-        
+
         if (x == 1 && y != 1) {
             y++;
         } else if (y == 1 && x != -1) {

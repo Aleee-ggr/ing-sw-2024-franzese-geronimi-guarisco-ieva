@@ -12,6 +12,7 @@ public record Pattern(Set<Coordinates> p) {
 
     /**
      * Check how many sets of coordinates are in common between two patterns
+     *
      * @param other the pattern to match against
      * @return the number of shared tiles
      */

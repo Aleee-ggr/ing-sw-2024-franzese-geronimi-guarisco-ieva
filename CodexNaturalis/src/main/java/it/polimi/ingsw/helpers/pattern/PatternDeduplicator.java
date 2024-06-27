@@ -100,10 +100,9 @@ public class PatternDeduplicator {
     }
 
     /**
-     *
      * @param patterns a set of conflicting patterns with some overlap
      * @return a map that associates a set of coordinates to how many patterns
-     *         contains them
+     * contains them
      */
     private Map<Coordinates, Integer> countPatternPerCoordinates(Set<Pattern> patterns) {
         Set<Coordinates> coordinates = getConflictingCoordinates(patterns);
