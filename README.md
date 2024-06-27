@@ -58,16 +58,12 @@ For further information about testing coverage, look [here]().
   
 ### Advanced Features:
 
-| Function                 | Implemented         |
-|--------------------------|---------------------|
-| Multiple games           | :white_check_mark:  |
-| Disconnection resilience | :white_check_mark:  |
-| Chat                     | :white_check_mark:  |
-| Persistence              | :x:                 |
-
-Legend:
-- :white_check_mark: : implemented;
-- :x: : not implemented;
+| Function                 | Implemented        |
+|--------------------------|--------------------|
+| Multiple games           | :white_check_mark: |
+| Disconnection resilience | :white_check_mark: |
+| Chat                     | :white_check_mark: |
+| Persistence              | :x:                |
 
 ## Compile and Execute
 
