@@ -1,7 +1,6 @@
 package it.polimi.ingsw.network.rmi;
 
 
-import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
@@ -111,18 +110,7 @@ public class RmiClient extends Client implements ClientInterface {
     @Override
     public boolean checkCredentials(String username, String password) throws RemoteException {
         if (remoteObject.checkCredentials(username, password)) {
-            new Thread(() -> {
-                while (true) {
-                    try {
-                        Thread.sleep(GameConsts.heartbeatInterval);
-                        pingServer();
-                    } catch (IOException | InterruptedException e) {
-                        System.out.println(e.getMessage());
-                        System.exit(1);
-                    }
-                }
-            }).start();
-            
+            startHeartBeat(this);
             this.username = username;
             this.password = password;
             return true;

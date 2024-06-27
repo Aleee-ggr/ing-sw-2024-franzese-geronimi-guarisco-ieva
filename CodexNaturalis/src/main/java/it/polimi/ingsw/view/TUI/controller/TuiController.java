@@ -133,6 +133,7 @@ public class TuiController {
                         System.exit(1);
                     }
                     List<UUID> games = client.getAvailableGames().keySet().stream().toList();
+                    gameCount.set(games.size());
                     clear();
                     for (int i = 0; i < games.size(); i++) {
                         out.printf("%d.\t%s\n", i + 1, client.getAvailableGames().get(games.get(i)));
@@ -143,7 +144,6 @@ public class TuiController {
                         sleep(5000);
                     } catch (InterruptedException ignored) {
                     }
-                    gameCount.set(games.size());
                 }
             }).start();
             int selectedGame;

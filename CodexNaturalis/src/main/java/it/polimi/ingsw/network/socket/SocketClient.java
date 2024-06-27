@@ -1,6 +1,5 @@
 package it.polimi.ingsw.network.socket;
 
-import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.controller.WaitState;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Coordinates;
@@ -185,16 +184,7 @@ public class SocketClient extends Client implements ClientInterface {
         output.writeObject(new SocketValidateCredentialsMessage(username, password));
         boolean response = handleResponse();
         if (response) {
-            new Thread(() -> {
-                while (true) {
-                    try {
-                        Thread.sleep(GameConsts.heartbeatInterval);
-                        pingServer();
-                    } catch (IOException | InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }).start();
+            startHeartBeat(this);
         }
         return response;
     }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.network;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import it.polimi.ingsw.GameConsts;
 import it.polimi.ingsw.controller.threads.GameState;
 import it.polimi.ingsw.helpers.exceptions.model.ElementNotInHand;
 import it.polimi.ingsw.helpers.exceptions.model.HandFullException;
@@ -17,6 +18,7 @@ import it.polimi.ingsw.model.enums.Color;
 import it.polimi.ingsw.model.enums.Resource;
 import it.polimi.ingsw.model.objectives.Objective;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -62,6 +64,25 @@ public class Client {
         this.scoreMap = new HashMap<>();
         this.playerData = new HashMap<>();
         this.gameState = GameState.LOBBY;
+    }
+
+    /**
+     * Method to start heartbeat in the various clients
+     *
+     * @param client the client that will send the heartbeat
+     */
+    public static void startHeartBeat(final ClientInterface client) {
+        new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(GameConsts.heartbeatInterval);
+                    client.pingServer();
+                } catch (IOException | InterruptedException e) {
+                    System.out.println(e.getMessage());
+                    System.exit(1);
+                }
+            }
+        }).start();
     }
 
     /**
@@ -440,7 +461,6 @@ public class Client {
         this.backSideDecks = backSideDecksList;
         return true;
     }
-
 
     /**
      * Method used for fetching the score map from the server.
