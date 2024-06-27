@@ -325,9 +325,6 @@ public class SocketClient extends Client implements ClientInterface {
     @Override
     public synchronized boolean fetchPlayersColors() throws IOException {
         for (String player : players) {
-            if (player.equals(username)) {
-                continue;
-            }
 
             output.writeObject(new SocketClientGetPlayerColorMessage(username, this.gameId, player));
 
