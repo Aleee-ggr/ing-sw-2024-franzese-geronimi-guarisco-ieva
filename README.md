@@ -107,4 +107,8 @@ for the client:
 java -jar target/PSP11-1.0.jar client
 ```
 
-
+### Precompiled Jars
+We recommend that you compile the game yourself as shown above.  
+Depending on your CPU architecture and OS the following packages may not work for you. 
+- [Linux x86 jar](deliverables/final/jar/PSP11-1.0-Linux.jar)
+- [MacOS arm jar](deliverables/final/jar/PSP11-1.0-Mac.jar)
