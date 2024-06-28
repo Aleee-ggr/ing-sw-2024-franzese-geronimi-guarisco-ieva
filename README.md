@@ -32,10 +32,10 @@ The docs are available here: [JavaDoc report]()
 | Package    | Classes      | Methods       | Lines          |
 |------------|--------------|---------------|----------------|
 | Model      | 100% (24/24) | 85% (143/167) | 83% (377/452)  |
-| Controller | 100% (8/8)   | 86% (100/115) | 68% (395/573)  |
-| Network    | 91% (66/72)  | 90% (303/334) | 83% (998/1189) |
+| Controller | 100% (8/8)   | 86% (100/115) | 68% (390/569)  |
+| Network    | 91% (66/72)  | 91% (304/333) | 84% (977/1160) |
 
-For further information about testing coverage, look [here]().
+For further information about testing coverage, look [here](deliverables/final/TestCoverage.png).
 
 
 ### Tools
@@ -70,7 +70,7 @@ For further information about testing coverage, look [here]().
 The group worked with a Unix-first mindset, the game is fully reliable on Linux and MacOS but for Windows it may not work as expected.
 ### Requirements:
 to work correctly the project needs:  
-- `Java 22` or above with javaFX  
+- `Java 21` or above  
 - `mvn` and `shade` for compiling
 - the `trattatello` font
   
@@ -90,7 +90,7 @@ should also work.
 Because those steps may vary depending on your configurations the safe bet is always using WSL with Ubuntu or a UNIX-based system.
 
 ### macOS apple silicon pre-setup:
-If you are running a MacBook with apple silicon you should use a supported version of javaFX.  
+If you are running a MacBook with Apple Silicon you should use a supported version of javaFX.  
 we recomend [azul](https://www.azul.com/downloads/?version=java-22&os=macos&architecture=arm-64-bit&package=jdk-fx#zulu) sdk version 22
 
 ### Every OS:
