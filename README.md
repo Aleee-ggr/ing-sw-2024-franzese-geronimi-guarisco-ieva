@@ -15,17 +15,13 @@
 ### UML
 
 - [Initial UML](deliverables/initial/UML.png)
-- [Final UML](deliverables/final/UML.png)
+- [Final UML](deliverables/final/uml/UML.pdf)
 
 ### Sequence diagrams
 
-- [Draw a card](deliverables/final/draw_card.png)
-- [Place a card](deliverables/final/place_card.png)
-- [Player login](deliverables/final/player_login.png)
-
-### JavaDoc
-
-The docs are available here: [JavaDoc report]()
+- [Draw a card](deliverables/final/uml/draw_card.png)
+- [Place a card](deliverables/final/uml/place_card.png)
+- [Player login](deliverables/final/uml/player_login.png)
 
 ### Testing
 
@@ -69,19 +65,19 @@ For further information about testing coverage, look [here](deliverables/final/T
 
 The group worked with a Unix-first mindset, the game is fully reliable on Linux and MacOS but for Windows it may not work as expected.
 ### Requirements:
-to work correctly the project needs:  
+To work correctly the project needs:  
 - `Java 21` or above  
 - `mvn` and `shade` for compiling
 - the `trattatello` font
   
 ### Windows pre-setup:
-to run on Windows you should use the new [windows terminal](https://github.com/microsoft/terminal), default terminal from windows 11.  
+To run on Windows you should use the new [windows terminal](https://github.com/microsoft/terminal), default terminal from windows 11.  
 to run the TUI you should:
 - enable UNICODE characters in the terminal
 - use a font that support UTF-8
 - adjust the font size depending on your screen
 
-the safest way to enable UTF-8 on your windows terminal is to enable `Use Unicode UTF-8 for worldwide language support` in your OS language settings.  
+The safest way to enable UTF-8 on your windows terminal is to enable `Use Unicode UTF-8 for worldwide language support` in your OS language settings.  
 on some systems typing on the terminal before running the game:
 ```
 chcp 65001
@@ -89,12 +85,12 @@ chcp 65001
 should also work.  
 Because those steps may vary depending on your configurations the safe bet is always using WSL with Ubuntu or a UNIX-based system.
 
-### macOS apple silicon pre-setup:
+### MacOS Apple Silicon pre-setup:
 If you are running a MacBook with Apple Silicon you should use a supported version of javaFX.  
 we recomend [azul](https://www.azul.com/downloads/?version=java-22&os=macos&architecture=arm-64-bit&package=jdk-fx#zulu) sdk version 22
 
 ### Every OS:
-to compile the project move into the root project folder use the command:
+To compile the project move into the root project folder use the command:
 ```
 mvn package shade:shade
 ```
