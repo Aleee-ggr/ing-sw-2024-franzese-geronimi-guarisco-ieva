@@ -60,7 +60,7 @@ public abstract class Server {
 
                     for (Map.Entry<String, AtomicInteger> entry : playerStatus.entrySet()) {
                         if (entry.getValue().get() < 10) {
-                            System.out.println(entry.getKey() + " " + entry.getValue().incrementAndGet());
+                            entry.getValue().incrementAndGet();
                         }
                     }
                 } catch (InterruptedException e) {

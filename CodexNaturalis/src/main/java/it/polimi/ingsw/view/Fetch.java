@@ -36,6 +36,7 @@ public abstract class Fetch {
             client.fetchGameState();
             client.fetchVisibleCardsAndDecks();
             client.fetchChat();
+            client.fetchPlayersColors();
         } catch (IOException e) {
             System.out.println(e.getMessage());
             exit(1);
