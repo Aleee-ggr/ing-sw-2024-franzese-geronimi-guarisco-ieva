@@ -1,5 +1,5 @@
 # Prova Finale Ingegneria del Software - AA 2023-2024  
-### Politecnico di Milano, Group 11
+### Politecnico di Milano, Group 11 - 30L
 
 ![alt text](CodexNaturalis/src/main/resources/images/codex_naturalis.jpeg)
 
