@@ -1,6 +1,5 @@
 /**/.DS_Store
-/**/*.nogit/
-/**/*.nogit
+server_log.nogit
 /CodexNaturalis/target/
 /CodexNaturalis/dependency-reduced-pom.xml
 /CodexNaturalis/.classpath
